@@ -3,11 +3,11 @@ CREATE DATABASE 'DIVA_MAIN'
 
 -- If the database already exists, execute the following code:
 -- create the User table 
-CREATE TABLE User (
-	ID_Number BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
-	First_Name CHAR(20),
-	Last_Name CHAR(20),
-	Phone_Num BIGINT(20),
+CREATE TABLE user (
+	ID_Number SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	First_Name VARCHAR(20),
+	Last_Name VARCHAR(20),
+	Phone_Num BIGINT(13),
 	Email VARCHAR(20),
 	Account_uName VARCHAR(20),
 	Account_password VARCHAR(20)
