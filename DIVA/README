@@ -1,0 +1,39 @@
+============================
+CONFIGURATION
+============================
+1. removed DefaultInterface
+2. removed SecurityManager
+3. PaymentManager pending, may use a middleware
+4. In RentManager, changed Renter to RentHandler, ignored Contract and AccountingInterface
+5. The namings are inconsistent, so I made classes inside xxxManagers in the format of xxxManagement.
+list:
+	accountcreater -> accountmanagement
+	usernameandpassowrd -> usernameandpasswordmanagement
+	transactionHandler -> transactionManagement
+	Equipmenthandler -> equipmentmanagement
+	overduehandler -> overduemanagement
+	renthandler -> rentmangement
+	reservationhandler -> reservationmanagement
+	returnhandler -> returnmanagement
+	
+6. Merged VehicleSearcher and VehicleModifier
+7. Merged AccountSearchSubsystem and ModifyAccountSubsystem
+	search and modify are combined to make one class
+	employeesearch + modifyemployeeaccount -> employeemanagement
+	customersearch + modifycustomeraccount -> customermanagement
+	combined securesearch as a method
+8. combined SuperclubHisotry, SuperClubRenewalSystem, MemebershipSignupSystem into MemebershipManager
+	changed to xxxmanagement
+9. for dependency issues, the database controller classes are remodelled
+   accountDB: includes query, updates
+   rentalDB: includes query, updates
+   vehicleDB: for vehicle and branch 
+==========================
+QUESTIONS
+==========================
+-	is ResourceLock a separate class? Or just lock objects inside the classes that need to be locked?
+    where are we locking? in RentalManager? Or in DatabaseManager?
+	Answer: removed lock from program logic, inside database as attributes. 
+-	not sure where to put startup and shutdown functionalities.
+	these are more like scripts? perhaps shutdown needs to save a copy somewhere.
+-	DBM: should be 1 instance, and what should we do about the access rights?
