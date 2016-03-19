@@ -37,23 +37,28 @@ CREATE TABLE customers(
 	name_on_cCard VARCHAR(20),
 	FOREIGN KEY (cus_id) REFERENCES users(id_number)
 );
--- Continue here
+
 -- table for super customers
-CREATE TABLE Super_Customers(
-	Cus_ID BIGINT(20) PRIMARY KEY REFERENCES Customers(Cus_ID),
-	Points INT(10) DEFAULT 0
+CREATE TABLE super_customers(
+	cus_id SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
+	points SMALLINT DEFAULT 500,
+	FOREIGN KEY (cus_id) REFERENCES customers(cus_id)
 );
 
 -- A table for Clerks
-CREATE TABLE Clerks (
-	Emp_ID BIGINT(20) PRIMARY KEY REFERENCES Employees(Emp_ID),
-	Works_at INT(5) REFERENCES Branch(Br_Num)
+CREATE TABLE clerks (
+	emp_id SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
+	works_at TINYINT(2) UNSIGNED NOT NULL,
+	FOREIGN KEY (emp_id) REFERENCES employees(emp_id),
+	FOREIGN KEY (works_at) REFERENCES branches(br_num)
 );
 
 -- A table for branch managers
-CREATE TABLE Managers (
-	Emp_ID BIGINT(20) PRIMARY KEY REFERENCES Clerks(Emp_ID),
-	Manages INT(5) REFERENCES Clekrs(Works_at)
+CREATE TABLE managers (
+	emp_id SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
+	manages TINYINT(2) UNSIGNED NOT NULL,
+	FOREIGN KEY (emp_id) REFERENCES clerks(emp_id),
+	FOREIGN KEY (manages) REFERENCES clerks(works_at)
 );
 
 -- A table of System administrators
