@@ -1,6 +1,5 @@
 -- Create the database first (This one is optional; Need to have CREATE privilges)
 CREATE DATABASE 'DIVA_MAIN'
--- Hello
 
 -- If the database already exists, execute the following code:
 -- create the User table 
@@ -26,18 +25,19 @@ CREATE TABLE branches(
 
 -- create the employee table
 CREATE TABLE employees (
-	emp_id SMALLINT UNSIGNED PRIMARY KEY,
-	CONSTRAINT (emp_id) FOREIGN KEY REFERENCES 
+	emp_id SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
+	FOREIGN KEY (emp_id) REFERENCES users(id_number)
 );
 
 -- create the customer table
-CREATE TABLE Customers(
-	Cus_Id BIGINT(20) PRIMARY KEY REFERENCES User(ID_Number),
-	Standing SET('Good','Probation', 'Suspended') DEFAULT 'Good',
-	CC_Num BIGINT(15),
-	Name_on_cCard CHAR(20)
+CREATE TABLE customers(
+	cus_id SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
+	standing SET('Good','Probation', 'Suspended') NOT NULL DEFAULT 'Good',
+	cc_Num BIGINT(16),
+	name_on_cCard VARCHAR(20),
+	FOREIGN KEY (cus_id) REFERENCES users(id_number)
 );
-
+-- Continue here
 -- table for super customers
 CREATE TABLE Super_Customers(
 	Cus_ID BIGINT(20) PRIMARY KEY REFERENCES Customers(Cus_ID),
