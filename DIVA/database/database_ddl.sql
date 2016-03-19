@@ -1,5 +1,6 @@
 -- Create the database first (This one is optional; Need to have CREATE privilges)
 CREATE DATABASE 'DIVA_MAIN'
+-- Hello
 
 -- If the database already exists, execute the following code:
 -- create the User table 
