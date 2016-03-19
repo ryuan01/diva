@@ -3,29 +3,30 @@ CREATE DATABASE 'DIVA_MAIN'
 
 -- If the database already exists, execute the following code:
 -- create the User table 
-CREATE TABLE user (
-	ID_Number SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	First_Name VARCHAR(20),
-	Last_Name VARCHAR(20),
-	Phone_Num BIGINT(13),
-	Email VARCHAR(20),
-	Account_uName VARCHAR(20),
-	Account_password VARCHAR(20)
+CREATE TABLE users (
+	id_number SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	first_name VARCHAR(20) NOT NULL,
+	last_name VARCHAR(20) NOT NULL,
+	phone BIGINT(13) NOT NULL,
+	email VARCHAR(20),
+	account_uName VARCHAR(20) NOT NULL,
+	account_password VARCHAR(20) NOT NULL
 );
 
 -- create a branch table
-CREATE TABLE Branch(
-	Br_Num INT(5) PRIMARY KEY AUTO_INCREMENT,
-	Street_Num INT(10),
-	Street_Name CHAR(10),
-	City CHAR(10),
-	Province SET('AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'),
-	Zip_code VARCHAR(5)
+CREATE TABLE branches(
+	br_num TINYINT(2) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	street_num SMALLINT UNSIGNED NOT NULL,
+	street_name VARCHAR(10) NOT NULL,
+	city VARCHAR(10) NOT NULL,
+	province SET('AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT') NOT NULL DEFAULT 'BC',
+	zip_code VARCHAR(8) NOT NULL
 );
 
 -- create the employee table
-CREATE TABLE Employees (
-	Emp_ID BIGINT(20) PRIMARY KEY REFERENCES User(ID_Number)
+CREATE TABLE employees (
+	emp_id SMALLINT UNSIGNED PRIMARY KEY,
+	CONSTRAINT (emp_id) FOREIGN KEY REFERENCES 
 );
 
 -- create the customer table
