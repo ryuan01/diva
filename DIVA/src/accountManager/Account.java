@@ -2,7 +2,7 @@
 /*Kevin , continue to extend*/
 
 public class Account {
-
+	// potential attribute creationDate?
 	private String firstname;
 	private String lastname;
 	private String phoneNumber;
