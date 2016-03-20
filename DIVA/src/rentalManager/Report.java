@@ -1,6 +1,6 @@
 package rentalManager;
 
-/* Ben */
+/* Ben, extended to Accident report, and Inspection report*/
 
 public class Report {
 
