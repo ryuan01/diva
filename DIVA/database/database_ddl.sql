@@ -62,6 +62,49 @@ CREATE TABLE managers (
 );
 
 -- A table of System administrators
-CREATE TABLE System_Admins (
-	Emp_ID BIGINT(20) PRIMARY KEY REFERENCES Employees(Emp_ID),
+CREATE TABLE system_admins (
+	emp_id SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
+	FOREIGN KEY (emp_id) REFERENCES employees(emp_id)
 );
+
+-- Create equipment table
+CREATE TABLE equipment(
+	serial_num SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	rental_price FLOAT(6,2) UNSIGNED NOT NULL,
+	location TINYINT(2) UNSIGNED NOT NULL,
+	eq_type ENUM('ski rack', 'child safety seat', 'lift gate', 'car-towing eq') NOT NULL,
+	FOREIGN KEY (location) REFERENCES branches(br_num)
+);
+
+-- Create equipment_reservation table
+CREATE TABLE equipment_reservation(
+	reservation_id MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	customer SMALLINT UNSIGNED NOT NULL,
+	equipment SMALLINT UNSIGNED NOT NULL,
+	start_date DATE NOT NULL,
+	end_date DATE NOT NULL,
+	FOREIGN KEY (customer) REFERENCES customers(cus_id),
+	FOREIGN KEY (equipment) REFERENCES equipment(serial_num)
+);
+
+-- Create equipment_rental table
+CREATE TABLE equipment_rental(
+	rental_id MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	customer SMALLINT UNSIGNED NOT NULL,
+	equipment SMALLINT UNSIGNED NOT NULL,
+	payment FLOAT(6,2) UNSIGNED NOT NULL,
+	return_date DATE NOT NULL,
+	FOREIGN KEY (customer) REFERENCES customers(cus_id),
+	FOREIGN KEY (equipment) REFERENCES equipment(serial_num)
+);
+
+-- Create Vehicles table
+CREATE TABLE vehicles(
+	serial_number MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	
+
+-- Create vehicle reservation table
+
+-- create vehicle rental table
+
+-- create report
