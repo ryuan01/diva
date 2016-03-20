@@ -68,7 +68,7 @@ CREATE TABLE system_admins (
 );
 
 -- Create equipment table
-CREATE TABLE equipment(
+CREATE TABLE equipments(
 	serial_num SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	rental_price FLOAT(6,2) UNSIGNED NOT NULL,
 	location TINYINT(2) UNSIGNED NOT NULL,
@@ -77,34 +77,75 @@ CREATE TABLE equipment(
 );
 
 -- Create equipment_reservation table
-CREATE TABLE equipment_reservation(
+CREATE TABLE equipment_reservations(
 	reservation_id MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	customer SMALLINT UNSIGNED NOT NULL,
 	equipment SMALLINT UNSIGNED NOT NULL,
 	start_date DATE NOT NULL,
 	end_date DATE NOT NULL,
 	FOREIGN KEY (customer) REFERENCES customers(cus_id),
-	FOREIGN KEY (equipment) REFERENCES equipment(serial_num)
+	FOREIGN KEY (equipment) REFERENCES equipments(serial_num)
 );
 
 -- Create equipment_rental table
-CREATE TABLE equipment_rental(
+CREATE TABLE equipment_rentals(
 	rental_id MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	customer SMALLINT UNSIGNED NOT NULL,
 	equipment SMALLINT UNSIGNED NOT NULL,
 	payment FLOAT(6,2) UNSIGNED NOT NULL,
 	return_date DATE NOT NULL,
 	FOREIGN KEY (customer) REFERENCES customers(cus_id),
-	FOREIGN KEY (equipment) REFERENCES equipment(serial_num)
+	FOREIGN KEY (equipment) REFERENCES equipments(serial_num)
 );
 
 -- Create Vehicles table
 CREATE TABLE vehicles(
-	serial_number MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	
+	serial_num MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	location TINYINT(2) UNSIGNED NOT NULL,
+	license_plate_number VARCHAR(20) NOT NULL,
+	manufacturer VARCHAR(20) NOT NULL,
+	year_model CHAR(20),
+	color VARCHAR(20),
+	hourly_rate FLOAT(6,2) NOT NULL,
+	daily_rate FLOAT(6,2) NOT NULL,
+	perKM_rate FLOAT(6,2) NOT NULL,
+	hourly_insurance_rate FLOAT(6,2) NOT NULL,
+	daily_insurance_rate FLOAT(6,2) NOT NULL,
+	weekly_insurance_rate FLOAT(6,2) NOT NULL,
+	capacity TINYINT(3) NOT NULL,
+	vtype ENUM('car', 'truck') NOT NULL,
+	sale_status ENUM('sold', 'for sale', 'for rent') DEFAULT 'for rent',
+	FOREIGN KEY (location) REFERENCES branches(br_num)
+);
 
 -- Create vehicle reservation table
-
+CREATE TABLE vehicle_reservations(
+	reservation_id MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	customer SMALLINT UNSIGNED NOT NULL,
+	vehicle MEDIUMINT UNSIGNED NOT NULL,
+	start_date DATE NOT NULL,
+	end_date DATE NOT NULL,
+	FOREIGN KEY (customer) REFERENCES customers(cus_id),
+	FOREIGN KEY (vehicle) REFERENCES vehicles(serial_num)
+);
 -- create vehicle rental table
+CREATE TABLE vehicle_rentals(
+	rental_id MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	customer SMALLINT UNSIGNED NOT NULL,
+	vehicle SMALLINT UNSIGNED NOT NULL,
+	payment FLOAT(6,2) UNSIGNED NOT NULL,
+	return_date DATE NOT NULL,
+	FOREIGN KEY (customer) REFERENCES customers(cus_id),
+	FOREIGN KEY (vehicle) REFERENCES equipments(serial_num)
+);
 
 -- create report
+CREATE TABLE reports(
+	report_num MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	report_type ENUM('damage','inspection') NOT NULL,
+	reporting_clerk  SMALLINT UNSIGNED NOT NULL,
+	rental MEDIUMINT UNSIGNED NOT NULL,
+	comments TEXT(500), 
+	FOREIGN KEY (reporting_clerk) REFERENCES clerks(emp_id),
+	FOREIGN KEY (rental) REFERENCES vehicle_rentals(rental_id)
+);
