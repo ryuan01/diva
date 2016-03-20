@@ -1,5 +1,6 @@
 package databaseManager;
 
+/
 public class AccountDB {
 	
 	

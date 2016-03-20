@@ -1,5 +1,7 @@
 package databaseManager;
 
+/* Sammy */
+
 public class VehicleDB {
 	
 	
