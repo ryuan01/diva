@@ -61,7 +61,5 @@ public class Account {
 
 	public void setLoginId(String loginId) {
 		this.loginId = loginId;
-	}
-	
-	
+	}	
 }
