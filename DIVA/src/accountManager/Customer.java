@@ -1,5 +1,5 @@
 package accountManager;
 
-public class Customer {
+public abstract class Customer  {
 
 }
