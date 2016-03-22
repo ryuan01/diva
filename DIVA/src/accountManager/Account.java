@@ -1,5 +1,5 @@
 
-/*Kevin , continue to extend*/
+//Kevin , continue to extend
 
 public class Account {
 	// potential attribute creationDate?
@@ -62,6 +62,4 @@ public class Account {
 	public void setLoginId(String loginId) {
 		this.loginId = loginId;
 	}
-	
-	
 }
