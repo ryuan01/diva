@@ -2,7 +2,7 @@ package databaseManager;
 
 /* Sammy */
 
-public class VehicleDB {
+public class VehicleDB extends DatabaseManager{
 	
 	
 	//updateVehicleLocation();
