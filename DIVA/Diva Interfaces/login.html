@@ -1,0 +1,47 @@
+<html>
+<head>
+    <title>
+        DiVA Homepage
+    </title>
+    <link type="text/css" rel="stylesheet" href="stylesheet_login.css">
+    <script src="js.js"> </script>
+    
+</head>
+<body>
+    <header>
+        <div class="logo_box">
+            <h1>
+                <a href = "index.html"><img src="images/logo.png"></a>
+            </h1>
+            <h4>
+                Distributed Vehicle Administration System
+            </h4>
+        </div>
+    </header>
+    <nav>
+        <ul>
+<!--            <li><a href="index.html">Home</a></li>-->
+        </ul>
+           
+    </nav>
+    <main>
+        <div class="login_box">
+            <div class="label_box">
+                <form name="login_form">
+                <label>Username:</label><input id="username" type="text"  name="username" ><br>
+                <label>Password:</label><input id="password" type="password"  name="password" ><br>
+                <p id="validator"> </p>
+                </form>
+            </div>
+            <div class="validator_box">
+                <button type="button" onclick="getUserInfo()">Login</button>
+            </div>
+           
+        </div>
+    </main>
+    <footer>
+    &copy; 2016 Diva Industries, Inc.
+    </footer>
+   
+</body>
+</html>
