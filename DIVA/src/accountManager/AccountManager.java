@@ -172,7 +172,7 @@ public class AccountManager {
 		return new Customer[0];
 	}
 	
-	//--------Methods that can be called by a Manager
+	//--------Methods that can be called by a Manager 
 	
 	//addClerkAccount()
 	
