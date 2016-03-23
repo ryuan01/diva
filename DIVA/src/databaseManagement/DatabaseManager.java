@@ -3,6 +3,7 @@ package databaseManagement;
 /*Robin */
 /**
  * DatabaseManager deals with connection to database
+ * @author Robin
  * @invariant dbname database name 
  * @invariant pw password for connection 
  */

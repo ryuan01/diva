@@ -10,6 +10,7 @@ import vehicleManagement.Vehicle;
 /*Robin */
 /**
  * RentalDB deals with creation, deletion, and modification related to rentals
+ * @author Robin
  */
 public class RentalDB extends DatabaseManager{
 	

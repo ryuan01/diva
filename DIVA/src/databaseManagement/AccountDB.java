@@ -4,6 +4,7 @@ import java.util.Currency;
 import accountManagement.Account;
 /**
  * AccountDB provides services related to the creation, deletion, and modification of account
+ * @author Robin
  * no invariant 
  */
 public class AccountDB extends DatabaseManager{
