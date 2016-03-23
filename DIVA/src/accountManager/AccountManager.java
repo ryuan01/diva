@@ -170,7 +170,11 @@ public class AccountManager {
 		return new Customer[0]; //METHOD NOT IMPLEMENTED
 	}
 	
+<<<<<<< HEAD
 //--------------------Methods that can be called by a Manager--------------------------------------
+=======
+	//--------Methods that can be called by a Manager 
+>>>>>>> efde58e4d29c52ab8aa86555fd012e4665baa143
 	
 	
 	/**
