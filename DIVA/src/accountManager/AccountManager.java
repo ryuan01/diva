@@ -15,7 +15,7 @@ public class AccountManager {
 		
 	}
 	
-	//------------Methods that can be called by an unauthenticated HTTPS user
+//--------------------Methods that can be called by an unauthenticated HTTPS user-------------------
 
 	/**
 	 * Creates a new CustomerAccount record in the database
@@ -34,7 +34,7 @@ public class AccountManager {
 		return false; //METHOD NOT IMPLEMENTED
 	}
 	
-	//--------Methods that can be called by an Registered Customer
+//-----------------------Methods that can be called by an Registered Customer-------------------------
 	
 	/**
 	 * Modifies the account information of the given customer
@@ -80,7 +80,7 @@ public class AccountManager {
 	 * @return true if the customer successfully joined Super Club
 	 */
 	public boolean joinSuperClub(Customer customer) {
-		return true;
+		return true; //METHOD NOT IMPLEMENTED
 	}
 	
 	/**
@@ -108,7 +108,7 @@ public class AccountManager {
 		return false; //METHOD NOT IMPLEMENTED
 	}
 	
-	//--------Methods that can be called by an Super Customer
+//-----------------------Methods that can be called by an Super Customer------------------------------
 	
 	/**
 	 * Changes the super club member into a regular customer
@@ -120,9 +120,7 @@ public class AccountManager {
 		return false; //METHOD NOT IMPLEMENTED
 	}
 	
-	//--------Methods that can be called by an Super Customer
-	
-	//SearchForCustomersByFirstName
+//----------------------Methods that can be called by an Super Customer-------------------------------
 	
 	/**
 	 * Returns a list of customers that have the same first name as the parameter
@@ -139,7 +137,7 @@ public class AccountManager {
 	 * @return a list of customers that match the search criteria
 	 */
 	public Customer[] searchForCustomersByLastName(String lastName) {
-		return new Customer[0];
+		return new Customer[0]; //METHOD NOT IMPLEMENTED
 	}
 	
 	/**
@@ -149,7 +147,7 @@ public class AccountManager {
 	 * @return a list of customers that match the search criteria
 	 */
 	public Customer[] searchForCustomersByFirstAndLastName(String lastName) {
-		return new Customer[0];
+		return new Customer[0]; //METHOD NOT IMPLEMENTED
 	}
 	
 	/**
@@ -159,7 +157,7 @@ public class AccountManager {
 	 * @return a list of customers that match the search criteria
 	 */
 	public Customer[] searchForCustomersByEmail(String emailAddress) {
-		return new Customer[0];
+		return new Customer[0]; //METHOD NOT IMPLEMENTED
 	}
 	
 	/**
@@ -169,15 +167,14 @@ public class AccountManager {
 	 * @return a list of customers that match the search criteria
 	 */
 	public Customer[] searchForCustomersByUserName(String userName) {
-		return new Customer[0];
+		return new Customer[0]; //METHOD NOT IMPLEMENTED
 	}
 	
-	//--------Methods that can be called by a Manager
+//--------------------Methods that can be called by a Manager--------------------------------------
 	
-	//addClerkAccount()
 	
 	/**
-	 * Creates a new RegisteredCustomerAccount record in the database
+	 * Creates a new ClerkAccount record in the database
 	 * @param firstName The first name of the employee
 	 * @param lastName The last name of the employee
 	 * @param phoneNumber	The employee's phone number
@@ -193,7 +190,7 @@ public class AccountManager {
 		return false; //METHOD NOT IMPLEMENTED
 	}
 	
-	//--------Methods that can be called by a System Administrator
+//--------------------Methods that can be called by a System Administrator-------------------------
 	
 	/**
 	 * Creates a new ManagerAccount record in the database
@@ -212,7 +209,7 @@ public class AccountManager {
 		return false; //METHOD NOT IMPLEMENTED
 	}
 	
-	//--------Methods that can be called by other Subsystems
+//----------------Methods that can be called by other Subsystems------------------------------
 	
 	/**
 	 * Returns the password of a user, given their user name
