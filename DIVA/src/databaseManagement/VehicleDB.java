@@ -1,6 +1,6 @@
 package databaseManagement;
 
-/* Sammy */
+/* Robin */
 
 public class VehicleDB extends DatabaseManager{
 
