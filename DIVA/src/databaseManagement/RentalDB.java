@@ -1,6 +1,7 @@
 package databaseManagement;
 
 import accountManagement.Account;
+import rentalManagement.InspectionReport;
 import rentalManagement.Reservation;
 import vehicleManagement.Car;
 import vehicleManagement.Equipment;
@@ -162,7 +163,14 @@ public class RentalDB extends DatabaseManager{
 	}
 	
 	//create 
-	//createInspectionReport();
+	/**
+	 * createInspectionReport creates a report entry in DB
+	 * @param report an inspection report
+	 * @pre isValidInspectionReport(report)
+	 * @post a new Inspection entry is created in DB
+	 */
+	public void createInspectionReport(InspectionReport report) {
+	}
 	
 	//createReservation();
 	
