@@ -1,5 +1,12 @@
 package databaseManager;
 
+import accountManager.Account;
+import rentalManager.Reservation;
+import vehicleManager.Car;
+import vehicleManager.Equipment;
+import vehicleManager.Truck;
+import vehicleManager.Vehicle;
+
 /*Robin */
 /**
  * RentalDB deals with creation, deletion, and modification related to rentals
@@ -7,6 +14,11 @@ package databaseManager;
 public class RentalDB extends DatabaseManager{
 	
 	
+	public RentalDB(String db, String pass) {
+		super(db, pass);
+		// TODO Auto-generated constructor stub
+	}
+
 	//modify 
 	/**
 	 * reservationQuery returns a reservation related to reservation number
@@ -15,7 +27,9 @@ public class RentalDB extends DatabaseManager{
 	 * @post Reservation object
 	 * @return Reservation object 
 	 */
-	public Reservation reservationQuery(int rNum);
+	public Reservation reservationQuery(int rNum) {
+		return null;
+	}
 	
 	/**
 	 * isValidReservation checks if reservation number maps to a reservation
@@ -23,7 +37,9 @@ public class RentalDB extends DatabaseManager{
 	 * @pre none
 	 * @post returns true if it exists, otherwise false
 	 */
-	public isValidReservation(int rNum);
+	public boolean isValidReservation(int rNum) {
+		return false;
+	}
 	
 	/**
 	 * reservationHistory gets a list of reservations related to an account
@@ -32,7 +48,9 @@ public class RentalDB extends DatabaseManager{
 	 * @post list of reservations
 	 * @return list of reservations
 	 */
-	public Reservation[] reservationHistory(Account acc);
+	public Reservation[] reservationHistory(Account acc) {
+		return null;
+	}
 	
 	//need to confirm with whoever is doing rental to see the list
 	//Do we have a car class yet?
@@ -42,7 +60,9 @@ public class RentalDB extends DatabaseManager{
 	 * @pre list[i] is valid for all i=0..list.length-1
 	 * @post list of cars matching 
 	 */
-	public Car[] searchCars(String[] list);
+	public Car[] searchCars(String[] list) {
+		return null;
+	}
 	
 	/**
 	 * searchTruckss searches a list of cars matching criterias for rental 
@@ -50,7 +70,9 @@ public class RentalDB extends DatabaseManager{
 	 * @pre list[i] is valid for all i=0..list.length-1
 	 * @post list of trucks matching 
 	 */
-	public Truck[] searchTrucks(String[] list);
+	public Truck[] searchTrucks(String[] list) {
+		return null;
+	}
 	
 	/**
 	 * searchCars searches a list of cars in a specific branch for-sale
@@ -58,7 +80,9 @@ public class RentalDB extends DatabaseManager{
 	 * @pre branch must be valid 
 	 * @post list of cars matching for sale
 	 */	
-	public Car[] searchForsaleCars(String branch);
+	public Car[] searchForsaleCars(String branch) {
+		return null;
+	}
 	
 	/**
 	 * searchTrucks searches a list of trucks in a specific branch for-sale
@@ -66,7 +90,9 @@ public class RentalDB extends DatabaseManager{
 	 * @pre branch must be valid 
 	 * @post list of trucks matching for sale 
 	 */	
-	public Truck[] searchForsaleTrucks(String branch);
+	public Truck[] searchForsaleTrucks(String branch) {
+		return null;
+	}
 
 	/**
 	 * searchCars searches a list of cars in a specific branch overdue
@@ -74,7 +100,9 @@ public class RentalDB extends DatabaseManager{
 	 * @pre branch must be valid 
 	 * @post list of cars matching overdue 
 	 */	
-	public Car[] searchOverdueCars(String branch);
+	public Car[] searchOverdueCars(String branch) {
+		return null;
+	}
 	
 	/**
 	 * searchTrucks searches a list of trucks in a specific branch overdue
@@ -82,7 +110,9 @@ public class RentalDB extends DatabaseManager{
 	 * @pre branch must be valid 
 	 * @post list of trucks matching overdue
 	 */	
-	public Truck[] searchOverdueTrucks(String branch);
+	public Truck[] searchOverdueTrucks(String branch) {
+		return null;
+	}
 	
 	/**
 	 * searchAdditionalEquipments searches for a list of available equipments for a type
@@ -93,7 +123,9 @@ public class RentalDB extends DatabaseManager{
 	 * @pre t is valid 
 	 * @post list of equipments
 	 */
-	public Equipment[] searchAdditionalEquipments(String t, String branch);
+	public Equipment[] searchAdditionalEquipments(String t, String branch) {
+		return null;
+	}
 
 	//Alex can you propagate this change?
 	//Actually I think this whole method should be inside Vehicle class
@@ -104,7 +136,9 @@ public class RentalDB extends DatabaseManager{
 	 * @pre isValidVehicle(v)
 	 * @post vehicle status is returned
 	 */
-	public String getvehiclestatus(Vehicle v);
+	public String getvehiclestatus(Vehicle v) {
+		return null;
+	}
 	
 	//should be inside Reservation class  
 	/**
@@ -114,7 +148,8 @@ public class RentalDB extends DatabaseManager{
 	 * @pre isValidReservation(r)
 	 * @post !isValidReservation(r)
 	 */
-	public void updateReservation(Reservation r, String[] info);
+	public void updateReservation(Reservation r, String[] info) {
+	}
 	
 	//remove
 	/**
@@ -123,7 +158,8 @@ public class RentalDB extends DatabaseManager{
 	 * @pre isValidReservation(r)
 	 * @post !isValidReservation(r)
 	 */
-	public void removeReservation(Reservation r);
+	public void removeReservation(Reservation r) {
+	}
 	
 	//create 
 	//createInspectionReport();

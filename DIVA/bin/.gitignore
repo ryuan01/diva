@@ -1,6 +1,6 @@
-<<<<<<< HEAD
 /accountManager
-=======
-/accountManager/
-/RegisteredCustomerAccount.class
->>>>>>> Alex
+/databaseManager
+/rentalManager
+/vehicleManager
+/paymentManager
+/systemManager

@@ -31,7 +31,8 @@ public class Equipment {
 	 * @pre !isEquipment(t,n)
 	 * @post isEquipment(t,n)
 	 */
-	public Equipment(String t, String n, String p);
+	public Equipment(String t, String n, String p) {
+	}
 	
 	//checkers
 	/**
@@ -41,7 +42,9 @@ public class Equipment {
 	 * @pre t must be one of the proposed one
 	 * @post true if it is, false if it is not
 	 */
-	private boolean isEquipment(String t, String n);
+	private boolean isEquipment(String t, String n) {
+		return false;
+	}
 	//setters and getters
 	
 	/**
@@ -49,21 +52,27 @@ public class Equipment {
 	 * @pre none
 	 * @post type is returned
 	 */
-	public String getType();
+	public String getType() {
+		return null;
+	}
 
 	/**
 	 * Get name of the equipment
 	 * @pre none
 	 * @post name is returned 
 	 */
-	public String getName();
+	public String getName() {
+		return null;
+	}
 	
 	/**
 	 * Get price of the equipment
 	 * @pre none
 	 * @post price is returned
 	 */
-	public String getPrice();
+	public String getPrice() {
+		return null;
+	}
 	
 	/**
 	 * Set type of equipment
@@ -71,7 +80,8 @@ public class Equipment {
 	 * @pre t must be a possible type
 	 * @post type is set 
 	 */
-	public void setType(String t);
+	public void setType(String t) {
+	}
 	
 	/**
 	 * Set name of equipment
@@ -79,7 +89,8 @@ public class Equipment {
 	 * @pre n must be formatted
 	 * @post name is set 
 	 */
-	public void setName(String n);
+	public void setName(String n) {
+	}
 	
 	/**
 	 * Set price of equipment
@@ -87,6 +98,53 @@ public class Equipment {
 	 * @pre p > 0
 	 * @post price is set
 	 */
-	public void setPrice(Currency p);
-
+	public void setPrice(Currency p) {
+	}
+	
+	//-------------------------------------------
+	//BEN's work
+	//need to talk to BEN
+	
+	private int id;
+	// true if available, false if already reserved.
+	private boolean status;
+	
+	public Equipment()
+	{
+		type = "";
+		id = 0;
+		status = false;
+	}
+	
+	public Equipment(String t, int i, boolean s)
+	{
+		type = t;
+		id = i;
+		status = s;
+	}
+	
+	public void changeType(String newType)
+	{
+		type = newType;
+	}
+	
+	public void changeID(int newID)
+	{
+		id = newID;
+	}
+	
+	public void changeStatus(boolean newStatus)
+	{
+		status = newStatus;
+	}
+	
+	public int getID()
+	{
+		return id;
+	}
+	
+	public boolean getStatus()
+	{
+		return status;
+	}
 }

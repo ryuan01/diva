@@ -18,27 +18,32 @@ public class DatabaseManager {
 	 * @pre db and pass are valid
 	 * @post a DatabasManager object is created
 	 */
-	public DatabaseManager(String db, String pass);
+	public DatabaseManager(String db, String pass) {
+	}
 	
 	/**
 	 * Connect to database
 	 * @pre !isConnect()
 	 * @post isConnected() 
 	 */
-	public void connect();
+	public void connect() {
+	}
 	
 	/**
 	 * Disconnect to database
 	 * @pre isConnected()
 	 * @post !isConnect()
 	 */
-	public void disconnect();
+	public void disconnect() {
+	}
 	
 	/**
 	 * Checks if there is a connection
 	 * @pre none
 	 * @post returns true if there is a connection, otherwise false 
 	 */
-	public boolean isConnected();
+	public boolean isConnected() {
+		return false;
+	}
 
 }

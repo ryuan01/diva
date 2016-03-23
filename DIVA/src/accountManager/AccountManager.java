@@ -33,32 +33,8 @@ public class AccountManager {
 	public boolean addCustomerAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String password) {
 		return false; //METHOD NOT IMPLEMENTED
 	}
-<<<<<<< HEAD
 	
 	//--------Methods that can be called by an Registered Customer
-	
-	/**
-	 * Modifies the account information of the given customer
-	 * @param firstName	The new first name of the customer
-	 * @param lastName  The new last name of the customer
-	 * @param phoneNumber the new phone number of the customer
-	 * @param emailAddress the new email address of the customer
-	 * @return true if the account info was modified
-	 */
-	public boolean changeaccontinfo(String firstName, String lastName, String phoneNumber, String emailAddress) {
-		return false; //METHOD NOT IMPLEMENTED
-	}
-	
-	/**
-	 * Modifies the password of a customer
-	 * @param oldPassword	The customers old password
-	 * @param newPassword	The customers new password
-	 * @pre getPassword(userName) == oldPassword
-	 * @return true if the password was changed successfully
-	 */
-	public boolean changePassword(String userName, String oldPassword, String newPassword) {
-		return false; //METHOD NOT IMPLEMENTED
-	}
 	
 	/**
 	 * Modifies the password of a customer
@@ -76,7 +52,6 @@ public class AccountManager {
 	//reactivateaccount();
 	
 	//--------Methods that can be called by an Super Customer
-=======
 	
 	//--------Methods that can be called by an Registered Customer
 	
@@ -255,31 +230,7 @@ public class AccountManager {
 	public boolean addManagerAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String password) {
 		return false; //METHOD NOT IMPLEMENTED
 	}
->>>>>>> Alex
 	
-	//--------Methods that can be called by other Subsystems
-	
-<<<<<<< HEAD
-	//--------Methods that can be called by an Super Customer
-	
-	//SearchForCustomerByFirstName
-	//SearchForCustomerByLastName
-	//SearchForCustomerByEmailAddress
-	//SearchForCustomerByUserName
-	
-	//--------Methods that can be called by a Manager
-	
-	//addClerkAccount()
-	
-	//--------Methods that can be called by a System Administrator
-	
-	//addManagerAccount()
-	
-	//--------Methods that can be called by other Subsystems
-	
-	//getpassword();
-	//searchForAccountByUserName();
-=======
 	/**
 	 * Returns the password of a user, given their user name
 	 * @param userName The user name of the account needing authentication
@@ -297,7 +248,4 @@ public class AccountManager {
 	private Account getAccount(String userName) {
 		return new Account(); //METHOD NOT IMPLEMENTED
 	}
-	
-	
->>>>>>> Alex
 }

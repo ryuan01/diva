@@ -1,5 +1,7 @@
 package databaseManager;
 import java.util.Currency;
+
+import accountManager.Account;
 /**
  * AccountDB provides services related to the creation, deletion, and modification of account
  * no invariant 
@@ -9,6 +11,11 @@ public class AccountDB extends DatabaseManager{
 	
 	//checking 
 
+	public AccountDB(String db, String pass) {
+		super(db, pass);
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * isValidUsername checks if the provided username is in the database
 	 * @param username the proposed username
@@ -16,7 +23,9 @@ public class AccountDB extends DatabaseManager{
 	 * @post true if username exists, false if it does not
 	 * @return true if the username exists
 	 */
-	public boolean isValidUsername(String username);
+	public boolean isValidUsername(String username) {
+		return false;
+	}
 	
 	/**
 	 * isValidLogin checks if the username and pw matches
@@ -25,7 +34,9 @@ public class AccountDB extends DatabaseManager{
 	 * @pre isValidUsername(username)
 	 * @post true if the there is a match, otherwise false
 	 */
-	public boolean isValidLogin(String username, String pw);
+	public boolean isValidLogin(String username, String pw) {
+		return false;
+	}
 
 	/**
 	 * isValidAccount checks if the provided account exists
@@ -34,7 +45,9 @@ public class AccountDB extends DatabaseManager{
 	 * @post true if it exists, false if it does not
 	 * @return true if it exists, false if it does not
 	 */
-	public boolean isValidAccount(Account acc );
+	public boolean isValidAccount(Account acc ) {
+		return false;
+	}
 	
 	//getter 
 	/**
@@ -44,7 +57,9 @@ public class AccountDB extends DatabaseManager{
 	 * @post Account object
 	 * @return Account object
 	 */
-	public Account getAccount(String username);
+	public Account getAccount(String username) {
+		return null;
+	}
 	
 	/**
 	 * getAccount gets an account from database
@@ -56,7 +71,9 @@ public class AccountDB extends DatabaseManager{
 	 * @post Account object 
 	 * @return Account object
 	 */
-	public Account getAccount(String fname, String lname, String phonenum);
+	public Account getAccount(String fname, String lname, String phonenum) {
+		return null;
+	}
 	
 	//not needed because searchCustomer is just part of getAccount 
 	//searchCustomer();
@@ -77,7 +94,8 @@ public class AccountDB extends DatabaseManager{
 	 * @pre isValidLogin(username, oldPw)
 	 * @post isValidLogin(username, enNewPw)
 	 */
-	public void loginPasswordUpdate(String username, String enOldPw, String enNewPw);
+	public void loginPasswordUpdate(String username, String enOldPw, String enNewPw) {
+	}
 	
 	/**
 	 * accountUpdate updates one field of the account
@@ -88,7 +106,8 @@ public class AccountDB extends DatabaseManager{
 	 * @pre isValidAccount(acc)
 	 * @post the specific field information is updated
 	 */
-	public void accountUpdate(Account acc, String field, String newInfo);
+	public void accountUpdate(Account acc, String field, String newInfo) {
+	}
 	
 	//not sure what kind of statues are here, please add more 
 	/**
@@ -98,7 +117,8 @@ public class AccountDB extends DatabaseManager{
 	 * @pre isValidAccount(acc)
 	 * @post status is updated
 	 */
-	public void accountupdatestatus(Account acc, String status);
+	public void accountupdatestatus(Account acc, String status) {
+	}
 	
 	//need to check Kevin's work for naming conventions 
 	/**
@@ -110,7 +130,8 @@ public class AccountDB extends DatabaseManager{
 	 * @pre typeof(acc) == SuperRent
 	 * @post acc.points =  pt + acc.points
 	 */
-	public void updateAccountPoints(Account acc, int pt);
+	public void updateAccountPoints(Account acc, int pt) {
+	}
 	
 	/**
 	 * updateAccountBalance updates the balance related to an account
@@ -119,7 +140,8 @@ public class AccountDB extends DatabaseManager{
 	 * @pre isValidAccount(acc)
 	 * @post acc.balance += amount
 	 */
-	public void updateAccountBalance(Account acc,Currency amount);
+	public void updateAccountBalance(Account acc,Currency amount) {
+	}
 	
 	//not too sure if types are just subclasses, how do we update them?
 	//updateaccountype();
@@ -132,7 +154,8 @@ public class AccountDB extends DatabaseManager{
 	 * @pre !isValidUsername(info[0]);
 	 * @post isValidAccount(loginId);
 	 */
-	public void createAccount(String[] info);
+	public void createAccount(String[] info) {
+	}
 	
 	/**
 	 * archiveAccount archives an account
@@ -140,7 +163,8 @@ public class AccountDB extends DatabaseManager{
 	 * @pre isValidAccount(acc)
 	 * @post !isValidAccount(acc)
 	 */
-	public void archiveAccount(Account acc);
+	public void archiveAccount(Account acc) {
+	}
 	
 	//same as loginPasswordUpdate
 	//updatePassword();
@@ -154,7 +178,9 @@ public class AccountDB extends DatabaseManager{
 	 * @post encrypted password for that username
 	 * @return encrypted password for that username
 	 */
-	private String getEncryptedpassword(String username);
+	private String getEncryptedpassword(String username) {
+		return null;
+	}
 	/**
 	 * isValidAccount checks if the provided account exists
 	 * @param username the proposed username related to a account 
@@ -162,7 +188,9 @@ public class AccountDB extends DatabaseManager{
 	 * @post true if it exists, false if it does not
 	 * @return true if it exists, false if it does not
 	 */
-	private boolean isValidAccount(String username);
+	private boolean isValidAccount(String username) {
+		return false;
+	}
 	
 	/**
 	 * isValidAccount checks if the provided account exists
@@ -173,5 +201,7 @@ public class AccountDB extends DatabaseManager{
 	 * @post true if it exists, false if it does not
 	 * @return true if it exists, false if it does not
 	 */
-	private boolean isValidAccount(String fname, String lname,String phonenum);
+	private boolean isValidAccount(String fname, String lname,String phonenum) {
+		return false;
+	}
 }
