@@ -1,6 +1,12 @@
+package paymentManager;
 import java.util.Date;
+import vehicleManager.Equipment;
 
-/* Kevin */
+/**
+ * 
+ * Payment Manager 
+ *
+ */
 
 public class paymentManager {
 			
@@ -18,19 +24,19 @@ public class paymentManager {
 		return final_price;
 	}
 	
-	public static double add_price_child_safety_seat(int numSeats){
+	public static double add_rate_child_safety_seat(int numSeats){
 		return priceEquipment;
 	}
 	
-	public static double add_price_ski_Rack(){
+	public static double add_rate_ski_Rack(Equipment equipment){
 		return priceEquipment;
 	}
 	
-	public static double add_price_car_tow(){
+	public static double add_rate_car_tow(Equipment equipment){
 		return priceEquipment;
 	}
 	
-	public static double add_price_lift_gate(){
+	public static double add_rate_lift_gate(Equipment equipment){
 		return priceEquipment;
 	}
 	
@@ -63,5 +69,13 @@ public class paymentManager {
 	}
 	
 	public void process_payment_points(int points){
+	}
+	
+	public void calculate_earned_points(){	// Every $5 spent = 1 point earned. What a shitty deal. - Kevin
+		
+	}
+
+	public void increment_points(){
+		
 	}
 }
