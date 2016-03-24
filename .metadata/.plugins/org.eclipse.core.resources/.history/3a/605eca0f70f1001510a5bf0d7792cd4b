@@ -1,0 +1,10 @@
+package databaseManagement;
+
+/**
+ * SearchDB creates, deletes, and modifies data related to searching Vehicle. 
+ * @author Nyanko
+ *
+ */
+public class SearchDB {
+
+}

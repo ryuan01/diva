@@ -9,8 +9,8 @@ package databaseManagement;
  */
 public class DatabaseManager {
 	
-	protected String dbname;
-	protected String pw;
+	private String dbname;
+	private String pw;
 	
 	/**
 	 * Constructs a DatabaseManager

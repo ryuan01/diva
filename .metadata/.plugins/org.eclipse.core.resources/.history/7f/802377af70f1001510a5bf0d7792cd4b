@@ -1,64 +1,60 @@
 package databaseManagement;
 
-import systemManagement.Branch;
+import accountManagement.Account;
+import rentalManagement.Reservation;
 import vehicleManagement.Car;
 import vehicleManagement.Equipment;
 import vehicleManagement.Truck;
 import vehicleManagement.Vehicle;
 
-/* Robin */
+/*Robin */
 /**
- * VehicleDB creates, deletes, and modifies data related to Vehicle. 
+ * RentalDB deals with creation, deletion, and modification related to rentals
  * @author Robin
- *
  */
-public class VehicleDB extends DatabaseManager{
-
-	/**
-	 * Creates a VehicleDBManager
-	 * @param db
-	 * @param pass
-	 */
-	public VehicleDB(String db, String pass) {
+public class RentalDB extends DatabaseManager{
+	
+	
+	public RentalDB(String db, String pass) {
 		super(db, pass);
 		// TODO Auto-generated constructor stub
 	}
-	
-	/**
-	 * updateVehicleLocation updates the branch that the vehicle belongs to
-	 * @param v vehicle
-	 * @param b branch
-	 * @pre isValidVehicle(v)
-	 * @pre isValidBranch(b)
-	 * @post v.branch = b
-	 */
-	public void updateVehicleLocation(Vehicle v, Branch b){
-		
-	}
-	
 
+	//modify 
 	/**
-	 * updateVehicleStatus updates the status of an vehicle
-	 * @param v vehicle
-	 * @param status status {reserved, rented, damaged, available, sold}
-	 * @pre isValidVehicle(v)
-	 * @pre status is one of {reserved, rented, damaged, available, sold}
-	 * @post v.status = status
+	 * reservationQuery returns a reservation related to reservation number
+	 * @param rNum reservation number
+	 * @pre isValidReservation(rNum)
+	 * @post Reservation object
+	 * @return Reservation object 
 	 */
-	public void updateVehicleStatus(Vehicle v, int status){
-		
+	public Reservation reservationQuery(int rNum) {
+		return null;
 	}
 	
-	//create
 	/**
-	 * addVehicle creates an new entry in TABLE VEHICLE
-	 * @param v vehicle
-	 * @pre isValidVehicle(v)
-	 * @post a new entry in TABLE VEHICLE
+	 * isValidReservation checks if reservation number maps to a reservation
+	 * @param rNum reservation number
+	 * @pre none
+	 * @post returns true if it exists, otherwise false
 	 */
-	public void addVehicle(Vehicle v) {
+	public boolean isValidReservation(int rNum) {
+		return false;
 	}
+	
+	/**
+	 * reservationHistory gets a list of reservations related to an account
+	 * @param acc account
+	 * @pre isValidAccount(acc)
+	 * @post list of reservations
+	 * @return list of reservations
+	 */
+	public Reservation[] reservationHistory(Account acc) {
+		return null;
+	}
+	
 	//need to confirm with whoever is doing rental to see the list
+	//Do we have a car class yet?
 	/**
 	 * searchCars searches a list of cars matching criterias for rental
 	 * @param list list has format {startDate,endDate,pickUpBranch,returnBranch,...}
@@ -117,13 +113,23 @@ public class VehicleDB extends DatabaseManager{
 	 */	
 	public Truck[] searchOverdueTrucks(String branch) {
 		return null;
-	}	
+	}
+	
+	/**
+	 * searchAdditionalEquipments searches for a list of available equipments for a type
+	 * @param t type of equipments
+	 * @param branch a branch
+	 * @pre a rental is underway
+	 * @pre branch is valid
+	 * @pre t is valid 
+	 * @post list of equipments
+	 */
+	public Equipment[] searchAdditionalEquipments(String t, String branch) {
+		return null;
+	}
 
 	//Alex can you propagate this change?
 	//Actually I think this whole method should be inside Vehicle class
-	//because it is a getter.
-	//so getting vehicles by searching them will load a Vehicle object
-	//and calling v.status will return status? 
 	/**
 	 * getVehicleStatus gets the status of a vehicle
 	 * status can be {reserved, rented, sold, damanged, available}
@@ -134,5 +140,37 @@ public class VehicleDB extends DatabaseManager{
 	public String getvehiclestatus(Vehicle v) {
 		return null;
 	}
+	
+	//should be inside Reservation class  
+	/**
+	 * removeReservation to a rental, or to be cancelled
+	 * @param r reservation 
+	 * @param info related information to be updated 
+	 * @pre isValidReservation(r)
+	 * @post !isValidReservation(r)
+	 */
+	public void updateReservation(Reservation r, String[] info) {
+	}
+	
+	//remove
+	/**
+	 * removeReservation to a rental, or to be cancelled
+	 * @param r reservation 
+	 * @pre isValidReservation(r)
+	 * @post !isValidReservation(r)
+	 */
+	public void removeReservation(Reservation r) {
+	}
+	
+	//create 
+	//createInspectionReport();
+	
+	//createReservation();
+	
+	//createAccidentReport();
+	
+	//createTransaction();
+	
+	
 
 }

@@ -121,9 +121,6 @@ public class VehicleDB extends DatabaseManager{
 
 	//Alex can you propagate this change?
 	//Actually I think this whole method should be inside Vehicle class
-	//because it is a getter.
-	//so getting vehicles by searching them will load a Vehicle object
-	//and calling v.status will return status? 
 	/**
 	 * getVehicleStatus gets the status of a vehicle
 	 * status can be {reserved, rented, sold, damanged, available}

@@ -25,19 +25,5 @@ public class EquipmentDB extends DatabaseManager{
 	public void updateEquipmentStatus(Equipment e, int status){
 		
 	}
-	
-	
-	/**
-	 * searchAdditionalEquipments searches for a list of available equipments for a type
-	 * @param t type of equipments
-	 * @param branch a branch
-	 * @pre a rental is underway
-	 * @pre branch is valid
-	 * @pre t is valid 
-	 * @post list of equipments
-	 */
-	public Equipment[] searchAdditionalEquipments(String t, String branch) {
-		return null;
-	}
 
 }
