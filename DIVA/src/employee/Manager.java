@@ -1,6 +1,6 @@
 package employee;
 
-import vehicleManager.VehicleManager;
+import vehicleManagement.VehicleManager;
 
 public class Manager extends Employee{
 
