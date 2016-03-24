@@ -5,7 +5,7 @@ import vehicleManagement.VehicleManager;
 public class Manager extends Employee{
 
 	/**
-	 * Creates a Manager Account object initailized with the given arguements.
+	 * Creates a Manager Account object initialized with the given arguments. A Manager inherits the operations and fields of an employee.
 	 * @param firstname
 	 * @param lastname
 	 * @param phoneNumber

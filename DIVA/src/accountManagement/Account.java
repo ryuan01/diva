@@ -1,16 +1,12 @@
-<<<<<<< HEAD:DIVA/src/accountManager/Account.java
-package accountManager;
-
-
 /**
  * 
  *	An Account that holds the data of a User that signs up with the Rental Company
  */
-=======
+
 package accountManagement;
 //Kevin , continue to extend
 
->>>>>>> b5a7ecfeed5c781af882e7fc4e592ff6eb67a823:DIVA/src/accountManagement/Account.java
+
 
 public class Account {
 
@@ -42,7 +38,7 @@ public class Account {
 	}
 
 	/**
-	 * Gets the firstname of a user account.
+	 * Gets the first name of a user account.
 	 * 
 	 * @return firstname
 	 */

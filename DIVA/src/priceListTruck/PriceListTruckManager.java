@@ -1,6 +1,6 @@
 package priceListTruck;
 
-import vehicleManager.Vehicle;
+import vehicleManagement.Vehicle;
 
 public class PriceListTruckManager {
 

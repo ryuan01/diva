@@ -1,8 +1,8 @@
 package Customer;
 
-import accountManager.Account;
-import vehicleManager.Equipment;
-import vehicleManager.Vehicle;
+import accountManagement.Account;
+import vehicleManagement.Equipment;
+import vehicleManagement.Vehicle;
 
 /**
  * 
