@@ -1,6 +1,10 @@
-package priceListCar;
+package paymentManager;
 
-public class PriceListCarDistance {
+//so Kevin: distance, daily, hourly, weekly, are just the arrays (or other kind of data structure)
+//no need to create extra classes
+//same as Car, and Truck: these are just types. so more like a 3D array in my mind.
+//if you do this, then I think 1 getter, and 1 setter shoud be enough
+public class PriceListCar {
 
 	private double price_Economy;
 	private double price_Compact;

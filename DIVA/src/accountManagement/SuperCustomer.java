@@ -21,7 +21,7 @@ public class SuperCustomer extends RegisteredCustomer{
 	 */
 	public SuperCustomer(String firstname, String lastname, String phoneNumber, String email, String loginId,
 			String password) {
-		super(firstname, lastname, phoneNumber, email, loginId, password);
+		super();
 		// TODO Auto-generated constructor stub
 	}
 /**
