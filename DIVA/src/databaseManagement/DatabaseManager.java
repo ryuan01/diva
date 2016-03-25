@@ -42,7 +42,7 @@ public class DatabaseManager {
 	 * @post isConnected() 
 	 */
 	protected void connect() {
-		if ()
+		//if ()
 		try{
 			conn = DriveManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
 		} catch(SQLException e){
