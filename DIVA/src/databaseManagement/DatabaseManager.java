@@ -20,6 +20,8 @@ public class DatabaseManager {
 	 * @post a DatabasManager object is created
 	 */
 	public DatabaseManager(String db, String pass) {
+		dbname = db;
+		pw = pass;
 	}
 	
 	/**

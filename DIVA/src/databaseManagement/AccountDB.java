@@ -41,25 +41,40 @@ public class AccountDB extends DatabaseManager{
 
 	/**
 	 * isValidAccount checks if the provided account exists
-	 * @param acc an account object 
+	 * @param acc_key_value a key value that represents account object
 	 * @pre database account is not empty
 	 * @post true if it exists, false if it does not
 	 * @return true if it exists, false if it does not
 	 */
-	public boolean isValidAccount(Account acc ) {
+	public boolean isValidAccount(String acc_key_value ) {
 		return false;
 	}
 	
 	//getter 
 	/**
 	 * getAccount gets an account from database
-	 * @param username the username related to a account
-	 * @pre isValidUsername(username)
-	 * @post Account object
-	 * @return Account object
+	 * @param key_value a unique value that represents an account.
+	 * @return account object reference
+	 * @pre none
+	 * @post Account a reference to Account object
+	 * @return a reference to Account object 
 	 */
-	public Account getAccount(String username) {
+	public Account getAccount (String key_value) {
 		return null;
+	
+	}
+	
+	/**
+	 * getAccountKeyValue gets an account's key value from database
+	 * @param username the username related to a account
+	 * @return 
+	 * @pre isValidUsername(username)
+	 * @post account's key value
+	 * @return account's key value
+	 */
+	public String getAccountKeyValue (String username) {
+		return null;
+	
 	}
 	
 	/**
@@ -69,10 +84,10 @@ public class AccountDB extends DatabaseManager{
 	 * @param phonenum phone number
 	 * @pre fname, lname, and phonenum are formatted properly
 	 * @pre isValidAccount(fname,lname,phonenum)
-	 * @post Account object 
-	 * @return Account object
+	 * @post account's key value 
+	 * @return account's key value
 	 */
-	public Account getAccount(String fname, String lname, String phonenum) {
+	public String getAccountKeyValue (String fname, String lname, String phonenum) {
 		return null;
 	}
 	
@@ -181,16 +196,6 @@ public class AccountDB extends DatabaseManager{
 	 */
 	private String getEncryptedpassword(String username) {
 		return null;
-	}
-	/**
-	 * isValidAccount checks if the provided account exists
-	 * @param username the proposed username related to a account 
-	 * @pre database account is not empty
-	 * @post true if it exists, false if it does not
-	 * @return true if it exists, false if it does not
-	 */
-	private boolean isValidAccount(String username) {
-		return false;
 	}
 	
 	/**
