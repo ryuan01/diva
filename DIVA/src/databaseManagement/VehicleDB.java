@@ -4,8 +4,8 @@ package databaseManagement;
 
 public class VehicleDB extends DatabaseManager{
 
-	public VehicleDB(String db, String pass) {
-		super(db, pass);
+	public VehicleDB() {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 	
