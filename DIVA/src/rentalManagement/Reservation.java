@@ -9,6 +9,7 @@ public class Reservation {
 	private Branch startBranch;
 	private Branch endBranch;
 	private Account account;
+	private String status;
 	
 	/**
 	 * Creates empty Reservation.
