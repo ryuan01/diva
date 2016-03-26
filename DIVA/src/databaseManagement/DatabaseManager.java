@@ -57,7 +57,7 @@ public class DatabaseManager {
 	 * @post !isConnect()
 	 */
 	protected void disconnect() {
-		if(isConnected(){
+		if(isConnected()){
 			try{
 				connection.close();
 			} catch(SQLException e){
