@@ -4,6 +4,7 @@ import vehicleManagement.Equipment;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * EquipmentDB creates, deletes, and modifies data related to Equipment
@@ -49,11 +50,16 @@ public class EquipmentDB extends DatabaseManager{
 			return null;
 		} else
 		{
-			Statement stmt = super.getConnection().createStatement();
-			String query = "SELECT * FROM equipments WHERE location =" + branch_num +", eq_type" = t + ";" ;
-			ResultSet rs = stmt.executeQuery(query);
-			System.out.println(rs.getInt("serial_num"));
-			return null;
+			try{
+				Statement stmt = super.getConnection().createStatement();
+				String query = "SELECT * FROM equipments WHERE location =" + branch_num +", eq_type" = t + ";" ;
+				ResultSet rs = stmt.executeQuery(query);
+				System.out.println(rs.getInt("serial_num"));
+			} catch (SQLException e){
+				System.err.println(e);
+				return null;
+			}
+			
 		}
 	}
 
