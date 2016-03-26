@@ -57,12 +57,14 @@ public class DatabaseManager {
 	 * @post !isConnect()
 	 */
 	protected void disconnect() {
-		try{
-			connnection.close();
-		} catch(SQLException e){
-			System.err.println(e);
-		}finally{
-			connection = null;
+		if(isConnected(){
+			try{
+				this.connection.close();
+			} catch(SQLException e){
+				System.err.println(e);
+			}finally{
+				connection = null;
+			}
 		}
 	}
 	
