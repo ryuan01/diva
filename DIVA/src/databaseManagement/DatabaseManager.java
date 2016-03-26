@@ -59,7 +59,7 @@ public class DatabaseManager {
 	protected void disconnect() {
 		if(isConnected(){
 			try{
-				this.connection.close();
+				connection.close();
 			} catch(SQLException e){
 				System.err.println(e);
 			}finally{
