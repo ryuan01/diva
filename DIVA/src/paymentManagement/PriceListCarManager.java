@@ -1,4 +1,4 @@
-package priceListCar;
+package paymentManagement;
 
 import vehicleManagement.Vehicle;
 /**

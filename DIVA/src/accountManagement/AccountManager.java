@@ -246,6 +246,6 @@ public class AccountManager {
 	 * @return An account object that matches the given userName
 	 */
 	private Account getAccount(String userName) {
-		return new Account(); //METHOD NOT IMPLEMENTED
+		return new Account(userName, userName, userName, userName, userName, userName); //METHOD NOT IMPLEMENTED
 	}
 }
