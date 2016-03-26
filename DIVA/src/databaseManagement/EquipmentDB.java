@@ -42,9 +42,9 @@ public class EquipmentDB extends DatabaseManager{
 	public Equipment[] searchAdditionalEquipments(String t, int branch_num) {
 		
 		// 1- Connect to the database
-		Connection conn = super.connect();
+		super.connect();
 		
-		if (conn == null)
+		if (super.getConnection() == null)
 		{
 			return null;
 		} else
@@ -52,7 +52,7 @@ public class EquipmentDB extends DatabaseManager{
 			Statement stmt = conn.createStatement();
 			String query = "SELECT * FROM equipments WHERE location =" + branch_num +", eq_type" = t + ";" ;
 			ResultSet rs = stmt.executeQuery(query);
-			System.out.println(rs.getInt("serial_num"));
+			return rs.getInt("serial_num");
 		}
 	}
 
