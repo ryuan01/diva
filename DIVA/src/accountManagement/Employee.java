@@ -1,6 +1,5 @@
-package employee;
+package accountManagement;
 
-import accountManagement.Account;
 import vehicleManagement.Equipment;
 import vehicleManagement.Vehicle;
 
