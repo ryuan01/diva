@@ -49,7 +49,7 @@ public class EquipmentDB extends DatabaseManager{
 			return null;
 		} else
 		{
-			Statement stmt = conn.createStatement();
+			Statement stmt = super.getConnection().createStatement();
 			String query = "SELECT * FROM equipments WHERE location =" + branch_num +", eq_type" = t + ";" ;
 			ResultSet rs = stmt.executeQuery(query);
 			System.out.println(rs.getInt("serial_num"));
