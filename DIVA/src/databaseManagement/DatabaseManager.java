@@ -1,7 +1,7 @@
 package databaseManagement;
 
 import java.sql.Connection;
-import java.sql.DriveManager;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /*Robin */
@@ -21,7 +21,7 @@ public class DatabaseManager {
         private static final String USERNAME = "diva";
         private static final String PASSWORD = "DiVA$E2016&";
         
-        private Connectionn conn;
+        private Connection conn;
 	
 	/** 
 	 * Constructs a DatabaseManager
@@ -44,7 +44,7 @@ public class DatabaseManager {
 	protected void connect() {
 		//if ()
 		try{
-			conn = DriveManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
+			conn = DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
 		} catch(SQLException e){
 			System.err.println(e);
 		} finally{
