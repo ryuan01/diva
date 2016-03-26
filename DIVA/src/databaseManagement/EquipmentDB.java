@@ -52,7 +52,8 @@ public class EquipmentDB extends DatabaseManager{
 			Statement stmt = conn.createStatement();
 			String query = "SELECT * FROM equipments WHERE location =" + branch_num +", eq_type" = t + ";" ;
 			ResultSet rs = stmt.executeQuery(query);
-			return rs.getInt("serial_num");
+			System.out.println(rs.getInt("serial_num"));
+			return null;
 		}
 	}
 
