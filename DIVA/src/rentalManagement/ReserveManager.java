@@ -1,5 +1,7 @@
 package rentalManagement;
 
+import java.sql.Date;
+
 public class ReserveManager {
 	
 	/**
@@ -9,134 +11,103 @@ public class ReserveManager {
 	{
 	}
 	
-	// assumes Vehicle has status state and changeStatus method. Potential requires locking
 	/**
-	 * Creates a Reservation with a date, vehicle, list of equipments, location, and account.
-	 * @param date Date of the Reservation.
-	 * @param vehicle Vehicle of the Reservation.
-	 * @param equips Equips of the Reservation.
-	 * @param startB The Branch Vehicle is Rented.
-	 * @param endB The Branch Vehicle is Returned.
-	 * @param acc Account of the Reservation.
+	 * Creates a Reservation with a date, vehicle, list of equipments, starting branch, ending branch, customer, employee, status, and reservation ID.
+	 * @param startDate Starting Date of the Reservation.
+	 * @param endDate Ending Date of the Reservation.
+	 * @param vehicleID Vehicle ID of the Reservation.
+	 * @param equipIDs Equipment IDs of the Reservation.
+	 * @param startBranchID The Branch ID Vehicle is Rented.
+	 * @param endBranchID The Branch ID Vehicle is Returned.
+	 * @param customerID Customer login ID of the Reservation.
+	 * @param employeeID Employee login ID of the Reservation.
+	 * @param status Status of the Reservation.
+	 * @param reservID Reservation ID.
 	 */
-	public void addReservation(Date date, Vehicle vehicle, Equipment[] equips, Branch startB, Branch endB, Account acc)
-	{
-	}
-	
-	// assumes Vehicle has status state and changeStatus method. Potential requires locking
-	/**
-	 * Removes a Reservation that belongs to the Customer account itself.
-	 * @param c A Customer account.
-	 * @param r The Reservation to be removed.
-	 * @pre Reservation r belongs to Customer c
-	 */
-	public void removeReservation(Customer c,Reservation r)
+	public void addReservation(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, String customerID, String employeeID, String status, String reservID)
 	{
 	}
 	
 	/**
-	 * Removes a Reservation that belongs to anyone, can only be called by an Employee.
-	 * @param e An Employee account.
-	 * @param r The Reservation to be removed.
-	 * @pre Method is called by an Employee.
+	 * Removes a Reservation depending on Account type the Account ID belongs to, if belongs to employee, it can remove any Reservation, if it belongs to Customer it can only rmeove
+	 * Reservations belonging to themselves.
+	 * @param accountID The Account ID of the Reservation.
+	 * @param reservID The Reservation ID to be removed.
+	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	public void removeReservation(Employee e,Reservation r)
+	public void removeReservation(String customerID, String reservID)
 	{
 	}
 	
-	// Assume Account has equals() method *Overloaded
+	
+	
 	/**
-	 * Searches for the list of Reservations belonging to a Customer Account.
-	 * @param c The Customer Account to be searched.
-	 * @return List of Reservations belonging to a Customer.
+	 * Searches for the list of Reservations depending on type of ID passed.
+	 * @param id The type of search executed, can be vehicleID, branchID, reservationID, customerID, employeeID, equipID, reservStatus.
+	 * @return List of qualifying Reservations from the search
 	 */
-	public Reservation[] searchReservations(Customer c)
+	public String[] searchReservations(String id)
 	{
+		return null;
 	}
 	
-	// assumes Vehicle has overriden equals() method *Overloaded
+	
 	/**
-	 * Searches Reservations that a Vehicle is assigned to.
-	 * @param v Vehicle to search for.
-	 * @return List of Reservations that a Vehicle is assigned to.
+	 * Searches Reservations with a start date.
+	 * @param d Start date to search with.
+	 * @return List of Reservations that a start Date is assigned to.
 	 */
-	public Reservation[] searchReservations(Vehilce v)
+	public String[] searchStartDate(Date d)
 	{
+		return null;
 	}
 	
-	//*Overloaded
-	/**
-	 * Searches Reservations that a Branch has.
-	 * @param b Branch to search for.
-	 * @return List of Reservations that a Branch has.
-	 */
-	public Reservation[] searchReservations(Branch b)
-	{
-	}
-		
-	//*Overloaded
-	/**
-	 * Searches Reservations that a Date is assigned to.
-	 * @param d Date to search for.
-	 * @return List of Reservations that a Date is assigned to.
-	 */
-	public ArrayList<Reservation> searchReservations(Date d)
-	{
-		return tempReservList;
-	}
-		
-	//*Overloaded
-	/**
-	 * Modifies the Date of a Reservation.
-	 * @param r The Reservation to be modified.
-	 * @param newDate The Date to be modified.
-	 * @pre Only Reservation Account owner or Employee calls this method.
-	 */
-	public void changeReservation(Reservation r, Date newDate)
-	{
-	}
 
-	// *Overloaded
 	/**
-	 * Modifies the Location of a Reservation.
-	 * @param r The Reservation to be modified.
-	 * @param newLocation The Location to be modified.
+	 * Searches Reservations with a end date.
+	 * @param d End date to search with.
+	 * @return List of Reservations that a end Date is assigned to.
+	 */
+	public String[] searchEndDate(Date d)
+	{
+		return null;
+	}
+	
+	/**
+	 * Modifies the Reservation based on id passed.
+	 * @param reservID Reservation ID of Reservation to be modified.
+	 * @param id Type of modification of Reservation, can be vehicleID, branchID, reservationID, customerID, employeeID, equipID, reservStatus.
+	 * If existing equipID is passed, then it is removed, if a non-existing equipID is passed, then it is added.
 	 * @pre Only Reservation Account owner or Employee calls this method.
 	 */
-	public void changeReservation(Reservation r, Location newLocation)
+	public void changeReservation(String reservID, String id)
 	{
 	}
 	
 	/**
-	 * Modifies the Vehicle of a Reservation.
-	 * @param r The Reservation to be modified.
-	 * @param newVehicle The Vehicle to be modified.
-	 * @pre Only Reservation Account owner or Employee calls this method.
-	 * @post All Equipments are also removed.
+	 * Modifies the starting date of Reservation.
+	 * @param reservID Reservation ID of Reservation to be modified.
+	 * @param newDate New Date of Reservation.
 	 */
-	public void changeReservation(Reservation r, Vehicle newVehicle)
+	public void changeStartDate(String reservID, Date newDate)
 	{
+		
 	}
 	
 	/**
-	 * Adds an Equipment to the Reservation.
-	 * @param r Reservation to be modified.
-	 * @param newEquipment Equipment to be added.
+	 * Modifies the ending date of Reservation.
+	 * @param reservID Reservation ID of Reservation to be modified.
+	 * @param newDate New Date of Reservation.
 	 */
-	public void addReservationEquipment(Reservation r, Equipment newEquipment)
+	public void changeEndDate(String reservID, Date newDate)
 	{
+		
+	
+
+		
+
+	
+	
 	}
-	
-	/**
-	 * Removes an Equipment to the Reservation.
-	 * @param r Reservation to be modified
-	 * @param removedEquipment Equipment to be removed.
-	 */
-	public void removeReservationEquipment(Reservation r, Equipment removedEquipment)
-	{
-	}
-	
-	
-	
 	
 }

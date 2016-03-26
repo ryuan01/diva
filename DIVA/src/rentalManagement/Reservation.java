@@ -1,45 +1,52 @@
 package rentalManagement;
+
+import java.sql.Date;
+
+import accountManagement.Account;
+import accountManagement.Customer;
+import systemManagement.Branch;
+import vehicleManagement.Equipment;
+import vehicleManagement.Vehicle;
+
 //Assumes Date object is passed instead of a primitive.
 // Needs javadoc
 public class Reservation {
 
-	private Date date;
-	private Vehicle vehicle;
-	private Equipment[] equipment;
-	private Branch startBranch;
-	private Branch endBranch;
-	private Account account;
+	private Date startDate;
+	private Date endDate;
+	private String vehicleID;
+	private String[] equipmentIDs;
+	private String startBranchID;
+	private String endBranchID;
+	private String customerAccountID;
 	private String status;
+	private String employeeAccountID;
+	private String reservID;
 	
 	/**
 	 * Creates empty Reservation.
 	 */
 	public Reservation()
 	{
-		date = new Date();
-		vehicle = new Vehicle();
-		equipment = new ArrayList<Equipment>();
-		startBranch = new Branch();
-		endBranch = new Branch();
-		account = new Account();
+
 	}
 	
 	/**
-	 * Create a Reservation with Date, Vehicle, Equipment, Location.
-	 * @param d Date of the reservation.
-	 * @param v Vehicle of the reservation.
-	 * @param e Equipment of the reservation.
-	 * @param startBranch The branch Vehicle is Rented.
-	 * @param endBranch The branch Vehicle is Returned.
-	 * @param c The Customer Reservation belongs to. 
+	 * Create a Reservation with start and end Date, Vehicle, Equipment, starting and ending branch, customer and employee id, status, and ID
+	 * @param startDate Starting date of Reservation.
+	 * @param endDate Ending date of Reservation.
+	 * @param v Vehicle ID of the reservation.
+	 * @param e Equipment ID of the reservation.
+	 * @param startBranch The branch ID Vehicle is Rented.
+	 * @param endBranch The branch ID Vehicle is Returned.
+	 * @param c The Customer log in ID Reservation belongs to. 
+	 * @param s The Status of the Reservation.
+	 * @param empl The Employee log in ID Reservation belongs to.
+	 * @param id The Reservation ID.
 	 */
-	public Reservation(Date d, Vehicle v, Equipment e, Branch startBranch, Branch endBranch, Customer c)
+	public Reservation(Date startDate, Date endDate, Vehicle v, String[] e, String startBranch, String endBranch, String c, String s, 
+			String empl, String id)
 	{
-		date = d;
-		vehicle = v;
-		equipment = e;
-		location = l;
-		account = a;
 	}
 	
 	/**
@@ -49,145 +56,198 @@ public class Reservation {
 	 */
 	public boolean equals(Reservation r)
 	{
-		if(this.date == r.getDate() && this.vehicle == r.getVehicle())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return true;
 	}
 	
 	/**
-	 * Modifies the date of Reservation.
-	 * @param newDate The date to be changed.
-	 * @pre newDate is not already reserved for the Vehicle.
+	 * Modifies the starting date of Reservation.
+	 * @param newDate The start date to be changed.
 	 */
-	public void changeDate(Date newDate)
+	public void changeStartDate(Date newDate)
 	{
-		date = newDate;
+		
 	}
 	
 	/**
-	 * Modifies the Vehicle of Reservation.
-	 * @param newVehicle The Vehicle to be changed.
-	 * @pre newVehicle is not already reserved.
+	 * Modifies the ending date of Reservation.
+	 * @param newDate The end date to be changed.
 	 */
-	public void changeVehicle(Vehicle newVehicle)
+	public void changeEndDate(Date newDate)
 	{
-		vehicle = newVehicle;
+		
+	}
+	
+	/**
+	 * Modifies the Vehicle ID of Reservation.
+	 * @param newVehicleID The Vehicle ID to be changed.
+	 */
+	public void changeVehicleID(String newVehicleID)
+	{
+
 	}
 	
 	//needs testing, could throw exception equipmentAlreadyReserved?
 	/**
-	 * Add the Equipment from Reservation.
-	 * @param newEquipment The Equipment to be added.
-	 * @pre newEquipment is not already reserved.
+	 * Add the Equipment ID from Reservation.
+	 * @param newEquipmentID The Equipment ID to be added.
 	 */
-	public void addEquipment(Equipment newEquipment)
+	public void addEquipmentID(String newEquipmentID)
 	{
-		equipment = equipment.add(newEquipment);
-		newEquipment.changeStatus(False);
+	
 	}
 	
 	//throws exception if toBeRemovedEquipment is not in the equipment list. (shouldn't happen)
 	/**
-	 * Removes the Equipment from Reservation.
-	 * @param toBeRemovedEquipment The Equipment to be removed.
+	 * Removes the Equipment ID from Reservation.
+	 * @param toBeRemovedEquipmentID The Equipment ID to be removed.
 	 */
-	public void removeEquipment(Equipment toBeRemovedEquipment)
+	public void removeEquipmentID(String toBeRemovedEquipmentID)
 	{
-		for(int i = 0; i < equipment.size(); i++)
-		{
-			if(equipment.get(i).getID() = toBeRemovedEquipment.getID())
-			{
-				equipment.remove(i);
-				toBeRemovedEquipment.changeStatus(True);
-			}
-		}
+	
 	}
 	
 	/**
-	 * Modifies the startBranch of the Reservation.
-	 * @param newStartBranch New startBranch of the Reservation.
+	 * Modifies the startBranch ID of the Reservation.
+	 * @param newStartBranch New startBranch ID of the Reservation.
 	 */
-	public void changeStartBranch(Branch newBranch)
+	public void changeStartBranchID(String newBranchID)
 	{
-		startBranch = newStartBranch;
+		
 	}
 	
 	/**
-	 * Modifies the endBranch of the Reservation.
-	 * @param newEndBranch New endBranch of the Reservation.
+	 * Modifies the endBranch ID of the Reservation.
+	 * @param newEndBranch New endBranch ID of the Reservation.
 	 */
-	public void changeEndBranch(Branch newEndBranch)
+	public void changeEndBranchID(String newEndBranchID)
 	{
-		endBranch = newEndBranch;
+		
 	}
 	
 	/**
-	 * Modifies the Account the Reservation is assigned to.
-	 * @param newAccount New Account the Reservation is assigned to.
-	 * @pre Account is a valid Customer type.
+	 * Modifies the Customer account the Reservation is assigned to.
+	 * @param newAccount Customer Account the Reservation is assigned to.
 	 */
-	public void changeAccount(Account newAccount)
+	public void changeCustomerAccount(String newAccountID)
 	{
-		account = newAccount;
+		
+	}
+
+	/**
+	 * Modifies the Employee account login ID the Reservation is assigned to.
+	 * @param newAccountID Employee Account login ID the Reservation is assigned to.
+	 */
+	public void changeEmployeeAccountID(String newAccountID)
+	{
+		
+	}
+	
+	/**
+	 * Modifies the Status of Reservation.
+	 * @param newStatus New status of Reservation.
+	 */
+	public void changeStatus(String newStatus)
+	{
+		
+	}
+	
+	/**
+	 * Modifies the ID of Reservation.
+	 * @param newID New ID of Reservation.
+	 */
+	public void changeID(String newID)
+	{
+		
 	}
 	
 	/**
 	 * Returns the Date of the Reservation.
 	 * @return Date of the Reservation.
 	 */
-	public Date getDate()
+	public Date getStartingDate()
 	{
-		return date;
+		return null;
 	}
 	
 	/**
-	 * Returns the Vehicle of the Reservation.
-	 * @return Vehicle of the Reservation.
+	 * Returns the end Date of the Reservation.
+	 * @return Date of the Reservation.
 	 */
-	public Vehicle getVehicle()
+	public Date getEndDate()
 	{
-		return vehicle;
+		return null;
 	}
 	
 	/**
-	 * Returns the list of Equipments of the Reservation.
-	 * @return List of Equipments of the Reservation.
+	 * Returns the Vehicle ID of the Reservation.
+	 * @return Vehicle ID of the Reservation.
 	 */
-	public Equipment[] getEquipments()
+	public String getVehicleID()
 	{
-		return equipment;
+		return vehicleID;
 	}
 	
 	/**
-	 * Returns the startBranch of the Reservation.
-	 * @return Starting branch of the Reservation.
+	 * Returns the list of Equipment IDs of the Reservation.
+	 * @return List of Equipment IDsof the Reservation.
 	 */
-	public Branch getStartBranch()
+	public String[] getEquipments()
 	{
-		return startBranch;
+		return equipmentIDs;
 	}
 	
 	/**
-	 * Returns the endBranch of the Reservation.
-	 * @return Ending branch of the Reservation.
+	 * Returns the startBranch ID of the Reservation.
+	 * @return Starting branch ID of the Reservation.
 	 */
-	public Branch getEndBranch()
+	public String getStartBranchID()
 	{
-		return endBranch;
+		return startBranchID;
 	}
 	
 	/**
-	 * Returns the Account of the Reservation.
-	 * @return Account of the Reservation.
+	 * Returns the endBranch ID of the Reservation.
+	 * @return Ending branch ID of the Reservation.
 	 */
-	public Account getAccount()
+	public String getEndBranchID()
 	{
-		return account;
+		return endBranchID;
+	}
+	
+	/**
+	 * Returns the Customer Account login ID of the Reservation.
+	 * @return Customer Account login ID of the Reservation.
+	 */
+	public String getCustomerAccountID()
+	{
+		return customerAccountID;
+	}
+	
+	/**
+	 * Returns the Employee Account login ID of the Reservation.
+	 * @return Employee Account login ID of the Reservation.
+	 */
+	public String getEmployeeAccountID()
+	{
+		return employeeAccountID;
+	}
+	
+	/**
+	 * Returns the status of Reservation.
+	 * @return Status of Reservation.
+	 */
+	public String getStatus()
+	{
+		return "";
+	}
+	
+	/**
+	 * Returns the ID of Reservation.
+	 * @return ID of Reservation.
+	 */
+	public String getID()
+	{
+		return "";
 	}
 	
 }

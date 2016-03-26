@@ -13,54 +13,48 @@ public class ReturnManager {
 	// assumes gas is already refilled.
 	/**
 	 * Returns a Vehicle from Rental.
-	 * @param r Reservation of Rental the Vehilce belongs to.
-	 * @pre Rental for the Reservation has started.
-	 * @post Receipt is created, Return is recorded in dataabase, Extra payments are handled.
+	 * @param reservID Reservation ID of Rental the Vehilce belongs to.
 	 */
-	public void startReturn(Reservation r)
+	public void startReturn(String reservID)
 	{
 		// order of execution:
 	}
 	
 	/**
 	 * Calls Accounting system to handle extra payment.
-	 * @param r Reservation of Rental to be paid.
+	 * @param reservID Reservation ID of Rental to be paid.
 	 * @param typeOfPayment Debit for debit card, Credit for credit card, Cash for cash, SRP for SuperRent points.
 	 * @param reasonForPayment Reasons for extra payment, such as accidents, returning late, etc.
 	 */
-	public void payForExtra(Reservation r, String typeOfPayment, String reasonForPayment)
+	public void payForExtra(String reservID, String typeOfPayment, String reasonForPayment)
 	{
 		
 	}
 	
 	/**
 	 * Calls Accounting system to create Return Receipt, include extra payments if any.
-	 * @param r Reservation of Rental to create Receipt for.
-	 * @pre Extra payment has been made if any.
-	 * @post A Receipt is created.
+	 * @param reservID Reservation ID of Rental to create Receipt for.
 	 */
-	public void requestReturnReceipt(Reservation r)
+	public void requestReturnReceipt(String reservID)
 	{
 		
 	}
 	
 	/**
 	 * Compares with current Date object if Reservation is overdue.
-	 * @param r Reservation of Rental to be checked.
+	 * @param reservID Reservation ID of Rental to be checked.
 	 * @return True if overdue, False otherwise.
 	 */
-	public boolean checkIfOverdue(Reservation r)
+	public boolean checkIfOverdue(String reservID)
 	{
-		
+		return true;
 	}
 	
 	/**
 	 * Calls Database system to record the Return of Vehicle.
-	 * @param r Reservation of Return to be recorded.
-	 * @pre Extra payment has been made if any.
-	 * @post Return is recorded.
+	 * @param reservID Reservation ID of Return to be recorded.
 	 */
-	public void recordReturn(Reservation r)
+	public void recordReturn(String reservID)
 	{
 		
 	}
