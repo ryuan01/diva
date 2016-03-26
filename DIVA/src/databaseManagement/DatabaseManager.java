@@ -41,16 +41,18 @@ public class DatabaseManager {
 	 * @pre !isConnect()
 	 * @post isConnected() 
 	 */
-	protected Connection connect() {
+	protected void connect() {
 		if (!isConnected()){
 			try{
 				connection = DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
-				return connection;
 			} catch(SQLException e){
 				System.err.println(e);
-				return null;
 			}
 		}
+	}
+	
+	protected Connection getConnection(){
+		return connection;
 	}
 	
 	/**
