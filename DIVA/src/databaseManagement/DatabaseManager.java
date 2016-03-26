@@ -21,8 +21,8 @@ public class DatabaseManager {
         private static final String USERNAME = "diva";
         private static final String PASSWORD = "DiVA$E2016&";
         
-        private Connection conn;
-	
+        private Connection connection;
+        
 	/** 
 	 * Constructs a DatabaseManager
 	 * @param db a db name 
@@ -33,7 +33,7 @@ public class DatabaseManager {
 	 * Note2: Consider making them protected
 	 */
 	protected DatabaseManager() {
-		conn = null;
+		connection = null;
 	}
 	
 	/**
@@ -42,13 +42,12 @@ public class DatabaseManager {
 	 * @post isConnected() 
 	 */
 	protected void connect() {
-		//if ()
-		try{
-			conn = DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
-		} catch(SQLException e){
-			System.err.println(e);
-		} finally{
-			disconnect();
+		if (!isConnected()){
+			try{
+				connection = DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
+			} catch(SQLException e){
+				System.err.println(e);
+			}
 		}
 	}
 	
@@ -57,11 +56,13 @@ public class DatabaseManager {
 	 * @pre isConnected()
 	 * @post !isConnect()
 	 */
-	private void disconnect() {
+	protected void disconnect() {
 		try{
-			conn.close();
+			connnection.close();
 		} catch(SQLException e){
 			System.err.println(e);
+		}finally{
+			connection = null;
 		}
 	}
 	
@@ -70,8 +71,14 @@ public class DatabaseManager {
 	 * @pre none
 	 * @post returns true if there is a connection, otherwise false 
 	 */
-	public boolean isConnected() {
-		return false;
+	private boolean isConnected() {
+		if(connection != null){
+			return true;
+		} else{
+			return false;
+		}
 	}
+	
+	
 
 }
