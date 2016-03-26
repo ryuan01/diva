@@ -1,6 +1,9 @@
 package databaseManagement;
 
 import vehicleManagement.Equipment;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 /**
  * EquipmentDB creates, deletes, and modifies data related to Equipment
@@ -30,14 +33,27 @@ public class EquipmentDB extends DatabaseManager{
 	/**
 	 * searchAdditionalEquipments searches for a list of available equipments for a type
 	 * @param t type of equipments
-	 * @param branch a branch
+	 * @param branch_num the branch number where the equipment is located
 	 * @pre a rental is underway
 	 * @pre branch is valid
 	 * @pre t is valid 
 	 * @post list of equipments
 	 */
-	public Equipment[] searchAdditionalEquipments(String t, String branch) {
-		return null;
+	public Equipment[] searchAdditionalEquipments(String t, int branch_num) {
+		
+		// 1- Connect to the database
+		Connection conn = super.connect();
+		
+		if (conn == null)
+		{
+			return null;
+		} else
+		{
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM equipments WHERE location =" + branch_num +", eq_type" = t + ";" ;
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println(rs.getInt("serial_num"));
+		}
 	}
 
 }
