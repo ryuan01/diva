@@ -27,49 +27,37 @@
     </nav>
     <main>
     <div class="wrapper">
-        <div class="left-box">
+        <div>
             <form>
                 <h2>Sign up</h2>
-                <div id="input-name">
-                    <input id="name-box" type="text">
-                </div>
                 <div id="name-text">
                     Name:
                 </div>
-                <div id="input-email">
-                    <input id="email-box" type="text">
+                <div id="input-name">
+                    <input id="name-box" type="text" size="45" required>
                 </div>
                 <div id="email-text">
                     Email: 
                 </div>
-                <div id="input-password">
-                    <input id="name-box" type="password"><br>
+                <div id="input-email">
+                    <input id="email-box" type="text" size="45" required>
                 </div>
                 <div id="password-text">
                     Password: 
                 </div>
-                <div id="input-confirm">
-                    <input id="name-box" type="password"><br>
+                <div id="input-password">
+                    <input id="name-box" type="password" size="45" required><br>
                 </div>
-                 
                 <div id="confirm-text">
                     Confirm Password:
                 </div>
+                <div id="input-confirm">
+                    <input id="name-box" type="password" size="45" required><br>
+                </div>
+                
             </form>
-            <button type="button" name="submit">Submit</button>
+            <button type="button" name="submit" onclick="getUserRegistrationInfo()">Submit</button>
         </div>
-        
-        <div class="right-box">
-            <div id="sign-in-special">
-                <div id="sign-in-facebook">
-                    <button type="button" name="facebook-signin">Sign in using Facebook</button><br>
-                </div>
-                <div id="sign-in-gmail">
-                    <button type="button" name="gmail-signin">Sign in using Gmail</button>
-                </div>
-            </div>
-            
-        </div> 
     </div>
         
     </main>
