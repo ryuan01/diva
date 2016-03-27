@@ -1,4 +1,4 @@
-package paymentManager;
+package paymentManagement;
 
 /**
  * 
@@ -7,6 +7,7 @@ package paymentManager;
  */
 public class Receipt {
 
+	private int receiptId;
 	private double price;
 	private String vehicle_rented;
 	private String duration;
@@ -20,7 +21,8 @@ public class Receipt {
 	 * @param duration
 	 * @param dropoff_location
 	 */
-	public Receipt(double price, String vehicle_rented, String duration, String dropoff_location) {
+	public Receipt(int receiptId ,double price, String vehicle_rented, String duration, String dropoff_location) {
+		this.setReceiptId(receiptId);
 		this.price = price;
 		this.vehicle_rented = vehicle_rented;
 		this.duration = duration;
@@ -83,6 +85,22 @@ public class Receipt {
 	 */
 	public void setDropoff_location(String dropoff_location) {
 		this.dropoff_location = dropoff_location;
+	}
+
+	/**
+	 * Gets the Receipt Id of the Receipt.
+	 * @return receiptId
+	 */
+	public int getReceiptId() {
+		return receiptId;
+	}
+
+	/**
+	 * Sets the Receipt Id of the Receipt
+	 * @param receiptId
+	 */
+	public void setReceiptId(int receiptId) {
+		this.receiptId = receiptId;
 	}
 	
 	

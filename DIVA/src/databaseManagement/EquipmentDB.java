@@ -10,7 +10,7 @@ import vehicleManagement.Equipment;
 public class EquipmentDB extends DatabaseManager{
 	
 	public EquipmentDB() {
-		super();
+		super(dbname, dbname);
 		// TODO Auto-generated constructor stub
 	}
 

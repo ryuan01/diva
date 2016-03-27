@@ -9,7 +9,7 @@ package databaseManagement;
  */
 public class DatabaseManager {
 	
-	protected String dbname;
+	protected static String dbname;
 	protected String pw;
 	
 	/**

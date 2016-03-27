@@ -1,7 +1,6 @@
 package databaseManagement;
 
-import paymentManager.Receipt;
-import accountManagement.Account;
+import paymentManagement.Receipt;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
 

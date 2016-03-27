@@ -1,4 +1,4 @@
-package paymentManager;
+package paymentManagement;
 
 //so Kevin: distance, daily, hourly, weekly, are just the arrays (or other kind of data structure)
 //no need to create extra classes
