@@ -16,6 +16,10 @@ jQuery(document).ready(function() {
         e.preventDefault();
     });
 });
+function logout() {
+    // log out from server
+    window.location.href = "index.html";
+}
 
 jQuery(function(){
     jQuery("#pickupDate").datepicker();
@@ -53,12 +57,13 @@ function getUserInfo() {
     
     if (validateForm()) {
         
-        document.getElementById("validator").innerHTML = "\nUsername: " + username + " \nPassword: " + password;
+        window.location.href = "logged_in.html";
     }
     else {
-       
-        document.getElementById("validator").innerHTML = "Invalid username or password.";
-        document.getElementById("validator").style.color = "red";
+        var validatorP = document.getElementById("validator");
+        validatorP.innerHTML = "Invalid username or password.";
+        validatorP.style.color = "red";
+        validatorP.style.textAlign = "center";
     }
 }
 

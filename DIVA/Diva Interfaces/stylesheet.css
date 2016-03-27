@@ -4,9 +4,11 @@ body {
     font-family: sans-serif;
     
 }
+body p{
+    color: #FFFFFF;
+}
 header {
 	background-image: url(images/banner.png);
-	background-repeat: no-repeat;
 	background-size: cover;
 	
 }
@@ -17,34 +19,66 @@ header img {
 #wrapper {
 	box-shadow: 0px 5px 20px 1px black;
 	margin-top: -21px;
+    
+    background-image: url(images/lambo.jpg);
+    background-size: cover;
+	background-repeat: no-repeat;
+}
+.validator_box {
+    text-align: center;
 }
 .logo_box, nav {
 	padding-top: 2%;
 	padding-right: 2%;
-	padding-left: 2%;	
+	padding-left: 2%;
+	color: #00FBFF;
 }
-.login_box, .login_box a {
-    text-align: right;
-    text-decoration: none;
-}
-
-nav ul {
-    
-    list-style-type: none;
+nav {
+    color: #FFFFFF;
 }
 nav ul a {
 	text-decoration: none;
+    color: #FFF712;
+}
+nav a:link {
+    text-decoration: none;
+}
+#container {
+    border: solid 1px;
+}
+#profile-form {
+}
+#login-text, #profile-text {
+    float:left;
+    padding-left: 30%;
+    padding-right: 5%;
+    text-align: right;
+}
+#login-input {
+    text-align: center;
+    padding-right: 30%;
+}
+.label_box p, #profile-submit {
+    text-align: center;
+}
+.login_box {
+    text-align: right;
+    width: 100%;
+    height: 250px;
+    text-decoration: none;
+    border: solid 1px;
+}
+#signup-box {
+	border: solid 1px;
+	text-align: center;
 }
 main {
-/*
 
-    background-image: url(images/lambo.jpg);
-    background-size: cover;
-	background-repeat: no-repeat;
-*/
 
     text-align: left;
-    padding: 100px;
+    padding-top: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
     
     
 }
@@ -130,8 +164,12 @@ footer {
 }
 nav {
 	text-align: right;
+	background-image: -webkit-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
+	background-image: -moz-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
+	background-image: -o-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
+	background-image: linear-gradient(180deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
 }
-ul li {
+ul, ul li {
 	text-decoration: none;
 	display: inline;
 }
@@ -157,9 +195,8 @@ ul li {
         list-style-type: none;
     }
     #wrapper main .tabs {
-        margin-left: -110px;
-        margin-right: -111px;
-        min-width: 0px;
+	margin-left: -60px;
+	
     }
     #wrapper nav ul {
         margin-left: -42px;
@@ -167,6 +204,7 @@ ul li {
     ul li a {
         text-decoration: none;
     }
+
 
 }
 
@@ -176,7 +214,8 @@ ul li {
         display: inline;
     }
     ul li a {
-        text-decoration: none;
+	text-decoration: none;
+	
     }
 
 
