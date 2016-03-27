@@ -11,7 +11,7 @@ import vehicleManagement.Vehicle;
  * @author Robin
  *
  */
-public class VehicleDB extends DatabaseManager{
+class VehicleDB {
 
 	/**
 	 * Creates a VehicleDBManager
@@ -19,7 +19,6 @@ public class VehicleDB extends DatabaseManager{
 	 * @param pass
 	 */
 	public VehicleDB(String db, String pass) {
-		super(db, pass);
 		// TODO Auto-generated constructor stub
 	}
 	

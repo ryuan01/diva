@@ -10,10 +10,9 @@ import systemManagement.Branch;
  * @author Robin
  *
  */
-public class BranchDB extends DatabaseManager{
+class BranchDB {
 
   	public BranchDB() {
-  		  super();
   		  // TODO Auto-generated constructor stub
   	}
   	

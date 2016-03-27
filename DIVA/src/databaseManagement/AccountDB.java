@@ -7,13 +7,12 @@ import accountManagement.Account;
  * @author Robin
  * no invariant 
  */
-public class AccountDB extends DatabaseManager{
+class AccountDB {
 	
 	
 	//checking 
 
 	public AccountDB() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 

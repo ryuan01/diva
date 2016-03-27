@@ -16,6 +16,7 @@ import java.sql.SQLException;
  * @invariant dbname database name 
  * @invariant pw password for connection 
  */
+
 public class DatabaseManager {
 	
 	protected static String dbname;

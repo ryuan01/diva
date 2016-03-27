@@ -9,7 +9,7 @@ import rentalManagement.Reservation;
  * RentalDB deals with creation, deletion, and modification related to rentals
  * @author Robin
  */
-public class RentalDB extends DatabaseManager{
+class RentalDB {
 	
 	
 	public RentalDB(String db, String pass) {

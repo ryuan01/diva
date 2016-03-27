@@ -21,10 +21,9 @@ import java.util.ArrayList;
  * @author Robin
  *
  */
-public class EquipmentDB extends DatabaseManager{
+class EquipmentDB {
 	
 	public EquipmentDB() {
-		super(dbname, dbname);
 		// TODO Auto-generated constructor stub
 	}
 
