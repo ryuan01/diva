@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 body {
     padding-top: 2%;
     padding-left: 10%;
@@ -362,6 +363,230 @@ ul li {
     }
     ul li a {
         text-decoration: none;
+    }
+
+
+}
+>>>>>>> mark
+=======
+body {
+    padding-left: 5%;
+    padding-right: 5%;
+    font-family: sans-serif;
+    
+}
+body p{
+    color: #FFFFFF;
+}
+header {
+	background-image: url(images/banner.png);
+	background-size: cover;
+	
+}
+header img {
+    height: 100px;
+    width: 200px;
+}
+#wrapper {
+	box-shadow: 0px 5px 20px 1px black;
+	margin-top: -21px;
+    
+    background-image: url(images/lambo.jpg);
+    background-size: cover;
+	background-repeat: no-repeat;
+}
+.validator_box {
+    text-align: center;
+}
+.logo_box, nav {
+	padding-top: 2%;
+	padding-right: 2%;
+	padding-left: 2%;
+	color: #00FBFF;
+}
+nav {
+    color: #FFFFFF;
+}
+nav ul a {
+	text-decoration: none;
+    color: #FFF712;
+}
+nav a:link {
+    text-decoration: none;
+}
+#container {
+    border: solid 1px;
+}
+#profile-form {
+}
+#login-text, #profile-text {
+    float:left;
+    padding-left: 30%;
+    padding-right: 5%;
+    text-align: right;
+}
+#login-input {
+    text-align: center;
+    padding-right: 30%;
+}
+.label_box p, #profile-submit {
+    text-align: center;
+}
+.login_box {
+    text-align: right;
+    width: 100%;
+    height: 250px;
+    text-decoration: none;
+    border: solid 1px;
+}
+#signup-box {
+	border: solid 1px;
+	text-align: center;
+}
+main {
+
+
+    text-align: left;
+    padding-top: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    
+    
+}
+
+.tabs {
+    display:inline-block;
+    border: solid 1px;
+    text-align: center;
+}
+ 
+/*----- Tab Links -----*/
+/* Clearfix */
+.tab-links:after {
+    display:block;
+    clear:both;
+    content:'';
+}
+
+.tab-links li {
+    margin:0px 5px;
+    float:left;
+    list-style:none;
+}
+
+.tab-links a {
+    padding:9px 15px;
+    display:inline-block;
+    border-radius:3px 3px 0px 0px;
+    font-size:16px;
+    font-weight:600;
+    color:#4c4c4c;
+    transition:all linear 0.15s;
+}
+
+.tab-links a:hover {
+    background:#a7cce5;
+    text-decoration:none;
+}
+
+li.active a, li.active a:hover {
+    background:#ccffff;
+    color:#4c4c4c;
+}
+
+/*----- Content of Tabs -----*/
+.tab-content {
+    padding:15px;
+    border-radius:3px;
+    box-shadow:-1px 1px 1px rgba(0,0,0,0.15);
+    background:#fff;
+}
+
+    .tab {
+        display:none;
+    }
+
+    .tab.active {
+        display:block;
+    }
+.search {
+    text-align: right;
+}
+
+.wrapper form{
+    padding: 15px;
+    
+    
+}
+#pickupTime, #returnTime {
+    width: 35px;
+}
+.left-box {
+    border: 1px solid;
+    margin-left: 0px
+}
+#sign-in-special {
+    padding-top: 10%;
+}
+
+footer {
+    text-align: center;
+	bottom:0;
+}
+nav {
+	text-align: right;
+	background-image: -webkit-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
+	background-image: -moz-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
+	background-image: -o-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
+	background-image: linear-gradient(180deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
+}
+ul, ul li {
+	text-decoration: none;
+	display: inline;
+}
+#tab1 div, #tab2 div {
+    padding: 5px;
+}
+
+@media screen and (max-width:768px) and (min-width:376px){
+	body {
+		margin-right: 0px;
+	}
+}
+
+@media screen and (max-width:375px){
+    body {
+        font-size: 12px;
+        text-align: center;
+    }
+    nav {
+        text-align: center;	
+    }
+    nav ul {
+        list-style-type: none;
+    }
+    #wrapper main .tabs {
+	margin-left: -60px;
+	
+    }
+    #wrapper nav ul {
+        margin-left: -42px;
+    }
+    ul li a {
+        text-decoration: none;
+    }
+
+
+}
+
+@media screen and (max-width:1024px){
+    #wrapper nav ul li {
+        text-align: right;
+        display: inline;
+    }
+    ul li a {
+	text-decoration: none;
+	
     }
 
 

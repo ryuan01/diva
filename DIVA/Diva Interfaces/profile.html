@@ -6,6 +6,7 @@
     </title>
     <link type="text/css" rel="stylesheet" href="stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -24,50 +25,42 @@
                 Distributed Vehicle Administration System
             </h4>
         </div>
-       
     </header>
     <nav>
-        <hr>
+        Welcome, Mark Ranges<br><hr>
         <ul>
-          <li><a href="login.html">Login </a></li>/
-          <li><a href="signup.html">Sign Up</a></li>
+            <li><a href="profile.html">View Profile</a></li> |
+            <li><a href="history.html">View History</a></li>  |
+            <li><a href="">MISSING</a></li> |
+            <li><a id="logout_link" href="undef.html" onclick="logout();return false;">Log Out</a></li>
         </ul>
-           
+        <hr><b>Points: 8954</b>
+        
     </nav>
     <main>
-    
-        <div id="signup-box">
-            <form>
-                <h2>Sign up</h2>
-                <div id="name-text">
-                    Name:
-                </div>
-                <div id="input-name">
-                    <input id="name-box" type="text" size="45" required>
-                </div>
-                <div id="email-text">
-                    Email: 
-                </div>
-                <div id="input-email">
-                    <input id="email-box" type="text" size="45" required>
-                </div>
-                <div id="password-text">
-                    Password: 
-                </div>
-                <div id="input-password">
-                    <input id="name-box" type="password" size="45" required><br>
-                </div>
-                <div id="confirm-text">
-                    Confirm Password:
-                </div>
-                <div id="input-confirm">
-                    <input id="name-box" type="password" size="45" required><br>
-                </div>
-                
-            </form>
-            <button type="button" name="submit" onclick="getUserRegistrationInfo()">Submit</button>
+        <div id="container">
+            <div id="profile-text">
+                Name:<br>
+                Address:<br>
+                Phone Number:<br>
+                Current Password:<br>
+                New Password:<br>
+                Confirm Password:<br>
+            </div>
+            <div id="profile-input">
+                <form id="profile-form">
+                    <input type="text"><br>
+                    <input type="text"><br><input type="text"><br>
+                    <input type="text"><br>
+                    <input type="text"><br>
+                    <input type="text"><br>
+                </form>  
+            </div>
+            <div id="profile-submit">
+                <button type="button">Save Changes</button>
+                <button type="button">Cancel</button>
+            </div>
         </div>
-    
         <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
         <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
         <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
