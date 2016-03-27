@@ -7,8 +7,6 @@ package vehicleManagement;
  */
 public class Car extends Vehicle{
 
-
-
 	/**
 	 * Creates a car object initialized with the given fields. 
 	 * @param location
@@ -30,6 +28,5 @@ public class Car extends Vehicle{
 				manufacturer, year, color, status, features);
 		// TODO Auto-generated constructor stub
 	}
-	
 	
 }

@@ -8,8 +8,6 @@ package vehicleManagement;
 
 public class Truck extends Vehicle{
 
-
-
 	/**
 	 * Creates a truck object initialized with the given attributes.
 	 * @param location

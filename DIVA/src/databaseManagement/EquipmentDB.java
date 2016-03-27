@@ -22,9 +22,7 @@ public class EquipmentDB extends DatabaseManager{
 	 * @pre status is one of {rented, damaged, available}
 	 * @post e.status = status
 	 */
-	public void updateEquipmentStatus(String e_key_value, int status){
-		
-	}
+	public void updateEquipmentStatus(String e_key_value, int status){}
 	
 	
 	/**

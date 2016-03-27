@@ -33,8 +33,6 @@ public class BranchDB extends DatabaseManager{
 	 * @post an entry in TABLE BRANCH is removed
 	 */
 	public void removebranch(String branch_key_value){
-		
-	}
 	
 	/**
 	 * 
