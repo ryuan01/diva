@@ -1,3 +1,6 @@
+/**
+ * EquipmentDB is dependant on vehicleManagement.Equipment class, which is not implemented
+ */
 package databaseManagement;
 
 import vehicleManagement.Equipment;
@@ -28,7 +31,8 @@ public class EquipmentDB extends DatabaseManager{
 	 * @post e.status = status
 	 */
 	public void updateEquipmentStatus(Equipment e, int status){
-		
+		// "status" is not in the database
+		// It should return a boolean determining the success of the update process
 	}
 	
 	
