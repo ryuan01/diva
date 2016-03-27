@@ -9,8 +9,8 @@ import vehicleManagement.Equipment;
  */
 public class EquipmentDB extends DatabaseManager{
 	
-	public EquipmentDB(String db, String pass) {
-		super(db, pass);
+	public EquipmentDB() {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 
