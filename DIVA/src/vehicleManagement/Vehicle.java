@@ -5,6 +5,7 @@ package vehicleManagement;
  */
 public class Vehicle {
 	
+	private int id; // Car ID number is important for vehicle identification for deletion. I added a getter method
 	private String type;
 	private String manufacturer;
 	private String year;
@@ -35,7 +36,13 @@ public class Vehicle {
 		this.branchID = location;
 		this.capacity = capacity;
 	}
-
+	
+	/**
+	 * @return vehicle id
+	 */
+	public int getID(){
+		return id;
+	}
 	/**
 	 * Returns the Vehicles Type
 	 * @return the type of this vehicle

@@ -1,19 +1,24 @@
+/**
+ * Notes:
+ * 	1- This class is not Tested
+ * 	2- Update the javadocs when this class is confirmed
+ * 
+ */ 
 package vehicleManagement;
+
 import java.util.Currency;
+import systemManagement.Branch;
 
 /* Robin */
 /**
  * Equipment class models additional equipments for rentals
  */
-public class Equipment {
+public class Equipment{
+	
+	private int serialNum;
 	
 	/**
-	 * type can be {forCar, forTruck}
-	 */
-	private String type;
-	
-	/**
-	 * name of the equipment
+	 * type can be 'ski rack', 'child safety seat', 'lift gate', or 'car-towing eq'
 	 */
 	private String name;
 	 
@@ -22,71 +27,57 @@ public class Equipment {
 	
 	// true if available, false if already reserved.
 	private boolean status;
+	private String type;
 	
-	//constructors
 	/**
-	 * Constructs a new equipment, need to talk to db
-	 * @param t type
-	 * @param n name
-	 * @param p price
-	 * @pre !isEquipment(t,n)
-	 * @post isEquipment(t,n)
+	 * price of the equipment, by day
 	 */
-	public Equipment(String t, String n, String p) {
+	private Currency price; 
+	
+	public Equipment(int sn, String type){
+		serialNum = sn;
+		this.type = type;
 	}
 	
+	// constructors
+	public Equipment(Equipment eq){
+		this.serialNum = eq.getSerialNum();
+		this.type = eq.getType();
+		this.price = eq.getPrice();
+	}
 	//setters and getters
 	
 	/**
 	 * Get type of equipment
 	 * @pre none
-	 * @post type is returned
+	 * @post none
+	 * @return Equipment type
 	 */
 	public String getType() {
 		return null;
 	}
-
-	/**
-	 * Get name of the equipment
-	 * @pre none
-	 * @post name is returned 
-	 */
-	public String getName() {
-		return null;
+	
+	public int getSerialNum(){
+		return serialNum;
 	}
 	
 	/**
 	 * Get price of the equipment
 	 * @pre none
-	 * @post price is returned
+	 * @post none
+	 * @return Equipment rental price
 	 */
-	public String getPrice() {
-		return null;
+	public Currency getPrice() {
+		return price;
 	}
 	
+	//checkers
 	/**
-	 * Set type of equipment
-	 * @param t a type of equipment
-	 * @pre t must be a possible type
-	 * @post type is set 
-	 */
-	public void setType(String t) {
-	}
-	
-	/**
-	 * Set name of equipment
-	 * @param n a name 
-	 * @pre n must be formatted
-	 * @post name is set 
-	 */
-	public void setName(String n) {
-	}
-	
-	/**
-	 * Set price of equipment
-	 * @param p price
-	 * @pre p > 0
-	 * @post price is set
+	 * Checks if this is an equipment
+	 * @param t type
+	 * @param n name
+	 * @pre t must be one of the proposed one
+	 * @post true if it is, false if it is not
 	 */
 	public void setPrice(Currency p) {
 	}
@@ -115,4 +106,10 @@ public class Equipment {
 	{
 		return status;
 	}
+	
+	private boolean isEquipment(String t, String n) {
+		return false;
+		// I don't know what this method is for??!!
+	}
 }
+

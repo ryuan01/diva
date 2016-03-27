@@ -12,8 +12,8 @@ public class AccountDB extends DatabaseManager{
 	
 	//checking 
 
-	public AccountDB(String db, String pass) {
-		super(db, pass);
+	public AccountDB() {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -24,7 +24,8 @@ public class AccountDB extends DatabaseManager{
 	 * @post true if username exists, false if it does not
 	 * @return true if the username exists
 	 */
-	private boolean isValidUsername(String username) {
+	public boolean isValidUsername(String username) {
+		
 		return false;
 	}
 	
