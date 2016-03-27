@@ -3,13 +3,14 @@ package databaseManagement;
 /*Robin */
 /**
  * DatabaseManager deals with connection to database
+ * @author Robin
  * @invariant dbname database name 
  * @invariant pw password for connection 
  */
 public class DatabaseManager {
 	
-	private String dbname;
-	private String pw;
+	protected String dbname;
+	protected String pw;
 	
 	/**
 	 * Constructs a DatabaseManager
@@ -19,6 +20,8 @@ public class DatabaseManager {
 	 * @post a DatabasManager object is created
 	 */
 	public DatabaseManager(String db, String pass) {
+		dbname = db;
+		pw = pass;
 	}
 	
 	/**
