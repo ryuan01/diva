@@ -4,6 +4,8 @@ package paymentManagement;
 //no need to create extra classes
 //same as Car, and Truck: these are just types. so more like a 3D array in my mind.
 //if you do this, then I think 1 getter, and 1 setter shoud be enough
+
+//let's only have 1 class PriceList...
 /**
  * Kevin had the first version, Robin edited this
  * Price of Car, Truck, Equipment
