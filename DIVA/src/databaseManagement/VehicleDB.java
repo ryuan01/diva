@@ -2,7 +2,6 @@ package databaseManagement;
 
 import systemManagement.Branch;
 import vehicleManagement.Car;
-import vehicleManagement.Equipment;
 import vehicleManagement.Truck;
 import vehicleManagement.Vehicle;
 
@@ -32,7 +31,7 @@ public class VehicleDB extends DatabaseManager{
 	 * @pre isValidBranch(b)
 	 * @post v.branch = b
 	 */
-	public void updateVehicleLocation(Vehicle v, Branch b){
+	public void updateVehicleLocation(String v_key_value, String b_key_value){
 		
 	}
 	
@@ -45,7 +44,7 @@ public class VehicleDB extends DatabaseManager{
 	 * @pre status is one of {reserved, rented, damaged, available, sold}
 	 * @post v.status = status
 	 */
-	public void updateVehicleStatus(Vehicle v, int status){
+	public void updateVehicleStatus(String v_key_value, int status){
 		
 	}
 	
@@ -131,7 +130,7 @@ public class VehicleDB extends DatabaseManager{
 	 * @pre isValidVehicle(v)
 	 * @post vehicle status is returned
 	 */
-	public String getvehiclestatus(Vehicle v) {
+	public String getvehiclestatus(String v_key_value) {
 		return null;
 	}
 

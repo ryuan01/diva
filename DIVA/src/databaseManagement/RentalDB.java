@@ -1,11 +1,9 @@
 package databaseManagement;
 
+import paymentManager.Receipt;
 import accountManagement.Account;
+import rentalManagement.Report;
 import rentalManagement.Reservation;
-import vehicleManagement.Car;
-import vehicleManagement.Equipment;
-import vehicleManagement.Truck;
-import vehicleManagement.Vehicle;
 
 /*Robin */
 /**
@@ -49,7 +47,7 @@ public class RentalDB extends DatabaseManager{
 	 * @post list of reservations
 	 * @return list of reservations
 	 */
-	public Reservation[] reservationHistory(Account acc) {
+	public Reservation[] reservationHistory(String acc_key_value) {
 		return null;
 	}
 	
@@ -61,7 +59,7 @@ public class RentalDB extends DatabaseManager{
 	 * @pre isValidReservation(r)
 	 * @post !isValidReservation(r)
 	 */
-	public void updateReservation(Reservation r, String[] info) {
+	public void updateReservation(String r_key_value, String[] info) {
 	}
 	
 	//remove
@@ -71,17 +69,41 @@ public class RentalDB extends DatabaseManager{
 	 * @pre isValidReservation(r)
 	 * @post !isValidReservation(r)
 	 */
-	public void removeReservation(Reservation r) {
+	public void removeReservation(String r_key_value) {
 	}
 	
 	//create 
-	//createInspectionReport();
+	/**
+	 * 
+	 * @param r
+	 */
+	public void createInspectionReport(Report r){
+		
+	}
 	
-	//createReservation();
+	/**
+	 * 
+	 * @param r
+	 */
+	public void createReservation(Reservation r){
+		
+	}
 	
-	//createAccidentReport();
+	/**
+	 * 
+	 * @param r
+	 */
+	public void createAccidentReport(Report r){
+		
+	}
 	
-	//createTransaction();
+	/**
+	 * 
+	 * @param r
+	 */
+	public void createTransaction(Receipt r){
+		
+	}
 	
 	
 

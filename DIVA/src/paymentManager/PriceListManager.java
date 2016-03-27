@@ -6,14 +6,14 @@ import vehicleManagement.Vehicle;
  * A Price List for all the Types of Cars in the System.
  *
  */
-public class PriceListCarManager {
+public class PriceListManager {
 
 	
-	public PriceListCarManager(){
+	public PriceListManager(){
 		
 	}
 	/**
-	 * Sets the Rental Price of a Car.
+	 * Sets the Rental Price of a Car, or Truck
 	 * @param vehicleType
 	 * @param rate
 	 */
@@ -21,7 +21,7 @@ public class PriceListCarManager {
 		
 	}
 	/**
-	 * Gets the Rental Price of a Car.
+	 * Gets the Rental Price of a Car, or Truck.
 	 * @param vehicleType
 	 * @param rate
 	 * @return rentPrice
@@ -30,7 +30,7 @@ public class PriceListCarManager {
 		return 0;
 	}
 	/**
-	 * Sets the Sale Price of a Car.
+	 * Sets the Sale Price of a Car, or Truck.
 	 * @param vehicleType
 	 * @param rate
 	 */
@@ -39,7 +39,7 @@ public class PriceListCarManager {
 	}
 	
 	/**
-	 * Gets the Sale Price of a Car
+	 * Gets the Sale Price of a Car, or Truck
 	 * @param vehicleType
 	 * @param rate
 	 * @return salePrice

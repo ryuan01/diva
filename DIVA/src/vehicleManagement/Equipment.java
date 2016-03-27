@@ -16,11 +16,12 @@ public class Equipment {
 	 * name of the equipment
 	 */
 	private String name;
+	 
 	
-	/**
-	 * price of the equipment, by day
-	 */
-	private int price; 
+	private String equipmentID;
+	
+	// true if available, false if already reserved.
+	private boolean status;
 	
 	//constructors
 	/**
@@ -34,17 +35,6 @@ public class Equipment {
 	public Equipment(String t, String n, String p) {
 	}
 	
-	//checkers
-	/**
-	 * Checks if this is an equipment
-	 * @param t type
-	 * @param n name
-	 * @pre t must be one of the proposed one
-	 * @post true if it is, false if it is not
-	 */
-	private boolean isEquipment(String t, String n) {
-		return false;
-	}
 	//setters and getters
 	
 	/**
@@ -101,36 +91,14 @@ public class Equipment {
 	public void setPrice(Currency p) {
 	}
 	
-	//-------------------------------------------
-	//BEN's work
-	//need to talk to BEN
-	
-	private int id;
-	// true if available, false if already reserved.
-	private boolean status;
-	
-	public Equipment()
-	{
-		type = "";
-		id = 0;
-		status = false;
-	}
-	
-	public Equipment(String t, int i, boolean s)
-	{
-		type = t;
-		id = i;
-		status = s;
-	}
-	
 	public void changeType(String newType)
 	{
 		type = newType;
 	}
 	
-	public void changeID(int newID)
+	public void changeID(String newID)
 	{
-		id = newID;
+		equipmentID = newID;
 	}
 	
 	public void changeStatus(boolean newStatus)
@@ -138,9 +106,9 @@ public class Equipment {
 		status = newStatus;
 	}
 	
-	public int getID()
+	public String getID()
 	{
-		return id;
+		return equipmentID;
 	}
 	
 	public boolean getStatus()

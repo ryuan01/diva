@@ -24,7 +24,7 @@ public class AccountDB extends DatabaseManager{
 	 * @post true if username exists, false if it does not
 	 * @return true if the username exists
 	 */
-	public boolean isValidUsername(String username) {
+	private boolean isValidUsername(String username) {
 		return false;
 	}
 	
@@ -122,7 +122,7 @@ public class AccountDB extends DatabaseManager{
 	 * @pre isValidAccount(acc)
 	 * @post the specific field information is updated
 	 */
-	public void accountUpdate(Account acc, String field, String newInfo) {
+	public void accountUpdate(String acc_key_value, String field, String newInfo) {
 	}
 	
 	//not sure what kind of statues are here, please add more 
@@ -133,7 +133,7 @@ public class AccountDB extends DatabaseManager{
 	 * @pre isValidAccount(acc)
 	 * @post status is updated
 	 */
-	public void accountupdatestatus(Account acc, String status) {
+	public void accountupdatestatus(String acc_key_value, String status) {
 	}
 	
 	//need to check Kevin's work for naming conventions 
@@ -146,7 +146,7 @@ public class AccountDB extends DatabaseManager{
 	 * @pre typeof(acc) == SuperRent
 	 * @post acc.points =  pt + acc.points
 	 */
-	public void updateAccountPoints(Account acc, int pt) {
+	public void updateAccountPoints(String acc_key_value, int pt) {
 	}
 	
 	/**
@@ -156,7 +156,7 @@ public class AccountDB extends DatabaseManager{
 	 * @pre isValidAccount(acc)
 	 * @post acc.balance += amount
 	 */
-	public void updateAccountBalance(Account acc,Currency amount) {
+	public void updateAccountBalance(String acc_key_value,Currency amount) {
 	}
 	
 	//not too sure if types are just subclasses, how do we update them?
@@ -179,7 +179,7 @@ public class AccountDB extends DatabaseManager{
 	 * @pre isValidAccount(acc)
 	 * @post !isValidAccount(acc)
 	 */
-	public void archiveAccount(Account acc) {
+	public void archiveAccount(String acc_key_value) {
 	}
 	
 	//same as loginPasswordUpdate
@@ -194,7 +194,7 @@ public class AccountDB extends DatabaseManager{
 	 * @post encrypted password for that username
 	 * @return encrypted password for that username
 	 */
-	private String getEncryptedpassword(String username) {
+	public String getEncryptedpassword(String username) {
 		return null;
 	}
 	

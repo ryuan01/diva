@@ -32,7 +32,7 @@ public class BranchDB extends DatabaseManager{
 	 * @pre for all e:Employee, e.branch != b
 	 * @post an entry in TABLE BRANCH is removed
 	 */
-	public void removebranch(Branch b){
+	public void removebranch(String branch_key_value){
 		
 	}
 	
@@ -40,7 +40,7 @@ public class BranchDB extends DatabaseManager{
 	 * 
 	 * @param b
 	 */
-	public void changeBranch(Branch b){
+	public void changeBranch(String branch_key_value){
 		
 	}
 }

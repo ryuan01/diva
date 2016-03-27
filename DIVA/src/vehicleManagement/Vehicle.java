@@ -11,27 +11,13 @@ public class Vehicle {
 	private String color;
 	private String status;
 	private String features;
-	private int location;
+	private String branchID;
 	private int capacity;
-	private int dailyRate;
-	private int weeklyRate;
-	private int hourlyRate;
-	private int perKMRate;
-	private int dailyInsuranceRate;
-	private int weeklyInsuranceRate;
-	private int hourlyInsuranceRate;
 	
 	/**
 	 * Creates a new Vehicle object initialized with the given arguments
 	 * @param location		The branch id of the branch that owns the vehicle
 	 * @param capacity		The number of seats in the vehicle
-	 * @param dailyRate		The flat rate for rentals longer than a day but shorter than a week
-	 * @param weeklyRate	The flat rate for rentals longer than a week
-	 * @param hourlyRate	The flat rate for rentals shorter than one day
-	 * @param perKMRate		The rate changed for each kilometer driven
-	 * @param dailyInsuranceRate	Daily Insurance price 
-	 * @param hourlyInsuranceRate	Hourly Insurance price
-	 * @param weeklyInsuranceRate	Weekly Insurance price
 	 * @param type	Either Car or Truck
 	 * @param manufactuer	The name of the company who manufactures the vehicle
 	 * @param year	The year the vehicle was manufactured
@@ -39,22 +25,15 @@ public class Vehicle {
 	 * @param status	The status of the car is either SOLD, FORSALE, or FORRENT
 	 * @param features	A description of the car
 	 */
-	public Vehicle(int location, int capacity, int dailyRate, int weeklyRate, int hourlyRate, int perKMRate, int dailyInsuranceRate, int hourlyInsuranceRate, int weeklyInsuranceRate, String type, String manufacturer, String year, String color, String status, String features) {
+	public Vehicle(String location, int capacity, int dailyRate, int weeklyRate, int hourlyRate, int perKMRate, int dailyInsuranceRate, int hourlyInsuranceRate, int weeklyInsuranceRate, String type, String manufacturer, String year, String color, String status, String features) {
 		this.setType(type);
 		this.manufacturer = manufacturer;
 		this.year = year;
 		this.color = color;
 		this.status = status;
 		this.features = features;
-		this.location = location;
+		this.branchID = location;
 		this.capacity = capacity;
-		this.dailyRate = dailyRate;
-		this.weeklyRate = weeklyRate;
-		this.hourlyRate = hourlyRate;
-		this.perKMRate = perKMRate;
-		this.dailyInsuranceRate = dailyInsuranceRate;
-		this.weeklyInsuranceRate = weeklyInsuranceRate;
-		this.hourlyInsuranceRate = hourlyInsuranceRate;
 	}
 
 	/**
@@ -78,8 +57,8 @@ public class Vehicle {
 	 * Returns the Vehicles location which is the id of it's owning branch
 	 * @return the branchID of the branch who owns this vehicle
 	 */
-	public int getLocation() {
-		return location;
+	public String getLocation() {
+		return branchID;
 	}
 
 	/**
@@ -87,8 +66,8 @@ public class Vehicle {
 	 * @pre The location provided must be a valid branchID
 	 * @param location The new branchID of the vehicle
 	 */
-	public void setLocation(int location) {
-		this.location = location;
+	public void setLocation(String location) {
+		this.branchID = location;
 	}
 	
 	/**
@@ -186,118 +165,6 @@ public class Vehicle {
 	 */
 	public void setFeatures(String features) {
 		this.features = features;
-	}
-
-	/**
-	 * Returns the Vehicles Daily rental rate
-	 * @return the Vehicles Daily rental rate
-	 */
-	public int getDailyRate() {
-		return dailyRate;
-	}
-
-	/**
-	 * Sets the dailyRate
-	 * @param dailyRate
-	 */
-	public void setDailyRate(int dailyRate) {
-		this.dailyRate = dailyRate;
-	}
-
-	/**
-	 * Returns the Vehicles weekly rental Rate
-	 * @return the Vehicles weekly rental Rate
-	 */
-	public int getWeeklyRate() {
-		return weeklyRate;
-	}
-
-	/**
-	 * Sets the weekly rental rate for this vehicle
-	 * @param weeklyRate The weekly rental rate for this vehicle
-	 */
-	public void setWeeklyRate(int weeklyRate) {
-		this.weeklyRate = weeklyRate;
-	}
-
-	/**
-	 * Returns the Vehicles hourly rental Rate
-	 * @return the Vehicles hourly rental Rate
-	 */
-	public int getHourlyRate() {
-		return hourlyRate;
-	}
-
-	/**
-	 * Set hourly rental rate for this vehicle
-	 * @param hourlyRate the hourly rental rate for this vehicle
-	 */
-	public void setHourlyRate(int hourlyRate) {
-		this.hourlyRate = hourlyRate;
-	}
-
-	/**
-	 * Returns the Vehicles per KM rental Rate
-	 * @return the Vehicles per KM rental Rate
-	 */
-	public int getPerKMRate() {
-		return perKMRate;
-	}
-
-	/**
-	 * Set per KM rental rate
-	 * @param perKMRate the per Kilometer rental rate
-	 */
-	public void setPerKMRate(int perKMRate) {
-		this.perKMRate = perKMRate;
-	}
-
-	/**
-	 * Returns the Vehicles daily insurance Rate
-	 * @return the Vehicles daily insurance Rate
-	 */
-	public int getDailyInsuranceRate() {
-		return dailyInsuranceRate;
-	}
-
-	/**
-	 * Sets the daily insurance rate for this vehicle
-	 * @param dailyInsuranceRate The daily insurance rate for this vehicle
-	 */
-	public void setDailyInsuranceRate(int dailyInsuranceRate) {
-		this.dailyInsuranceRate = dailyInsuranceRate;
-	}
-
-	/**
-	 * Returns the Vehicles weekly insurance Rate
-	 * @return the Vehicles weekly insurance Rate
-	 */
-	public int getWeeklyInsuranceRate() {
-		return weeklyInsuranceRate;
-	}
-
-	/**
-	 * Sets the weekly insurance rate for this vehicle
-	 * @param weeklyInsuranceRate the new weekly insurance rate
-	 */
-	public void setWeeklyInsuranceRate(int weeklyInsuranceRate) {
-		this.weeklyInsuranceRate = weeklyInsuranceRate;
-	}
-
-	/**
-	 * Returns the Vehicles hourly insurance Rate
-	 * @return the Vehicles hourly insurance Rate
-	 */
-	public int getHourlyInsuranceRate() {
-		return hourlyInsuranceRate;
-	}
-
-	/**
-	 * Sets the hourly insurance rate for this vehicle
-	 * @param hourlyInsuranceRate the new hourly insurance rate for this
-	 */
-	public void setHourlyInsuranceRate(int hourlyInsuranceRate) {
-		this.hourlyInsuranceRate = hourlyInsuranceRate;
 	}
 }
 
