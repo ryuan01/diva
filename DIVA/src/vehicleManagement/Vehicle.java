@@ -5,6 +5,7 @@ package vehicleManagement;
  */
 public class Vehicle {
 	
+	private int id; // Car ID number is important for vehicle identification for deletion
 	private String type;
 	private String manufacturer;
 	private String year;
