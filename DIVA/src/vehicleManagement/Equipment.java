@@ -1,27 +1,37 @@
 package vehicleManagement;
+
 import java.util.Currency;
+//import Branch
 
 /* Robin */
 /**
  * Equipment class models additional equipments for rentals
  */
-public class Equipment {
+public class Equipment{
+	
+	
+	private int serialNum;
 	
 	/**
-	 * type can be {forCar, forTruck}
+	 * type can be 'ski rack', 'child safety seat', 'lift gate', or 'car-towing eq'
 	 */
 	private String type;
 	
 	/**
-	 * name of the equipment
-	 */
-	private String name;
-	
-	/**
 	 * price of the equipment, by day
 	 */
-	private int price; 
+	private Currency price; 
 	
+	public Equipment(int sn, String type){
+		serialNum = sn;
+		this.type = type;
+	}
+	
+	public int getSN(){
+		return serialNum;
+	}
+}
+
 	//constructors
 	/**
 	 * Constructs a new equipment, need to talk to db
