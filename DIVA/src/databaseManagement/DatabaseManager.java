@@ -1,3 +1,7 @@
+/**
+ * Class DatabaseManager is fully implemented and tested
+ */
+
 package databaseManagement;
 
 import java.sql.Connection;
@@ -15,12 +19,13 @@ public class DatabaseManager {
 	
 	//Database URL
         //THIS IS SET TO A TEST DATABASE: CHANGE TO 'diva_main' WHEN DEPLOYED!!
-        private static final String CONN_STRING = "jdbc:mysql://localhost/diva_test";
+        private static final String CONN_STRING = "jdbc:mysql://localhost/test";
         
         // Database User Name and Password
         private static final String USERNAME = "diva";
         private static final String PASSWORD = "DiVA$E2016&";
         
+        // A session with the database
         private Connection connection;
         
 	/** 
@@ -51,6 +56,11 @@ public class DatabaseManager {
 		}
 	}
 	
+	/**
+	 * @pre none
+	 * @post none
+	 * @return a Connection object
+	 */
 	protected Connection getConnection(){
 		return connection;
 	}
