@@ -1,3 +1,36 @@
+// initialize document forms
+jQuery(document).ready(function() {
+
+    // hide textbox for different return location
+    jQuery("#differentLocTextBox").hide();
+    
+    jQuery('.tabs .tab-links a').on('click', function(e)  {
+        var currentAttrValue = jQuery(this).attr('href');
+ 
+        // Show/Hide Tabs
+        jQuery('.tabs ' + currentAttrValue).show().siblings().hide();
+ 
+        // Change/remove current tab to active
+        jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
+ 
+        e.preventDefault();
+    });
+});
+
+jQuery(function(){
+    jQuery("#pickupDate").datepicker();
+    jQuery("#returnDate").datepicker();
+});
+
+// show another textbox if there's a different return location
+function isDifferentReturnLocation(){
+    if (document.getElementById("differentLocation").checked == true){
+        jQuery("#differentLocTextBox").show();
+    }
+    else {
+        jQuery("#differentLocTextBox").hide();
+    }
+}
 var username;
 var password;
 
@@ -53,6 +86,7 @@ function searchVehicle() {
 //    
 //    //TODO
 //}
+<<<<<<< HEAD
 // handling the tab bar
 jQuery(document).ready(function() {
     jQuery('.tabs .tab-links a').on('click', function(e)  {
@@ -67,3 +101,5 @@ jQuery(document).ready(function() {
         e.preventDefault();
     });
 });
+=======
+>>>>>>> mark
