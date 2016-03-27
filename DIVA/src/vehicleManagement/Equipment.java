@@ -1,14 +1,19 @@
+/**
+ * Notes:
+ * 	1- This class is not Tested
+ * 	2- Update the javadocs when this class is confirmed
+ * 
+ */ 
 package vehicleManagement;
 
 import java.util.Currency;
-//import Branch
+import systemManagement.Branch;
 
 /* Robin */
 /**
  * Equipment class models additional equipments for rentals
  */
 public class Equipment{
-	
 	
 	private int serialNum;
 	
@@ -27,21 +32,36 @@ public class Equipment{
 		this.type = type;
 	}
 	
-	public int getSN(){
+	// constructors
+	public Equipment(Equipment eq){
+		this.serialNum = eq.getSerialNum();
+		this.type = eq.getType();
+		this.price = eq.getPrice();
+	}
+	//setters and getters
+	
+	/**
+	 * Get type of equipment
+	 * @pre none
+	 * @post none
+	 * @return Equipment type
+	 */
+	public String getType() {
+		return null;
+	}
+	
+	public int getSerialNum(){
 		return serialNum;
 	}
-}
-
-	//constructors
+	
 	/**
-	 * Constructs a new equipment, need to talk to db
-	 * @param t type
-	 * @param n name
-	 * @param p price
-	 * @pre !isEquipment(t,n)
-	 * @post isEquipment(t,n)
+	 * Get price of the equipment
+	 * @pre none
+	 * @post none
+	 * @return Equipment rental price
 	 */
-	public Equipment(String t, String n, String p) {
+	public Currency getPrice() {
+		return price;
 	}
 	
 	//checkers
@@ -54,107 +74,7 @@ public class Equipment{
 	 */
 	private boolean isEquipment(String t, String n) {
 		return false;
-	}
-	//setters and getters
-	
-	/**
-	 * Get type of equipment
-	 * @pre none
-	 * @post type is returned
-	 */
-	public String getType() {
-		return null;
-	}
-
-	/**
-	 * Get name of the equipment
-	 * @pre none
-	 * @post name is returned 
-	 */
-	public String getName() {
-		return null;
-	}
-	
-	/**
-	 * Get price of the equipment
-	 * @pre none
-	 * @post price is returned
-	 */
-	public String getPrice() {
-		return null;
-	}
-	
-	/**
-	 * Set type of equipment
-	 * @param t a type of equipment
-	 * @pre t must be a possible type
-	 * @post type is set 
-	 */
-	public void setType(String t) {
-	}
-	
-	/**
-	 * Set name of equipment
-	 * @param n a name 
-	 * @pre n must be formatted
-	 * @post name is set 
-	 */
-	public void setName(String n) {
-	}
-	
-	/**
-	 * Set price of equipment
-	 * @param p price
-	 * @pre p > 0
-	 * @post price is set
-	 */
-	public void setPrice(Currency p) {
-	}
-	
-	//-------------------------------------------
-	//BEN's work
-	//need to talk to BEN
-	
-	private int id;
-	// true if available, false if already reserved.
-	private boolean status;
-	
-	public Equipment()
-	{
-		type = "";
-		id = 0;
-		status = false;
-	}
-	
-	public Equipment(String t, int i, boolean s)
-	{
-		type = t;
-		id = i;
-		status = s;
-	}
-	
-	public void changeType(String newType)
-	{
-		type = newType;
-	}
-	
-	public void changeID(int newID)
-	{
-		id = newID;
-	}
-	
-	public void changeStatus(boolean newStatus)
-	{
-		status = newStatus;
-	}
-	
-	public int getID()
-	{
-		return id;
-	}
-	
-	public boolean getStatus()
-	{
-		return status;
+		// I don't know what this method is for??!!
 	}
 }
+
