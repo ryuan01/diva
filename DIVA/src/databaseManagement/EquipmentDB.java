@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * EquipmentDB creates, deletes, and modifies data related to Equipment
@@ -40,7 +41,7 @@ public class EquipmentDB extends DatabaseManager{
 	 * @pre t is valid 
 	 * @post list of equipments
 	 */
-	public Equipment[] searchAdditionalEquipments(String t, int branch_num) {
+	public ArrayList<Equipment> searchAdditionalEquipments(String t, int branch_num) {
 		
 		// 1- Connect to the database
 		super.connect();
@@ -52,9 +53,17 @@ public class EquipmentDB extends DatabaseManager{
 		{
 			try{
 				Statement stmt = super.getConnection().createStatement();
-				String query = "SELECT * FROM equipments WHERE location =" + branch_num +", eq_type" = t + ";" ;
+				String query = "SELECT * FROM equipments WHERE location =" + Integer.toString(branch_num)+ "AND eq_type=" + t +";";
 				ResultSet rs = stmt.executeQuery(query);
-				System.out.println(rs.getInt("serial_num"));
+			
+				ArrayList<Equipment> equipmentList = new ArrayList<Equipment>() ;
+				
+				while(rs.next()){
+					equipmentList.add(new Equipment(rs.getInt("serial_num"))); // Add data according to Equipment class
+				}
+				super.disconnect();
+				
+				return equipmentList;
 			} catch (SQLException e){
 				System.err.println(e);
 				return null;
