@@ -4,7 +4,7 @@ import vehicleManagement.Vehicle;
 
 public class Branch {
 	
-	private String id;
+	private int id;
 	private String address;
 	private String[] vehicleIDs;
 	
