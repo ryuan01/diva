@@ -20,7 +20,34 @@ public class BranchDB extends DatabaseManager{
   	 * @pre isValidBranch(b)
   	 * @post a new entry in TABLE BRANCH
   	 */
-  	public void addBranch(Branch b){
+  	public boolean addBranch(Branch b){
+  	  String streetName = b.getStreetName();
+  		String city = b.getCity();
+  		String province = b.getProvince();
+  	 	String zipcode = b.getZipCode();
+  
+  		super.connect();
+  		
+  		if (super.getConnection() == null)
+      {
+          return false;
+      } else
+      {
+        try{
+          Statement stmt = super.getConnection().createStatement();
+          String query = "INSERT INTO `branches`(`street_name`, `city`, `province`, `zip_code`) "
+          + "VALUES ('" + streetName + "','" + city + "'d,'" + province + "','" + zipcode +"');";
+          
+          int result = stmt.executeUpdate(query);
+          super.disconnect();
+          return true;
+          
+          
+        }catch(SQLException e){
+          System.err.println(e);
+          return false;
+        }
+		}
   		
   	}
   	
@@ -34,8 +61,32 @@ public class BranchDB extends DatabaseManager{
   	 * @post an entry in TABLE BRANCH is removed
   	 */
   	public void removebranch(Branch b){
-  		
+  	  
+  	  // get branch id Number:
+  	  // int id_num = b.getID();
+  	  
+  	  super.connect();
+  	  
+  		if (super.getConnection() == null)
+      {
+          return false;
+      } else{
+        try{
+          Statement stmt = super.getConnection().createStatement();
+          String query = "DELETE FROM branches WHERE id_num=" + Integer.toString(id_num) +";";
+          
+          int result = stmt.executeUpdate(query);
+          super.disconnect();
+          return true;
+          
+          
+        }catch(SQLException e){
+          System.err.println(e);
+          return false;
+        }
+      }
   	}
+  	
   	
   	/**
   	 * 
