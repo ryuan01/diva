@@ -23,8 +23,29 @@ public class AccountDB{
 	 * @return true if the username exists
 	 */
 	public boolean isValidUsername(String username) {
+		//Get DatabaseManager instance and connect to the database
+		DatabaseManager dbm = DatabaseManager.getInstance();
+		dbm.connect();
+		
+		// execute the query:
+		try{
+			Statement stmt = dbm.getConnection().createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+			
+			// check for uany matching usernames
+			while (rs.next()){
+				if (username.equals(rs.getString("account_uName"))){
+					return true;
+				}
+			}
+		}catch (SQLException e){
+			System.err.println(e);
+		}finally{
+			dbm.disconnect();
+		}
 		
 		return false;
+	}
 	}
 	
 	/**
