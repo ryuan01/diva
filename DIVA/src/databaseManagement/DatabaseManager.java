@@ -9,10 +9,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /*Robin */
-/*edit by Sammy*/
+/*edited by Sammy*/
 /**
  * DatabaseManager deals with connection to database
- * @author Robin
+ * @author Robin, Sammy
  * @invariant dbname database name 
  * @invariant pw password for connection 
  */
@@ -34,11 +34,12 @@ public class DatabaseManager {
     private static DatabaseManager instance = null;
     
 	/** 
-	 * Constructs a DatabaseManager
-	 * @post an only DatabasManager object is created
-	 */
+	* Constructs a DatabaseManager
+	* @post an only DatabasManager object is created
+	*/
     private DatabaseManager(){
-    	
+    	connection = null;
+    	//System.out.println("Instantiated");
     }
     
     /**
@@ -62,7 +63,9 @@ public class DatabaseManager {
 	public void connect() {
 		if (!isConnected()){
 			try{
+				System.out.println("Connecting...");
 				connection = DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
+				System.out.println("Connected");
 			} catch(SQLException e){
 				System.err.println(e);
 			}
@@ -87,6 +90,7 @@ public class DatabaseManager {
 		if(isConnected()){
 			try{
 				connection.close();
+				System.out.println("Disconnected");
 			} catch(SQLException e){
 				System.err.println(e);
 			}finally{
@@ -109,6 +113,4 @@ public class DatabaseManager {
 		}
 	}
 	
-	
-
 }
