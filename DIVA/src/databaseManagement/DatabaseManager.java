@@ -19,43 +19,47 @@ import java.sql.SQLException;
 
 public class DatabaseManager {
 	
-	protected static String dbname;
-	protected String pw;
-	private boolean is_running = false;
-	
-	/**
 	//Database URL
-        //THIS IS SET TO A TEST DATABASE: CHANGE TO 'diva_main' WHEN DEPLOYED!!
-        private static final String CONN_STRING = "jdbc:mysql://localhost/test";
-        
-        // Database User Name and Password
-        private static final String USERNAME = "diva";
-        private static final String PASSWORD = "DiVA$E2016&";
-        
-        // A session with the database
-        private Connection connection;
-        
+    //THIS IS SET TO A TEST DATABASE: CHANGE TO 'diva_main' WHEN DEPLOYED!!
+    private static final String CONN_STRING = "jdbc:mysql://localhost/test";
+    
+    // Database User Name and Password
+    private static final String USERNAME = "diva";
+    private static final String PASSWORD = "DiVA$E2016&";
+    
+    // A session with the database
+    private Connection connection;
+    
+    //singieton design pattern
+    private static DatabaseManager instance = null;
+    
 	/** 
 	 * Constructs a DatabaseManager
-	 * @param db a db name 
-	 * @param pass an encrypted password
-	 * @pre db and pass are valid
-	 * @pre must be the only one running
-	 * @post a DatabasManager object is created
-	 * Note1: The database username and pwd are static final variables and do not need to be passed into these methods
-	 * Note2: Consider making them protected
+	 * @post an only DatabasManager object is created
 	 */
-	public DatabaseManager(String db, String pass) {
-		dbname = db;
-		pw = pass;
-	}
+    private DatabaseManager(){
+    	
+    }
+    
+    /**
+     * Get the only databaseManager
+     * @return an instance of databasemanager
+     * @post databaseManager.instance != null
+     */
+    public static DatabaseManager getInstance(){
+    	if (instance == null){
+    		instance = new DatabaseManager();
+    	}
+    	return instance;
+    }
+       
 	
 	/**
 	 * Connect to database
 	 * @pre !isConnect()
 	 * @post isConnected() 
 	 */
-	protected void connect() {
+	public void connect() {
 		if (!isConnected()){
 			try{
 				connection = DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
@@ -70,7 +74,7 @@ public class DatabaseManager {
 	 * @post none
 	 * @return a Connection object
 	 */
-	protected Connection getConnection(){
+	public Connection getConnection(){
 		return connection;
 	}
 	
@@ -79,7 +83,7 @@ public class DatabaseManager {
 	 * @pre isConnected()
 	 * @post !isConnect()
 	 */
-	protected void disconnect() {
+	public void disconnect() {
 		if(isConnected()){
 			try{
 				connection.close();
@@ -97,6 +101,7 @@ public class DatabaseManager {
 	 * @post returns true if there is a connection, otherwise false 
 	 */
 	private boolean isConnected() {
+		//maybe use instance ? 
 		if(connection != null){
 			return true;
 		} else{

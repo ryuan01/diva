@@ -12,9 +12,7 @@ import rentalManagement.Reservation;
 class RentalDB {
 	
 	
-	public RentalDB(String db, String pass) {
-		super(db, pass);
-		// TODO Auto-generated constructor stub
+	public RentalDB() {
 	}
 
 	//modify 

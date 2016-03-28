@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-package databaseManagement;
-
-import vehicleManagement.Equipment;
-=======
 /**
- * EquipmentDB is dependant on vehicleManagement.Equipment class, which is not implemented
+* EquipmentDB is dependant on vehicleManagement.Equipment class, which is not implemented
  */
 package databaseManagement;
 
@@ -14,11 +9,10 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
->>>>>>> samahri
 
 /**
  * EquipmentDB creates, deletes, and modifies data related to Equipment
- * @author Robin
+ * @author Robin, Sammy
  *
  */
 class EquipmentDB {

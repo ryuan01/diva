@@ -8,7 +8,7 @@ package accountManagement;
 
 
 
-public class Account {
+public abstract class Account {
 
 	
 	private String firstname;
@@ -16,7 +16,6 @@ public class Account {
 	private String phoneNumber;
 	private String email;
 	private String loginId;
-	private String password;
 	
 	/**
 	 * Creates a new Account object initialized with the given arguments
@@ -33,7 +32,6 @@ public class Account {
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.loginId= loginId;
-		this.password = password;
 	
 	}
 
@@ -102,24 +100,6 @@ public class Account {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	
-	/**
-	 * Gets the password of a user account.
-	 * @return password
-	 */
-
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * Sets the password of a user account.
-	 * @param password
-	 */
-	
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	/**
