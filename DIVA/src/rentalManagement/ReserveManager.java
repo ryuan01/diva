@@ -1,14 +1,28 @@
 package rentalManagement;
 
+import java.io.IOException;
 import java.sql.Date;
+import databaseManagement.*;
 
 public class ReserveManager {
 	
+	
+	DatabaseManager dbConnection;
 	/**
 	 * A Manager for adding, removing, and modifying Reservations and its attributes.
 	 */
 	public ReserveManager()
 	{
+		dbConnection = null;
+	}
+	
+	/**
+	 * A Manager for adding, removing, and modifying Reservations and its attributes.
+	 * @param db The database it's connecting.
+	 */
+	public ReserveManager(DatabaseManager db)
+	{
+		dbConnection = db;
 	}
 	
 	/**
@@ -24,8 +38,10 @@ public class ReserveManager {
 	 * @param status Status of the Reservation.
 	 * @param reservID Reservation ID.
 	 */
-	public void addReservation(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, String customerID, String employeeID, String status, String reservID)
+	public void addReservation(ReservationDate startDate,ReservationDate endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+			String customerID, String employeeID, String status, String reservID) throws IOException
 	{
+		dbConnection.createReservationEntry(ReservationDate.toString(startDate), ReservationDate.toString(endDate), vehicleID, equipIDs, startBranchID, endBranchID,customerID, employeeID, status);
 	}
 	
 	/**
@@ -37,6 +53,7 @@ public class ReserveManager {
 	 */
 	public void removeReservation(String customerID, String reservID)
 	{
+		dbConnection.removeReservationEntry(reservID);
 	}
 	
 	
@@ -46,9 +63,9 @@ public class ReserveManager {
 	 * @param id The type of search executed, can be vehicleID, branchID, reservationID, customerID, employeeID, equipID, reservStatus.
 	 * @return List of qualifying Reservations from the search
 	 */
-	public String[] searchReservations(String id)
+	public Reservation[] searchReservations(String id)
 	{
-		return null;
+		dbConnection.searchReservationEntries(id);
 	}
 	
 	
@@ -57,9 +74,9 @@ public class ReserveManager {
 	 * @param d Start date to search with.
 	 * @return List of Reservations that a start Date is assigned to.
 	 */
-	public String[] searchStartDate(Date d)
+	public Reservation[] searchStartDate(ReservationDate d)
 	{
-		return null;
+		dbConnection.searchReservationEntries(ReservationDate.toString(d));
 	}
 	
 
@@ -68,9 +85,9 @@ public class ReserveManager {
 	 * @param d End date to search with.
 	 * @return List of Reservations that a end Date is assigned to.
 	 */
-	public String[] searchEndDate(Date d)
+	public Reservation[] searchEndDate(ReservationDate d)
 	{
-		return null;
+		dbConnection.searchReservationEntries(ReservationDate.toString(d));
 	}
 	
 	/**
@@ -82,6 +99,7 @@ public class ReserveManager {
 	 */
 	public void changeReservation(String reservID, String id)
 	{
+		dbConnection.modifyReservationEntries(reservID, id);
 	}
 	
 	/**
@@ -89,9 +107,9 @@ public class ReserveManager {
 	 * @param reservID Reservation ID of Reservation to be modified.
 	 * @param newDate New Date of Reservation.
 	 */
-	public void changeStartDate(String reservID, Date newDate)
+	public void changeStartDate(String reservID, ReservationDate newDate)
 	{
-		
+		dbConnection.modifyReservationStartDateEntries(reservID, ReservationDate.toString(newDate));
 	}
 	
 	/**
@@ -99,15 +117,9 @@ public class ReserveManager {
 	 * @param reservID Reservation ID of Reservation to be modified.
 	 * @param newDate New Date of Reservation.
 	 */
-	public void changeEndDate(String reservID, Date newDate)
+	public void changeEndDate(String reservID, ReservationDate newDate)
 	{
-		
-	
-
-		
-
-	
-	
+		dbConnection.modifyReservationEndDateEntries(reservID, ReservationDate.toString(newDate));
 	}
 	
 }
