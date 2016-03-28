@@ -6,13 +6,12 @@ import accountManagement.Account;
  * AccountDB provides services related to the creation, deletion, and modification of account
  * no invariant 
  */
-public class AccountDB extends DatabaseManager{
+public class AccountDB{
 	
 	
 	//checking 
 
 	public AccountDB() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 
