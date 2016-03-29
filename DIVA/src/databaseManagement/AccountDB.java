@@ -56,7 +56,27 @@ public class AccountDB{
 	 * @post true if the there is a match, otherwise false
 	 */
 	public boolean isValidLogin(String username, String pw) {
+		DatabaseManager dbm = DatabaseManager.getInstance();
+		dbm.connect();
+		
+		try{
+			Statement stmt = dbm.getConnection().createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
+			
+			while(rs.next()){
+				if ((username.equals(rs.getString("account_uName")) == true) && (pw.equals(rs.getString("account_password")) == true)){
+					return true;
+				}
+			}
+			
+		} catch (SQLException e){
+			System.err.println(e);
+		} finally{
+			dbm.disconnect();
+		}
+		
 		return false;
+	}
 	}
 
 	/**
