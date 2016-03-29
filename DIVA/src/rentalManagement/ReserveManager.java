@@ -41,6 +41,7 @@ public class ReserveManager {
 	public void addReservation(ReservationDate startDate,ReservationDate endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
 			String customerID, String employeeID, String status, String reservID) throws IOException
 	{
+		
 		dbConnection.createReservationEntry(ReservationDate.toString(startDate), ReservationDate.toString(endDate), vehicleID, equipIDs, startBranchID, endBranchID,customerID, employeeID, status);
 	}
 	

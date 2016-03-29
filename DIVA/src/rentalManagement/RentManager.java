@@ -1,13 +1,26 @@
 package rentalManagement;
 
+import databaseManagement.DatabaseManager;
+
 public class RentManager {
+	
+	
+		DatabaseManager dbConnection;
 	
 		/**
 		 * A Rental Manager that creates, and modifies Rentals.
 		 */
 		public RentManager()
 		{
-	
+			
+		}
+		
+		/**
+		 * A Rental Manager that creates, and modifies Rentals.
+		 */
+		public RentManager(DatabaseManager db)
+		{
+			dbConnection = db;
 		}
 	
 		/**
@@ -40,7 +53,7 @@ public class RentManager {
 		 */
 		public void payForRental(String reservID, String typeOfPayment)
 		{
-			
+			paymentManager.makePayment(reservID,typeOfPayment);
 		}
 		
 		/**
