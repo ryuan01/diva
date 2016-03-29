@@ -86,7 +86,30 @@ public class AccountDB{
 	 * @return true if it exists, false if it does not
 	 */
 	public boolean isValidAccount(Account acc ) {
+		ConnectDB dbm = new ConnectDB();
+		dbm.connect();
+		String username = acc.getLoginId(); // Note: username is cases sensitive 
+		
+		try{
+			Statement stmt = dbm.getConnection().createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
+			
+			while(rs.next()){
+				if (username.equals(rs.getString("account_uName"))){
+					return true;
+				}
+					
+			}
+			
+		} catch (SQLException e){
+			System.err.println(e);
+		} finally{
+			dbm.disconnect();
+		}
+		
 		return false;
+	}
+	
 	}
 	
 	//getter 
