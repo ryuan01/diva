@@ -38,8 +38,6 @@ public class DatabaseManager {
 	* @post an only DatabasManager object is created
 	*/
     private DatabaseManager(){
-    	connection = null;
-    	//System.out.println("Instantiated");
     }
     
     /**
@@ -112,5 +110,7 @@ public class DatabaseManager {
 			return false;
 		}
 	}
-	
+    
+    // AccountDB calls:
+   
 }

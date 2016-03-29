@@ -7,11 +7,11 @@ import accountManagement.Account;
  * @author Robin
  * no invariant 
  */
+
 class AccountDB {
 	
 	
 	//checking 
-
 	public AccountDB() {
 		// TODO Auto-generated constructor stub
 	}
@@ -23,7 +23,27 @@ class AccountDB {
 	 * @post true if username exists, false if it does not
 	 * @return true if the username exists
 	 */
-	public boolean isValidUsername(String username) {
+	private boolean isValidUsername(String username) {
+		//Get DatabaseManager instance and connect to the database
+		ConnectDB dbm = new ConnectDB();
+		dbm.connect();
+		
+		// execute the query:
+		try{
+			Statement stmt = dbm.getConnection().createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+			
+			// check for uany matching usernames
+			while (rs.next()){
+				if (username.equals(rs.getString("account_uName"))){
+					return true;
+				}
+			}
+		}catch (SQLException e){
+			System.err.println(e);
+		}finally{
+			dbm.disconnect();
+		}
 		
 		return false;
 	}
@@ -35,7 +55,29 @@ class AccountDB {
 	 * @pre isValidUsername(username)
 	 * @post true if the there is a match, otherwise false
 	 */
-	public boolean isValidLogin(String username, String pw) {
+	private boolean isValidLogin(String username, String pw) {
+		if (isValidUsername(username) == true){
+			ConnectDB dbm = new ConnectDB();
+			dbm.connect();
+		
+			try{
+				Statement stmt = dbm.getConnection().createStatement();
+			
+				ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
+			
+				while(rs.next()){
+					if ((username.equals(rs.getString("account_uName")) == true) && (pw.equals(rs.getString("account_password")) == true)){
+						return true;
+					}
+				}
+			
+			} catch (SQLException e){
+				System.err.println(e);
+			} finally{
+				dbm.disconnect();
+			}
+		}
+		
 		return false;
 	}
 
@@ -46,9 +88,30 @@ class AccountDB {
 	 * @post true if it exists, false if it does not
 	 * @return true if it exists, false if it does not
 	 */
-	public boolean isValidAccount(String acc_key_value ) {
+	private boolean isValidAccount(Account acc ) {
+		ConnectDB dbm = new ConnectDB();
+		dbm.connect();
+		String username = acc.getLoginId(); // Note: username is cases sensitive 
+		
+		try{
+			Statement stmt = dbm.getConnection().createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
+			
+			while(rs.next()){
+				if (username.equals(rs.getString("account_uName"))){
+					return true;
+				}
+					
+			}
+			
+		} catch (SQLException e){
+			System.err.println(e);
+		} finally{
+			dbm.disconnect();
+		}
 		return false;
 	}
+	
 	
 	//getter 
 	/**
@@ -72,7 +135,22 @@ class AccountDB {
 	 * @post account's key value
 	 * @return account's key value
 	 */
-	public String getAccountKeyValue (String username) {
+	public Account getAccount(String username) {
+		if(isValidUsername(username)){
+			ConnectDB dbm = new ConnectDB();
+			dbm.connect();
+			
+			try{
+				Statement stmt = dbm.getConnection().createStatement();
+				
+				// Problem: how to determine the "type" of account (whether it's a customer, employee, clerk, etc..)
+				
+			} catch (SQLException e){
+				System.err.println(e);
+			} finally{
+				dbm.disconnect();
+			}
+		}
 		return null;
 	
 	}
@@ -87,7 +165,20 @@ class AccountDB {
 	 * @post account's key value 
 	 * @return account's key value
 	 */
-	public String getAccountKeyValue (String fname, String lname, String phonenum) {
+	public Account getAccount(String fname, String lname, String phonenum) {
+		ConnectDB dbm = new ConnectDB();
+		dbm.connect();
+		
+		try{
+			Statement stmt = dbm.getConnection().createStatement();
+			
+			// Problem: how to determine the "type" of account (whether it's a customer, employee, clerk, etc..)
+			
+		} catch (SQLException e){
+			System.err.println(e);
+		} finally{
+			dbm.disconnect();
+		}
 		return null;
 	}
 	
@@ -109,8 +200,32 @@ class AccountDB {
 	 * @param enNewPw the new encrypted password
 	 * @pre isValidLogin(username, oldPw)
 	 * @post isValidLogin(username, enNewPw)
+	 * @return boolean value if the update is succesfull, return true; otherwise, resturn false
 	 */
-	public void loginPasswordUpdate(String username, String enOldPw, String enNewPw) {
+	public boolean loginPasswordUpdate(String username, String enOldPw, String enNewPw) {
+		if (isValidLogin(username, enOldPw)){
+			ConnectDB dbm = new ConnectDB();
+			dbm.connect();
+			
+			try{
+				Statement stmt = dbm.getConnection().createStatement();
+				String query = "UPDATE users SET account_password= '" + enNewPw +
+						"' WHERE account_uName='" + username + "' AND account_password='" + enOldPw + "';";
+						
+				stmt.executeUpdate(query);
+				dbm.disconnect();
+				return true;
+				
+			}catch (SQLException e){
+				System.err.println(e);
+				return false;
+			} finally{
+				dbm.disconnect();
+				
+			}
+		} else{
+			return false;
+		}
 	}
 	
 	/**
@@ -133,7 +248,7 @@ class AccountDB {
 	 * @pre isValidAccount(acc)
 	 * @post status is updated
 	 */
-	public void accountupdatestatus(String acc_key_value, String status) {
+	public void accountUpdateStatus(Account acc, String status) {
 	}
 	
 	//need to check Kevin's work for naming conventions 
@@ -170,7 +285,32 @@ class AccountDB {
 	 * @pre !isValidUsername(info[0]);
 	 * @post isValidAccount(loginId);
 	 */
-	public void createAccount(String[] info) {
+	public boolean createAccount(String[] info) {
+		// Does it need to specify the account type?
+		if (!isValidAccount(info[2], info[3], info[4]) && !isValidUsername[0])
+			ConnectDB dbm = new ConnectDB();
+			dbm.connect();
+			try{
+				Statement stmt = dbm.getConnection().createStatement();
+				
+				String query = "INSERT INTO `users` (`first_name`,`last_name`,`phone`,`email`,`account_uName`,`account_password`) "+
+						"VALUES ('" + info[2] + "','" + info[3] + "','"+ info[4] + "','"+ info[5] + "','"+ info[0] + "','"
+						+ info[1] + "');";
+	
+				stmt.executeUpdate(query);
+				dbm.disconnect();
+				return true;
+			} catch (SQLException e){
+				System.err.println(e);
+				return false;
+			} finally{
+				dbm.disconnect();
+				
+			}
+		} else{
+			return false;
+		}
+		
 	}
 	
 	/**
@@ -194,8 +334,26 @@ class AccountDB {
 	 * @post encrypted password for that username
 	 * @return encrypted password for that username
 	 */
-	public String getEncryptedpassword(String username) {
-		return null;
+	private String getEncryptedPassword(String username) {
+		if (isValidUsername(username)){
+			ConnectDB dbm = new ConnectDB();
+			dbm.connect();
+			String query = "SELECT account_password FROM users WHERE account_uName = '" + username +"';";
+			
+			try{
+				Statement stmt = dbm.getConnection().createStatement();
+				
+				ResultSet rs = stmt.executeQuery(query);
+				rs.next();
+				return rs.getString("account_password");
+				
+			}catch (SQLException e){
+				System.err.println(e);
+				return null;
+			} finally{
+				dbm.disconnect();
+			}	
+		}
 	}
 	
 	/**
