@@ -27,8 +27,9 @@ class BranchDB {
   		String city = b.getCity();
   		String province = b.getProvince();
   	 	String zipcode = b.getZipCode();
+		return false;
   
-  		super.connect();
+  		/*super.connect();
   		
   		if (super.getConnection() == null)
       {
@@ -49,7 +50,7 @@ class BranchDB {
           System.err.println(e);
           return false;
         }
-		}
+		}*/
   		
   	}
   	
@@ -64,11 +65,12 @@ class BranchDB {
   	 * @post an entry in TABLE BRANCH is removed
   	 */
   	public boolean removebranch(String b_key_value) throws SQLException{
+		return false;
   	  
   	  // get branch id Number:
   	  // int id_num = b.getID();
   	  
-  	  super.connect();
+  	  /*super.connect();
   	  
   		if (super.getConnection() == null)
       {
@@ -87,7 +89,7 @@ class BranchDB {
           System.err.println(e);
           return false;
         }
-      }
+      }*/
   	}
   	
   	

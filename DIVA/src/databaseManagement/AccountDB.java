@@ -1,4 +1,7 @@
 package databaseManagement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Currency;
 
 import accountManagement.Account;
@@ -110,21 +113,6 @@ class AccountDB {
 			dbm.disconnect();
 		}
 		return false;
-	}
-	
-	
-	//getter 
-	/**
-	 * getAccount gets an account from database
-	 * @param key_value a unique value that represents an account.
-	 * @return account object reference
-	 * @pre none
-	 * @post Account a reference to Account object
-	 * @return a reference to Account object 
-	 */
-	public Account getAccount (String key_value) {
-		return null;
-	
 	}
 	
 	/**
@@ -287,7 +275,8 @@ class AccountDB {
 	 */
 	public boolean createAccount(String[] info) {
 		// Does it need to specify the account type?
-		if (!isValidAccount(info[2], info[3], info[4]) && !isValidUsername[0])
+		if (!isValidAccount(info[2], info[3], info[4]) && !isValidUsername(info[0]))
+		{
 			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
 			try{
@@ -354,6 +343,7 @@ class AccountDB {
 				dbm.disconnect();
 			}	
 		}
+		return null;
 	}
 	
 	/**
