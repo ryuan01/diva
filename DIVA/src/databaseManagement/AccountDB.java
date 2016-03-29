@@ -10,7 +10,6 @@ public class AccountDB{
 	
 	
 	//checking 
-
 	public AccountDB() {
 		// TODO Auto-generated constructor stub
 	}
