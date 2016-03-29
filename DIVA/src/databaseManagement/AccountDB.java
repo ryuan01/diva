@@ -23,7 +23,7 @@ public class AccountDB{
 	 */
 	public boolean isValidUsername(String username) {
 		//Get DatabaseManager instance and connect to the database
-		DatabaseManager dbm = DatabaseManager.getInstance();
+		ConnectDB dbm = new ConnectDB();
 		dbm.connect();
 		
 		// execute the query:
@@ -55,7 +55,7 @@ public class AccountDB{
 	 * @post true if the there is a match, otherwise false
 	 */
 	public boolean isValidLogin(String username, String pw) {
-		DatabaseManager dbm = DatabaseManager.getInstance();
+		ConnectDB dbm = new ConnectDB();
 		dbm.connect();
 		
 		try{
