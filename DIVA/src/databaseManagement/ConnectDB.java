@@ -25,6 +25,10 @@ class ConnectDB{
       connection = null;
     }
     
+    public Connection getConnection(){
+    	return connection;
+    }
+    
     /**
   	 * Connect to database
   	 * @pre !isConnect()
@@ -71,4 +75,6 @@ class ConnectDB{
 			return false;
 		}
 	}
+	
+	
 }
