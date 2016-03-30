@@ -1,28 +1,20 @@
 package rentalManagement;
 
 import java.io.IOException;
-import java.sql.Date;
-import databaseManagement.*;
 
-public class ReserveManager {
+public class RentalFacade {
+
+	DatabaseManager db;
+	ReserveManager reservMan;
+	RentManager rentMan;
+	ReturnManager returnMan;
 	
-	
-	DatabaseManager dbConnection;
-	/**
-	 * A Manager for adding, removing, and modifying Reservations and its attributes.
-	 */
-	public ReserveManager()
+	public RentalFacade(DatabaseManager db)
 	{
-		dbConnection = null;
-	}
-	
-	/**
-	 * A Manager for adding, removing, and modifying Reservations and its attributes.
-	 * @param db The database it's connecting.
-	 */
-	public ReserveManager(DatabaseManager db)
-	{
-		dbConnection = db;
+		this.db = db;
+		reservMan = new ReserveManager(db);
+		rentMan = new RentManager(db);
+		returnMan = new ReturnManager(db);
 	}
 	
 	/**
@@ -38,11 +30,12 @@ public class ReserveManager {
 	 * @param status Status of the Reservation.
 	 * @param reservID Reservation ID.
 	 */
-	public void addReservation(ReservationDate startDate,ReservationDate endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
-			String customerID, String employeeID, String status, String reservID) 
+	public void createReservation(ReservationDate startDate,ReservationDate endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+			String customerID, String employeeID, String status, String reservID) throws IOException
 	{
 		
-		dbConnection.createReservationEntry(ReservationDate.toString(startDate), ReservationDate.toString(endDate), vehicleID, equipIDs, startBranchID, endBranchID,customerID, employeeID, status);
+		reservMan.addReservation(startDate,endDate,vehicleID,equipIDs,startBranchID, endBranchID, 
+				customerID, employeeID,status, reservID);
 	}
 	
 	/**
@@ -52,10 +45,9 @@ public class ReserveManager {
 	 * @param reservID The Reservation ID to be removed.
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	public void removeReservation(String customerID, String reservID)
+	public void cancelReservation(String customerID, String reservID)
 	{
-		dbConnection.removeReservationEntry(reservID);
-		dbConnection.changeStatus(reservID, "terminated");
+		reservMan.removeReservation(customerID, reservID);
 	}
 	
 	
@@ -65,9 +57,9 @@ public class ReserveManager {
 	 * @param id The type of search executed, can be vehicleID, branchID, reservationID, customerID, employeeID, equipID, reservStatus.
 	 * @return List of qualifying Reservations from the search
 	 */
-	public Reservation[] searchReservations(String id)
+	public Reservation[] findReservations(String id)
 	{
-		dbConnection.searchReservationEntries(id);
+		return reservMan.searchReservations(id);
 	}
 	
 	
@@ -76,9 +68,9 @@ public class ReserveManager {
 	 * @param d Start date to search with.
 	 * @return List of Reservations that a start Date is assigned to.
 	 */
-	public Reservation[] searchStartDate(ReservationDate d)
+	public Reservation[] findStartDate(ReservationDate d)
 	{
-		dbConnection.searchReservationEntries(ReservationDate.toString(d));
+		return reservMan.searchStartDate(d);
 	}
 	
 
@@ -87,9 +79,9 @@ public class ReserveManager {
 	 * @param d End date to search with.
 	 * @return List of Reservations that a end Date is assigned to.
 	 */
-	public Reservation[] searchEndDate(ReservationDate d)
+	public Reservation[] findEndDate(ReservationDate d)
 	{
-		dbConnection.searchReservationEntries(ReservationDate.toString(d));
+		return reservMan.searchEndDate(d);
 	}
 	
 	/**
@@ -99,9 +91,9 @@ public class ReserveManager {
 	 * If existing equipID is passed, then it is removed, if a non-existing equipID is passed, then it is added.
 	 * @pre Only Reservation Account owner or Employee calls this method.
 	 */
-	public void changeReservation(String reservID, String id)
+	public void modReservation(String reservID, String id)
 	{
-		dbConnection.modifyReservationEntries(reservID, id);
+		reservMan.changeReservation(reservID, id);
 	}
 	
 	/**
@@ -109,9 +101,9 @@ public class ReserveManager {
 	 * @param reservID Reservation ID of Reservation to be modified.
 	 * @param newDate New Date of Reservation.
 	 */
-	public void changeStartDate(String reservID, ReservationDate newDate)
+	public void modStartDate(String reservID, ReservationDate newDate)
 	{
-		dbConnection.modifyReservationStartDateEntries(reservID, ReservationDate.toString(newDate));
+		reservMan.changeStartDate(reservID, newDate);
 	}
 	
 	/**
@@ -119,10 +111,38 @@ public class ReserveManager {
 	 * @param reservID Reservation ID of Reservation to be modified.
 	 * @param newDate New Date of Reservation.
 	 */
-	public void changeEndDate(String reservID, ReservationDate newDate)
+	public void modEndDate(String reservID, ReservationDate newDate)
 	{
-		dbConnection.modifyReservationEndDateEntries(reservID, ReservationDate.toString(newDate));
+		reservMan.changeEndDate(reservID, newDate);
+	}
+	
+	/**
+	 * Begins the Rental.
+	 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
+	 */
+	public void createRental(String reservID, String typeOfPayment)
+	{
+		rentMan.startRental(reservID, typeOfPayment);
+	}
+	
+	/**
+	 * Cancels a Rental pre-emptively.
+	 * @param reservID Reservation ID of a Rental to be cancelled, calls Database to record rental.
+	 * @post recordRental().
+	 */
+	public void destroyRental(String reservID)
+	{
+		rentMan.cancelRental(reservID);
 	}
 	
 	
+	// assumes gas is already refilled.
+		/**
+		 * Returns a Vehicle from Rental.
+		 * @param reservID Reservation ID of Rental the Vehilce belongs to.
+		 */
+	public void createReturn(String reservID, String typeOfPayment, String accidentDetail)
+	{
+		returnMan.startReturn(reservID, typeOfPayment, accidentDetail);
+	}
 }

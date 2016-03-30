@@ -27,12 +27,13 @@ public class RentManager {
 		 * Begins the Rental.
 		 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
 		 */
-		public void startRental(String reservID)
+		public void startRental(String reservID, String typeOfPayment)
 		{
 			// order of execution:
-			//payForRental(r, TypeOfPayment);
-			//recordRental(r);
-			//requestReceipt(r);
+			payForRental(reservID, typeOfPayment);
+			recordRental(reservID);
+			dbConnection.changeStatus(reservID, "Rented");
+			requestReceipt(reservID);
 		}
 		
 		/**
@@ -42,7 +43,8 @@ public class RentManager {
 		 */
 		public void cancelRental(String reservID)
 		{
-			
+			dbConnection.removeRental(reservID);
+			dbConnection.changeStatus(reservID, "Standby");
 		}
 		
 		/**
@@ -57,23 +59,12 @@ public class RentManager {
 		}
 		
 		/**
-		 * Calls Accounting system to create a receipt for Reservation.
-		 * @param reservID Reservation ID of Rental to create Receipt for.
-		 * @pre payForRental().
-		 * @post new Receipt().
-		 */
-		public void requestRentalReceipt(String reservID)
-		{
-			
-		}
-		
-		/**
 		 * Calls Database system to record the Rental details.
 		 * @param reservID Reservation ID of Rental to record details for.
 		 * @pre payForRental().
 		 */
 		public void recordRental(String reservID)
 		{
-			
+			dbConnection.createRental(reservID)
 		}
 }

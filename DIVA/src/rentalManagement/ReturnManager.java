@@ -1,7 +1,14 @@
 package rentalManagement;
 
+import java.sql.Date;
+
+import databaseManagement.DatabaseManager;
+
 public class ReturnManager {
 
+	
+	
+	DatabaseManager dbConnection;
 	/**
 	 * A Manager that creates Reports and Receipts for an ending Rental.
 	 */
@@ -10,14 +17,34 @@ public class ReturnManager {
 		
 	}
 	
+	/**
+	 * A Manager that creates Reports and Receipts for an ending Rental.
+	 */
+	public ReturnManager(DatabaseManager db)
+	{
+		dbConnection = db;
+	}
+	
 	// assumes gas is already refilled.
 	/**
 	 * Returns a Vehicle from Rental.
 	 * @param reservID Reservation ID of Rental the Vehilce belongs to.
 	 */
-	public void startReturn(String reservID)
+	public void startReturn(String reservID, String typeOfPayment, String accidentDetail)
 	{
-		// order of execution:
+		if(accidentDetail != "")
+		{
+			payForExtra(reservID,typeOfPayment);
+			makeAccidentReport(reservID, accidentDetail);
+		}
+		
+		if(checkIfOverdue(reservID))
+		{
+			payForExtra(reservID,typeOfPayment);
+		}
+		
+		recordReturn(reservID);
+		
 	}
 	
 	/**
@@ -26,18 +53,14 @@ public class ReturnManager {
 	 * @param typeOfPayment Debit for debit card, Credit for credit card, Cash for cash, SRP for SuperRent points.
 	 * @param reasonForPayment Reasons for extra payment, such as accidents, returning late, etc.
 	 */
-	public void payForExtra(String reservID, String typeOfPayment, String reasonForPayment)
+	public void payForExtra(String reservID, String typeOfPayment)
 	{
-		
+		dbConnection.makePayment(reservID, typeOfPayment);
 	}
 	
-	/**
-	 * Calls Accounting system to create Return Receipt, include extra payments if any.
-	 * @param reservID Reservation ID of Rental to create Receipt for.
-	 */
-	public void requestReturnReceipt(String reservID)
+	public void makeAccidentReport(String reservID, String accidentDetail)
 	{
-		
+		AccidentReport(Date d, String description, String reservID,String dmgDes, double extraPay);
 	}
 	
 	/**
@@ -47,7 +70,7 @@ public class ReturnManager {
 	 */
 	public boolean checkIfOverdue(String reservID)
 	{
-		return true;
+		// checks if reservation date is before current date.
 	}
 	
 	/**
@@ -56,7 +79,8 @@ public class ReturnManager {
 	 */
 	public void recordReturn(String reservID)
 	{
-		
+		dbConnection.createReturn(reservID);
+		dbConnection.changeStatus(reservID, "Returned");
 	}
 	
 	
