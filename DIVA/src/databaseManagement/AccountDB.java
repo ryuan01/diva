@@ -15,7 +15,7 @@ class AccountDB {
 	
 	
 	//checking 
-	public AccountDB() {
+	AccountDB() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -123,7 +123,7 @@ class AccountDB {
 	 * @post account's key value
 	 * @return account's key value
 	 */
-	public Account getAccount(String username) {
+	Account getAccount(String username) {
 		if(isValidUsername(username)){
 			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
@@ -153,7 +153,7 @@ class AccountDB {
 	 * @post account's key value 
 	 * @return account's key value
 	 */
-	public Account getAccount(String fname, String lname, String phonenum) {
+	Account getAccount(String fname, String lname, String phonenum) {
 		ConnectDB dbm = new ConnectDB();
 		dbm.connect();
 		
@@ -190,7 +190,7 @@ class AccountDB {
 	 * @post isValidLogin(username, enNewPw)
 	 * @return boolean value if the update is succesfull, return true; otherwise, resturn false
 	 */
-	public boolean loginPasswordUpdate(String username, String enOldPw, String enNewPw) {
+	boolean loginPasswordUpdate(String username, String enOldPw, String enNewPw) {
 		if (isValidLogin(username, enOldPw)){
 			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
@@ -225,7 +225,7 @@ class AccountDB {
 	 * @pre isValidAccount(acc)
 	 * @post the specific field information is updated
 	 */
-	public void accountUpdate(String acc_key_value, String field, String newInfo) {
+	void accountUpdate(String acc_key_value, String field, String newInfo) {
 	}
 	
 	//not sure what kind of statues are here, please add more 
@@ -236,7 +236,7 @@ class AccountDB {
 	 * @pre isValidAccount(acc)
 	 * @post status is updated
 	 */
-	public void accountUpdateStatus(Account acc, String status) {
+	void accountUpdateStatus(Account acc, String status) {
 	}
 	
 	//need to check Kevin's work for naming conventions 
@@ -249,7 +249,7 @@ class AccountDB {
 	 * @pre typeof(acc) == SuperRent
 	 * @post acc.points =  pt + acc.points
 	 */
-	public void updateAccountPoints(String acc_key_value, int pt) {
+	void updateAccountPoints(String acc_key_value, int pt) {
 	}
 	
 	/**
@@ -259,7 +259,7 @@ class AccountDB {
 	 * @pre isValidAccount(acc)
 	 * @post acc.balance += amount
 	 */
-	public void updateAccountBalance(String acc_key_value,Currency amount) {
+	void updateAccountBalance(String acc_key_value,Currency amount) {
 	}
 	
 	//not too sure if types are just subclasses, how do we update them?
@@ -273,7 +273,7 @@ class AccountDB {
 	 * @pre !isValidUsername(info[0]);
 	 * @post isValidAccount(loginId);
 	 */
-	public boolean createAccount(String[] info) {
+	boolean createAccount(String[] info) {
 		// Does it need to specify the account type?
 		if (!isValidAccount(info[2], info[3], info[4]) && !isValidUsername(info[0]))
 		{
@@ -308,7 +308,7 @@ class AccountDB {
 	 * @pre isValidAccount(acc)
 	 * @post !isValidAccount(acc)
 	 */
-	public void archiveAccount(String acc_key_value) {
+	void archiveAccount(String acc_key_value) {
 	}
 	
 	//same as loginPasswordUpdate

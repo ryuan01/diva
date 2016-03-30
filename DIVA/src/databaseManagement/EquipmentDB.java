@@ -78,8 +78,9 @@ class EquipmentDB {
 	 */
 	//should not use arraylist 
 	public ArrayList<Equipment> searchAdditionalEquipments(String t, String branch_num) {
+		return null;
 		
-		// 1- Connect to the database
+		/*// 1- Connect to the database
 		super.connect();
 		
 		if (super.getConnection() == null)
@@ -103,7 +104,7 @@ class EquipmentDB {
 			} catch (SQLException e){
 				System.err.println(e);
 				return null;
-			}
+			}*/
 			
 		}
 

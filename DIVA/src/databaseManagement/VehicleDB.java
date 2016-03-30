@@ -22,6 +22,10 @@ class VehicleDB {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public VehicleDB() {
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * updateVehicleLocation updates the branch that the vehicle belongs to
 	 * @param v vehicle

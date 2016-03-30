@@ -12,7 +12,7 @@ import systemManagement.Branch;
  */
 class BranchDB {
 
-  	public BranchDB() {
+  	BranchDB() {
   		  // TODO Auto-generated constructor stub
   	}
   	
@@ -22,7 +22,7 @@ class BranchDB {
   	 * @pre isValidBranch(b)
   	 * @post a new entry in TABLE BRANCH
   	 */
-  	public boolean addBranch(Branch b){
+  	boolean addBranch(Branch b){
   	  String streetName = b.getStreetName();
   		String city = b.getCity();
   		String province = b.getProvince();
@@ -64,7 +64,7 @@ class BranchDB {
   	 * @pre for all e:Employee, e.branch != b
   	 * @post an entry in TABLE BRANCH is removed
   	 */
-  	public boolean removebranch(String b_key_value) throws SQLException{
+  	boolean removebranch(String b_key_value) throws SQLException{
 		return false;
   	  
   	  // get branch id Number:
@@ -97,7 +97,7 @@ class BranchDB {
   	 * 
   	 * @param b
   	 */
-  	public void changeBranch(String b_key_value){
+  	void changeBranch(String b_key_value){
   		
   	}
 }

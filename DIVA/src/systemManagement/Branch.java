@@ -107,11 +107,11 @@ public class Branch {
 	 */
 	public boolean removeVehicle(Vehicle removeVeh)
 	{
-		for(Vehicle v: fleet){
+		/**for(Vehicle v: fleet){
 			if(v.getID() == removeVeh){
 				return fleet.remove(v);
 			}
-		}
+		}*/
 		//ISSUE_2: the database needs to be updated of the removal process
 		
 		return false;
@@ -125,12 +125,33 @@ public class Branch {
 	public boolean removeEquipment(Equipment removeEq)
 	{
 		for(Equipment eq: inventory){
+			/*
 			if(eq.getID() == removeEq){
 				return inventory.remove(v);
-			}
+			}*/
 		}
 		//ISSUE_4: same database update notification
 		
 		return false;
+	}
+
+	public String getStreetName() {
+		// TODO Auto-generated method stub
+		return address;
+	}
+
+	public String getCity() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getProvince() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getZipCode() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
