@@ -1,8 +1,7 @@
 package databaseManagement;
 
-import java.sql.SQLException;
-import java.sql.Statement;
-
+import java.sql.*;
+import java.util.ArrayList;
 import systemManagement.Branch;
 
 /**
@@ -11,9 +10,12 @@ import systemManagement.Branch;
  *
  */
 class BranchDB {
+	
+	private ConnectDB conDB;
 
   	BranchDB() {
   		  // TODO Auto-generated constructor stub
+  		conDB = new ConnectDB();
   	}
   	
   	/**
@@ -22,14 +24,14 @@ class BranchDB {
   	 * @pre isValidBranch(b)
   	 * @post a new entry in TABLE BRANCH
   	 */
-  	boolean addBranch(Branch b){
+ /* 	boolean addBranch(Branch b){
   	  String streetName = b.getStreetName();
   		String city = b.getCity();
   		String province = b.getProvince();
   	 	String zipcode = b.getZipCode();
 		return false;
   
-  		/*super.connect();
+  		super.connect();
   		
   		if (super.getConnection() == null)
       {
@@ -50,9 +52,10 @@ class BranchDB {
           System.err.println(e);
           return false;
         }
-		}*/
+		}
   		
   	}
+*/
   	
   	//delete
   
@@ -99,5 +102,39 @@ class BranchDB {
   	 */
   	void changeBranch(String b_key_value){
   		
+  	}
+  	
+  	Branch[] getBranch(){
+  		ArrayList<Branch> blist = new ArrayList<Branch>();
+        try{
+        	conDB.connect();
+            Statement stmt = conDB.getConnection().createStatement();
+            String query = "SELECT br_num, street_name, city, province, zip_code FROM `branches`";
+            
+            ResultSet rs = stmt.executeQuery(query);
+            
+            while (rs.next()){
+            	int num = rs.getInt("br_num");
+            	String street_name = rs.getString("street_name");
+            	String city = rs.getString("city");
+            	String province = rs.getString("province");
+            	String zip_code = rs.getString("zip_code");
+            	Branch b = new Branch(num,street_name,city,province,zip_code);
+            	blist.add(b);
+            	//display
+            }
+            
+            rs.close();
+            stmt.close();
+            conDB.getConnection().close();
+        	conDB.disconnect();
+            
+          }catch(SQLException e){
+            System.err.println(e);
+          }
+        //change back to array
+        Branch[] bArray = new Branch[blist.size()];
+        bArray = blist.toArray(bArray);
+        return bArray;
   	}
 }

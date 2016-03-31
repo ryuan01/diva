@@ -5,11 +5,12 @@
 package databaseManagement;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Currency;
 
-import accountManagement.Account;
+//import accountManagement.Account;
 import systemManagement.Branch;
 
 /*Robin */
@@ -17,8 +18,6 @@ import systemManagement.Branch;
 /**
  * DatabaseManager deals with connection to database
  * @author Robin, Sammy
- * @invariant dbname database name 
- * @invariant pw password for connection 
  */
 
 public class DatabaseManager {
@@ -26,11 +25,11 @@ public class DatabaseManager {
 	// I am modeling as Has-A relationship
 	// Not sure if I need to change this? 
 	private ConnectDB conDB;
-	private AccountDB accDB;
+	//private AccountDB accDB;
 	private BranchDB branDB;
-	private EquipmentDB eqDB;
-	private RentalDB reDB;
-	private VehicleDB veDB;
+	//private EquipmentDB eqDB;
+	//private RentalDB reDB;
+	//private VehicleDB veDB;
     
     //singieton design pattern
     private static DatabaseManager instance = null;
@@ -53,11 +52,11 @@ public class DatabaseManager {
 	*/
     private DatabaseManager(){
 		conDB = new ConnectDB();
-		accDB = new AccountDB();
+		//accDB = new AccountDB();
 		branDB = new BranchDB();
-		eqDB = new EquipmentDB();
-		reDB = new RentalDB();
-		veDB = new VehicleDB();
+		//eqDB = new EquipmentDB();
+		//reDB = new RentalDB();
+		//veDB = new VehicleDB();
     }
        
 	
@@ -91,7 +90,7 @@ public class DatabaseManager {
 	}
     
     // AccountDB
-	public Account getAccount(String uname) {
+	/*public Account getAccount(String uname) {
 		return accDB.getAccount(uname);
 	}
 	
@@ -125,9 +124,9 @@ public class DatabaseManager {
 	
 	public void archiveAccount(String acc_key_value) {
 		accDB.archiveAccount(acc_key_value);
-	}
+	}*/
 	// BranchDB
-	public  boolean addBranch(Branch b){
+	/*public  boolean addBranch(Branch b){
 		return branDB.addBranch(b);
 	}
 	
@@ -137,6 +136,10 @@ public class DatabaseManager {
 	
 	public  void changeBranch(String b_key_value){
 		branDB.changeBranch(b_key_value);
+	}*/
+	
+	public Branch[] getBranch(){
+		return branDB.getBranch();
 	}
 	// EquipmentDB
    
