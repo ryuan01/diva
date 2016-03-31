@@ -38,7 +38,7 @@ public class ReserveManager {
 	 * @param status Status of the Reservation.
 	 * @param reservID Reservation ID.
 	 */
-	public void addReservation(ReservationDate startDate,ReservationDate endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+	public void addReservation(ReservationDate startDate,ReservationDate endDate, String vehicleID, String equipIDs, String startBranchID, String endBranchID, 
 			String customerID, String employeeID, String status, String reservID) 
 	{
 		

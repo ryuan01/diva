@@ -2,6 +2,8 @@ package rentalManagement;
 
 import java.io.IOException;
 
+import databaseManagement.DatabaseManager;
+
 public class RentalFacade {
 
 	DatabaseManager db;
@@ -30,8 +32,8 @@ public class RentalFacade {
 	 * @param status Status of the Reservation.
 	 * @param reservID Reservation ID.
 	 */
-	public void createReservation(ReservationDate startDate,ReservationDate endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
-			String customerID, String employeeID, String status, String reservID) throws IOException
+	public void createReservation(ReservationDate startDate,ReservationDate endDate, String vehicleID, String equipIDs, String startBranchID, String endBranchID, 
+			String customerID, String employeeID, String status, String reservID) 
 	{
 		
 		reservMan.addReservation(startDate,endDate,vehicleID,equipIDs,startBranchID, endBranchID, 
