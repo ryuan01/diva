@@ -1,25 +1,39 @@
 package rentalManagement;
 
+import databaseManagement.DatabaseManager;
+
 public class RentManager {
+	
+	
+		DatabaseManager dbConnection;
 	
 		/**
 		 * A Rental Manager that creates, and modifies Rentals.
 		 */
 		public RentManager()
 		{
-	
+			
+		}
+		
+		/**
+		 * A Rental Manager that creates, and modifies Rentals.
+		 */
+		public RentManager(DatabaseManager db)
+		{
+			dbConnection = db;
 		}
 	
 		/**
 		 * Begins the Rental.
 		 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
 		 */
-		public void startRental(String reservID)
+		public void startRental(String reservID, String typeOfPayment)
 		{
 			// order of execution:
-			//payForRental(r, TypeOfPayment);
-			//recordRental(r);
-			//requestReceipt(r);
+			payForRental(reservID, typeOfPayment);
+			recordRental(reservID);
+			dbConnection.changeStatus(reservID, "Rented");
+			requestReceipt(reservID);
 		}
 		
 		/**
@@ -29,7 +43,8 @@ public class RentManager {
 		 */
 		public void cancelRental(String reservID)
 		{
-			
+			dbConnection.removeRental(reservID);
+			dbConnection.changeStatus(reservID, "Standby");
 		}
 		
 		/**
@@ -40,18 +55,7 @@ public class RentManager {
 		 */
 		public void payForRental(String reservID, String typeOfPayment)
 		{
-			
-		}
-		
-		/**
-		 * Calls Accounting system to create a receipt for Reservation.
-		 * @param reservID Reservation ID of Rental to create Receipt for.
-		 * @pre payForRental().
-		 * @post new Receipt().
-		 */
-		public void requestRentalReceipt(String reservID)
-		{
-			
+			paymentManager.makePayment(reservID,typeOfPayment);
 		}
 		
 		/**
@@ -61,6 +65,6 @@ public class RentManager {
 		 */
 		public void recordRental(String reservID)
 		{
-			
+			dbConnection.createRental(reservID)
 		}
 }

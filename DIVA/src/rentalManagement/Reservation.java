@@ -1,6 +1,8 @@
 package rentalManagement;
 
+import java.io.IOException;
 import java.sql.Date;
+import java.util.Arrays;
 
 import accountManagement.Account;
 import accountManagement.Customer;
@@ -12,8 +14,8 @@ import vehicleManagement.Vehicle;
 // Needs javadoc
 public class Reservation {
 
-	private Date startDate;
-	private Date endDate;
+	private ReservationDate startDate;
+	private ReservationDate endDate;
 	private String vehicleID;
 	private String[] equipmentIDs;
 	private String startBranchID;
@@ -28,7 +30,17 @@ public class Reservation {
 	 */
 	public Reservation()
 	{
-
+		startDate = null;
+		endDate = null;
+		vehicleID = "";
+		equipmentIDs = new String[0];
+		startBranchID = "";
+		endBranchID = "";
+		customerAccountID = "";
+		status = "";
+		employeeAccountID = "";
+		reservID = "";
+		
 	}
 	
 	/**
@@ -44,37 +56,37 @@ public class Reservation {
 	 * @param empl The Employee log in ID Reservation belongs to.
 	 * @param id The Reservation ID.
 	 */
-	public Reservation(Date startDate, Date endDate, Vehicle v, String[] e, String startBranch, String endBranch, String c, String s, 
-			String empl, String id)
+	public Reservation(ReservationDate startDate, ReservationDate endDate, String vehID, String[] e, String startBranch, String endBranch, String cusID, String s, 
+			String empID, String id)
 	{
-	}
-	
-	/**
-	 * Compares if two reservations are equal.
-	 * @param r Reservation to be compared.
-	 * @return True if equal, False otherwise.
-	 */
-	public boolean equals(Reservation r)
-	{
-		return true;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		vehicleID = vehID;
+		equipmentIDs = e;
+		startBranchID = startBranch;
+		endBranchID = endBranch;
+		customerAccountID = cusID;
+		status = s;
+		employeeAccountID = empID;
+		reservID = id;
 	}
 	
 	/**
 	 * Modifies the starting date of Reservation.
 	 * @param newDate The start date to be changed.
 	 */
-	public void changeStartDate(Date newDate)
+	public void changeStartDate(ReservationDate newDate)
 	{
-		
+		startDate = newDate;
 	}
 	
 	/**
 	 * Modifies the ending date of Reservation.
 	 * @param newDate The end date to be changed.
 	 */
-	public void changeEndDate(Date newDate)
+	public void changeEndDate(ReservationDate newDate)
 	{
-		
+		endDate = newDate;
 	}
 	
 	/**
@@ -83,20 +95,19 @@ public class Reservation {
 	 */
 	public void changeVehicleID(String newVehicleID)
 	{
-
+		vehicleID = newVehicleID;
 	}
 	
-	//needs testing, could throw exception equipmentAlreadyReserved?
 	/**
 	 * Add the Equipment ID from Reservation.
 	 * @param newEquipmentID The Equipment ID to be added.
 	 */
-	public void addEquipmentID(String newEquipmentID)
+	public void addEquipmentID(String[] newEquipmentID)
 	{
-	
+		Arrays.copyOf(equipmentIDs,equipmentIDs.length + 1);
 	}
 	
-	//throws exception if toBeRemovedEquipment is not in the equipment list. (shouldn't happen)
+	//Not implemented yet.
 	/**
 	 * Removes the Equipment ID from Reservation.
 	 * @param toBeRemovedEquipmentID The Equipment ID to be removed.
@@ -112,7 +123,7 @@ public class Reservation {
 	 */
 	public void changeStartBranchID(String newBranchID)
 	{
-		
+		startBranchID = newBranchID;
 	}
 	
 	/**
@@ -121,7 +132,7 @@ public class Reservation {
 	 */
 	public void changeEndBranchID(String newEndBranchID)
 	{
-		
+		endBranchID = newEndBranchID;
 	}
 	
 	/**
@@ -130,7 +141,7 @@ public class Reservation {
 	 */
 	public void changeCustomerAccount(String newAccountID)
 	{
-		
+		this.customerAccountID = newAccountID;
 	}
 
 	/**
@@ -139,7 +150,7 @@ public class Reservation {
 	 */
 	public void changeEmployeeAccountID(String newAccountID)
 	{
-		
+		this.employeeAccountID = newAccountID;
 	}
 	
 	/**
@@ -148,7 +159,7 @@ public class Reservation {
 	 */
 	public void changeStatus(String newStatus)
 	{
-		
+		this.status = newStatus;
 	}
 	
 	/**
@@ -157,25 +168,25 @@ public class Reservation {
 	 */
 	public void changeID(String newID)
 	{
-		
+		this.reservID = newID;
 	}
 	
 	/**
 	 * Returns the Date of the Reservation.
 	 * @return Date of the Reservation.
 	 */
-	public Date getStartingDate()
+	public ReservationDate getStartingDate()
 	{
-		return null;
+		return this.startDate;
 	}
 	
 	/**
 	 * Returns the end Date of the Reservation.
 	 * @return Date of the Reservation.
 	 */
-	public Date getEndDate()
+	public ReservationDate getEndDate()
 	{
-		return null;
+		return this.endDate;
 	}
 	
 	/**
@@ -238,7 +249,7 @@ public class Reservation {
 	 */
 	public String getStatus()
 	{
-		return "";
+		return this.status;
 	}
 	
 	/**
@@ -247,7 +258,7 @@ public class Reservation {
 	 */
 	public String getID()
 	{
-		return "";
+		return this.reservID;
 	}
 	
 }
