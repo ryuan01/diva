@@ -1,5 +1,12 @@
 package databaseManagement;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
+
 import systemManagement.Branch;
 import vehicleManagement.Car;
 import vehicleManagement.Truck;
@@ -61,25 +68,71 @@ class VehicleDB {
 	public void addVehicle(Vehicle v) {
 	}
 	//need to confirm with whoever is doing rental to see the list
+
 	/**
-	 * searchCars searches a list of cars matching criterias for rental
-	 * @param list list has format {startDate,endDate,pickUpBranch,returnBranch,...}
-	 * @pre list[i] is valid for all i=0..list.length-1
-	 * @post list of cars matching 
+	 * Generic search searches a list of cars available for rental in a specific branch starting specific day
+	 * @param c
+	 * @param start_branch_id
+	 * @param type
+	 * @param start_date
+	 * @param list
+	 * @return
 	 */
-	public Car[] searchCars(String[] list) {
-		return null;
-	}
-	
-	/**
-	 * searchTruckss searches a list of cars matching criterias for rental 
-	 * @param list list has format {startDate,endDate,pickUpBranch,returnBranch,...}
-	 * @pre list[i] is valid for all i=0..list.length-1
-	 * @post list of trucks matching 
-	 */
-	public Truck[] searchTrucks(String[] list) {
-		return null;
-	}
+	public Vehicle[] search(Connection c, String start_branch_id, String type, Date start_date, String[] list) {
+		//create an arraylist to hold the result
+  		ArrayList<Vehicle> vlist = new ArrayList<Vehicle>();
+  		
+        try{
+            Statement stmt = c.createStatement();
+            
+            //this is a double query
+            String query = "SELECT * FROM vehicles WHERE vehicles.location = "
+            		+ Integer.parseInt(start_branch_id)
+            		+ " AND vehicles.vtype = "
+            		+ type
+            		+ " AND sale_status = 'for rent' "
+            		+ " AND vehicles.serial_num NOT IN ( SELECT vehicles.serial_num FROM vehicles, "
+            		+ "reservation WHERE vehicles.serial_num = reservation.vehicle_id AND "
+            		+ "reservation.end_date >= " 
+            		+ new java.sql.Date(start_date.getTime())+")";
+            
+            ResultSet rs = stmt.executeQuery(query);
+            
+            //parse result and add to list of branches
+            while (rs.next()){
+            	
+            	//type isn't in database, need to be updated
+            	//features isn't in database
+            	
+            	int id = rs.getInt("serial_num");
+            	int location = rs.getInt("location");
+            	String license_plate = rs.getString("license_plate_number");
+            	String manufacturer = rs.getString("manufacturer");
+            	String year_model = rs.getString("year_model");
+            	String color = rs.getString("color");
+            	String status = rs.getString("sale_status");
+            	int capacity = rs.getInt("capacity");
+            	
+            	//need two helper methods: one for car, one for truck
+            	//need to separate database for car types and truck types
+            	Vehicle v = new Car(String.valueOf(location), capacity, "economy", manufacturer, year_model, color, status, "No feature available");
+            	vlist.add(v);
+            }
+            
+            //clean up
+            rs.close();
+            stmt.close();
+        }
+        catch(SQLException e){
+            System.err.println(e);
+        }
+        
+        //change back to array
+        Vehicle[] vArray = new Car[vlist.size()];
+        vArray = vlist.toArray(vArray);
+        
+        return vArray;
+  	}
 	
 	/**
 	 * searchCars searches a list of cars in a specific branch for-sale

@@ -26,7 +26,7 @@ public class Vehicle {
 	 * @param status	The status of the car is either SOLD, FORSALE, or FORRENT
 	 * @param features	A description of the car
 	 */
-	public Vehicle(String location, int capacity, int dailyRate, int weeklyRate, int hourlyRate, int perKMRate, int dailyInsuranceRate, int hourlyInsuranceRate, int weeklyInsuranceRate, String type, String manufacturer, String year, String color, String status, String features) {
+	public Vehicle(String location, int capacity, String type, String manufacturer, String year, String color, String status, String features) {
 		this.setType(type);
 		this.manufacturer = manufacturer;
 		this.year = year;
