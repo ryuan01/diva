@@ -1,8 +1,10 @@
 package rentalManagement;
 
 import java.io.IOException;
+import java.util.Date;
 
 import databaseManagement.DatabaseManager;
+
 
 public class RentalFacade {
 
@@ -32,12 +34,12 @@ public class RentalFacade {
 	 * @param status Status of the Reservation.
 	 * @param reservID Reservation ID.
 	 */
-	public void createReservation(ReservationDate startDate,ReservationDate endDate, String vehicleID, String equipIDs, String startBranchID, String endBranchID, 
-			String customerID, String employeeID, String status, String reservID) 
+	public void createReservation(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+			String customerID, String employeeID, String status) 
 	{
-		
+		System.out.println("I got to here in RentalFacade");
 		reservMan.addReservation(startDate,endDate,vehicleID,equipIDs,startBranchID, endBranchID, 
-				customerID, employeeID,status, reservID);
+				customerID, employeeID,status);
 	}
 	
 	/**

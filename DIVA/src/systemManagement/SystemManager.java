@@ -55,4 +55,22 @@ public class SystemManager {
 	public void shutDown(String branchNumber) {
 		 // METHOD NOT IMPLEMENTED 
 	}
+
+	/**
+	 * Created from Ben's method destroyBranch
+	 * @param branchNumber
+	 * @return
+	 */
+	public boolean removeBranch(String branchNumber) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
+	 * Create from Ben's method enterMaintenance()
+	 */
+	public void maintenance() {
+		// TODO Auto-generated method stub
+		
+	}
 }

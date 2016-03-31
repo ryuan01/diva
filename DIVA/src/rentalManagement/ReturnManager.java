@@ -4,6 +4,8 @@ import java.sql.Date;
 
 import databaseManagement.DatabaseManager;
 
+
+
 public class ReturnManager {
 
 	
@@ -60,7 +62,7 @@ public class ReturnManager {
 	
 	public void makeAccidentReport(String reservID, String accidentDetail)
 	{
-		AccidentReport(Date d, String description, String reservID,String dmgDes, double extraPay);
+		//AccidentReport(Date d, String description, String reservID,String dmgDes, double extraPay);
 	}
 	
 	/**
@@ -71,6 +73,7 @@ public class ReturnManager {
 	public boolean checkIfOverdue(String reservID)
 	{
 		// checks if reservation date is before current date.
+		return false;
 	}
 	
 	/**

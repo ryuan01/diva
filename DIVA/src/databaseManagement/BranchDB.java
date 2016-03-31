@@ -7,15 +7,12 @@ import systemManagement.Branch;
 /**
  * BranchDB creates, deletes, and modifies data related to Branch
  * @author Robin
- *
+ * @pre connection already established
  */
 class BranchDB {
-	
-	private ConnectDB conDB;
 
   	BranchDB() {
   		  // TODO Auto-generated constructor stub
-  		conDB = new ConnectDB();
   	}
   	
   	/**
@@ -104,37 +101,48 @@ class BranchDB {
   		
   	}
   	
-  	Branch[] getBranch(){
+  	/**
+  	 * Get all the branch in database
+  	 * @param connection 
+  	 * @pre conDB is created
+  	 * @post list of branches
+  	 * @return the list of branches in database
+  	 */
+  	Branch[] getBranch(Connection connection){
+  		//create an arraylist to hold the result
   		ArrayList<Branch> blist = new ArrayList<Branch>();
+  		
         try{
-        	conDB.connect();
-            Statement stmt = conDB.getConnection().createStatement();
-            String query = "SELECT br_num, street_name, city, province, zip_code FROM `branches`";
+            Statement stmt = connection.createStatement();
             
+            //query
+            String query = "SELECT br_num, street_name, city, province, zip_code FROM `branches`"; 
             ResultSet rs = stmt.executeQuery(query);
             
+            //parse result and add to list of branches
             while (rs.next()){
             	int num = rs.getInt("br_num");
             	String street_name = rs.getString("street_name");
             	String city = rs.getString("city");
             	String province = rs.getString("province");
             	String zip_code = rs.getString("zip_code");
+            	
             	Branch b = new Branch(num,street_name,city,province,zip_code);
             	blist.add(b);
-            	//display
             }
             
+            //clean up
             rs.close();
             stmt.close();
-            conDB.getConnection().close();
-        	conDB.disconnect();
-            
-          }catch(SQLException e){
+        }
+        catch(SQLException e){
             System.err.println(e);
-          }
+        }
+        
         //change back to array
         Branch[] bArray = new Branch[blist.size()];
         bArray = blist.toArray(bArray);
+        
         return bArray;
   	}
 }

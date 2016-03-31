@@ -1,8 +1,10 @@
 package rentalManagement;
 
 import java.io.IOException;
-import java.sql.Date;
-import databaseManagement.*;
+import java.util.Date;
+
+import databaseManagement.DatabaseManager;
+
 
 public class ReserveManager {
 	
@@ -36,13 +38,16 @@ public class ReserveManager {
 	 * @param customerID Customer login ID of the Reservation.
 	 * @param employeeID Employee login ID of the Reservation.
 	 * @param status Status of the Reservation.
-	 * @param reservID Reservation ID.
 	 */
-	public void addReservation(ReservationDate startDate,ReservationDate endDate, String vehicleID, String equipIDs, String startBranchID, String endBranchID, 
-			String customerID, String employeeID, String status, String reservID) 
+	public void addReservation(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+			String customerID, String employeeID, String status) 
 	{
-		
-		dbConnection.createReservationEntry(ReservationDate.toString(startDate), ReservationDate.toString(endDate), vehicleID, equipIDs, startBranchID, endBranchID,customerID, employeeID, status);
+		//the ID = null right now because we don't know yet
+		//we will know the value once the entry is created
+		System.out.println("I got to here in ReserveManager");
+		Reservation r = new Reservation(startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID,customerID, employeeID, status,-1);
+		System.out.println("Reservation object created");
+		dbConnection.createReservationEntry(r);
 	}
 	
 	/**
@@ -67,7 +72,7 @@ public class ReserveManager {
 	 */
 	public Reservation[] searchReservations(String id)
 	{
-		dbConnection.searchReservationEntries(id);
+		return dbConnection.searchReservationEntries(id);
 	}
 	
 	
@@ -78,7 +83,7 @@ public class ReserveManager {
 	 */
 	public Reservation[] searchStartDate(ReservationDate d)
 	{
-		dbConnection.searchReservationEntries(ReservationDate.toString(d));
+		return dbConnection.searchReservationEntries(ReservationDate.toString(d));
 	}
 	
 
@@ -89,7 +94,7 @@ public class ReserveManager {
 	 */
 	public Reservation[] searchEndDate(ReservationDate d)
 	{
-		dbConnection.searchReservationEntries(ReservationDate.toString(d));
+		return dbConnection.searchReservationEntries(ReservationDate.toString(d));
 	}
 	
 	/**

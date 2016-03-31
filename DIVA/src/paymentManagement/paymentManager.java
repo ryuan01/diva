@@ -114,5 +114,15 @@ public class paymentManager {
 		this.tax = tax;
 	}
 
+	/**
+	 * I don't think this should be static 
+	 * @param reservID
+	 * @param typeOfPayment
+	 */
+public static void makePayment(String reservID, String typeOfPayment) {
+	// TODO Auto-generated method stub
+	
+}
+
 	
 }

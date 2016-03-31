@@ -1,6 +1,8 @@
 package rentalManagement;
 
+
 import databaseManagement.DatabaseManager;
+import paymentManagement.paymentManager;
 
 public class RentManager {
 	
@@ -37,6 +39,15 @@ public class RentManager {
 		}
 		
 		/**
+		 * Whatever this does...Ben
+		 * @param reservID
+		 */
+		private void requestReceipt(String reservID) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/**
 		 * Cancels a Rental pre-emptively.
 		 * @param reservID Reservation ID of a Rental to be cancelled, calls Database to record rental.
 		 * @post recordRental().
@@ -65,6 +76,6 @@ public class RentManager {
 		 */
 		public void recordRental(String reservID)
 		{
-			dbConnection.createRental(reservID)
+			dbConnection.createRental(reservID);
 		}
 }

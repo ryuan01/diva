@@ -19,13 +19,19 @@ public class Branch {
 	
 	private int id;
 	private String address;
+	private String city;
+	private String province;
+	private String zipcode;
 	private ArrayList<Vehicle> fleet;
 	private ArrayList<Equipment> inventory;
 	
-	public Branch(String address){
+	public Branch(int id, String address, String city, String province, String zipcode){
+		this.id = id;
 		this.address = address;
+		this.city = city;
+		this.province = province;
+		this.zipcode = zipcode;
 	}
-	
 	/* not sure what this is for <- robin
 	public Branch(Branch br){
 		br.getBranchID() = id
@@ -142,16 +148,16 @@ public class Branch {
 
 	public String getCity() {
 		// TODO Auto-generated method stub
-		return null;
+		return city;
 	}
 
 	public String getProvince() {
 		// TODO Auto-generated method stub
-		return null;
+		return province;
 	}
 
 	public String getZipCode() {
 		// TODO Auto-generated method stub
-		return null;
+		return zipcode;
 	}
 }

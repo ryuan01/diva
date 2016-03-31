@@ -1,8 +1,12 @@
 package databaseManagement;
 
+import java.sql.*;
+
 import paymentManagement.Receipt;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
+import rentalManagement.ReservationDate;
+import systemManagement.Branch;
 
 /*Robin */
 /**
@@ -11,8 +15,10 @@ import rentalManagement.Reservation;
  */
 class RentalDB {
 	
+	private ConnectDB conDB;
 	
 	public RentalDB() {
+		conDB = new ConnectDB();
 	}
 
 	//modify 
@@ -79,13 +85,80 @@ class RentalDB {
 	}
 	
 	/**
-	 * 
-	 * @param r
+	 * Create an reservation entry in the database
+	 * @param c 
+	 * @pre r does not exist in database
+	 * @pre r parameters conforms to database requirements
+	 * @post r is created
+	 * @param r an reservation
 	 */
-	public void createReservation(Reservation r){
+	public void createReservation(Connection c, Reservation r){
 		
+        try{
+            //insert into Reservation table
+        	insertReservation(c,r);
+            
+            //insert into equipment_reservation table
+        	insertEqRes(c,r);
+            
+            c.close();
+            
+        }
+        catch(SQLException e){
+            System.err.println(e);
+        }
 	}
 	
+
+	/**
+	 * Helps to add relations between reservation and equipments
+	 * @param r
+	 * @throws SQLException
+	 */
+	private void insertEqRes(Connection c, Reservation r) throws SQLException{
+		// TODO Auto-generated method stub
+    	String sql = "INSERT INTO `equipment_reservation`(`res_id`, `equip_id`) VALUES (?,?)";
+    	
+        for (int i =0; i<r.getEquipments().length; i++){
+        	PreparedStatement st = c.prepareStatement(sql);
+        	
+            st.setInt(1, r.getID());
+            st.setInt(2,Integer.parseInt(r.getEquipments()[i]));
+            
+            st.executeUpdate();
+         
+        }
+	}
+
+	/**
+	 * helps to insert into reservation
+	 * @param r
+	 * @throws SQLException
+	 */
+	private void insertReservation(Connection c, Reservation r) throws SQLException{
+		// TODO Auto-generated method stub
+       	String sql = "INSERT INTO `reservation`( `start_date`, `end_date`, `vehicle_id`, `start_branch_id`, `end_branch_id`, `cus_id`, `status`) VALUES (?,?,?,?,?,?,?)";
+        PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+    	
+        stmt.setDate(1,new java.sql.Date(r.getStartingDate().getTime()));
+        stmt.setDate(2,new java.sql.Date(r.getEndDate().getTime()));
+        stmt.setInt(3,Integer.parseInt(r.getVehicleID()));
+        stmt.setInt(4,Integer.parseInt(r.getStartBranchID()));
+        stmt.setInt(5,Integer.parseInt(r.getEndBranchID()));
+        stmt.setInt(6,Integer.parseInt(r.getCustomerAccountID()));
+        stmt.setString(7,r.getStatus());
+
+        stmt.executeUpdate();
+        
+        ResultSet rs = stmt.getGeneratedKeys();
+        
+        if (rs!= null && rs.next()){
+        	//set the ID of reservation to be the auto generated key
+            	r.changeID(rs.getInt(1));
+        }
+        rs.close();
+	}
+
 	/**
 	 * 
 	 * @param r

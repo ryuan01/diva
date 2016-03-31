@@ -1,6 +1,6 @@
 package systemManagement;
 
-import rentalManagement.DatabaseManager;
+import databaseManagement.DatabaseManager;
 
 public class SystemFacade {
 	
@@ -27,7 +27,7 @@ public class SystemFacade {
 	 */
 	public boolean createBranch(String addressBuildingNumber, String addressStreetName, String phoneNumber)
 	{
-		 sysMan.addBranch(addressBuildingNumber, addressStreetName, phoneNumber);
+		 return sysMan.addBranch(addressBuildingNumber, addressStreetName, phoneNumber);
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public class SystemFacade {
 	 */
 	public boolean destroyBranch(String branchNumber) 
 	{
-		sysMan.removeBranch(branchNumber); 
+		return sysMan.removeBranch(branchNumber); 
 	}
 	
 	/**

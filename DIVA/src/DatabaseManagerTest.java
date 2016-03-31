@@ -1,4 +1,3 @@
-package unitTEst;
 
 import databaseManagement.DatabaseManager;
 import systemManagement.Branch;

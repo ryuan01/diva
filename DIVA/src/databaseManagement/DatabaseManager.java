@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Currency;
 
+import rentalManagement.Reservation;
 //import accountManagement.Account;
 import systemManagement.Branch;
 
@@ -28,7 +29,7 @@ public class DatabaseManager {
 	//private AccountDB accDB;
 	private BranchDB branDB;
 	//private EquipmentDB eqDB;
-	//private RentalDB reDB;
+	private RentalDB reDB;
 	//private VehicleDB veDB;
     
     //singieton design pattern
@@ -55,7 +56,7 @@ public class DatabaseManager {
 		//accDB = new AccountDB();
 		branDB = new BranchDB();
 		//eqDB = new EquipmentDB();
-		//reDB = new RentalDB();
+		reDB = new RentalDB();
 		//veDB = new VehicleDB();
     }
        
@@ -138,12 +139,99 @@ public class DatabaseManager {
 		branDB.changeBranch(b_key_value);
 	}*/
 	
+	/**
+	 * Get a list of branches
+	 * @pre conDB is not connected
+	 * @post conDB is disconnected
+	 * @return
+	 */
 	public Branch[] getBranch(){
-		return branDB.getBranch();
+		conDB.connect();
+		Branch[] blist = branDB.getBranch(conDB.getConnection());
+		conDB.disconnect();
+		return blist;
 	}
 	// EquipmentDB
+
+
    
 	// RentalDB
 	
+	/**
+	 * Create an reservation entry in database
+	 * @param r reservation
+	 * @pre r.id is null
+	 * @pre r is not in database
+	 * @post r.id is updated 
+	 */
+	public void createReservationEntry(Reservation r) {
+		conDB.connect();
+		System.out.println("Connected, trying to insert next");
+		reDB.createReservation(conDB.getConnection(), r);
+		conDB.disconnect();
+	}
+	
+	public void removeReservationEntry(String reservID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void changeStatus(String reservID, String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Reservation[] searchReservationEntries(String id) {
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void modifyReservationEntries(String reservID, String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void modifyReservationStartDateEntries(String reservID, String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void modifyReservationEndDateEntries(String reservID, String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void makePayment(String reservID, String typeOfPayment) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void createReturn(String reservID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Can we cancel a rental? 
+	 * @param reservID
+	 */
+	public void removeRental(String reservID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Is rental different from Reserve? 
+	 * @param reservID
+	 */
+	public void createRental(String reservID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 	//VehicleDB
+	
+	
 }

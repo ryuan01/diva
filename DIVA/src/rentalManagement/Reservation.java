@@ -1,7 +1,7 @@
 package rentalManagement;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Arrays;
 
 import accountManagement.Account;
@@ -14,8 +14,8 @@ import vehicleManagement.Vehicle;
 // Needs javadoc
 public class Reservation {
 
-	private ReservationDate startDate;
-	private ReservationDate endDate;
+	private Date startDate;
+	private Date endDate;
 	private String vehicleID;
 	private String[] equipmentIDs;
 	private String startBranchID;
@@ -23,7 +23,7 @@ public class Reservation {
 	private String customerAccountID;
 	private String status;
 	private String employeeAccountID;
-	private String reservID;
+	private int reservID;
 	
 	/**
 	 * Creates empty Reservation.
@@ -39,14 +39,15 @@ public class Reservation {
 		customerAccountID = "";
 		status = "";
 		employeeAccountID = "";
-		reservID = "";
+		// -1 means this doesn't exit
+		reservID = -1;
 		
 	}
 	
 	/**
 	 * Create a Reservation with start and end Date, Vehicle, Equipment, starting and ending branch, customer and employee id, status, and ID
-	 * @param startDate Starting date of Reservation.
-	 * @param endDate Ending date of Reservation.
+	 * @param startDate2 Starting date of Reservation.
+	 * @param endDate2 Ending date of Reservation.
 	 * @param v Vehicle ID of the reservation.
 	 * @param e Equipment ID of the reservation.
 	 * @param startBranch The branch ID Vehicle is Rented.
@@ -56,8 +57,8 @@ public class Reservation {
 	 * @param empl The Employee log in ID Reservation belongs to.
 	 * @param id The Reservation ID.
 	 */
-	public Reservation(ReservationDate startDate, ReservationDate endDate, String vehID, String[] e, String startBranch, String endBranch, String cusID, String s, 
-			String empID, String id)
+	public Reservation(Date startDate, Date endDate, String vehID, String[] e, String startBranch, String endBranch, String cusID, String empID, String s, 
+			 int id)
 	{
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -75,7 +76,7 @@ public class Reservation {
 	 * Modifies the starting date of Reservation.
 	 * @param newDate The start date to be changed.
 	 */
-	public void changeStartDate(ReservationDate newDate)
+	public void changeStartDate(Date newDate)
 	{
 		startDate = newDate;
 	}
@@ -84,7 +85,7 @@ public class Reservation {
 	 * Modifies the ending date of Reservation.
 	 * @param newDate The end date to be changed.
 	 */
-	public void changeEndDate(ReservationDate newDate)
+	public void changeEndDate(Date newDate)
 	{
 		endDate = newDate;
 	}
@@ -166,7 +167,7 @@ public class Reservation {
 	 * Modifies the ID of Reservation.
 	 * @param newID New ID of Reservation.
 	 */
-	public void changeID(String newID)
+	public void changeID(int newID)
 	{
 		this.reservID = newID;
 	}
@@ -175,7 +176,7 @@ public class Reservation {
 	 * Returns the Date of the Reservation.
 	 * @return Date of the Reservation.
 	 */
-	public ReservationDate getStartingDate()
+	public Date getStartingDate()
 	{
 		return this.startDate;
 	}
@@ -184,7 +185,7 @@ public class Reservation {
 	 * Returns the end Date of the Reservation.
 	 * @return Date of the Reservation.
 	 */
-	public ReservationDate getEndDate()
+	public Date getEndDate()
 	{
 		return this.endDate;
 	}
@@ -256,7 +257,7 @@ public class Reservation {
 	 * Returns the ID of Reservation.
 	 * @return ID of Reservation.
 	 */
-	public String getID()
+	public int getID()
 	{
 		return this.reservID;
 	}
