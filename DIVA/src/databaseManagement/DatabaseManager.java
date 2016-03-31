@@ -9,10 +9,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Currency;
+import java.util.Date;
 
 import rentalManagement.Reservation;
 //import accountManagement.Account;
 import systemManagement.Branch;
+import vehicleManagement.Vehicle;
 
 /*Robin */
 /*edited by Sammy*/
@@ -30,7 +32,7 @@ public class DatabaseManager {
 	private BranchDB branDB;
 	//private EquipmentDB eqDB;
 	private RentalDB reDB;
-	//private VehicleDB veDB;
+	private VehicleDB veDB;
     
     //singieton design pattern
     private static DatabaseManager instance = null;
@@ -57,7 +59,7 @@ public class DatabaseManager {
 		branDB = new BranchDB();
 		//eqDB = new EquipmentDB();
 		reDB = new RentalDB();
-		//veDB = new VehicleDB();
+		veDB = new VehicleDB();
     }
        
 	
@@ -166,7 +168,7 @@ public class DatabaseManager {
 	 */
 	public void createReservationEntry(Reservation r) {
 		conDB.connect();
-		System.out.println("Connected, trying to insert next");
+		//System.out.println("Connected, trying to insert next");
 		reDB.createReservation(conDB.getConnection(), r);
 		conDB.disconnect();
 	}
@@ -232,6 +234,21 @@ public class DatabaseManager {
 
 	
 	//VehicleDB
-	
+	/**
+	 * Generic search of vehicle available at certain date, certain branch 
+	 * @param c
+	 * @param branch_id
+	 * @param type
+	 * @param start_date
+	 * @param list
+	 * @return
+	 */
+	public Vehicle[] search(String branch_id, String type, Date start_date, String[] list){
+		conDB.connect();
+		//System.out.println("Connected, trying to insert next");
+		Vehicle[] vlist = veDB.search(conDB.getConnection(),branch_id,type,start_date,null);
+		conDB.disconnect();
+		return vlist;
+	}
 	
 }

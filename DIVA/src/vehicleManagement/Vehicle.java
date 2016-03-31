@@ -26,7 +26,8 @@ public class Vehicle {
 	 * @param status	The status of the car is either SOLD, FORSALE, or FORRENT
 	 * @param features	A description of the car
 	 */
-	public Vehicle(String location, int capacity, String type, String manufacturer, String year, String color, String status, String features) {
+	public Vehicle(int id, String location, int capacity, String type, String manufacturer, String year, String color, String status, String features) {
+		this.id = id;
 		this.setType(type);
 		this.manufacturer = manufacturer;
 		this.year = year;
@@ -172,6 +173,20 @@ public class Vehicle {
 	 */
 	public void setFeatures(String features) {
 		this.features = features;
+	}
+
+	public String toString(){
+		String tmp = getClass().getName()+" "
+				+" ID: " +id
+				+" type: "+ type
+				+" manufacturer: "+ manufacturer
+				+" year-model: " + year
+				+" color: " + color
+				+" status: " + status
+				+" features: " + features
+				+" branchID: " + branchID
+				+" capacity: " + capacity;
+		return tmp;
 	}
 }
 

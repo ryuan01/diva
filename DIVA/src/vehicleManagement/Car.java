@@ -7,13 +7,10 @@ package vehicleManagement;
  */
 public class Car extends Vehicle{
 
-	public Car(String location, int capacity, String type, String manufacturer, String year, String color,
+	public Car(int id, String location, int capacity, String type, String manufacturer, String year, String color,
 			String status, String features) {
-		super(location, capacity, type, manufacturer, year, color, status, features);
+		super(id, location, capacity, type, manufacturer, year, color, status, features);
 		// TODO Auto-generated constructor stub
 	}
-
-
-		// TODO Auto-generated constructor stub
 	}
 

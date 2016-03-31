@@ -19,17 +19,8 @@ import vehicleManagement.Vehicle;
  *
  */
 class VehicleDB {
-
-	/**
-	 * Creates a VehicleDBManager
-	 * @param db
-	 * @param pass
-	 */
-	public VehicleDB(String db, String pass) {
-		// TODO Auto-generated constructor stub
-	}
 	
-	public VehicleDB() {
+	VehicleDB() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -41,7 +32,7 @@ class VehicleDB {
 	 * @pre isValidBranch(b)
 	 * @post v.branch = b
 	 */
-	public void updateVehicleLocation(String v_key_value, String b_key_value){
+	void updateVehicleLocation(String v_key_value, String b_key_value){
 		
 	}
 	
@@ -54,7 +45,7 @@ class VehicleDB {
 	 * @pre status is one of {reserved, rented, damaged, available, sold}
 	 * @post v.status = status
 	 */
-	public void updateVehicleStatus(String v_key_value, int status){
+	void updateVehicleStatus(String v_key_value, int status){
 		
 	}
 	
@@ -65,20 +56,20 @@ class VehicleDB {
 	 * @pre isValidVehicle(v)
 	 * @post a new entry in TABLE VEHICLE
 	 */
-	public void addVehicle(Vehicle v) {
+	void addVehicle(Vehicle v) {
 	}
 	//need to confirm with whoever is doing rental to see the list
 
 	/**
 	 * Generic search searches a list of cars available for rental in a specific branch starting specific day
 	 * @param c
-	 * @param start_branch_id
+	 * @param branch_id
 	 * @param type
 	 * @param start_date
 	 * @param list
 	 * @return
 	 */
-	public Vehicle[] search(Connection c, String start_branch_id, String type, Date start_date, String[] list) {
+	Vehicle[] search(Connection c, String branch_id, String type, Date start_date, String[] list) {
 		//create an arraylist to hold the result
   		ArrayList<Vehicle> vlist = new ArrayList<Vehicle>();
   		
@@ -87,13 +78,12 @@ class VehicleDB {
             
             //this is a double query
             String query = "SELECT * FROM vehicles WHERE vehicles.location = "
-            		+ Integer.parseInt(start_branch_id)
-            		+ " AND vehicles.vtype = "
-            		+ type
+            		+ Integer.parseInt(branch_id)
+            		+ " AND vehicles.vtype = 'car' "
             		+ " AND sale_status = 'for rent' "
             		+ " AND vehicles.serial_num NOT IN ( SELECT vehicles.serial_num FROM vehicles, "
             		+ "reservation WHERE vehicles.serial_num = reservation.vehicle_id AND "
-            		+ "reservation.end_date >= " 
+            		+ "reservation.end_date < " 
             		+ new java.sql.Date(start_date.getTime())+")";
             
             ResultSet rs = stmt.executeQuery(query);
@@ -115,7 +105,7 @@ class VehicleDB {
             	
             	//need two helper methods: one for car, one for truck
             	//need to separate database for car types and truck types
-            	Vehicle v = new Car(String.valueOf(location), capacity, "economy", manufacturer, year_model, color, status, "No feature available");
+            	Vehicle v = new Car(id, String.valueOf(location), capacity, "economy", manufacturer, year_model, color, status, "No feature available");
             	vlist.add(v);
             }
             
@@ -140,7 +130,7 @@ class VehicleDB {
 	 * @pre branch must be valid 
 	 * @post list of cars matching for sale
 	 */	
-	public Car[] searchForsaleCars(String branch) {
+	Car[] searchForsaleCars(String branch) {
 		return null;
 	}
 	
@@ -150,7 +140,7 @@ class VehicleDB {
 	 * @pre branch must be valid 
 	 * @post list of trucks matching for sale 
 	 */	
-	public Truck[] searchForsaleTrucks(String branch) {
+	Truck[] searchForsaleTrucks(String branch) {
 		return null;
 	}
 
@@ -160,7 +150,7 @@ class VehicleDB {
 	 * @pre branch must be valid 
 	 * @post list of cars matching overdue 
 	 */	
-	public Car[] searchOverdueCars(String branch) {
+	Car[] searchOverdueCars(String branch) {
 		return null;
 	}
 	
@@ -170,7 +160,7 @@ class VehicleDB {
 	 * @pre branch must be valid 
 	 * @post list of trucks matching overdue
 	 */	
-	public Truck[] searchOverdueTrucks(String branch) {
+	Truck[] searchOverdueTrucks(String branch) {
 		return null;
 	}	
 
@@ -186,7 +176,7 @@ class VehicleDB {
 	 * @pre isValidVehicle(v)
 	 * @post vehicle status is returned
 	 */
-	public String getvehiclestatus(String v_key_value) {
+	String getvehiclestatus(String v_key_value) {
 		return null;
 	}
 

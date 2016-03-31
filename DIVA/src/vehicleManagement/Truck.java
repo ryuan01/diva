@@ -8,13 +8,11 @@ package vehicleManagement;
 
 public class Truck extends Vehicle{
 
-	public Truck(String location, int capacity, String type, String manufacturer, String year, String color,
+	public Truck(int id, String location, int capacity, String type, String manufacturer, String year, String color,
 			String status, String features) {
-		super(location, capacity, type, manufacturer, year, color, status, features);
+		super(id, location, capacity, type, manufacturer, year, color, status, features);
 		// TODO Auto-generated constructor stub
 	}
 
-
-	
 
 }
