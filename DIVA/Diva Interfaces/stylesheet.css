@@ -1,374 +1,5 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-body {
-    padding-top: 2%;
-    padding-left: 10%;
-    padding-right: 10%;
-    font-family: sans-serif;
-    
-}
-header {
-	background-image: -webkit-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(238,255,0,1.00) 100%);
-	background-image: -moz-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(238,255,0,1.00) 100%);
-	background-image: -o-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(238,255,0,1.00) 100%);
-	background-image: linear-gradient(180deg,rgba(255,255,255,1.00) 0%,rgba(238,255,0,1.00) 100%);    
-}
-header img {
-    height: 100px;
-    width: 200px;
-}
-#wrapper {
-	box-shadow: 0px 5px 20px 1px black;
-	padding-left: 5%;
-	padding-right: 5%;
-	padding-top: 5%;
-}
-.login_box, .login_box a {
-    text-align: right;
-    text-decoration: none;
-}
 
-nav ul {
-    
-    list-style-type: none;
-}
-
-main {
-/*
-    background-image: url(images/lambo.jpg);
-    background-size: cover;
-	background-repeat: no-repeat;
-    background-position: center center;
-*/
-    text-align: left;
-    padding: 100px;
-    
-    
-}
-
-.tabs {
-    
-    border: solid 1px;
-}
- 
-/*----- Tab Links -----*/
-/* Clearfix */
-.tab-links:after {
-    display:block;
-    clear:both;
-    content:'';
-}
-
-.tab-links li {
-    margin:0px 5px;
-    float:left;
-    list-style:none;
-}
-
-.tab-links a {
-    padding:9px 15px;
-    display:inline-block;
-    border-radius:3px 3px 0px 0px;
-    background:#7FB5DA;
-    font-size:16px;
-    font-weight:600;
-    color:#4c4c4c;
-    transition:all linear 0.15s;
-}
-
-.tab-links a:hover {
-    background:#a7cce5;
-    text-decoration:none;
-}
-
-li.active a, li.active a:hover {
-    background:#fff;
-    color:#4c4c4c;
-}
-
-/*----- Content of Tabs -----*/
-.tab-content {
-    padding:15px;
-    border-radius:3px;
-    box-shadow:-1px 1px 1px rgba(0,0,0,0.15);
-    background:#fff;
-}
-
-    .tab {
-        display:none;
-    }
-
-    .tab.active {
-        display:block;
-    }
-.search {
-    text-align: right;
-}
-
-.wrapper form{
-    padding: 15px;
-    
-    
-}
-#input-name, #input-email, #input-password, #input-confirm {
-    
-}
-#name-text, #email-text, #password-text, #confirm-text {
-    
-}
-.left-box {
-    border: 1px solid;
-    margin-left: 0px
-}
-#sign-in-special {
-    padding-top: 10%;
-}
-
-footer {
-    text-align: center;
-	bottom:0;
-}
-nav {
-	text-align: right;
-}
-ul li {
-	text-decoration: none;
-	display: inline;
-}
-wrapper {
-}
-
-@media screen and (max-width:768px){
-	body {
-		margin-right: 0px;
-	}
-}
-
-@media screen and (max-width:375px){
-body {
-	font-size: 12px;
-	text-align: center;
-}
-nav {
-	text-align: center;	
-}
-nav ul {
-	list-style-type: none;
-}
-#wrapper main .tabs {
-	margin-left: -110px;
-	margin-right: -111px;
-	min-width: 0px;
-}
-#wrapper nav ul {
-	margin-left: -42px;
-}
-ul li a {
-	text-decoration: none;
-}
-#wrapper {
-}
-nav {
-}
-
-
-}
-
-@media screen and (max-width:1024px){
-#wrapper nav ul li {
-	text-align: right;
-	display: inline;
-}
-ul li a {
-	text-decoration: none;
-}
-}
-=======
-body {
-    padding-left: 5%;
-    padding-right: 5%;
-    font-family: sans-serif;
-    
-}
-header {
-	background-image: url(images/banner.png);
-	background-repeat: no-repeat;
-	background-size: cover;
-	
-}
-header img {
-    height: 100px;
-    width: 200px;
-}
-#wrapper {
-	box-shadow: 0px 5px 20px 1px black;
-	margin-top: -21px;
-}
-.logo_box, nav {
-	padding-top: 2%;
-	padding-right: 2%;
-	padding-left: 2%;	
-}
-.login_box, .login_box a {
-    text-align: right;
-    text-decoration: none;
-}
-
-nav ul {
-    
-    list-style-type: none;
-}
-nav ul a {
-	text-decoration: none;
-}
-main {
-/*
-
-    background-image: url(images/lambo.jpg);
-    background-size: cover;
-	background-repeat: no-repeat;
-*/
-
-    text-align: left;
-    padding: 100px;
-    
-    
-}
-
-.tabs {
-    display:inline-block;
-    border: solid 1px;
-    text-align: center;
-}
- 
-/*----- Tab Links -----*/
-/* Clearfix */
-.tab-links:after {
-    display:block;
-    clear:both;
-    content:'';
-}
-
-.tab-links li {
-    margin:0px 5px;
-    float:left;
-    list-style:none;
-}
-
-.tab-links a {
-    padding:9px 15px;
-    display:inline-block;
-    border-radius:3px 3px 0px 0px;
-    font-size:16px;
-    font-weight:600;
-    color:#4c4c4c;
-    transition:all linear 0.15s;
-}
-
-.tab-links a:hover {
-    background:#a7cce5;
-    text-decoration:none;
-}
-
-li.active a, li.active a:hover {
-    background:#ccffff;
-    color:#4c4c4c;
-}
-
-/*----- Content of Tabs -----*/
-.tab-content {
-    padding:15px;
-    border-radius:3px;
-    box-shadow:-1px 1px 1px rgba(0,0,0,0.15);
-    background:#fff;
-}
-
-    .tab {
-        display:none;
-    }
-
-    .tab.active {
-        display:block;
-    }
-.search {
-    text-align: right;
-}
-
-.wrapper form{
-    padding: 15px;
-    
-    
-}
-#pickupTime, #returnTime {
-    width: 35px;
-}
-.left-box {
-    border: 1px solid;
-    margin-left: 0px
-}
-#sign-in-special {
-    padding-top: 10%;
-}
-
-footer {
-    text-align: center;
-	bottom:0;
-}
-nav {
-	text-align: right;
-}
-ul li {
-	text-decoration: none;
-	display: inline;
-}
-#tab1 div, #tab2 div {
-    padding: 5px;
-}
-
-@media screen and (max-width:768px) and (min-width:376px){
-	body {
-		margin-right: 0px;
-	}
-}
-
-@media screen and (max-width:375px){
-    body {
-        font-size: 12px;
-        text-align: center;
-    }
-    nav {
-        text-align: center;	
-    }
-    nav ul {
-        list-style-type: none;
-    }
-    #wrapper main .tabs {
-        margin-left: -110px;
-        margin-right: -111px;
-        min-width: 0px;
-    }
-    #wrapper nav ul {
-        margin-left: -42px;
-    }
-    ul li a {
-        text-decoration: none;
-    }
-
-}
-
-@media screen and (max-width:1024px){
-    #wrapper nav ul li {
-        text-align: right;
-        display: inline;
-    }
-    ul li a {
-        text-decoration: none;
-    }
-
-
-}
->>>>>>> mark
-=======
+/* GLOBAL*/
 body {
     padding-left: 5%;
     padding-right: 5%;
@@ -391,9 +22,6 @@ header img {
 	box-shadow: 0px 5px 20px 1px black;
 	margin-top: -21px;
     
-    background-image: url(images/lambo.jpg);
-    background-size: cover;
-	background-repeat: no-repeat;
 }
 .validator_box {
     text-align: center;
@@ -402,21 +30,39 @@ header img {
 	padding-top: 2%;
 	padding-right: 2%;
 	padding-left: 2%;
-	color: #00FBFF;
+	
 }
 nav {
     color: #FFFFFF;
+    
+    text-align: right;
+	background-image: -webkit-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
+	background-image: -moz-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
+	background-image: -o-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
+	background-image: linear-gradient(180deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
 }
 nav ul a {
 	text-decoration: none;
-    color: #FFF712;
+    color: #D2DBE5;
 }
 nav a:link {
     text-decoration: none;
 }
-#container {
-    border: solid 1px;
+/*================*/
+main {
+    text-align: left;
+    padding-top: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    
+    
+/*
+    background-image: url(images/lambo.jpg);
+    background-size: cover;
+	background-repeat: no-repeat;
+*/
 }
+
 #profile-form {
 }
 #login-text, #profile-text {
@@ -429,7 +75,7 @@ nav a:link {
     text-align: center;
     padding-right: 30%;
 }
-.label_box p, #profile-submit {
+.label_box p, #wrapper main {
     text-align: center;
 }
 .login_box {
@@ -439,19 +85,35 @@ nav a:link {
     text-decoration: none;
     border: solid 1px;
 }
+/* SIGNUP.HTML */
 #signup-box {
-	border: solid 1px;
+    width: 500px;
 	text-align: center;
 }
-main {
-
-
-    text-align: left;
-    padding-top: 50px;
-    padding-left: 50px;
-    padding-right: 50px;
-    
-    
+#signup-form form {
+    color: #B0BBD0;
+    padding: 20px;
+    background-color: #403F42;
+    border: solid 1px #D2DBE5;
+}
+#signup-title {
+    font-size: 1.5em;
+    background-color: #969BA9;
+    border: solid 1px #D2DBE5;
+}
+#signup-submit {
+    font-size: 35px;
+    width: 35%;
+    background-color: #969BA9;
+    transition:all linear 0.10s;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+#signup-submit:hover {
+    background-color: #D2DBE5;
+}
+#signup-box div {
+    padding: 5px 0px 10px 0px;
 }
 
 .tabs {
@@ -459,9 +121,6 @@ main {
     border: solid 1px;
     text-align: center;
 }
- 
-/*----- Tab Links -----*/
-/* Clearfix */
 .tab-links:after {
     display:block;
     clear:both;
@@ -469,8 +128,6 @@ main {
 }
 
 .tab-links li {
-    margin:0px 5px;
-    float:left;
     list-style:none;
 }
 
@@ -496,58 +153,91 @@ li.active a, li.active a:hover {
 
 /*----- Content of Tabs -----*/
 .tab-content {
-    padding:15px;
     border-radius:3px;
     box-shadow:-1px 1px 1px rgba(0,0,0,0.15);
     background:#fff;
 }
 
-    .tab {
-        display:none;
-    }
+.tab {
+    display:none;
+}
 
-    .tab.active {
-        display:block;
-    }
+.tab.active {
+    display:block;
+}
 .search {
     text-align: right;
 }
-
-.wrapper form{
-    padding: 15px;
-    
-    
-}
 #pickupTime, #returnTime {
     width: 35px;
-}
-.left-box {
-    border: 1px solid;
-    margin-left: 0px
-}
-#sign-in-special {
-    padding-top: 10%;
 }
 
 footer {
     text-align: center;
 	bottom:0;
 }
-nav {
-	text-align: right;
-	background-image: -webkit-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
-	background-image: -moz-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
-	background-image: -o-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
-	background-image: linear-gradient(180deg,rgba(255,255,255,1.00) 0%,rgba(62,62,62,1.00) 4.66%,rgba(52,52,52,1.00) 73.06%,rgba(0,0,0,1.00) 97.41%);
-}
-ul, ul li {
+nav ul li, .tabs ul li {
 	text-decoration: none;
 	display: inline;
 }
 #tab1 div, #tab2 div {
     padding: 5px;
 }
+/* PROFILE.HTML */
+#container {
+    height: 1300px;
+}
+#left-sidebar {
+    float: left;
+    width: 29%;
+    height: 150px;
+/*    padding: 15% 0% 32% 0%;*/
+}
 
+.profile-tab.active {
+    display: block;
+}
+.profile-tab {
+    display: none;
+}
+#personal-info, #payment-info {
+    text-align: left;
+    width: 70%;
+    float: right;
+}
+#personal-info h2{
+    text-align: center;
+}
+#profile-options li, #profile-options a{
+    list-style-type: none;
+    text-decoration: none;
+    color: #000;
+}
+/* HISTORY.HTML */
+#history-links {
+    text-align: left;
+}
+#history-links li {
+    list-style: none;
+    text-decoration: none;
+    display: inline;
+    
+}
+#search-reservation, #search-rental {
+    margin: 15px;
+    padding: 10px;
+}
+#reservations-tab {
+    text-align: center;
+}
+#reservation-table, #rental-table {
+    margin-left: auto;
+    margin-right: auto;
+}
+#reservation-table tr, th, td{
+    border: 1px solid;
+    padding: 15px;
+}
 @media screen and (max-width:768px) and (min-width:376px){
 	body {
 		margin-right: 0px;
@@ -591,4 +281,3 @@ ul, ul li {
 
 
 }
->>>>>>> mark

@@ -18,9 +18,7 @@
 <div id="wrapper">
     <header>
         <div class="logo_box">
-            <h1>
-                <a href = "index.html"><img src="images/logo.png"></a>
-            </h1>
+            <h1> <a href = "index.html"><img src="images/logo.png"></a></h1>
             <h4>
                 Distributed Vehicle Administration System
             </h4>
@@ -29,9 +27,8 @@
     <nav>
         Welcome, Mark Ranges<br><hr>
         <ul>
-            <li><a href="profile.html">View Profile</a></li> |
-            <li><a href="history.html">View History</a></li>  |
-            <li><a href="">MISSING</a></li> |
+            <li><a href="profile.html">View Profile |</a></li>
+            <li><a href="history.html">View History |</a></li>
             <li><a id="logout_link" href="undef.html" onclick="logout();return false;">Log Out</a></li>
         </ul>
         <hr><b>Points: 8954</b>
@@ -39,35 +36,130 @@
     </nav>
     <main>
         <div id="container">
-            <div id="profile-text">
-                Name:<br>
-                Address:<br>
-                Phone Number:<br>
-                Current Password:<br>
-                New Password:<br>
-                Confirm Password:<br>
+            <h2>My Profile</h2><hr>
+            <div id="left-sidebar">
+                <ul id="profile-options">
+                    <li class="active"><a href="#personal-info">Personal Details</a></li>
+                    <li><a href="#payment-info">Payment Information</a></li>
+                </ul>
             </div>
-            <div id="profile-input">
-                <form id="profile-form">
-                    <input type="text"><br>
-                    <input type="text"><br><input type="text"><br>
-                    <input type="text"><br>
-                    <input type="text"><br>
-                    <input type="text"><br>
-                </form>  
+            <div id="profile-content">
+                <div id="personal-info" class="profile-tab active">
+                    <h3>Personal Details</h3>
+                    <hr>
+                        <div>
+                            <h4>Name</h4>
+                            <table>
+                                <tr>
+                                    <th>First Name</th>
+                                </tr>
+                                <tr>
+                                    <td><input id="firstname-input" type="text" size="15"></td>
+                                </tr>
+                                <tr>
+                                    <th>Middle Name</th>
+                                </tr>
+                                <tr>
+                                    <td><input id="middlename-input" type="text" size="15"></td>
+                                </tr>
+                                <tr>
+                                    <th>Last Name</th>
+                                </tr>
+                                <tr>
+                                    <td><input id="lastname-input" type="text" size="15"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <hr>
+                        <div>
+                            <h4>Address</h4>
+                            <table id="street-table">
+                            <tr>
+                                <th>Street Number</th>
+                                <th>Street Name</th>
+                            </tr>
+                            <tr>
+                                <td><input id="streetnumber-input" type="text" size="7"></td>
+                                <td><input id="streetname-input" type="text" size="7"></td>
+                            </tr>
+                            <tr>
+                                <th>City</th>
+                                <th>Province</th>
+                                <th>Country</th>
+                            </tr>
+                            <tr>
+                                <td><input id="city-input" type="text" size="7"></td>
+                                <td><input id="province-input" type="text" size="7"></td>
+                                <td><input id="country-input" type="text" size="7"></td>
+                            </tr>
+                            <tr>
+                                <th>Postal Code</th>
+                            </tr>
+                            <tr>
+                                <td><input id="postal-input" type="text" size="7"></td>
+                            </tr>
+                            </table>
+                            <hr> 
+                        </div>
+                        <div>
+                            <h4>Account</h4>
+                            <table>
+                                <tr>
+                                    <th>Email</th>
+                                </tr>
+                                <tr>
+                                    <td><input id="email-input" type="text" size="15"></td>
+                                </tr>
+                                <tr>
+                                    <th>Password</th>
+                                    <th>Confirm Password</th>
+                                </tr>
+                                <tr>
+                                    <td><input id="password-input" type="text" size="7"></td>
+                                    <td><input id="confirmpassword-input" type="text" size="7"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <hr>
+                        <button type="button">Save Changes</button>
+                        <button type="button">Cancel</button>
+                    </div>
+                    <div id="payment-info" class="profile-tab">
+                        <h3>Payment Details</h3>
+                        <hr>
+
+                        <div>
+                            <h4>Credit Card Information</h4>
+                            <table>
+                                <tr>
+                                    <th>Name on Card</th>
+                                </tr>
+                                <tr>
+                                    <td><input id="cardname-input" type="text" size="15"></td>
+                                </tr>
+                                <tr>
+                                    <th>Credit Card Number</th>
+                                </tr>
+                                <tr>
+                                    <td><input id="ccnumber-input" type="text" size="15"></td>
+                                </tr>
+                                <tr>
+                                    <th>CVV</th>
+                                    <th>Expiry</th>
+                                </tr>
+                                <tr>
+                                    <td><input id="cvv-input" type="text" size="7"></td>
+                                    <td><input id="expiry-input" type="text" size="7"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <hr>
+                        <button type="button">Save Changes</button>
+                        <button type="button">Cancel</button>
+                    </div>
+                </div>
+                
             </div>
-            <div id="profile-submit">
-                <button type="button">Save Changes</button>
-                <button type="button">Cancel</button>
-            </div>
-        </div>
-        <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
-        <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
-        <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
-        <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
-        <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
-        <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
-        <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
     </main>
     <footer>
     &copy; 2016 Diva Industries, Inc.

@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>
+        DiVA Homepage
+    </title>
+    <link type="text/css" rel="stylesheet" href="stylesheet.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="js.js"> </script>
+    
+</head>
+<body>
+<div id="wrapper">
+     <header>
+	
+    <div class="logo_box">
+            <h1><a href = "index.html"><img src="images/logo_transparent.png" alt="diva_logo"></a></h1>
+            <h4>
+                Distributed Vehicle Administration System
+            </h4>
+     </div>
+    </header>
+    <nav>
+        Welcome, Mark Ranges<br><hr>
+        <ul>
+            <li><a href="profile.html">View Profile</a></li> |
+            <li><a href="history.html">View History</a></li>  |
+            <li><a id="logout_link" href="undef.html" onclick="logout();return false;">Log Out</a></li>
+        </ul>
+        <hr><b>Points: 8954</b>
+        
+    </nav>
+    <main>
+        <div id="history-title">
+            <h2>Transaction History</h2>
+            <hr>
+        </div>
+        <div id="history-tabs">
+            <ul id="history-links">
+                <li class="active"><a href="#reservations-tab">Reservations</a></li>
+                <li><a href="#rentals-tab">Rentals</a></li>
+                <li><a href="#sales-tab">Sales</a></li>
+            </ul>
+            <hr>
+            <div class="tab-content">
+                <div id="reservations-tab" class="tab active">
+                    <form>
+                        <div>
+                            <input id="search-reservation" type="text" name="pickup location" placeholder="Enter Confirmation ID, Date (MM/DD/YYYY), or Location" size="50"><br>
+                        </div>
+                        <table id="reservation-table">
+                            <tr>
+                                <th></th>
+                                <th>Confirmation ID #</th>
+                                <th>Date Reserved</th>
+                                <th>Location</th>
+                                <th>Points</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>E12398101</td>
+                                <td>March 15, 2016</td>
+                                <td>Burnaby, BC</td>
+                                <td>-150</td>
+                                
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>E12218331</td>
+                                <td>March 17, 2016</td>
+                                <td>Burnaby, BC</td>
+                                <td>-150</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>E12312332</td>
+                                <td>March 25, 2016</td>
+                                <td>Vancouver, BC</td>
+                                <td>-150</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>E12128101</td>
+                                <td>April 2, 2016</td>
+                                <td>Surrey, BC</td>
+                                <td>-150</td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+    
+                <div id="rentals-tab" class="tab">
+                    <form>
+                        <div>
+                            <input id="search-rental" type="text" name="pickup location" placeholder="Enter Vehicle ID, Date (MM/DD/YYYY), or Location" size="50"><br>
+                        </div>
+                        <table id="rental-table">
+                            <tr>
+                                <th></th>
+                                <th>Vehicle ID #</th>
+                                <th>Date Reserved</th>
+                                <th>Location</th>
+                                <th>Points</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>E12398101</td>
+                                <td>March 15, 2016</td>
+                                <td>Burnaby, BC</td>
+                                <td>150</td>
+                                
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>E12218331</td>
+                                <td>March 17, 2016</td>
+                                <td>Burnaby, BC</td>
+                                <td>150</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>E12312332</td>
+                                <td>March 25, 2016</td>
+                                <td>Vancouver, BC</td>
+                                <td>150</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>E12128101</td>
+                                <td>April 2, 2016</td>
+                                <td>Surrey, BC</td>
+                                <td>150</td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+    
+                <div id="sales-tab" class="tab">
+                    No recent sales history.
+                </div>
+    
+            </div>
+        </div>
+    </main>
+    <footer>
+    &copy; 2016 Diva Industries, Inc.
+    </footer>
+</div>
+</body>
+</html>
