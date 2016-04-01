@@ -94,6 +94,7 @@ class RentalDB {
 	 */
 	public void createReservation(Connection c, Reservation r){
 		
+		//what happens if it is only half of the insertion?
         try{
             //insert into Reservation table
         	insertReservation(c,r);
@@ -117,13 +118,15 @@ class RentalDB {
 	 */
 	private void insertEqRes(Connection c, Reservation r) throws SQLException{
 		// TODO Auto-generated method stub
-    	String sql = "INSERT INTO `equipment_reservation`(`res_id`, `equip_id`) VALUES (?,?)";
+    	String sql = "INSERT INTO `equipment_reservation`(`start_date`, `end_date`,`res_id`, `equip_id`) VALUES (?,?,?,?)";
     	
         for (int i =0; i<r.getEquipments().length; i++){
         	PreparedStatement st = c.prepareStatement(sql);
-        	
-            st.setInt(1, r.getID());
-            st.setInt(2,Integer.parseInt(r.getEquipments()[i]));
+
+            st.setDate(1,new java.sql.Date(r.getStartingDate().getTime()));
+            st.setDate(2,new java.sql.Date(r.getEndDate().getTime()));
+            st.setInt(3, r.getID());
+            st.setInt(4,Integer.parseInt(r.getEquipments()[i]));
             
             st.executeUpdate();
          

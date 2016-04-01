@@ -1,5 +1,6 @@
-package unitTEst;
-
+//package unitTEst;
+import java.util.*;
+import java.text.*;
 import java.util.Date;
 
 import databaseManagement.DatabaseManager;
@@ -18,7 +19,7 @@ public class DatabaseManagerTest {
 		// TODO Auto-generated method stub
 		
 		//each test will be its own method
-		test_get_branch();
+		//test_get_branch();
 		
 		test_search();
 	}
@@ -29,7 +30,20 @@ public class DatabaseManagerTest {
 	private static void test_search() {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
-		Vehicle[] vArray = db.search("1","car",new Date(),null);
+	      SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss zzz");
+	      
+	      String input = "2006-5-5 22:00:00 PDT";
+	      
+	      Date t = null;
+	      
+	      try {
+	    	  t = ft.parse(input);
+	          System.out.println("Parsed Date: " + t);
+	      } catch (ParseException e) {
+	    	  System.err.println(e);
+	      }
+	      
+		Vehicle[] vArray = db.search("1","car",t,null);
 		String tmp;
 		
 		for (int i = 0; i<vArray.length; i++){

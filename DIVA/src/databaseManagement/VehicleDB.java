@@ -83,7 +83,7 @@ class VehicleDB {
             		+ " AND sale_status = 'for rent' "
             		+ " AND vehicles.serial_num NOT IN ( SELECT vehicles.serial_num FROM vehicles, "
             		+ "reservation WHERE vehicles.serial_num = reservation.vehicle_id AND "
-            		+ "reservation.end_date < " 
+            		+ "reservation.end_date >= " 
             		+ new java.sql.Date(start_date.getTime())+")";
             
             ResultSet rs = stmt.executeQuery(query);
