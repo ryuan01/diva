@@ -12,11 +12,11 @@ import java.sql.SQLException;
 class ConnectDB{
   	//Database URL
     //THIS IS SET TO A TEST DATABASE: CHANGE TO 'diva_main' WHEN DEPLOYED!!
-    private static final String CONN_STRING = "jdbc:mysql://localhost/test";
+    private static final String CONN_STRING = "jdbc:mysql://localhost:3306/test";
     
     // Database User Name and Password
-    private static final String USERNAME = "diva";
-    private static final String PASSWORD = "DiVA$E2016&";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "admin";
     
     // A session with the database
     private Connection connection;
@@ -53,7 +53,7 @@ class ConnectDB{
 		if(isConnected()){
 			try{
 				connection.close();
-				System.out.println("Disconnected");
+				//System.out.println("Disconnected");
 			} catch(SQLException e){
 				System.err.println(e);
 			}finally{

@@ -67,55 +67,58 @@ class VehicleDB {
 	 * @param type
 	 * @param start_date
 	 * @param list
+	 * @throws SQLException happens when the query didn't complete 
 	 * @return
 	 */
-	Vehicle[] search(Connection c, String branch_id, String type, Date start_date, String[] list) {
+	Vehicle[] search(Connection c, String branch_id, String type, Date start_date, String[] list) throws SQLException{
 		//create an arraylist to hold the result
   		ArrayList<Vehicle> vlist = new ArrayList<Vehicle>();
   		
-        try{
-            Statement stmt = c.createStatement();
-            
-            //this is a double query
-            String query = "SELECT * FROM vehicles WHERE vehicles.location = "
-            		+ Integer.parseInt(branch_id)
-            		+ " AND vehicles.vtype = 'car' "
-            		+ " AND sale_status = 'for rent' "
-            		+ " AND vehicles.serial_num NOT IN ( SELECT vehicles.serial_num FROM vehicles, "
-            		+ "reservation WHERE vehicles.serial_num = reservation.vehicle_id AND "
-            		+ "reservation.end_date >= " 
-            		+ new java.sql.Date(start_date.getTime())+")";
-            
-            ResultSet rs = stmt.executeQuery(query);
-            
-            //parse result and add to list of branches
-            while (rs.next()){
-            	
-            	//type isn't in database, need to be updated
-            	//features isn't in database
-            	
-            	int id = rs.getInt("serial_num");
-            	int location = rs.getInt("location");
-            	String license_plate = rs.getString("license_plate_number");
-            	String manufacturer = rs.getString("manufacturer");
-            	String year_model = rs.getString("year_model");
-            	String color = rs.getString("color");
-            	String status = rs.getString("sale_status");
-            	int capacity = rs.getInt("capacity");
-            	
-            	//need two helper methods: one for car, one for truck
-            	//need to separate database for car types and truck types
-            	Vehicle v = new Car(id, String.valueOf(location), capacity, "economy", manufacturer, year_model, color, status, "No feature available");
-            	vlist.add(v);
-            }
-            
-            //clean up
-            rs.close();
-            stmt.close();
+  		//convert date to SQL type
+  		java.sql.Date sqlDate = new java.sql.Date(start_date.getTime());
+  		
+  		//type will decide which table to combine with 
+        Statement stmt = c.createStatement();
+
+        String query = "SELECT * FROM " 
+        		+type+" INNER JOIN branch_vehicle  ON "
+        		+type+".vehicle_id = branch_vehicle.vehicle_id " 
+        	    +" INNER JOIN vehicle ON "
+        	    +type+".vehicle_id = vehicle.vehicle_id AND "
+        		+" branch_vehicle.location = "
+        	    +Integer.parseInt(branch_id)
+        		+" AND sale_status = 'for rent' "
+        	    +" AND "+type+".vehicle_id NOT IN "
+        	    +"(SELECT "+type+".vehicle_id FROM " 
+        	    +type+" INNER JOIN rental ON "+type+".vehicle_id = rental.vehicle_id "
+        	    +" WHERE rental.end_date >= "
+        	    +sqlDate+");";
+        ResultSet rs = stmt.executeQuery(query);
+        
+        //parse result and add to list of branches
+        while (rs.next()){
+        	
+        	//type isn't in database, need to be updated
+        	//features isn't in database
+        	
+        	int id = rs.getInt("serial_num");
+        	int location = rs.getInt("location");
+        	String license_plate = rs.getString("license_plate_number");
+        	String manufacturer = rs.getString("manufacturer");
+        	String year_model = rs.getString("year_model");
+        	String color = rs.getString("color");
+        	String status = rs.getString("sale_status");
+        	int capacity = rs.getInt("capacity");
+        	
+        	//need two helper methods: one for car, one for truck
+        	//need to separate database for car types and truck types
+        	Vehicle v = new Car(id, String.valueOf(location), capacity, "economy", manufacturer, year_model, color, status, "No feature available");
+        	vlist.add(v);
         }
-        catch(SQLException e){
-            System.err.println(e);
-        }
+        
+        //clean up
+        rs.close();
+        stmt.close();
         
         //change back to array
         Vehicle[] vArray = new Car[vlist.size()];

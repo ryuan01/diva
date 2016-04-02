@@ -1,5 +1,6 @@
-//package unitTEst;
+package unitTEst;
 import java.util.*;
+import java.sql.SQLException;
 import java.text.*;
 import java.util.Date;
 
@@ -43,7 +44,13 @@ public class DatabaseManagerTest {
 	    	  System.err.println(e);
 	      }
 	      
-		Vehicle[] vArray = db.search("1","car",t,null);
+		Vehicle[] vArray =null;
+		try {
+			vArray = db.search("1","car",t,null);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String tmp;
 		
 		for (int i = 0; i<vArray.length; i++){

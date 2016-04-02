@@ -242,8 +242,9 @@ public class DatabaseManager {
 	 * @param start_date
 	 * @param list
 	 * @return
+	 * @throws SQLException 
 	 */
-	public Vehicle[] search(String branch_id, String type, Date start_date, String[] list){
+	public Vehicle[] search(String branch_id, String type, Date start_date, String[] list) throws SQLException{
 		conDB.connect();
 		//System.out.println("Connected, trying to insert next");
 		Vehicle[] vlist = veDB.search(conDB.getConnection(),branch_id,type,start_date,null);
