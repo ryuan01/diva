@@ -202,7 +202,6 @@ class AccountDB{
 						"' WHERE account_uName='" + username + "' AND account_password='" + enOldPw + "';";
 						
 				stmt.executeUpdate(query);
-				dbm.disconnect();
 				return true;
 				
 			}catch (SQLException e){
@@ -287,7 +286,6 @@ class AccountDB{
 						+ info[1] + "');";
 	
 				stmt.executeUpdate(query);
-				dbm.disconnect();
 				return true;
 			} catch (SQLException e){
 				System.err.println(e);
