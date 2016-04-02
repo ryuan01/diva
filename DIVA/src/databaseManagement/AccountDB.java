@@ -1,12 +1,14 @@
 package databaseManagement;
+
 import java.util.Currency;
+import java.sql.*;
 
 import accountManagement.Account;
 /**
  * AccountDB provides services related to the creation, deletion, and modification of account
  * no invariant 
  */
-public class AccountDB{
+class AccountDB{
 	
 	
 	//checking 
@@ -274,7 +276,7 @@ public class AccountDB{
 	 */
 	public boolean createAccount(String[] info) {
 		// Does it need to specify the account type?
-		if (!isValidAccount(info[2], info[3], info[4]) && !isValidUsername[0])
+		if (!isValidAccount(info[2], info[3], info[4]) && !isValidUsername(info[0])){
 			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
 			try{
@@ -340,6 +342,8 @@ public class AccountDB{
 			} finally{
 				dbm.disconnect();
 			}	
+		}else{
+			return null;
 		}
 	}
 	/**
