@@ -27,7 +27,7 @@ public class DatabaseManager {
 	
 	// I am modeling as Has-A relationship
 	// Not sure if I need to change this? 
-	private ConnectDB conDB;
+	private ConnectDB conDB; // you don't need to create a ConnectDB object here
 	//private AccountDB accDB;
 	private BranchDB branDB;
 	//private EquipmentDB eqDB;
@@ -70,6 +70,7 @@ public class DatabaseManager {
 	 * @post isConnected() 
 	 */
 	public void connect() {
+		// you don't need to create a ConnectDB object here
 		conDB.connect();
 	}
 	
@@ -148,6 +149,8 @@ public class DatabaseManager {
 	 * @return
 	 */
 	public Branch[] getBranch(){
+		// Why are you creating a connect object here and passing it to getBranch?
+		// connection object should be created INSIDE getBranch, not here!
 		conDB.connect();
 		Branch[] blist = branDB.getBranch(conDB.getConnection());
 		conDB.disconnect();
@@ -167,6 +170,7 @@ public class DatabaseManager {
 	 * @post r.id is updated 
 	 */
 	public void createReservationEntry(Reservation r) {
+		// Look at the note in getBranch method
 		conDB.connect();
 		//System.out.println("Connected, trying to insert next");
 		reDB.createReservation(conDB.getConnection(), r);
@@ -245,6 +249,9 @@ public class DatabaseManager {
 	 * @throws SQLException 
 	 */
 	public Vehicle[] search(String branch_id, String type, Date start_date, String[] list) throws SQLException{
+		// Look at the note in getBranch method
+		// Also, don't throw an exception here! throw means pass the problem to the calling class, the calling class
+		// has no SQLException type. This might cause debugging problems
 		conDB.connect();
 		//System.out.println("Connected, trying to insert next");
 		Vehicle[] vlist = veDB.search(conDB.getConnection(),branch_id,type,start_date,null);
