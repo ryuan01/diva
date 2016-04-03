@@ -7,7 +7,7 @@ package vehicleManagement;
  */
 public class Car extends Vehicle{
 
-	public String car_class; 
+	private String car_class; 
 	// can be one of: {economy, compact, midsized, standard, fullsized, premium, luxury, SUV, van};
 	private int baggage;
 	private String door;
@@ -42,8 +42,8 @@ public class Car extends Vehicle{
 		capacity = ca;
 	}
 	
-	public Car_class getClass(){
-		return c_Class;
+	public String getCarClass(){
+		return car_class;
 	}
 
 }

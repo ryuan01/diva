@@ -12,10 +12,10 @@ import accountManagement.Account;
  */
 class AccountDB{
 	
-	
+	private ConnectDB dbm;
 	//checking 
-	AccountDB() {
-		// TODO Auto-generated constructor stub
+	public AccountDB() {
+		dbm = new ConnectDB();
 	}
 
 	/**
@@ -27,7 +27,6 @@ class AccountDB{
 	 */
 	private boolean isValidUsername(String username) throws SQLException {
 		//Get DatabaseManager instance and connect to the database
-		ConnectDB dbm = new ConnectDB();
 		dbm.connect();
 		
 		// execute the query:
@@ -55,10 +54,8 @@ class AccountDB{
 	 */
 	private boolean isValidLogin(String username, String pw) throws SQLException {
 		if (isValidUsername(username) == true){
-			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
 		
-			
 			Statement stmt = dbm.getConnection().createStatement();
 		
 			ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
@@ -83,7 +80,6 @@ class AccountDB{
 	 * @throws SQLException 
 	 */
 	private boolean isValidAccount(Account acc) throws SQLException {
-		ConnectDB dbm = new ConnectDB();
 		dbm.connect();
 		String username = acc.getLoginId(); // Note: username is cases sensitive 
 		
@@ -113,9 +109,7 @@ class AccountDB{
 	 */
 	public Account getAccount(String username) throws SQLException {
 		if(isValidUsername(username)){
-			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
-			
 			
 			Statement stmt = dbm.getConnection().createStatement();
 				
@@ -140,7 +134,6 @@ class AccountDB{
 	 * @throws SQLException 
 	 */
 	public Account getAccount(String fname, String lname, String phonenum) throws SQLException {
-		ConnectDB dbm = new ConnectDB();
 		dbm.connect();
 		
 
@@ -175,7 +168,6 @@ class AccountDB{
 	 */
 	public boolean loginPasswordUpdate(String username, String enOldPw, String enNewPw) throws SQLException {
 		if (isValidLogin(username, enOldPw)){
-			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
 			
 			
@@ -194,6 +186,19 @@ class AccountDB{
 		}
 	}
 	
+	//need to check Kevin's work for naming conventions 
+	/**
+	 * updateAccountPoint updates the points related to an account
+	 * @param acc an account 
+	 * @param pt the pt to be added, can be negative
+	 * @pre isValidAccount(acc)
+	 * @pre pt+acc.points >= 0
+	 * @pre typeof(acc) == SuperRent
+	 * @post acc.points =  pt + acc.points
+	 */
+	public void updateAccountPoints(Account acc, int pt) {
+	}
+		
 	//not too sure if types are just subclasses, how do we update them?
 	//updateaccountype();
 	
@@ -210,7 +215,6 @@ class AccountDB{
 		// Does it need to specify the account type?
 		
 		if (!isValidAccount(info[2], info[3], info[4]) && !isValidUsername(info[0])){
-			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
 			
 			Statement stmt = dbm.getConnection().createStatement();
@@ -243,7 +247,6 @@ class AccountDB{
 	 */
 	private String getEncryptedPassword(String username) throws SQLException {
 		if (isValidUsername(username)){
-			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
 			String query = "SELECT account_password FROM users WHERE account_uName = '" + username +"';";
 						
@@ -269,8 +272,6 @@ class AccountDB{
 	 * @throws SQLException 
 	 */
 	private boolean isValidAccount(String fname, String lname,String phonenum) throws SQLException{
-		ConnectDB dbm = new ConnectDB();
-		
 		dbm.connect();
 		
 		String query = "SELECT first_name, last_name, phone FROM users "

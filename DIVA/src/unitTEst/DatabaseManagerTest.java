@@ -68,7 +68,7 @@ public class DatabaseManagerTest {
 	/**
 	 * Test db.getBranch();
 	 */
-	private static void test_get_branch() {
+/*	private static void test_get_branch() {
 		// TODO Auto-generated method stub
 		//test getBranch and prints out the result
 		Branch[] bArray = db.getBranch();
@@ -81,6 +81,6 @@ public class DatabaseManagerTest {
 			tmp = null;
 		}
 		
-	}
+	}*/
 
 }

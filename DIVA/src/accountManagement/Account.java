@@ -33,8 +33,6 @@ public class Account {
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.loginId= loginId;
-		this.status = status;
-	
 	}
 
 	/**
