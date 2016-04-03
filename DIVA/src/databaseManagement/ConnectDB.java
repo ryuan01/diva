@@ -12,11 +12,11 @@ import java.sql.SQLException;
 class ConnectDB{
   	//Database URL
     //THIS IS SET TO A TEST DATABASE: CHANGE TO 'diva_main' WHEN DEPLOYED!!
-    private static final String CONN_STRING = "jdbc:mysql://localhost:3306/test";
+    private static final String CONN_STRING = "jdbc:mysql://159.203.34.123:3306/test1";
     
     // Database User Name and Password
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "admin";
+    private static final String USERNAME = "diva";
+    private static final String PASSWORD = "DiVA$E2016&";
     
     // A session with the database
     private Connection connection;

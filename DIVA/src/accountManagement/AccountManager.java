@@ -18,8 +18,6 @@ public class AccountManager {
 		dbConnection = DatabaseManager.getInstance();
 	}
 	
-	
-	
 	//------------Methods that can be called by an unauthenticated HTTPS user
 
 	/**

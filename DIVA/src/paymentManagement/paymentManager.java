@@ -111,7 +111,7 @@ public class paymentManager {
 	 * @param equipment
 	 * @return final_price
 	 */
-	public double calculate_price(Vehicle vehicleType, Insurance insurance, Equipment equipment){
+	public double calculate_price(Vehicle vehicleType, Equipment equipment){
 		return final_price;
 	}
 /**

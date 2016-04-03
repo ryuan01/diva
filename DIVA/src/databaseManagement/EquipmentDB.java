@@ -4,37 +4,21 @@
 package databaseManagement;
 
 import vehicleManagement.Equipment;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 /**
  * EquipmentDB creates, deletes, and modifies data related to Equipment
- * @author Robin, Sammy
+ * @author Saud (Sammy) Almahri
  *
  */
 class EquipmentDB {
 	
-	public EquipmentDB() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * updateEquipmentStatus updates the status of an equipment
-	 * @param e equipment
-	 * @param status status {rented, damaged, available}
-	 * @pre isValidEquipment(e)
-	 * @pre status is one of {rented, damaged, available}
-	 * @post e.status = status
-	 */
-	public void updateEquipmentStatus(String e_key_value, int status){
-		// "status" is not in the database
-		// It should return a boolean determining the success of the update process
-	}
+	private ConnectDB dbm;
 	
-	
+	EquipmentDB() {
+		dbm = new ConnectDB();
+	}
 
 	/**
 	 * Checks if this is an equipment
@@ -48,63 +32,37 @@ class EquipmentDB {
 	}
 	
 	/**
-	 * 
-	 * @param e_key_value
-	 * @return
-	 */
-	public String getEquipment(String e_key_value){
-		return e_key_value;
-		
-	}
-	
-	/**
-	 * 
-	 * @param type
-	 * @param name
-	 * @return
-	 */
-	public String getEquipment(String type, String name){
-		return name;
-	}
-	
-	/**
 	 * searchAdditionalEquipments searches for a list of available equipments for a type
 	 * @param t type of equipments
 	 * @param branch_num the branch number where the equipment is located
+	 * @throws SQLException 
 	 * @pre a rental is underway
 	 * @pre branch is valid
-	 * @pre t is valid 
+	 * @pre type is valid 
 	 * @post list of equipments
 	 */
-	//should not use arraylist 
-	public ArrayList<Equipment> searchAdditionalEquipments(String t, String branch_num) {
-		return null;
+	Equipment[] searchAdditionalEquipments(String type, int branch_num) throws SQLException {
 		
-		/*// 1- Connect to the database
-		super.connect();
+		ArrayList<Equipment> equipmentList = new ArrayList<Equipment>();
+		// 1- Connect to the database
+		dbm.connect();
 		
-		if (super.getConnection() == null)
-		{
-			return null;
-		} else
-		{
-			try{
-				Statement stmt = super.getConnection().createStatement();
-				String query = "SELECT * FROM equipments WHERE location =" + Integer.toString(branch_num)+ "AND eq_type=" + t +";";
-				ResultSet rs = stmt.executeQuery(query);
+		Statement stmt = dbm.getConnection().createStatement();
+		String query = "SELECT * FROM `equipment` WHERE location = " + branch_num + " AND eq_type=\"" + type +"\";";
+		
+		System.out.println(query);
+		ResultSet rs = stmt.executeQuery(query);
+		
+		
+		
+		while(rs.next()){
 			
-				ArrayList<Equipment> equipmentList = new ArrayList<Equipment>() ;
-				
-				while(rs.next()){
-					equipmentList.add(new Equipment(rs.getInt("serial_num"), query)); // Add data according to Equipment class
-				}
-				super.disconnect();
-				
-				return equipmentList;
-			} catch (SQLException e){
-				System.err.println(e);
-				return null;
-			}*/
+			equipmentList.add(new Equipment(rs.getInt("serial_num"), rs.getString("eq_type"))); // Add data according to Equipment class
+		}
+		dbm.disconnect();
+		
+		return equipmentList.toArray(new Equipment[equipmentList.size()]);
+			
 			
 		}
 

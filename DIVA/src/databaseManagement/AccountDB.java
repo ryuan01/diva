@@ -1,8 +1,8 @@
 package databaseManagement;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Currency;
 
 import accountManagement.Account;
 /**
@@ -10,13 +10,12 @@ import accountManagement.Account;
  * @author Robin
  * no invariant 
  */
-
-class AccountDB {
+class AccountDB{
 	
-	
+	private ConnectDB dbm;
 	//checking 
-	AccountDB() {
-		// TODO Auto-generated constructor stub
+	public AccountDB() {
+		dbm = new ConnectDB();
 	}
 
 	/**
@@ -26,28 +25,22 @@ class AccountDB {
 	 * @post true if username exists, false if it does not
 	 * @return true if the username exists
 	 */
-	private boolean isValidUsername(String username) {
+	private boolean isValidUsername(String username) throws SQLException {
 		//Get DatabaseManager instance and connect to the database
-		ConnectDB dbm = new ConnectDB();
 		dbm.connect();
 		
 		// execute the query:
-		try{
-			Statement stmt = dbm.getConnection().createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM users");
-			
-			// check for uany matching usernames
-			while (rs.next()){
-				if (username.equals(rs.getString("account_uName"))){
-					return true;
-				}
-			}
-		}catch (SQLException e){
-			System.err.println(e);
-		}finally{
-			dbm.disconnect();
-		}
+		Statement stmt = dbm.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM users");
 		
+		// check for uany matching usernames
+		while (rs.next()){
+			if (username.equals(rs.getString("account_uName"))){
+				dbm.disconnect();
+				return true;
+			}
+		}
+		dbm.disconnect();
 		return false;
 	}
 	
@@ -55,29 +48,23 @@ class AccountDB {
 	 * isValidLogin checks if the username and pw matches
 	 * @param username a username
 	 * @param pw the encrypted password
+	 * @throws SQLException 
 	 * @pre isValidUsername(username)
 	 * @post true if the there is a match, otherwise false
 	 */
-	private boolean isValidLogin(String username, String pw) {
+	private boolean isValidLogin(String username, String pw) throws SQLException {
 		if (isValidUsername(username) == true){
-			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
 		
-			try{
-				Statement stmt = dbm.getConnection().createStatement();
-			
-				ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
-			
-				while(rs.next()){
-					if ((username.equals(rs.getString("account_uName")) == true) && (pw.equals(rs.getString("account_password")) == true)){
-						return true;
-					}
+			Statement stmt = dbm.getConnection().createStatement();
+		
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
+		
+			while(rs.next()){
+				if ((username.equals(rs.getString("account_uName")) == true) && (pw.equals(rs.getString("account_password")) == true)){
+					dbm.disconnect();
+					return true;
 				}
-			
-			} catch (SQLException e){
-				System.err.println(e);
-			} finally{
-				dbm.disconnect();
 			}
 		}
 		
@@ -90,28 +77,24 @@ class AccountDB {
 	 * @pre database account is not empty
 	 * @post true if it exists, false if it does not
 	 * @return true if it exists, false if it does not
+	 * @throws SQLException 
 	 */
-	private boolean isValidAccount(Account acc ) {
-		ConnectDB dbm = new ConnectDB();
+	private boolean isValidAccount(Account acc) throws SQLException {
 		dbm.connect();
 		String username = acc.getLoginId(); // Note: username is cases sensitive 
 		
-		try{
-			Statement stmt = dbm.getConnection().createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
-			
-			while(rs.next()){
-				if (username.equals(rs.getString("account_uName"))){
-					return true;
-				}
-					
+		
+		Statement stmt = dbm.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
+		
+		while(rs.next()){
+			if (username.equals(rs.getString("account_uName"))){
+				dbm.disconnect();
+				return true;
 			}
-			
-		} catch (SQLException e){
-			System.err.println(e);
-		} finally{
-			dbm.disconnect();
+				
 		}
+		dbm.disconnect();
 		return false;
 	}
 	
@@ -120,24 +103,20 @@ class AccountDB {
 	 * @param username the username related to a account
 	 * @return 
 	 * @pre isValidUsername(username)
-	 * @post account's key value
-	 * @return account's key value
+	 * @post Account object
+	 * @return Account object
+	 * @throws SQLException 
 	 */
-	Account getAccount(String username) {
+	public Account getAccount(String username) throws SQLException {
 		if(isValidUsername(username)){
-			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
 			
-			try{
-				Statement stmt = dbm.getConnection().createStatement();
+			Statement stmt = dbm.getConnection().createStatement();
 				
-				// Problem: how to determine the "type" of account (whether it's a customer, employee, clerk, etc..)
+			// Problem: how to determine the "type" of account (whether it's a customer, employee, clerk, etc..)
 				
-			} catch (SQLException e){
-				System.err.println(e);
-			} finally{
-				dbm.disconnect();
-			}
+			dbm.disconnect();
+			
 		}
 		return null;
 	
@@ -150,23 +129,19 @@ class AccountDB {
 	 * @param phonenum phone number
 	 * @pre fname, lname, and phonenum are formatted properly
 	 * @pre isValidAccount(fname,lname,phonenum)
-	 * @post account's key value 
-	 * @return account's key value
+	 * @post Account object 
+	 * @return Account object
+	 * @throws SQLException 
 	 */
-	Account getAccount(String fname, String lname, String phonenum) {
-		ConnectDB dbm = new ConnectDB();
+	public Account getAccount(String fname, String lname, String phonenum) throws SQLException {
 		dbm.connect();
 		
-		try{
-			Statement stmt = dbm.getConnection().createStatement();
+
+		Statement stmt = dbm.getConnection().createStatement();
 			
-			// Problem: how to determine the "type" of account (whether it's a customer, employee, clerk, etc..)
-			
-		} catch (SQLException e){
-			System.err.println(e);
-		} finally{
-			dbm.disconnect();
-		}
+		// problem: how to determine the "type" of account (whether it's a customer, employee, clerk, etc..)
+	
+		dbm.disconnect();
 		return null;
 	}
 	
@@ -189,54 +164,26 @@ class AccountDB {
 	 * @pre isValidLogin(username, oldPw)
 	 * @post isValidLogin(username, enNewPw)
 	 * @return boolean value if the update is succesfull, return true; otherwise, resturn false
+	 * @throws SQLException 
 	 */
-	boolean loginPasswordUpdate(String username, String enOldPw, String enNewPw) {
+	public boolean loginPasswordUpdate(String username, String enOldPw, String enNewPw) throws SQLException {
 		if (isValidLogin(username, enOldPw)){
-			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
 			
-			try{
-				Statement stmt = dbm.getConnection().createStatement();
-				String query = "UPDATE users SET account_password= '" + enNewPw +
-						"' WHERE account_uName='" + username + "' AND account_password='" + enOldPw + "';";
-						
-				stmt.executeUpdate(query);
-				dbm.disconnect();
-				return true;
-				
-			}catch (SQLException e){
-				System.err.println(e);
-				return false;
-			} finally{
-				dbm.disconnect();
-				
-			}
+			
+			Statement stmt = dbm.getConnection().createStatement();
+			String query = "UPDATE users SET account_password= '" + enNewPw +
+					"' WHERE account_uName='" + username + "' AND account_password='" + enOldPw + "';";
+					
+			stmt.executeUpdate(query);
+			dbm.disconnect();
+			return true;
+	
+			
 		} else{
+			
 			return false;
 		}
-	}
-	
-	/**
-	 * accountUpdate updates one field of the account
-	 * @param acc an account 
-	 * @param field a field in the account, can be one of the {firstname, lastname, phoneNuber, email}, loginId cannot be updated, password has its own method
-	 * @param newInfo the new update for a specific field
-	 * @pre format matches
-	 * @pre isValidAccount(acc)
-	 * @post the specific field information is updated
-	 */
-	void accountUpdate(String acc_key_value, String field, String newInfo) {
-	}
-	
-	//not sure what kind of statues are here, please add more 
-	/**
-	 * accountUpdateStatus updates the status of the account
-	 * @param acc an account 
-	 * @param status status of the account, can be one of the {good, ownPayment, lateReturn}
-	 * @pre isValidAccount(acc)
-	 * @post status is updated
-	 */
-	void accountUpdateStatus(Account acc, String status) {
 	}
 	
 	//need to check Kevin's work for naming conventions 
@@ -249,19 +196,9 @@ class AccountDB {
 	 * @pre typeof(acc) == SuperRent
 	 * @post acc.points =  pt + acc.points
 	 */
-	void updateAccountPoints(String acc_key_value, int pt) {
+	public void updateAccountPoints(Account acc, int pt) {
 	}
-	
-	/**
-	 * updateAccountBalance updates the balance related to an account
-	 * @param acc an account
-	 * @param amount the amount to be added, can be negative
-	 * @pre isValidAccount(acc)
-	 * @post acc.balance += amount
-	 */
-	void updateAccountBalance(String acc_key_value,Currency amount) {
-	}
-	
+		
 	//not too sure if types are just subclasses, how do we update them?
 	//updateaccountype();
 	
@@ -269,48 +206,32 @@ class AccountDB {
 	 * createAccount create an new account
 	 * @param info the list of information for a new account, 
 	 * following the order of {loginId, password, firstname, lastname, phoneNumber, email}
+	 * @throws SQLException 
 	 * @pre !isValidAccount(info[2],info[3],info[4]);
 	 * @pre !isValidUsername(info[0]);
 	 * @post isValidAccount(loginId);
 	 */
-	boolean createAccount(String[] info) {
+	public boolean createAccount(String[] info) throws SQLException {
 		// Does it need to specify the account type?
-		if (!isValidAccount(info[2], info[3], info[4]) && !isValidUsername(info[0]))
-		{
-			ConnectDB dbm = new ConnectDB();
+		
+		if (!isValidAccount(info[2], info[3], info[4]) && !isValidUsername(info[0])){
 			dbm.connect();
-			try{
-				Statement stmt = dbm.getConnection().createStatement();
-				
-				String query = "INSERT INTO `users` (`first_name`,`last_name`,`phone`,`email`,`account_uName`,`account_password`) "+
-						"VALUES ('" + info[2] + "','" + info[3] + "','"+ info[4] + "','"+ info[5] + "','"+ info[0] + "','"
-						+ info[1] + "');";
-	
-				stmt.executeUpdate(query);
-				dbm.disconnect();
-				return true;
-			} catch (SQLException e){
-				System.err.println(e);
-				return false;
-			} finally{
-				dbm.disconnect();
-				
-			}
+			
+			Statement stmt = dbm.getConnection().createStatement();
+			
+			String query = "INSERT INTO `users` (`first_name`,`last_name`,`phone`,`email`,`account_uName`,`account_password`) "+
+					"VALUES ('" + info[2] + "','" + info[3] + "','"+ info[4] + "','"+ info[5] + "','"+ info[0] + "','"
+					+ info[1] + "');";
+			System.out.println();
+			stmt.executeUpdate(query);
+			dbm.disconnect();
+			return true;
+			
 		} else{
 			return false;
 		}
 		
 	}
-	
-	/**
-	 * archiveAccount archives an account
-	 * @param acc an account
-	 * @pre isValidAccount(acc)
-	 * @post !isValidAccount(acc)
-	 */
-	void archiveAccount(String acc_key_value) {
-	}
-	
 	//same as loginPasswordUpdate
 	//updatePassword();
 
@@ -322,30 +243,24 @@ class AccountDB {
 	 * @pre isValidUsername(username)
 	 * @post encrypted password for that username
 	 * @return encrypted password for that username
+	 * @throws SQLException 
 	 */
-	private String getEncryptedPassword(String username) {
+	private String getEncryptedPassword(String username) throws SQLException {
 		if (isValidUsername(username)){
-			ConnectDB dbm = new ConnectDB();
 			dbm.connect();
 			String query = "SELECT account_password FROM users WHERE account_uName = '" + username +"';";
-			
-			try{
+						
 				Statement stmt = dbm.getConnection().createStatement();
 				
 				ResultSet rs = stmt.executeQuery(query);
 				rs.next();
-				return rs.getString("account_password");
-				
-			}catch (SQLException e){
-				System.err.println(e);
-				return null;
-			} finally{
+				String password = rs.getString("account_password");
 				dbm.disconnect();
-			}	
+				return password;		
+		}else{
+			return null;
 		}
-		return null;
 	}
-	
 	/**
 	 * isValidAccount checks if the provided account exists
 	 * @param fname first name
@@ -354,8 +269,28 @@ class AccountDB {
 	 * @pre database account is not empty
 	 * @post true if it exists, false if it does not
 	 * @return true if it exists, false if it does not
+	 * @throws SQLException 
 	 */
-	private boolean isValidAccount(String fname, String lname,String phonenum) {
+	private boolean isValidAccount(String fname, String lname,String phonenum) throws SQLException{
+		dbm.connect();
+		
+		String query = "SELECT first_name, last_name, phone FROM users "
+				+ "WHERE first_name ='" + fname + "' AND last_name ='" + lname
+				+ "' AND phone ='" + phonenum +"';";
+		Statement stmt = dbm.getConnection().createStatement();
+		
+		ResultSet rs = stmt.executeQuery(query);
+		
+		while (rs.next()){
+			
+			if (fname.equals(rs.getString("first_name")) &&
+					lname.equals(rs.getString("last_name")) &&
+					phonenum.equals(rs.getString("phone"))){
+				dbm.disconnect();
+				return true;
+			}
+		}
+		dbm.disconnect();
 		return false;
 	}
 }

@@ -15,36 +15,30 @@ import systemManagement.Branch;
  */
 public class Equipment{
 	
+	
+	private String objectClass;
+	
 	private int serialNum;
 	
 	/**
 	 * type can be 'ski rack', 'child safety seat', 'lift gate', or 'car-towing eq'
 	 */
-	private String name;
-	 
-	
-	private String equipmentID;
-	
-	// true if available, false if already reserved.
-	private boolean status;
 	private String type;
+	
+	/**
+	 * location refers to id of branch
+	 */
+	private int location;
 	
 	/**
 	 * price of the equipment, by day
 	 */
-	private Currency price; 
 	
-	public Equipment(int sn, String type){
-		serialNum = sn;
+	public Equipment(int sn, String type, int location){
 		this.type = type;
+		this.location = location;
 	}
 	
-	// constructors
-	public Equipment(Equipment eq){
-		this.serialNum = eq.getSerialNum();
-		this.type = eq.getType();
-		this.price = eq.getPrice();
-	}
 	//setters and getters
 	
 	/**
@@ -61,25 +55,8 @@ public class Equipment{
 		return serialNum;
 	}
 	
-	/**
-	 * Get price of the equipment
-	 * @pre none
-	 * @post none
-	 * @return Equipment rental price
-	 */
-	public Currency getPrice() {
-		return price;
-	}
-	
-	//checkers
-	/**
-	 * Checks if this is an equipment
-	 * @param t type
-	 * @param n name
-	 * @pre t must be one of the proposed one
-	 * @post true if it is, false if it is not
-	 */
-	public void setPrice(Currency p) {
+	public int getEquipmentBranch(){
+		return location;
 	}
 	
 	public void changeType(String newType)
@@ -87,29 +64,8 @@ public class Equipment{
 		type = newType;
 	}
 	
-	public void changeID(String newID)
-	{
-		equipmentID = newID;
-	}
-	
-	public void changeStatus(boolean newStatus)
-	{
-		status = newStatus;
-	}
-	
-	public String getID()
-	{
-		return equipmentID;
-	}
-	
-	public boolean getStatus()
-	{
-		return status;
-	}
-	
-	private boolean isEquipment(String t, String n) {
-		return false;
-		// I don't know what this method is for??!!
+	public void setLocation(int l){
+		this.location = l;
 	}
 }
 

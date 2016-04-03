@@ -8,15 +8,15 @@ package accountManagement;
 
 
 
-public class Account {
+public abstract class Account {
 
-	
+	private int id;
 	private String firstname;
 	private String lastname;
 	private String phoneNumber;
 	private String email;
 	private String loginId;
-	private String status;
+	private String objectClass;
 	
 	/**
 	 * Creates a new Account object initialized with the given arguments
@@ -34,7 +34,10 @@ public class Account {
 		this.email = email;
 		this.loginId= loginId;
 		this.status = getClass().getName();
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 1ac1450bc4865cff61553c283d748ebc15b089e5
 	}
 
 	/**
@@ -118,6 +121,11 @@ public class Account {
 	public void setStatus(String s)
 	{
 		status = s;
+	}
+
+	public String getLoginId() {
+		// TODO Auto-generated method stub
+		return loginId;
 	}
 	
 	

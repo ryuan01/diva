@@ -2,22 +2,27 @@ package rentalManagement;
 
 import java.util.Date;
 
-/* Ben, extended to Accident report, and Inspection report*/
-
+/**
+ * 
+ * @author Robin
+ *
+ */
 public class Report {
 	
+	
+	private String objectClass;
+	private int report_num;
 	private Date reportDate;
+<<<<<<< HEAD
 	private String reportDescription;
+=======
+	private int reporting_clerk;
+	private String comments;
+>>>>>>> 1ac1450bc4865cff61553c283d748ebc15b089e5
 	private int reportReservationID;
 	
-	/**
-	 * A Report with date, description, and associated reservation.
-	 */
-	public Report()
-	{
-		
-	}
 	
+	//methods need to be changed.
 	/**
 	 * A Report with date, description, and associated reservation.
 	 * @param d Date of report.
@@ -27,7 +32,6 @@ public class Report {
 	public Report(Date d, String description, int reservID)
 	{
 		reportDate = d;
-		reportDescription = description;
 		reportReservationID = reservID;
 	}
 	
@@ -41,6 +45,7 @@ public class Report {
 	}
 	
 	/**
+<<<<<<< HEAD
 	 * Modifies report description.
 	 * @param newDescription New description of report.
 	 */
@@ -59,6 +64,8 @@ public class Report {
 	}
 	
 	/**
+=======
+>>>>>>> 1ac1450bc4865cff61553c283d748ebc15b089e5
 	 * Returns date of report.
 	 * @return Date of report.
 	 */
@@ -66,6 +73,7 @@ public class Report {
 	{
 		return reportDate;
 	}
+<<<<<<< HEAD
 	
 	/**
 	 * Returns description of report.
@@ -84,4 +92,6 @@ public class Report {
 	{
 		return reportReservationID;
 	}
+=======
+>>>>>>> 1ac1450bc4865cff61553c283d748ebc15b089e5
 }
