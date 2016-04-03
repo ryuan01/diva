@@ -23,8 +23,6 @@ public class Branch {
 	private String city;
 	private String province;
 	private String zipcode;
-	private ArrayList<Vehicle> fleet;
-	private ArrayList<Equipment> inventory;
 	
 	public Branch(String id, String address, String city, String province, String zipcode){
 		this.id = id;

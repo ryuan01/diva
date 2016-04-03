@@ -119,6 +119,11 @@ public class Account {
 	{
 		status = s;
 	}
+
+	public String getLoginId() {
+		// TODO Auto-generated method stub
+		return loginId;
+	}
 	
 	
 }
