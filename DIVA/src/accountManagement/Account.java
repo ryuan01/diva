@@ -16,6 +16,7 @@ public abstract class Account {
 	private String phoneNumber;
 	private String email;
 	private String loginId;
+	private String status;
 	
 	/**
 	 * Creates a new Account object initialized with the given arguments

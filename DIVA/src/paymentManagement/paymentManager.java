@@ -1,5 +1,8 @@
 package paymentManagement;
 
+import accountManagement.Account;
+import accountManagement.AccountManager;
+import rentalManagement.AccidentReport;
 import vehicleManagement.Equipment;
 import vehicleManagement.Vehicle;
 
@@ -86,9 +89,19 @@ public class paymentManager {
 	 * @param insurance
 	 * @return final_price
 	 */
-	public double calculate_price(Vehicle vehicleType, Insurance insurance){
-		return final_price;
+	public static double calculateRentprice(String reservID){
+		return 0;
 	}
+	
+	public static double calculateLateprice(String reservID){
+		return 0;
+	}
+	
+	public static int moneyToPoints(double money)
+	{
+		return 0;
+	}
+	
 	/**
 	 * Calculates the price of a transaction given an Equipment
 	 * @param vehicleType
@@ -119,9 +132,14 @@ public class paymentManager {
 	 * @param reservID
 	 * @param typeOfPayment
 	 */
-public static void makePayment(String reservID, String typeOfPayment) {
+public static void makePayment(Account a, double price, String typeOfPayment) {
 	// TODO Auto-generated method stub
-	
+	// should create a receipt for the payment and pass it to interface to show user.
+	// should prompt interface to try again if payment fails.
+	if(a.getStatus() == "superRent")
+	{
+		AccountManager.accumulatePoints(a, paymentManager.moneyToPoints(price));
+	}
 }
 
 	

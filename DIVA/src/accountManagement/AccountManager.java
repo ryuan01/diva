@@ -15,6 +15,12 @@ public class AccountManager {
 		
 	}
 	
+	
+	public static void accumulatePoints(Account a, int points)
+	{
+	
+	}
+	
 	//------------Methods that can be called by an unauthenticated HTTPS user
 
 	/**
