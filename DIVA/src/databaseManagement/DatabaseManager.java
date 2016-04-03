@@ -257,7 +257,7 @@ public class DatabaseManager {
 		return true;
 	}
 	
-	public boolean removeAccountEntry(Account a)
+	public boolean removeAccountEntry(String userName)
 	{
 		return true;
 	}
@@ -278,12 +278,12 @@ public class DatabaseManager {
 		return true;
 	}
 	
-	public boolean changeAccountStatus(Account a, String status)
+	public boolean changeAccountStatus(String userName, String status)
 	{
 		return true;
 	}
 	
-	public boolean addSRPoints(Account a, int points)
+	public boolean addSRPoints(String userName, int points)
 	{
 		return true;
 	}

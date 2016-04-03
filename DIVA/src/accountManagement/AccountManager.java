@@ -49,19 +49,20 @@ public class AccountManager {
 	 * @pos getAccount(customer.UserName) instanceof SuperCustomer
 	 * @return true if the customer successfully joined Super Club
 	 */
-	public static void joinSuperClub(Account a) {
-		dbConnection.changeAccountStatus(a, "SRCustomer");
-		dbConnection.addSRPoints(a, 500);
+	public static void joinSuperClub(String userName) 
+	{
+		dbConnection.changeAccountStatus(userName, "SRCustomer");
+		dbConnection.addSRPoints(userName, 500);
 	}
 	
-	public static void accumulatePoints(Account a, int points)
+	public static void accumulatePoints(String userName, int points)
 	{
-		dbConnection.addSRPoints(a,points);
+		dbConnection.addSRPoints(userName,points);
 	}
 	
-	public static void leaveSuperCLub(Account a)
+	public static void leaveSuperCLub(String userName)
 	{
-		dbConnection.changeAccountStatus(a, "RegisteredCustomer");
+		dbConnection.changeAccountStatus(userName, "RegisteredCustomer");
 	}
 	/**
 	 * Moves the customers account from the activated state into the deactivated state
@@ -71,8 +72,8 @@ public class AccountManager {
 	 * @pre customer.state == activated
 	 * @pos customer.state == deactivated
 	 */
-	public boolean deleteAccount(Account a) {
-		return dbConnection.removeAccountEntry(a);
+	public boolean deleteAccount(String userName) {
+		return dbConnection.removeAccountEntry(userName);
 	}
 	
 	/**
