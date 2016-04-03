@@ -244,3 +244,6 @@ CREATE TABLE truck(
 
 ALTER TABLE equipment
 DROP COLUMN description;
+
+ALTER TABLE users
+MODIFY COLUMN phone VARCHAR(13) NOT NULL;
