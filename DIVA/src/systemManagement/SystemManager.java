@@ -1,5 +1,7 @@
 package systemManagement;
 
+import databaseManagement.DatabaseManager;
+
 /**
  * The system manager is used by System Administrators to initialize and safely
  * shutdown the system. It is also used for adding and removing data
@@ -9,11 +11,10 @@ package systemManagement;
 public class SystemManager {
 	
 	
-	/**
-	 * Constructs a SystemManager
-	 */
+	DatabaseManager dbConnection;
+	
 	public SystemManager() {
-		
+		dbConnection = DatabaseManager.getInstance();
 	}
 	
 	/**
@@ -24,17 +25,28 @@ public class SystemManager {
 	 * @param addressStreetName  The name of the street the branch is located
 	 * @param phoneNumber  The phone number of the new branch
 	 */
-	public boolean addBranch(String addressBuildingNumber, String addressStreetName, String phoneNumber) {
-		return false; // METHOD NOT IMPLEMENTED 
+	public boolean addBranch(String address, String city, String province, String zipcode) {
+		
+		return dbConnection.createBranchEntry(new Branch(-1,address,city,province,zipcode));
+	}
+	
+	public boolean changeBranch(int id,String address, String city, String province, String zipcode)
+	{
+		return dbConnection.modifyBranchEntry(id,address,city,province,zipcode);
 	}
 	
 	/**
-	 * Removes the branch with the given branch number
-	 * @pre The branchNumber must exist
-	 * @return True if the branch was successfully false
+	 * Created from Ben's method destroyBranch
+	 * @param branchNumber
+	 * @return
 	 */
-	public boolean addBranch(String branchNumber) {
-		return false; // METHOD NOT IMPLEMENTED 
+	public boolean removeBranch(int id) {
+		return dbConnection.removeBranchEntry(id);
+	}
+	
+	public Branch getBranch(int id)
+	{
+		return dbConnection.getBranchEntry(id);
 	}
 	
 	/**
@@ -43,7 +55,7 @@ public class SystemManager {
 	 * @pos The system is in the ready state
 	 */
 	public void startUp(String branchNumber) {
-		 // METHOD NOT IMPLEMENTED 
+		 DatabaseManager.getInstance(); 
 	}
 	
 	/**
@@ -53,17 +65,7 @@ public class SystemManager {
 	 * @pos The system is terminated
 	 */
 	public void shutDown(String branchNumber) {
-		 // METHOD NOT IMPLEMENTED 
-	}
-
-	/**
-	 * Created from Ben's method destroyBranch
-	 * @param branchNumber
-	 * @return
-	 */
-	public boolean removeBranch(String branchNumber) {
-		// TODO Auto-generated method stub
-		return false;
+		DatabaseManager.destroyDatabase(); 
 	}
 
 	/**

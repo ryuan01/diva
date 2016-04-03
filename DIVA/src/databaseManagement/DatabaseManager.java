@@ -52,6 +52,12 @@ public class DatabaseManager {
     	return instance;
     }
     
+    //called by shutDown method in system manager
+    public static void destroyDatabase()
+    {
+    	instance = null;
+    }
+    
 	/** 
 	* Constructs a DatabaseManager
 	* @post an only DatabasManager object is created
@@ -145,20 +151,7 @@ public class DatabaseManager {
 		branDB.changeBranch(b_key_value);
 	}*/
 	
-	/**
-	 * Get a list of branches
-	 * @pre conDB is not connected
-	 * @post conDB is disconnected
-	 * @return
-	 */
-	public Branch[] getBranch(){
-		// Why are you creating a connect object here and passing it to getBranch?
-		// connection object should be created INSIDE getBranch, not here!
-		conDB.connect();
-		Branch[] blist = branDB.getBranch(conDB.getConnection());
-		conDB.disconnect();
-		return blist;
-	}
+
 	// EquipmentDB
 
 
@@ -182,28 +175,28 @@ public class DatabaseManager {
 	}
 	
 	// can be implemented, removes a Reservation from the database completely, not archived.
-	public boolean removeReservationEntry(String reservID) {
+	public boolean removeReservationEntry(int reservID) {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
 	// can be implemented, changes status of reservation only.
-	public void changeReservationStatus(String reservID, String string) {
+	public void changeReservationStatus(int reservID, String string) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	// updated signature
-	public Reservation[] searchReservationEntries(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
-			String customerID, String employeeID, String status) {
+	public Reservation[] searchReservationEntries(int reservID, Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
+			int customerID, int employeeID, String status) {
 		return null;
 		// TODO Auto-generated method stub
 		
 	}
 
 	// updated signature
-	public boolean modifyReservationEntries(String reservID, Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
-			String customerID, String employeeID, String status) {
+	public boolean modifyReservationEntries(int reservID, Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
+			int customerID, int employeeID, String status) {
 		// TODO Auto-generated method stub
 		return true;
 	}
@@ -219,13 +212,13 @@ public class DatabaseManager {
 		return true;
 	}
 	
-	public Date getReservationEndDate(String reservID)
+	public Date getReservationEndDate(int reservID)
 	{
 		return null;
 	}
 	
 	
-	public Account getReservationAccount(String reservID)
+	public Account getReservationAccount(int reservID)
 	{
 		return null;
 	}
@@ -290,5 +283,33 @@ public class DatabaseManager {
 	public boolean addSRPoints(Account a, int points)
 	{
 		return true;
+	}
+	
+	public boolean modifyPassword(String userName, String newPassword)
+	{
+		return true;
+	}
+	
+	
+	
+	//Branch Related
+	public boolean createBranchEntry(Branch b)
+	{
+		return true;
+	}
+	
+	public boolean modifyBranchEntry(int id,String address, String city, String province, String zipcode)
+	{
+		return true;
+	}
+	
+	public boolean removeBranchEntry(int id)
+	{
+		return true;
+	}
+	
+	public Branch getBranchEntry(int id)
+	{
+		return null;
 	}
 }

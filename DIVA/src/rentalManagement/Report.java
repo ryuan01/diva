@@ -1,6 +1,6 @@
 package rentalManagement;
 
-import java.sql.Date;
+import java.util.Date;
 
 /* Ben, extended to Accident report, and Inspection report*/
 
@@ -8,7 +8,7 @@ public class Report {
 	
 	private Date reportDate;
 	private String reportDescription;
-	private String reportReservationID;
+	private int reportReservationID;
 	
 	/**
 	 * A Report with date, description, and associated reservation.
@@ -24,7 +24,7 @@ public class Report {
 	 * @param description Description of report.
 	 * @param reservID Reservation ID of report.
 	 */
-	public Report(Date d, String description, String reservID)
+	public Report(Date d, String description, int reservID)
 	{
 		reportDate = d;
 		reportDescription = description;
@@ -53,7 +53,7 @@ public class Report {
 	 * Modifies report reservationID.
 	 * @param newReportReservationID New report Reservation ID of report.
 	 */
-	public void changeReportReservationID(String newReportReservationID)
+	public void changeReportReservationID(int newReportReservationID)
 	{
 		reportReservationID = newReportReservationID;
 	}
@@ -80,7 +80,7 @@ public class Report {
 	 * Returns reservation ID of report.
 	 * @return Reservation ID of report.
 	 */
-	public String getReportReservationID()
+	public int getReportReservationID()
 	{
 		return reportReservationID;
 	}

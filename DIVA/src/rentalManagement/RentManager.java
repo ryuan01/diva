@@ -32,7 +32,7 @@ public class RentManager {
 		 * Begins the Rental.
 		 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
 		 */
-		public void startRental(String reservID,String description, String typeOfPayment)
+		public void startRental(int reservID,String description, String typeOfPayment)
 		{
 			// order of execution:
 			Report report = new Report(new Date(System.currentTimeMillis()), description, reservID);
@@ -51,7 +51,7 @@ public class RentManager {
 		 * @param typeOfPayment Debit for debit card, Credit for credit card, Cash for cash, SRP for SuperRent points.
 		 * @pre typeOfPayment == "debit" && typeOfPayment == "credit" && typeOfPayment == "cash" && typeOfPayment == "SRP"
 		 */
-		public void payForRental(Account a, String reservID, String typeOfPayment)
+		public void payForRental(Account a, int reservID, String typeOfPayment)
 		{
 			paymentManager.makePayment(a, paymentManager.calculateRentprice(reservID),typeOfPayment);
 		}

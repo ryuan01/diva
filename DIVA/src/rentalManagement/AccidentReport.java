@@ -1,11 +1,12 @@
 package rentalManagement;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 public class AccidentReport extends Report{
 
 	private String damageDescription;
-	private double extraPayment;
+	private BigDecimal extraPayment;
 	
 	/**
 	 * An accident report with damage description and extra payment amount.
@@ -23,7 +24,7 @@ public class AccidentReport extends Report{
 	 * @param dmgDes Damage description of the report.
 	 * @param extraPay Extra payments of the report.
 	 */
-	public AccidentReport(Date d, String description, String reservID,String dmgDes, double extraPay)
+	public AccidentReport(Date d, String description, int reservID,String dmgDes, BigDecimal extraPay)
 	{
 		super(d,description,reservID);
 		damageDescription = dmgDes;
@@ -36,16 +37,16 @@ public class AccidentReport extends Report{
 	 */
 	public void changeDamageDescription(String newDescription)
 	{
-		
+		damageDescription = newDescription;
 	}
 	
 	/**
 	 * Modifies the extra payment amount.
 	 * @param newPayment New extra payment amount.
 	 */
-	public void changeExtraPayment(double newPayment)
+	public void changeExtraPayment(BigDecimal newPayment)
 	{
-		
+		extraPayment = newPayment;
 	}
 	
 	/**
@@ -54,15 +55,15 @@ public class AccidentReport extends Report{
 	 */
 	public String getDamageDescription()
 	{
-		return null;
+		return damageDescription;
 	}
 	
 	/**
 	 * Returns the extra payment amount.
 	 * @return Extra payment amount of the report.
 	 */
-	public double getExtraPayment()
+	public BigDecimal getExtraPayment()
 	{
-		return 0;
+		return extraPayment;
 	}
 }

@@ -1,5 +1,6 @@
 package rentalManagement;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 import databaseManagement.DatabaseManager;
@@ -33,7 +34,7 @@ public class ReturnManager {
 	 * Returns a Vehicle from Rental.
 	 * @param reservID Reservation ID of Rental the Vehilce belongs to.
 	 */
-	public void startReturn(String reservID, String description, String dmgDescription,double extraPay, String typeOfPayment, String accidentDetail)
+	public void startReturn(int reservID, String description, String dmgDescription,BigDecimal extraPay, String typeOfPayment, String accidentDetail)
 	{
 		if(accidentDetail != "")
 		{
@@ -60,7 +61,7 @@ public class ReturnManager {
 	 * @param reservID Reservation ID of Rental to be checked.
 	 * @return True if overdue, False otherwise.
 	 */
-	public boolean checkIfOverdue(String reservID)
+	public boolean checkIfOverdue(int reservID)
 	{
 		// if reservation end date is before current date.
 		if(dbConnection.getReservationEndDate(reservID).compareTo(new Date(System.currentTimeMillis())) < 0)

@@ -53,6 +53,7 @@ public class AccountManager {
 	 */
 	public static void joinSuperClub(Account a) {
 		dbConnection.changeAccountStatus(a, "SRCustomer");
+		dbConnection.addSRPoints(a, 500);
 	}
 	
 	public static void accumulatePoints(Account a, int points)
@@ -90,7 +91,12 @@ public class AccountManager {
 	 * @param userName The user name of the account needing authentication
 	 * @return an encrypted version of the password associated with the UserName
 	 */
-	private String getPassword(String userName) {
+	public String getPassword(String userName) {
 		return dbConnection.retrievePassword(userName);
+	}
+	
+	public boolean changePassword(String userName, String newPassword)
+	{
+		return dbConnection.modifyPassword(userName,newPassword);
 	}
 }

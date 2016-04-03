@@ -1,5 +1,7 @@
 package paymentManagement;
 
+import java.math.BigDecimal;
+
 /**
  * 
  * A receipt that is provided to the customer after a rental has been made.
@@ -8,7 +10,7 @@ package paymentManagement;
 public class Receipt {
 
 	private int receiptId;
-	private double price;
+	private BigDecimal price;
 	private String vehicle_rented;
 	private String duration;
 	private String dropoff_location;
@@ -21,7 +23,7 @@ public class Receipt {
 	 * @param duration
 	 * @param dropoff_location
 	 */
-	public Receipt(int receiptId ,double price, String vehicle_rented, String duration, String dropoff_location) {
+	public Receipt(int receiptId ,BigDecimal price, String vehicle_rented, String duration, String dropoff_location) {
 		this.setReceiptId(receiptId);
 		this.price = price;
 		this.vehicle_rented = vehicle_rented;
@@ -34,14 +36,14 @@ public class Receipt {
 	 *  Gets a Price of the Rental.
 	 * @return price
 	 */
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 	/**
 	 * Sets the Price of the rental.
 	 * @param price
 	 */
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 	/**

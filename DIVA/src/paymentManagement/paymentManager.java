@@ -1,5 +1,7 @@
 package paymentManagement;
 
+import java.math.BigDecimal;
+
 import accountManagement.Account;
 import accountManagement.AccountManager;
 import rentalManagement.AccidentReport;
@@ -31,7 +33,7 @@ public class paymentManager {
 	 * @param dropoff_location
 	 * @return receipt
 	 */
-	public Receipt create_new_Receipt(double price, String vehicle_rented, String duration, String dropoff_location){
+	public Receipt create_new_Receipt(BigDecimal price, String vehicle_rented, String duration, String dropoff_location){
 		Receipt receipt = new Receipt(numReceipts, price, dropoff_location, dropoff_location, dropoff_location);
 		return receipt;
 	}
@@ -89,15 +91,15 @@ public class paymentManager {
 	 * @param insurance
 	 * @return final_price
 	 */
-	public static double calculateRentprice(String reservID){
-		return 0;
+	public static BigDecimal calculateRentprice(int reservID){
+		return null;
 	}
 	
-	public static double calculateLateprice(String reservID){
-		return 0;
+	public static BigDecimal calculateLateprice(int reservID){
+		return null;
 	}
 	
-	public static int moneyToPoints(double money)
+	public static int moneyToPoints(BigDecimal money)
 	{
 		return 0;
 	}
@@ -132,7 +134,7 @@ public class paymentManager {
 	 * @param reservID
 	 * @param typeOfPayment
 	 */
-public static void makePayment(Account a, double price, String typeOfPayment) {
+public static void makePayment(Account a, BigDecimal price, String typeOfPayment) {
 	// TODO Auto-generated method stub
 	// should create a receipt for the payment and pass it to interface to show user.
 	// should prompt interface to try again if payment fails.

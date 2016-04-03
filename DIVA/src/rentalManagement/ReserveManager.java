@@ -39,8 +39,8 @@ public class ReserveManager {
 	 * @param employeeID Employee login ID of the Reservation.
 	 * @param status Status of the Reservation.
 	 */
-	public boolean addReservation(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
-			String customerID, String employeeID, String status) 
+	public boolean addReservation(Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
+			int customerID, int employeeID, String status) 
 	{
 		//the ID = null right now because we don't know yet
 		//we will know the value once the entry is created
@@ -57,7 +57,7 @@ public class ReserveManager {
 	 * @param reservID The Reservation ID to be removed.
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	public boolean removeReservation(String customerID, String reservID)
+	public boolean removeReservation(int customerID, int reservID)
 	{
 		return dbConnection.removeReservationEntry(reservID);
 	}
@@ -68,7 +68,7 @@ public class ReserveManager {
 	 * @param reservID The Reservation ID to be removed.
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	public boolean removeReservation(String reservID)
+	public boolean removeReservation(int reservID)
 	{
 		return dbConnection.removeReservationEntry(reservID);
 	}
@@ -78,10 +78,10 @@ public class ReserveManager {
 	 * @param id The type of search executed, can be vehicleID, branchID, reservationID, customerID, employeeID, equipID, reservStatus.
 	 * @return List of qualifying Reservations from the search
 	 */
-	public Reservation[] searchReservations(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
-			String customerID, String employeeID, String status)
+	public Reservation[] searchReservations(int reservID,Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
+			int customerID, int employeeID, String status)
 	{
-		return dbConnection.searchReservationEntries(startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
+		return dbConnection.searchReservationEntries(reservID,startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
 				customerID, employeeID, status);
 	}
 	
@@ -93,8 +93,8 @@ public class ReserveManager {
 	 * If existing equipID is passed, then it is removed, if a non-existing equipID is passed, then it is added.
 	 * @pre Only Reservation Account owner or Employee calls this method.
 	 */
-	public boolean changeReservation(String reservID, Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
-			String customerID, String employeeID, String status)
+	public boolean changeReservation(int reservID, Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
+			int customerID, int employeeID, String status)
 	{
 		return dbConnection.modifyReservationEntries(reservID, startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
 				customerID, employeeID, status);

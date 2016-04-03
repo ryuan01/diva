@@ -16,13 +16,13 @@ public class Reservation {
 
 	private Date startDate;
 	private Date endDate;
-	private String vehicleID;
-	private String[] equipmentIDs;
-	private String startBranchID;
-	private String endBranchID;
-	private String customerAccountID;
+	private int vehicleID;
+	private int[] equipmentIDs;
+	private int startBranchID;
+	private int endBranchID;
+	private int customerAccountID;
 	private String status;
-	private String employeeAccountID;
+	private int employeeAccountID;
 	private int reservID;
 	
 	/**
@@ -32,13 +32,13 @@ public class Reservation {
 	{
 		startDate = null;
 		endDate = null;
-		vehicleID = "";
-		equipmentIDs = new String[0];
-		startBranchID = "";
-		endBranchID = "";
-		customerAccountID = "";
+		vehicleID = 0;
+		equipmentIDs = new int[0];
+		startBranchID = 0;
+		endBranchID = 0;
+		customerAccountID = 0;
 		status = "";
-		employeeAccountID = "";
+		employeeAccountID = 0;
 		// -1 means this doesn't exit
 		reservID = -1;
 		
@@ -57,7 +57,7 @@ public class Reservation {
 	 * @param empl The Employee log in ID Reservation belongs to.
 	 * @param id The Reservation ID.
 	 */
-	public Reservation(Date startDate, Date endDate, String vehID, String[] e, String startBranch, String endBranch, String cusID, String empID, String s, 
+	public Reservation(Date startDate, Date endDate, int vehID, int[] e, int startBranch, int endBranch, int cusID, int empID, String s, 
 			 int id)
 	{
 		this.startDate = startDate;
@@ -94,7 +94,7 @@ public class Reservation {
 	 * Modifies the Vehicle ID of Reservation.
 	 * @param newVehicleID The Vehicle ID to be changed.
 	 */
-	public void changeVehicleID(String newVehicleID)
+	public void changeVehicleID(int newVehicleID)
 	{
 		vehicleID = newVehicleID;
 	}
@@ -103,7 +103,7 @@ public class Reservation {
 	 * Add the Equipment ID from Reservation.
 	 * @param newEquipmentID The Equipment ID to be added.
 	 */
-	public void addEquipmentID(String[] newEquipmentID)
+	public void addEquipmentID(int[] newEquipmentID)
 	{
 		Arrays.copyOf(equipmentIDs,equipmentIDs.length + 1);
 	}
@@ -113,7 +113,7 @@ public class Reservation {
 	 * Removes the Equipment ID from Reservation.
 	 * @param toBeRemovedEquipmentID The Equipment ID to be removed.
 	 */
-	public void removeEquipmentID(String toBeRemovedEquipmentID)
+	public void removeEquipmentID(int toBeRemovedEquipmentID)
 	{
 	
 	}
@@ -122,7 +122,7 @@ public class Reservation {
 	 * Modifies the startBranch ID of the Reservation.
 	 * @param newStartBranch New startBranch ID of the Reservation.
 	 */
-	public void changeStartBranchID(String newBranchID)
+	public void changeStartBranchID(int newBranchID)
 	{
 		startBranchID = newBranchID;
 	}
@@ -131,7 +131,7 @@ public class Reservation {
 	 * Modifies the endBranch ID of the Reservation.
 	 * @param newEndBranch New endBranch ID of the Reservation.
 	 */
-	public void changeEndBranchID(String newEndBranchID)
+	public void changeEndBranchID(int newEndBranchID)
 	{
 		endBranchID = newEndBranchID;
 	}
@@ -140,7 +140,7 @@ public class Reservation {
 	 * Modifies the Customer account the Reservation is assigned to.
 	 * @param newAccount Customer Account the Reservation is assigned to.
 	 */
-	public void changeCustomerAccount(String newAccountID)
+	public void changeCustomerAccount(int newAccountID)
 	{
 		this.customerAccountID = newAccountID;
 	}
@@ -149,7 +149,7 @@ public class Reservation {
 	 * Modifies the Employee account login ID the Reservation is assigned to.
 	 * @param newAccountID Employee Account login ID the Reservation is assigned to.
 	 */
-	public void changeEmployeeAccountID(String newAccountID)
+	public void changeEmployeeAccountID(int newAccountID)
 	{
 		this.employeeAccountID = newAccountID;
 	}
@@ -194,7 +194,7 @@ public class Reservation {
 	 * Returns the Vehicle ID of the Reservation.
 	 * @return Vehicle ID of the Reservation.
 	 */
-	public String getVehicleID()
+	public int getVehicleID()
 	{
 		return vehicleID;
 	}
@@ -203,7 +203,7 @@ public class Reservation {
 	 * Returns the list of Equipment IDs of the Reservation.
 	 * @return List of Equipment IDsof the Reservation.
 	 */
-	public String[] getEquipments()
+	public int[] getEquipments()
 	{
 		return equipmentIDs;
 	}
@@ -212,7 +212,7 @@ public class Reservation {
 	 * Returns the startBranch ID of the Reservation.
 	 * @return Starting branch ID of the Reservation.
 	 */
-	public String getStartBranchID()
+	public int getStartBranchID()
 	{
 		return startBranchID;
 	}
@@ -221,7 +221,7 @@ public class Reservation {
 	 * Returns the endBranch ID of the Reservation.
 	 * @return Ending branch ID of the Reservation.
 	 */
-	public String getEndBranchID()
+	public int getEndBranchID()
 	{
 		return endBranchID;
 	}
@@ -230,7 +230,7 @@ public class Reservation {
 	 * Returns the Customer Account login ID of the Reservation.
 	 * @return Customer Account login ID of the Reservation.
 	 */
-	public String getCustomerAccountID()
+	public int getCustomerAccountID()
 	{
 		return customerAccountID;
 	}
@@ -239,7 +239,7 @@ public class Reservation {
 	 * Returns the Employee Account login ID of the Reservation.
 	 * @return Employee Account login ID of the Reservation.
 	 */
-	public String getEmployeeAccountID()
+	public int getEmployeeAccountID()
 	{
 		return employeeAccountID;
 	}
