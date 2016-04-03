@@ -23,6 +23,8 @@ public class DatabaseManagerTest {
 		//test_get_branch();
 		
 		test_search();
+		
+		//test simple query
 	}
 
 	/**
@@ -51,7 +53,6 @@ public class DatabaseManagerTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String tmp;
 		
 		for (int i = 0; i<vArray.length; i++){
 			System.out.println(vArray[i].toString());

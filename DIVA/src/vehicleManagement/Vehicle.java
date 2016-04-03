@@ -5,15 +5,13 @@ package vehicleManagement;
  */
 public class Vehicle {
 	
-	private int id; // Car ID number is important for vehicle identification for deletion. I added a getter method
-	private String type;
+	private int id; 
 	private String manufacturer;
-	private String year;
+	private String v_year; // year of purchase
+	private String model;
 	private String color;
 	private String status;
-	private String features;
-	private String branchID;
-	private int capacity;
+	private String path;
 	
 	/**
 	 * Creates a new Vehicle object initialized with the given arguments
@@ -26,16 +24,14 @@ public class Vehicle {
 	 * @param status	The status of the car is either SOLD, FORSALE, or FORRENT
 	 * @param features	A description of the car
 	 */
-	public Vehicle(int id, String location, int capacity, String type, String manufacturer, String year, String color, String status, String features) {
+	public Vehicle(int id, String manufacturer, String year, String model, String color, String status, String path) {
 		this.id = id;
-		this.setType(type);
 		this.manufacturer = manufacturer;
-		this.year = year;
+		this.v_year = year;
 		this.color = color;
 		this.status = status;
-		this.features = features;
-		this.branchID = location;
-		this.capacity = capacity;
+		this.model = model;
+		this.path = path;
 	}
 	
 	/**
