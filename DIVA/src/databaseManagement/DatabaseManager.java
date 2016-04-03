@@ -7,10 +7,14 @@ package databaseManagement;
 import java.sql.Connection;
 
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Date;
 
+import accountManagement.Account;
 import rentalManagement.Reservation;
 //import accountManagement.Account;
 import systemManagement.Branch;
