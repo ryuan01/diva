@@ -188,7 +188,7 @@ public class DatabaseManager {
 	}
 
 	// can be implemented, changes status of reservation only.
-	public void changeStatus(String reservID, String string) {
+	public void changeReservationStatus(String reservID, String string) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -224,7 +224,8 @@ public class DatabaseManager {
 		return null;
 	}
 	
-	public Account getAccount(String reservID)
+	
+	public Account getReservationAccount(String reservID)
 	{
 		return null;
 	}
@@ -251,4 +252,43 @@ public class DatabaseManager {
 		return vlist;
 	}
 	
+	
+	
+	// Account related
+	
+	public boolean createAccountEntry(Account a)
+	{
+		return true;
+	}
+	
+	public boolean removeAccountEntry(Account a)
+	{
+		return true;
+	}
+	
+	public Account[] searchAccountEntries(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status)
+	{
+		return null;
+	}
+	
+	public String retrievePassword(String userName)
+	{
+		return null;
+	}
+	
+	// find account by loginID, loginID should be immutable
+	public boolean modifyAccountEntry(String firstname, String lastname, String phoneNumber, String email, String loginId, String status)
+	{
+		return true;
+	}
+	
+	public boolean changeAccountStatus(Account a, String status)
+	{
+		return true;
+	}
+	
+	public boolean addSRPoints(Account a, int points)
+	{
+		return true;
+	}
 }

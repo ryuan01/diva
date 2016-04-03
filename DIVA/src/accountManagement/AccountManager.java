@@ -1,5 +1,7 @@
 package accountManagement;
 
+import databaseManagement.DatabaseManager;
+
 /**
  * An account manager provides account related services
  * @version 1
@@ -8,18 +10,15 @@ package accountManagement;
  */
 public class AccountManager {
 	
+	static DatabaseManager dbConnection;
 	/**
 	 * Constructs an AccountManager object
 	 */
 	public AccountManager() {
-		
+		dbConnection = DatabaseManager.getInstance();
 	}
 	
 	
-	public static void accumulatePoints(Account a, int points)
-	{
-	
-	}
 	
 	//------------Methods that can be called by an unauthenticated HTTPS user
 
@@ -36,65 +35,13 @@ public class AccountManager {
 	 * @pre phoneNumberIsUnique(phoneNumber)
 	 * @pre emailAddressIsUnique(emailAddress)
 	 */
-	public boolean addCustomerAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String password) {
-		return false; //METHOD NOT IMPLEMENTED
+	public boolean addAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
+		
+		return dbConnection.createAccountEntry(new Account(firstName, lastName, phoneNumber, emailAddress, userName, status));
 	}
 	
-	//--------Methods that can be called by an Registered Customer
-	
-	/**
-	 * Modifies the password of a customer
-	 * @param oldPassword	The customers old password
-	 * @param newPassword	The customers new password
-	 * @pre oldUserName != newUserName
-	 * @return true if the password was changed successfully
-	 */
-	public boolean changeUserName(String oldUserName, String newUserName) {
-		return false; //METHOD NOT IMPLEMENTED
-	}
-	
-	//joinsuperclub();
-	//deactivateaccount();
-	//reactivateaccount();
-	
-	//--------Methods that can be called by an Super Customer
-	
-	//--------Methods that can be called by an Registered Customer
-	
-	/**
-	 * Modifies the account information of the given customer
-	 * @param firstName	The new first name of the customer
-	 * @param lastName  The new last name of the customer
-	 * @param phoneNumber the new phone number of the customer
-	 * @param emailAddress the new email address of the customer
-	 * @return true if the account info was modified
-	 */
-	public boolean changeaccontinfo(String firstName, String lastName, String phoneNumber, String emailAddress) {
-		return false; //METHOD NOT IMPLEMENTED
-	}
-	
-	/**
-	 * Modifies the password of a customer
-	 * @param oldPassword	The customers old password
-	 * @param newPassword	The customers new password
-	 * @pre getPassword(userName) == oldPassword
-	 * @return true if the password was changed successfully
-	 */
-	public boolean changePassword(String userName, String oldPassword, String newPassword) {
-		return false; //METHOD NOT IMPLEMENTED
-	}
-	
-	/**
-	 * Modifies the password of a customer
-	 * @param customer 		The customer who wants to change their UserName
-	 * @param oldPassword	The customers old password
-	 * @param newPassword	The customers new password
-	 * @pre getPassword(customer) == oldPassword
-	 * @pre oldUserName != newUserName
-	 * @return true if the password was changed successfully
-	 */
-	public boolean changeUserName(Customer customer, String oldUserName, String newUserName) {
-		return false; //METHOD NOT IMPLEMENTED
+	public boolean modifyAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
+		return dbConnection.modifyAccountEntry(firstName, lastName, phoneNumber, emailAddress, userName, status);
 	}
 	
 	/**
@@ -104,10 +51,19 @@ public class AccountManager {
 	 * @pos getAccount(customer.UserName) instanceof SuperCustomer
 	 * @return true if the customer successfully joined Super Club
 	 */
-	public boolean joinSuperClub(Customer customer) {
-		return true;
+	public static void joinSuperClub(Account a) {
+		dbConnection.changeAccountStatus(a, "SRCustomer");
 	}
 	
+	public static void accumulatePoints(Account a, int points)
+	{
+		dbConnection.addSRPoints(a,points);
+	}
+	
+	public static void leaveSuperCLub(Account a)
+	{
+		dbConnection.changeAccountStatus(a, "RegisteredCustomer");
+	}
 	/**
 	 * Moves the customers account from the activated state into the deactivated state
 	 * @param customer The customer account to be deactivated
@@ -116,125 +72,17 @@ public class AccountManager {
 	 * @pre customer.state == activated
 	 * @pos customer.state == deactivated
 	 */
-	public boolean deactivateAccount(Customer customer, String password) {
-		return false; //METHOD NOT IMPLEMENTED
+	public boolean deleteAccount(Account a) {
+		return dbConnection.removeAccountEntry(a);
 	}
-	
-	/**
-	 * Moves the customers account from the deactivated state to the activated state
-	 * @param customer The customer account to be deactivated
-	 * @param password The customers password
-	 * @return true if the account was successfully activated
-	 * @pre customer.state == deactivated
-	 * @pre password == getPassword(customer)
-	 * @pos customer.state == activated
-	 */
-	public boolean reactivateaccount(Customer customer, String password) {
-		return false; //METHOD NOT IMPLEMENTED
-	}
-	
-	//--------Methods that can be called by an Super Customer
-	
-	/**
-	 * Changes the super club member into a regular customer
-	 * @param customer The customer who wants to stop being a Super Club Member
-	 * @return true if the SuperCustomer is successfully changed to a regular customer
-	 * @pos getAccount(customer) instanceof RegisteredCustomer
-	 */
-	public boolean quitsuperclub(SuperCustomer customer) {
-		return false; //METHOD NOT IMPLEMENTED
-	}
-	
-	//--------Methods that can be called by an Super Customer
-	
-	//SearchForCustomersByFirstName
 	
 	/**
 	 * Returns a list of customers that have the same first name as the parameter
 	 * @param firstName The first name of the customer being searched
 	 * @return a list of customers that match the search criteria
 	 */
-	public Customer[] searchForCustomersByFirstName(String firstName) {
-		return new Customer[0]; //NOT IMPLEMENTED
-	}
-	
-	/**
-	 * Returns a list of customers that have the same last name as the parameter
-	 * @param lastName The last name of the customer being searched
-	 * @return a list of customers that match the search criteria
-	 */
-	public Customer[] searchForCustomersByLastName(String lastName) {
-		return new Customer[0];
-	}
-	
-	/**
-	 * Returns a list of customers that have the same first and last name as the parameters
-	 * @param firstName The first name of the customer being searched
-	 * @param lastName The last name of the customer being searched
-	 * @return a list of customers that match the search criteria
-	 */
-	public Customer[] searchForCustomersByFirstAndLastName(String lastName) {
-		return new Customer[0];
-	}
-	
-	/**
-	 * Returns a list of customers that have the same email as the parameter
-	 * @param firstName The first name of the customer being searched
-	 * @param lastName The last name of the customer being searched
-	 * @return a list of customers that match the search criteria
-	 */
-	public Customer[] searchForCustomersByEmail(String emailAddress) {
-		return new Customer[0];
-	}
-	
-	/**
-	 * Returns a list of customers that have the same email as the parameter
-	 * @param firstName The first name of the customer being searched
-	 * @param lastName The last name of the customer being searched
-	 * @return a list of customers that match the search criteria
-	 */
-	public Customer[] searchForCustomersByUserName(String userName) {
-		return new Customer[0];
-	}
-	
-	//--------Methods that can be called by a Manager 
-	
-	//addClerkAccount()
-	
-	/**
-	 * Creates a new RegisteredCustomerAccount record in the database
-	 * @param firstName The first name of the employee
-	 * @param lastName The last name of the employee
-	 * @param phoneNumber	The employee's phone number
-	 * @param emailAddress	The employee's email address
-	 * @param userName		The employee's userName
-	 * @param password		An encrypted version of The employee's password
-	 * @return true if the account was successfully created
-	 * @pre userNameIsUnique(userName)
-	 * @pre phoneNumberIsUnique(phoneNumber)
-	 * @pre emailAddressIsUnique(emailAddress)
-	 */
-	public boolean addClerkAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String password) {
-		return false; //METHOD NOT IMPLEMENTED
-	}
-	
-	//--------Methods that can be called by a System Administrator
-	
-	/**
-	 * Creates a new ManagerAccount record in the database
-	 * @param firstName The first name of the employee
-	 * @param lastName The last name of the employee
-	 * @param phoneNumber	The employee's phone number
-	 * @param emailAddress	The employee's email address
-	 * @param userName		The employee's userName
-	 * @param password		An encrypted version of The employee's password
-	 * @return true if the account was successfully created
-	 * @pre userNameIsUnique(userName)
-	 * @pre phoneNumberIsUnique(phoneNumber)
-	 * @pre emailAddressIsUnique(emailAddress)
-	 */
-	public boolean addManagerAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String password) {
-		return false; //METHOD NOT IMPLEMENTED
+	public Account[] searchAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
+		return dbConnection.searchAccountEntries(firstName,lastName,phoneNumber,emailAddress,userName,status);
 	}
 	
 	/**
@@ -243,16 +91,6 @@ public class AccountManager {
 	 * @return an encrypted version of the password associated with the UserName
 	 */
 	private String getPassword(String userName) {
-		return new String(); //METHOD NOT IMPLEMENTED
-	}
-	
-	/**
-	 * Returns an account object for the given user name
-	 * @param userName The user name of the account to return
-	 * @return An account object that matches the given userName
-	 */
-	private Account getAccount(String userName) {
-		//robin thinks: make sure to return the right type of account
-		return new Clerk(userName, userName, userName, userName, userName, userName); //METHOD NOT IMPLEMENTED
+		return dbConnection.retrievePassword(userName);
 	}
 }

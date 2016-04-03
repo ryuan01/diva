@@ -39,9 +39,9 @@ public class RentManager {
 			
 			dbConnection.addReport(report);
 			
-			payForRental(dbConnection.getAccount(reservID),reservID, typeOfPayment);
+			payForRental(dbConnection.getReservationAccount(reservID),reservID, typeOfPayment);
 			
-			dbConnection.changeStatus(reservID, "Rented");
+			dbConnection.changeReservationStatus(reservID, "Rented");
 		}
 
 		

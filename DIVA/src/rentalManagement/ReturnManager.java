@@ -41,16 +41,16 @@ public class ReturnManager {
 			
 			dbConnection.addAccidentReport(r);
 			
-			paymentManager.makePayment(dbConnection.getAccount(reservID), extraPay, typeOfPayment);
+			paymentManager.makePayment(dbConnection.getReservationAccount(reservID), extraPay, typeOfPayment);
 		}
 		
 		if(checkIfOverdue(reservID))
 		{
-			paymentManager.makePayment(dbConnection.getAccount(reservID),paymentManager.calculateLateprice(reservID), typeOfPayment);
+			paymentManager.makePayment(dbConnection.getReservationAccount(reservID),paymentManager.calculateLateprice(reservID), typeOfPayment);
 		}
 		
 	
-		dbConnection.changeStatus(reservID, "archived");
+		dbConnection.changeReservationStatus(reservID, "archived");
 		
 	}
 

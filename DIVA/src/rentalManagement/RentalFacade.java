@@ -13,9 +13,9 @@ public class RentalFacade {
 	RentManager rentMan;
 	ReturnManager returnMan;
 	
-	public RentalFacade(DatabaseManager db)
+	public RentalFacade()
 	{
-		this.db = db;
+		this.db = DatabaseManager.getInstance();
 		reservMan = new ReserveManager(db);
 		rentMan = new RentManager(db);
 		returnMan = new ReturnManager(db);
