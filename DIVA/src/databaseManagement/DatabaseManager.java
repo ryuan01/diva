@@ -148,20 +148,6 @@ public class DatabaseManager {
 		branDB.changeBranch(b_key_value);
 	}*/
 	
-	/**
-	 * Get a list of branches
-	 * @pre conDB is not connected
-	 * @post conDB is disconnected
-	 * @return
-	 */
-	public Branch[] getBranch(){
-		// Why are you creating a connect object here and passing it to getBranch?
-		// connection object should be created INSIDE getBranch, not here!
-		conDB.connect();
-		Branch[] blist = branDB.getBranch(conDB.getConnection());
-		conDB.disconnect();
-		return blist;
-	}
 	// EquipmentDB
 
 

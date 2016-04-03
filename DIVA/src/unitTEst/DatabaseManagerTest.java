@@ -25,6 +25,12 @@ public class DatabaseManagerTest {
 		test_search();
 		
 		//test simple query
+		
+		//add threadpool to test how it goes?
+		
+		//test a list of account
+		
+		//
 	}
 
 	/**

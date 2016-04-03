@@ -14,15 +14,14 @@ public class Vehicle {
 	private String path;
 	
 	/**
-	 * Creates a new Vehicle object initialized with the given arguments
-	 * @param location		The branch id of the branch that owns the vehicle
-	 * @param capacity		The number of seats in the vehicle
-	 * @param type	Either Car or Truck
-	 * @param manufactuer	The name of the company who manufactures the vehicle
-	 * @param year	The year the vehicle was manufactured
-	 * @param color	The color of the car
-	 * @param status	The status of the car is either SOLD, FORSALE, or FORRENT
-	 * @param features	A description of the car
+	 * Creates a new vehicle
+	 * @param id vehicle id
+	 * @param manufacturer company who made this vehicle
+	 * @param year year of purchase
+	 * @param model model of vehicle
+	 * @param color color of vehicle
+	 * @param status for rent, for sale, or sold
+	 * @param path an relative path to find the picture for this vehicle
 	 */
 	public Vehicle(int id, String manufacturer, String year, String model, String color, String status, String path) {
 		this.id = id;
@@ -40,39 +39,7 @@ public class Vehicle {
 	public int getID(){
 		return id;
 	}
-	/**
-	 * Returns the Vehicles Type
-	 * @return the type of this vehicle
-	 */
-	public String getType() {
-		return type;
-	}
 
-	/**
-	 * Sets the type of the vehicle to the argument type
-	 * @pre the type argument must be either Car or Truck
-	 * @param type The type of vehicle
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	/**
-	 * Returns the Vehicles location which is the id of it's owning branch
-	 * @return the branchID of the branch who owns this vehicle
-	 */
-	public String getLocation() {
-		return branchID;
-	}
-
-	/**
-	 * Sets this vehicles location to to the location argument
-	 * @pre The location provided must be a valid branchID
-	 * @param location The new branchID of the vehicle
-	 */
-	public void setLocation(String location) {
-		this.branchID = location;
-	}
 	
 	/**
 	 * Returns the Manufacture of this vehicle
@@ -95,7 +62,7 @@ public class Vehicle {
 	 * @return the year this Vehicle was manufactured
 	 */
 	public String getYear() {
-		return year;
+		return v_year;
 	}
 
 	/**
@@ -103,7 +70,23 @@ public class Vehicle {
 	 * @param year The year the car was manufactured
 	 */
 	public void setYear(String year) {
-		this.year = year;
+		this.v_year = year;
+	}
+	
+	/**
+	 * get model of vehicle
+	 * @return vehicle model
+	 */
+	public String getModel(){
+		return model;
+	}
+	
+	/**
+	 * set model of vehicle
+	 * @param model model of vehicle
+	 */
+	public void setModel(String model){
+		this.model = model;
 	}
 
 	/**
@@ -123,22 +106,6 @@ public class Vehicle {
 	}
 
 	/**
-	 * Returns the number of people who can fit in the vehicle
-	 * @return the capacity of this vehicle
-	 */
-	public int getCapacity() {
-		return capacity;
-	}
-
-	/**
-	 * Sets the capacity of the vehicle
-	 * @param capacity The number of seats the vehicle has
-	 */
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
-	}
-
-	/**
 	 * Returns the status of the vehicle
 	 * @return the status of this vehicle
 	 */
@@ -154,34 +121,36 @@ public class Vehicle {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	/**
+	 * get relative path for image of this vehicle
+	 * @return path
+	 */
+	public String getPath(){
+		return path;
+	}
+	
+	/**
+	 * set relative path for image of this vehicle
+	 * @param path relative path in linux
+	 */
+	public void setPath(String path){
+		this.path = path;
+	}
 
 	/**
 	 * Returns a string describing the Vehicle
 	 * @return the the description of this vehicle
 	 */
-	public String getFeatures() {
-		return features;
-	}
-
-	/**
-	 * Sets the features of this car
-	 * @param features A short description of the vehicle
-	 */
-	public void setFeatures(String features) {
-		this.features = features;
-	}
-
 	public String toString(){
 		String tmp = getClass().getName()+" "
 				+" ID: " +id
-				+" type: "+ type
 				+" manufacturer: "+ manufacturer
-				+" year-model: " + year
+				+" year: " + v_year
+				+" model: " + model
 				+" color: " + color
 				+" status: " + status
-				+" features: " + features
-				+" branchID: " + branchID
-				+" capacity: " + capacity;
+				+" path: " + path;
 		return tmp;
 	}
 }
