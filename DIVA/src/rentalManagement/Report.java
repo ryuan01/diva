@@ -4,7 +4,7 @@ import java.sql.Date;
 
 /* Ben, extended to Accident report, and Inspection report*/
 
-public abstract class Report {
+public class Report {
 	
 	private Date reportDate;
 	private String reportDescription;
@@ -26,7 +26,9 @@ public abstract class Report {
 	 */
 	public Report(Date d, String description, String reservID)
 	{
-		
+		reportDate = d;
+		reportDescription = description;
+		reportReservationID = reservID;
 	}
 	
 	/**
@@ -35,7 +37,7 @@ public abstract class Report {
 	 */
 	public void changeReportDate(Date newDate)
 	{
-		
+		reportDate = newDate;
 	}
 	
 	/**
@@ -44,7 +46,7 @@ public abstract class Report {
 	 */
 	public void changeReportDescription(String newDescription)
 	{
-		
+		reportDescription = newDescription;
 	}
 	
 	/**
@@ -53,7 +55,7 @@ public abstract class Report {
 	 */
 	public void changeReportReservationID(String newReportReservationID)
 	{
-		
+		reportReservationID = newReportReservationID;
 	}
 	
 	/**
@@ -62,7 +64,7 @@ public abstract class Report {
 	 */
 	public Date getReportDate()
 	{
-		return null;
+		return reportDate;
 	}
 	
 	/**
@@ -71,7 +73,7 @@ public abstract class Report {
 	 */
 	public String getReportDescription()
 	{
-		return null;
+		return reportDescription;
 	}
 	
 	/**
@@ -80,6 +82,6 @@ public abstract class Report {
 	 */
 	public String getReportReservationID()
 	{
-		return null;
+		return reportReservationID;
 	}
 }

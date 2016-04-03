@@ -1,6 +1,9 @@
 package rentalManagement;
 
 
+import java.util.Date;
+
+import accountManagement.Account;
 import databaseManagement.DatabaseManager;
 import paymentManagement.paymentManager;
 
@@ -29,34 +32,18 @@ public class RentManager {
 		 * Begins the Rental.
 		 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
 		 */
-		public void startRental(String reservID, String typeOfPayment)
+		public void startRental(String reservID,String description, String typeOfPayment)
 		{
 			// order of execution:
-			payForRental(reservID, typeOfPayment);
-			recordRental(reservID);
-			dbConnection.changeStatus(reservID, "Rented");
-			requestReceipt(reservID);
-		}
-		
-		/**
-		 * Whatever this does...Ben
-		 * @param reservID
-		 */
-		private void requestReceipt(String reservID) {
-			// TODO Auto-generated method stub
+			Report report = new Report(new Date(System.currentTimeMillis()), description, reservID);
 			
+			dbConnection.addReport(report);
+			
+			payForRental(dbConnection.getReservationAccount(reservID),reservID, typeOfPayment);
+			
+			dbConnection.changeReservationStatus(reservID, "Rented");
 		}
 
-		/**
-		 * Cancels a Rental pre-emptively.
-		 * @param reservID Reservation ID of a Rental to be cancelled, calls Database to record rental.
-		 * @post recordRental().
-		 */
-		public void cancelRental(String reservID)
-		{
-			dbConnection.removeRental(reservID);
-			dbConnection.changeStatus(reservID, "Standby");
-		}
 		
 		/**
 		 * Calls Accounting system to pay for the Rental.
@@ -64,18 +51,8 @@ public class RentManager {
 		 * @param typeOfPayment Debit for debit card, Credit for credit card, Cash for cash, SRP for SuperRent points.
 		 * @pre typeOfPayment == "debit" && typeOfPayment == "credit" && typeOfPayment == "cash" && typeOfPayment == "SRP"
 		 */
-		public void payForRental(String reservID, String typeOfPayment)
+		public void payForRental(Account a, String reservID, String typeOfPayment)
 		{
-			paymentManager.makePayment(reservID,typeOfPayment);
-		}
-		
-		/**
-		 * Calls Database system to record the Rental details.
-		 * @param reservID Reservation ID of Rental to record details for.
-		 * @pre payForRental().
-		 */
-		public void recordRental(String reservID)
-		{
-			dbConnection.createRental(reservID);
+			paymentManager.makePayment(a, paymentManager.calculateRentprice(reservID),typeOfPayment);
 		}
 }

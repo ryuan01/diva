@@ -3,6 +3,7 @@ package rentalManagement;
 import java.sql.Date;
 
 import databaseManagement.DatabaseManager;
+import paymentManagement.paymentManager;
 
 
 
@@ -32,38 +33,27 @@ public class ReturnManager {
 	 * Returns a Vehicle from Rental.
 	 * @param reservID Reservation ID of Rental the Vehilce belongs to.
 	 */
-	public void startReturn(String reservID, String typeOfPayment, String accidentDetail)
+	public void startReturn(String reservID, String description, String dmgDescription,double extraPay, String typeOfPayment, String accidentDetail)
 	{
 		if(accidentDetail != "")
 		{
-			payForExtra(reservID,typeOfPayment);
-			makeAccidentReport(reservID, accidentDetail);
+			AccidentReport r = new AccidentReport(new Date(System.currentTimeMillis()), description, reservID, dmgDescription, extraPay);
+			
+			dbConnection.addAccidentReport(r);
+			
+			paymentManager.makePayment(dbConnection.getReservationAccount(reservID), extraPay, typeOfPayment);
 		}
 		
 		if(checkIfOverdue(reservID))
 		{
-			payForExtra(reservID,typeOfPayment);
+			paymentManager.makePayment(dbConnection.getReservationAccount(reservID),paymentManager.calculateLateprice(reservID), typeOfPayment);
 		}
 		
-		recordReturn(reservID);
+	
+		dbConnection.changeReservationStatus(reservID, "archived");
 		
 	}
-	
-	/**
-	 * Calls Accounting system to handle extra payment.
-	 * @param reservID Reservation ID of Rental to be paid.
-	 * @param typeOfPayment Debit for debit card, Credit for credit card, Cash for cash, SRP for SuperRent points.
-	 * @param reasonForPayment Reasons for extra payment, such as accidents, returning late, etc.
-	 */
-	public void payForExtra(String reservID, String typeOfPayment)
-	{
-		dbConnection.makePayment(reservID, typeOfPayment);
-	}
-	
-	public void makeAccidentReport(String reservID, String accidentDetail)
-	{
-		//AccidentReport(Date d, String description, String reservID,String dmgDes, double extraPay);
-	}
+
 	
 	/**
 	 * Compares with current Date object if Reservation is overdue.
@@ -72,19 +62,14 @@ public class ReturnManager {
 	 */
 	public boolean checkIfOverdue(String reservID)
 	{
-		// checks if reservation date is before current date.
-		return false;
+		// if reservation end date is before current date.
+		if(dbConnection.getReservationEndDate(reservID).compareTo(new Date(System.currentTimeMillis())) < 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
-	
-	/**
-	 * Calls Database system to record the Return of Vehicle.
-	 * @param reservID Reservation ID of Return to be recorded.
-	 */
-	public void recordReturn(String reservID)
-	{
-		dbConnection.createReturn(reservID);
-		dbConnection.changeStatus(reservID, "Returned");
-	}
-	
-	
 }

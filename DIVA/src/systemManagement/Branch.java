@@ -1,4 +1,5 @@
 /**
+ * @Author: Saud (Sammy) Almahri
  * Note: 
  * 	1- Please notice the "issues" which are commented throughout the file
  * 	2- The javadoc can be updated when this class is approved
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 public class Branch {
 	
-	private int id;
+	private String id;
 	private String address;
 	private String city;
 	private String province;
@@ -25,7 +26,7 @@ public class Branch {
 	private ArrayList<Vehicle> fleet;
 	private ArrayList<Equipment> inventory;
 	
-	public Branch(int id, String address, String city, String province, String zipcode){
+	public Branch(String id, String address, String city, String province, String zipcode){
 		this.id = id;
 		this.address = address;
 		this.city = city;
@@ -93,7 +94,7 @@ public class Branch {
 	 */
 	public String getBranchID()
 	{
-		return "";
+		return id;
 	}
 	
 	/**

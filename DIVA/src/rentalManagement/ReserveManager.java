@@ -39,7 +39,7 @@ public class ReserveManager {
 	 * @param employeeID Employee login ID of the Reservation.
 	 * @param status Status of the Reservation.
 	 */
-	public void addReservation(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+	public boolean addReservation(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
 			String customerID, String employeeID, String status) 
 	{
 		//the ID = null right now because we don't know yet
@@ -47,55 +47,44 @@ public class ReserveManager {
 		System.out.println("I got to here in ReserveManager");
 		Reservation r = new Reservation(startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID,customerID, employeeID, status,-1);
 		System.out.println("Reservation object created");
-		dbConnection.createReservationEntry(r);
+		return dbConnection.createReservationEntry(r);
 	}
 	
 	/**
-	 * Removes a Reservation depending on Account type the Account ID belongs to, if belongs to employee, it can remove any Reservation, if it belongs to Customer it can only rmeove
+	 * Removes a Reservation that belongs to Customer.
 	 * Reservations belonging to themselves.
 	 * @param accountID The Account ID of the Reservation.
 	 * @param reservID The Reservation ID to be removed.
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	public void removeReservation(String customerID, String reservID)
+	public boolean removeReservation(String customerID, String reservID)
 	{
-		dbConnection.removeReservationEntry(reservID);
-		dbConnection.changeStatus(reservID, "terminated");
+		return dbConnection.removeReservationEntry(reservID);
 	}
 	
-	
+	/**
+	 * Removes a Reservation belonging to anyone.
+	 * Reservations belonging to themselves.
+	 * @param reservID The Reservation ID to be removed.
+	 * @pre If(customerID == Customer), customerID must belong to reservID 
+	 */
+	public boolean removeReservation(String reservID)
+	{
+		return dbConnection.removeReservationEntry(reservID);
+	}
 	
 	/**
-	 * Searches for the list of Reservations depending on type of ID passed.
+	 * Searches for the list of Reservations with all attributes passed.
 	 * @param id The type of search executed, can be vehicleID, branchID, reservationID, customerID, employeeID, equipID, reservStatus.
 	 * @return List of qualifying Reservations from the search
 	 */
-	public Reservation[] searchReservations(String id)
+	public Reservation[] searchReservations(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+			String customerID, String employeeID, String status)
 	{
-		return dbConnection.searchReservationEntries(id);
+		return dbConnection.searchReservationEntries(startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
+				customerID, employeeID, status);
 	}
 	
-	
-	/**
-	 * Searches Reservations with a start date.
-	 * @param d Start date to search with.
-	 * @return List of Reservations that a start Date is assigned to.
-	 */
-	public Reservation[] searchStartDate(ReservationDate d)
-	{
-		return dbConnection.searchReservationEntries(ReservationDate.toString(d));
-	}
-	
-
-	/**
-	 * Searches Reservations with a end date.
-	 * @param d End date to search with.
-	 * @return List of Reservations that a end Date is assigned to.
-	 */
-	public Reservation[] searchEndDate(ReservationDate d)
-	{
-		return dbConnection.searchReservationEntries(ReservationDate.toString(d));
-	}
 	
 	/**
 	 * Modifies the Reservation based on id passed.
@@ -104,30 +93,10 @@ public class ReserveManager {
 	 * If existing equipID is passed, then it is removed, if a non-existing equipID is passed, then it is added.
 	 * @pre Only Reservation Account owner or Employee calls this method.
 	 */
-	public void changeReservation(String reservID, String id)
+	public boolean changeReservation(String reservID, Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+			String customerID, String employeeID, String status)
 	{
-		dbConnection.modifyReservationEntries(reservID, id);
+		return dbConnection.modifyReservationEntries(reservID, startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
+				customerID, employeeID, status);
 	}
-	
-	/**
-	 * Modifies the starting date of Reservation.
-	 * @param reservID Reservation ID of Reservation to be modified.
-	 * @param newDate New Date of Reservation.
-	 */
-	public void changeStartDate(String reservID, ReservationDate newDate)
-	{
-		dbConnection.modifyReservationStartDateEntries(reservID, ReservationDate.toString(newDate));
-	}
-	
-	/**
-	 * Modifies the ending date of Reservation.
-	 * @param reservID Reservation ID of Reservation to be modified.
-	 * @param newDate New Date of Reservation.
-	 */
-	public void changeEndDate(String reservID, ReservationDate newDate)
-	{
-		dbConnection.modifyReservationEndDateEntries(reservID, ReservationDate.toString(newDate));
-	}
-	
-	
 }

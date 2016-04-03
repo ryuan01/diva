@@ -22,10 +22,18 @@ public class ReservationTester {
 		eqids[0] = "4322";
 		eqids[1] = "4323";
 		
-		RentalFacade rf = new RentalFacade(db);
+		RentalFacade rf = new RentalFacade();
 		
 		rf.createReservation(startD,endD, "123", eqids, "1", "2", 
 				"1001", "102", "ready");
+		
+		rf.findReservations(startD, endD, , equipIDs, startBranchID, endBranchID, customerID, employeeID, status);
+		
+		rf.modReservation(reservID, startDate, endDate, vehicleID, equipIDs, startBranchID, endBranchID, customerID, employeeID, status);
+		rf.findReservations(startDate, endDate, vehicleID, equipIDs, startBranchID, endBranchID, customerID, employeeID, status);
+		
+		rf.cancelAnyReservation(reservID);
+		rf.findReservations(startDate, endDate, vehicleID, equipIDs, startBranchID, endBranchID, customerID, employeeID, status);
 		
 	}
 	

@@ -13,9 +13,9 @@ public class RentalFacade {
 	RentManager rentMan;
 	ReturnManager returnMan;
 	
-	public RentalFacade(DatabaseManager db)
+	public RentalFacade()
 	{
-		this.db = db;
+		this.db = DatabaseManager.getInstance();
 		reservMan = new ReserveManager(db);
 		rentMan = new RentManager(db);
 		returnMan = new ReturnManager(db);
@@ -34,24 +34,36 @@ public class RentalFacade {
 	 * @param status Status of the Reservation.
 	 * @param reservID Reservation ID.
 	 */
-	public void createReservation(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+	public boolean createReservation(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
 			String customerID, String employeeID, String status) 
 	{
 		System.out.println("I got to here in RentalFacade");
-		reservMan.addReservation(startDate,endDate,vehicleID,equipIDs,startBranchID, endBranchID, 
+		return reservMan.addReservation(startDate,endDate,vehicleID,equipIDs,startBranchID, endBranchID, 
 				customerID, employeeID,status);
 	}
 	
 	/**
-	 * Removes a Reservation depending on Account type the Account ID belongs to, if belongs to employee, it can remove any Reservation, if it belongs to Customer it can only rmeove
+	 * Removes a Reservation that belongs to a customer.
+	 * Reservations belonging to themselves.
+	 * @param accountID The Customer ID.
+	 * @param reservID The Reservation ID to be removed.
+	 * @pre If(customerID == Customer), customerID must belong to reservID 
+	 */
+	public boolean cancelSelfReservation(String customerID, String reservID)
+	{
+		return reservMan.removeReservation(customerID, reservID);
+	}
+	
+	/**
+	 * Removes a Reservation that belongs to anyone.
 	 * Reservations belonging to themselves.
 	 * @param accountID The Account ID of the Reservation.
 	 * @param reservID The Reservation ID to be removed.
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	public void cancelReservation(String customerID, String reservID)
+	public boolean cancelAnyReservation(String reservID)
 	{
-		reservMan.removeReservation(customerID, reservID);
+		return reservMan.removeReservation(reservID);
 	}
 	
 	
@@ -61,32 +73,14 @@ public class RentalFacade {
 	 * @param id The type of search executed, can be vehicleID, branchID, reservationID, customerID, employeeID, equipID, reservStatus.
 	 * @return List of qualifying Reservations from the search
 	 */
-	public Reservation[] findReservations(String id)
+	public Reservation[] findReservations(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+			String customerID, String employeeID, String status)
 	{
-		return reservMan.searchReservations(id);
+		return reservMan.searchReservations(startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
+			customerID, employeeID, status);
 	}
 	
 	
-	/**
-	 * Searches Reservations with a start date.
-	 * @param d Start date to search with.
-	 * @return List of Reservations that a start Date is assigned to.
-	 */
-	public Reservation[] findStartDate(ReservationDate d)
-	{
-		return reservMan.searchStartDate(d);
-	}
-	
-
-	/**
-	 * Searches Reservations with a end date.
-	 * @param d End date to search with.
-	 * @return List of Reservations that a end Date is assigned to.
-	 */
-	public Reservation[] findEndDate(ReservationDate d)
-	{
-		return reservMan.searchEndDate(d);
-	}
 	
 	/**
 	 * Modifies the Reservation based on id passed.
@@ -95,58 +89,29 @@ public class RentalFacade {
 	 * If existing equipID is passed, then it is removed, if a non-existing equipID is passed, then it is added.
 	 * @pre Only Reservation Account owner or Employee calls this method.
 	 */
-	public void modReservation(String reservID, String id)
+	public boolean modReservation(String reservID, Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+			String customerID, String employeeID, String status)
 	{
-		reservMan.changeReservation(reservID, id);
-	}
-	
-	/**
-	 * Modifies the starting date of Reservation.
-	 * @param reservID Reservation ID of Reservation to be modified.
-	 * @param newDate New Date of Reservation.
-	 */
-	public void modStartDate(String reservID, ReservationDate newDate)
-	{
-		reservMan.changeStartDate(reservID, newDate);
-	}
-	
-	/**
-	 * Modifies the ending date of Reservation.
-	 * @param reservID Reservation ID of Reservation to be modified.
-	 * @param newDate New Date of Reservation.
-	 */
-	public void modEndDate(String reservID, ReservationDate newDate)
-	{
-		reservMan.changeEndDate(reservID, newDate);
+		return reservMan.changeReservation(reservID, startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
+				customerID, employeeID, status);
 	}
 	
 	/**
 	 * Begins the Rental.
 	 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
 	 */
-	public void createRental(String reservID, String typeOfPayment)
+	public void createRental(String reservID, String descriptionOfInspection, String typeOfPayment)
 	{
-		rentMan.startRental(reservID, typeOfPayment);
+		rentMan.startRental(reservID, descriptionOfInspection, typeOfPayment);
 	}
-	
-	/**
-	 * Cancels a Rental pre-emptively.
-	 * @param reservID Reservation ID of a Rental to be cancelled, calls Database to record rental.
-	 * @post recordRental().
-	 */
-	public void destroyRental(String reservID)
-	{
-		rentMan.cancelRental(reservID);
-	}
-	
-	
+		
 	// assumes gas is already refilled.
 		/**
 		 * Returns a Vehicle from Rental.
 		 * @param reservID Reservation ID of Rental the Vehilce belongs to.
 		 */
-	public void createReturn(String reservID, String typeOfPayment, String accidentDetail)
+	public void createReturn(String reservID, String description, String dmgDescription,double extraPay, String typeOfPayment, String accidentDetail)
 	{
-		returnMan.startReturn(reservID, typeOfPayment, accidentDetail);
+		returnMan.startReturn(reservID, description, dmgDescription,extraPay, typeOfPayment, accidentDetail);
 	}
 }

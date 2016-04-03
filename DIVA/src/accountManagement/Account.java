@@ -8,7 +8,7 @@ package accountManagement;
 
 
 
-public abstract class Account {
+public class Account {
 
 	
 	private String firstname;
@@ -16,6 +16,7 @@ public abstract class Account {
 	private String phoneNumber;
 	private String email;
 	private String loginId;
+	private String status;
 	
 	/**
 	 * Creates a new Account object initialized with the given arguments
@@ -26,12 +27,13 @@ public abstract class Account {
 	 * @param loginId					The log in id of the User of the Account
 	 * @param password					The password of the User of the Account
 	 */
-	public Account (String firstname, String lastname, String phoneNumber, String email, String loginId, String password){
+	public Account (String firstname, String lastname, String phoneNumber, String email, String loginId, String status){
 		this.firstname = firstname;
 		this.lastname =  lastname;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.loginId= loginId;
+		this.status = status;
 	
 	}
 
@@ -106,16 +108,16 @@ public abstract class Account {
 	 * Gets the login id of a user account.
 	 * @return loginId
 	 */
-	public String getLoginId() {
-		return loginId;
+	
+	
+	public String getStatus()
+	{
+		return status;
 	}
-
-	/**
-	 * Sets the login Id of a user account.
-	 * @param loginId
-	 */
-	public void setLoginId(String loginId) {
-		this.loginId = loginId;
+	
+	public void setStatus(String s)
+	{
+		status = s;
 	}
 	
 	

@@ -15,6 +15,8 @@ import java.util.Currency;
 import java.util.Date;
 
 import accountManagement.Account;
+import rentalManagement.AccidentReport;
+import rentalManagement.Report;
 import rentalManagement.Reservation;
 //import accountManagement.Account;
 import systemManagement.Branch;
@@ -173,73 +175,63 @@ public class DatabaseManager {
 	 * @pre r is not in database
 	 * @post r.id is updated 
 	 */
-	public void createReservationEntry(Reservation r) {
+	public boolean createReservationEntry(Reservation r) {
 		// Look at the note in getBranch method
 		conDB.connect();
 		//System.out.println("Connected, trying to insert next");
 		reDB.createReservation(conDB.getConnection(), r);
 		conDB.disconnect();
+		return true;
 	}
 	
-	public void removeReservationEntry(String reservID) {
+	// can be implemented, removes a Reservation from the database completely, not archived.
+	public boolean removeReservationEntry(String reservID) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	// can be implemented, changes status of reservation only.
+	public void changeReservationStatus(String reservID, String string) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void changeStatus(String reservID, String string) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Reservation[] searchReservationEntries(String id) {
+	// updated signature
+	public Reservation[] searchReservationEntries(Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+			String customerID, String employeeID, String status) {
 		return null;
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void modifyReservationEntries(String reservID, String id) {
+	// updated signature
+	public boolean modifyReservationEntries(String reservID, Date startDate,Date endDate, String vehicleID, String[] equipIDs, String startBranchID, String endBranchID, 
+			String customerID, String employeeID, String status) {
 		// TODO Auto-generated method stub
-		
+		return true;
 	}
 
-	public void modifyReservationStartDateEntries(String reservID, String string) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	public void modifyReservationEndDateEntries(String reservID, String string) {
-		// TODO Auto-generated method stub
-		
+	public boolean addReport(Report r)
+	{
+		return true;
 	}
-
-	public void makePayment(String reservID, String typeOfPayment) {
-		// TODO Auto-generated method stub
-		
+	
+	public boolean addAccidentReport(AccidentReport r)
+	{
+		return true;
 	}
-
-	public void createReturn(String reservID) {
-		// TODO Auto-generated method stub
-		
+	
+	public Date getReservationEndDate(String reservID)
+	{
+		return null;
 	}
-
-	/**
-	 * Can we cancel a rental? 
-	 * @param reservID
-	 */
-	public void removeRental(String reservID) {
-		// TODO Auto-generated method stub
-		
+	
+	
+	public Account getReservationAccount(String reservID)
+	{
+		return null;
 	}
-
-	/**
-	 * Is rental different from Reserve? 
-	 * @param reservID
-	 */
-	public void createRental(String reservID) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
 	//VehicleDB
 	/**
@@ -263,4 +255,43 @@ public class DatabaseManager {
 		return vlist;
 	}
 	
+	
+	
+	// Account related
+	
+	public boolean createAccountEntry(Account a)
+	{
+		return true;
+	}
+	
+	public boolean removeAccountEntry(Account a)
+	{
+		return true;
+	}
+	
+	public Account[] searchAccountEntries(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status)
+	{
+		return null;
+	}
+	
+	public String retrievePassword(String userName)
+	{
+		return null;
+	}
+	
+	// find account by loginID, loginID should be immutable
+	public boolean modifyAccountEntry(String firstname, String lastname, String phoneNumber, String email, String loginId, String status)
+	{
+		return true;
+	}
+	
+	public boolean changeAccountStatus(Account a, String status)
+	{
+		return true;
+	}
+	
+	public boolean addSRPoints(Account a, int points)
+	{
+		return true;
+	}
 }
