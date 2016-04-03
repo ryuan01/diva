@@ -15,6 +15,9 @@ import systemManagement.Branch;
  */
 public class Equipment{
 	
+	
+	private String objectClass;
+	
 	private int serialNum;
 	
 	/**

@@ -9,7 +9,8 @@ import java.sql.Date;
  */
 public class Report {
 	
-	private String status; //using this for front-end purpose
+	
+	private String objectClass;
 	private int report_num;
 	private Date reportDate;
 	private int reporting_clerk;

@@ -4,6 +4,10 @@ public class Customer extends Account{
 	private String standing;
 	private long cc_num;
 	private String name_on_card;
+	private String street_name;
+	private String city;
+	private String province;
+	private String zip;
 	
 	//need to implement
 	public Customer(String firstname, String lastname, String phoneNumber, String email, String loginId,

@@ -18,19 +18,20 @@ import java.util.ArrayList;
 
 public class Branch {
 	
-	private String status; //using this for front-end purpose
+	
+	private String objectClass;
 	private String id;
 	private String address;
 	private String city;
 	private String province;
 	private String zipcode;
 	
-	public Branch(String id, String address, String city, String province, String zipcode){
-		this.id = id;
+	public Branch(String address, String city, String province, String zipcode){
 		this.address = address;
 		this.city = city;
 		this.province = province;
 		this.zipcode = zipcode;
+		this.status = getClass().getName();
 	}
 	/* not sure what this is for <- robin
 	public Branch(Branch br){

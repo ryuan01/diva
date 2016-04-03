@@ -16,7 +16,7 @@ public abstract class Account {
 	private String phoneNumber;
 	private String email;
 	private String loginId;
-	private String status; //using this for front-end purpose
+	private String objectClass;
 	
 	/**
 	 * Creates a new Account object initialized with the given arguments

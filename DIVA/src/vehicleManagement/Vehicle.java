@@ -5,7 +5,8 @@ package vehicleManagement;
  */
 public class Vehicle {
 	
-	private String status; //using this for front-end purpose
+	private String objectClass;
+	private String status;
 	private int id; 
 	private String manufacturer;
 	private String v_year; // year of purchase

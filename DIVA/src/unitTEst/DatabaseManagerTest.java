@@ -22,7 +22,9 @@ public class DatabaseManagerTest {
 		//each test will be its own method
 		//test_get_branch();
 		
-		test_search();
+		//test_search();
+		
+		test_add_branch(); //works!
 		
 		//test simple query
 		
@@ -31,6 +33,20 @@ public class DatabaseManagerTest {
 		//test a list of account
 		
 		//
+	}
+
+	/**
+	 * test adding branch
+	 */
+	private static void test_add_branch() {
+		// TODO Auto-generated method stub
+		Branch b = new Branch("100 Manitoba Street", "Vancouver", "BC", "V5Y2Z6");
+		try {
+			db.addBranch(b);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

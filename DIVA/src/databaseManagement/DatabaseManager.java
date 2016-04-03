@@ -136,11 +136,11 @@ public class DatabaseManager {
 		accDB.archiveAccount(acc_key_value);
 	}*/
 	// BranchDB
-	/*public  boolean addBranch(Branch b){
-		return branDB.addBranch(b);
+	public  void addBranch(Branch b) throws SQLException{
+		branDB.addBranch(b);
 	}
 	
-	public  boolean removebranch(String b_key_value) throws SQLException{
+	/*public  boolean removebranch(String b_key_value) throws SQLException{
 		return branDB.removebranch(b_key_value);
 	}
 	
