@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class Branch {
 	
+	private String status; //using this for front-end purpose
 	private String id;
 	private String address;
 	private String city;
@@ -46,15 +47,6 @@ public class Branch {
 	}*/
 	
 	
-	public ArrayList<Vehicle> getFleet(){
-		return fleet;
-	}
-	
-	public ArrayList<Equipment> getInventory(){
-		return inventory;
-	}
-	
-	
 	// public interface
 	/**
 	 * Modifies Branch Address.
@@ -64,18 +56,7 @@ public class Branch {
 	{
 		this.address = newBranchAddress;
 	}
-	
-	/**
-	 * Add a Vehicle ID to list of Vehicle IDs.
-	 * @param newVehicleID Vehicle ID to add to the list.
-	 *
-	 * 
-	 */
-	public void addVehicle(Vehicle newVehicle)
-	{
-		this.fleet.add(newVehicle);
-		// ISSUE_1:The database needs to be updated of the addition process
-	}
+
 	
 	/**
 	 * Remove a Vehicle ID to list of Vehicle IDs.
@@ -122,23 +103,6 @@ public class Branch {
 		return false;
 	}
 	
-	public void addEquipment(Equipment newEquipment){
-		inventory.add(newEquipment);
-		// ISSUE_3:The database needs to be updated of the addition process for the equipment as well
-	}
-	
-	public boolean removeEquipment(Equipment removeEq)
-	{
-		for(Equipment eq: inventory){
-			/*
-			if(eq.getID() == removeEq){
-				return inventory.remove(v);
-			}*/
-		}
-		//ISSUE_4: same database update notification
-		
-		return false;
-	}
 
 	public String getStreetName() {
 		// TODO Auto-generated method stub

@@ -2,32 +2,31 @@ package rentalManagement;
 
 import java.sql.Date;
 
-/* Ben, extended to Accident report, and Inspection report*/
-
+/**
+ * 
+ * @author Robin
+ *
+ */
 public class Report {
 	
+	private String status; //using this for front-end purpose
+	private int report_num;
 	private Date reportDate;
-	private String reportDescription;
-	private String reportReservationID;
+	private int reporting_clerk;
+	private String comments;
+	private int reportReservationID;
 	
-	/**
-	 * A Report with date, description, and associated reservation.
-	 */
-	public Report()
-	{
-		
-	}
 	
+	//methods need to be changed.
 	/**
 	 * A Report with date, description, and associated reservation.
 	 * @param d Date of report.
 	 * @param description Description of report.
 	 * @param reservID Reservation ID of report.
 	 */
-	public Report(Date d, String description, String reservID)
+	public Report(Date d, String description, int reservID)
 	{
 		reportDate = d;
-		reportDescription = description;
 		reportReservationID = reservID;
 	}
 	
@@ -41,47 +40,11 @@ public class Report {
 	}
 	
 	/**
-	 * Modifies report description.
-	 * @param newDescription New description of report.
-	 */
-	public void changeReportDescription(String newDescription)
-	{
-		reportDescription = newDescription;
-	}
-	
-	/**
-	 * Modifies report reservationID.
-	 * @param newReportReservationID New report Reservation ID of report.
-	 */
-	public void changeReportReservationID(String newReportReservationID)
-	{
-		reportReservationID = newReportReservationID;
-	}
-	
-	/**
 	 * Returns date of report.
 	 * @return Date of report.
 	 */
 	public Date getReportDate()
 	{
 		return reportDate;
-	}
-	
-	/**
-	 * Returns description of report.
-	 * @return Description of report.
-	 */
-	public String getReportDescription()
-	{
-		return reportDescription;
-	}
-	
-	/**
-	 * Returns reservation ID of report.
-	 * @return Reservation ID of report.
-	 */
-	public String getReportReservationID()
-	{
-		return reportReservationID;
 	}
 }

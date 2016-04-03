@@ -14,8 +14,14 @@ package paymentManagement;
  */
 public class PriceList {
 
-	private static final int PRICE_SIZE = 7;
-	private double[] price_Economy;
+	//really just 3 tables
+	// 7 types of rates, 9 types of cars 
+	private double[][] price_car;
+	private double[][] price_truck;
+	private double[][] price_equipment;
+	private double[][] price_car_insurance;
+	private double[][] price_truck_insurance;
+/*	private double[] price_Economy;
 	private double[] price_Compact;
 	private double[] price_MidSized;
 	private double[] price_Standard;
@@ -24,8 +30,13 @@ public class PriceList {
 	private double[] price_Luxury;
 	private double[] price_SUV;
 	private double[] price_Van;
-	private double[] equipment_daily;
 	
+	private double price_TwentyFourFoot;
+	private double price_FifteenFoot;
+	private double price_TwelveFoot;
+	private double price_BoxTruck;
+	
+*/	
 	//there are 7 kinds of rates: dailyRate, weeklyRate, hourlyRate, perKMRate, dailyInsuranceRate,
 	//hourlyInsuranceRate, and weeklyInsuranceRate
 	
@@ -33,61 +44,52 @@ public class PriceList {
 	 * Loads value from db to create PriceList
 	 */
 	public PriceList(){
+		price_car = new double[7][9];
+		//ENUM('24-foot', '15-foot', '12-foot', 'box-truck')
+		price_truck = new double[7][4];
+		//ENUM('ski rack', 'child safety seat', 'lift gate', 'car-towing eq')
+		price_equipment = new double[3][4];
+		price_car_insurance = new double[3][9];
+		price_truck_insurance = new double[3][4];
 	}
 	
-	protected double getPrice_Economy(int i) {
-		return price_Economy[i];
-	}
-	protected void setPrice_Economy(double price_Economy, int i) {
-		this.price_Economy[i] = price_Economy;
-	}
-	protected double getPrice_Compact(int i) {
-		return price_Compact[i];
-	}
-	protected void setPrice_Compact(double price_Compact, int i) {
-		this.price_Compact[i] = price_Compact;
-	}
-	protected double getPrice_MidSized(int i) {
-		return price_MidSized[i];
-	}
-	protected void setPrice_MidSized(double price_MidSized, int i) {
-		this.price_MidSized[i] = price_MidSized;
-	}
-	protected double getPrice_Standard(int i) {
-		return price_Standard[i];
-	}
-	protected void setPrice_Standard(double price_Standard, int i) {
-		this.price_Standard[i] = price_Standard;
-	}
-	protected double getPrice_FullSized(int i) {
-		return price_FullSized[i];
-	}
-	protected void setPrice_FullSized(double price_FullSized, int i) {
-		this.price_FullSized[i] = price_FullSized;
-	}
-	protected double getPrice_Premium(int i) {
-		return price_Premium[i];
-	}
-	protected void setPrice_Premium(double price_Premium, int i) {
-		this.price_Premium[i] = price_Premium;
-	}
-	protected double getPrice_Luxury(int i) {
-		return price_Luxury[i];
-	}
-	protected void setPrice_Luxury(double price_Luxury, int i) {
-		this.price_Luxury[i] = price_Luxury;
-	}
-	protected double getPrice_SUV(int i) {
-		return price_SUV[i];
-	}
-	protected void setPrice_SUV(double price_SUV, int i) {
-		this.price_SUV[i] = price_SUV;
-	}
-	protected double getPrice_Van(int i) {
-		return price_Van[i];
-	}
-	protected void setPrice_Van(double price_Van, int i) {
-		this.price_Van[i] = price_Van;
+	public double getPriceCar(int i, int j){
+		return price_car[i][j];
 	}
 	
+	public double getPriceTruck(int i, int j){
+		return price_truck[i][j];
+	}
+	
+	public double getPriceEquipment(int i, int j){
+		return price_equipment[i][j];
+	}
+	
+	public double getPriceCarInsurance(int i, int j){
+		return price_car_insurance[i][j];
+	}
+	
+	public double getPriceTruckInsurance(int i, int j){
+		return price_truck_insurance[i][j];
+	}
+	
+	public void setPriceCar(int i, int j, double p){
+		price_car[i][j] = p;
+	}
+	
+	public void setPriceTruck(int i, int j, double p){
+		price_truck[i][j] = p;
+	}
+	
+	public void setPriceEquipment(int i, int j, double p){
+		price_equipment[i][j] = p;
+	}
+	
+	public void setPriceCarInsurance(int i, int j, double p){
+		price_car_insurance[i][j] = p;
+	}
+	
+	public void setPriceTruckInsurance(int i, int j, double p){
+		price_truck_insurance[i][j] = p;
+	}
 }

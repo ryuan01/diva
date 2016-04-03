@@ -8,15 +8,15 @@ package accountManagement;
 
 
 
-public class Account {
+public abstract class Account {
 
-	
+	private int id;
 	private String firstname;
 	private String lastname;
 	private String phoneNumber;
 	private String email;
 	private String loginId;
-	private String status;
+	private String status; //using this for front-end purpose
 	
 	/**
 	 * Creates a new Account object initialized with the given arguments
@@ -33,6 +33,7 @@ public class Account {
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.loginId= loginId;
+		this.status = getClass().getName();
 	}
 
 	/**

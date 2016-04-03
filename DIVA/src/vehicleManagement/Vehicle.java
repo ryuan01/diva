@@ -5,12 +5,12 @@ package vehicleManagement;
  */
 public class Vehicle {
 	
+	private String status; //using this for front-end purpose
 	private int id; 
 	private String manufacturer;
 	private String v_year; // year of purchase
 	private String model;
 	private String color;
-	private String status;
 	private String path;
 	
 	/**
