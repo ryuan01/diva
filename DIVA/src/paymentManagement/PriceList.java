@@ -14,6 +14,8 @@ package paymentManagement;
  */
 public class PriceList {
 
+	//use BigDeicmal type instead
+	
 	//really just 3 tables
 	// 7 types of rates, 9 types of cars 
 	private double[][] price_car;
