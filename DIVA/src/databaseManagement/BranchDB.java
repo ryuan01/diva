@@ -2,97 +2,69 @@ package databaseManagement;
 
 import systemManagement.Branch;
 
+import java.sql.*;
+
 /**
  * BranchDB creates, deletes, and modifies data related to Branch
- * @author Robin
+ * @Author: Saud (Sammy) Almahri
  *
  */
-public class BranchDB extends DatabaseManager{
-
+class BranchDB{
+	
+	ConnectDB dbm;
+	
   	public BranchDB() {
-  		  super();
-  		  // TODO Auto-generated constructor stub
+  		dbm = new ConnectDB();
   	}
   	
   	/**
   	 * addBranch creates an new entry in TABLE BRANCH
   	 * @param b branch
+  	 * @throws SQLException 
   	 * @pre isValidBranch(b)
   	 * @post a new entry in TABLE BRANCH
   	 */
-  	public boolean addBranch(Branch b){
-  	  String streetName = b.getStreetName();
-  		String city = b.getCity();
+  	public void addBranch(Branch b) throws SQLException{
+  		
+  		String streetName = b.getStreetName().replaceAll("[\"]", "");
+  		String city = b.getCity().replaceAll("[\"]", "");
   		String province = b.getProvince();
   	 	String zipcode = b.getZipCode();
   
-  		super.connect();
+  		dbm.connect();
   		
-  		if (super.getConnection() == null)
-      {
-          return false;
-      } else
-      {
-        try{
-          Statement stmt = super.getConnection().createStatement();
-          String query = "INSERT INTO `branches`(`street_name`, `city`, `province`, `zip_code`) "
-          + "VALUES ('" + streetName + "','" + city + "'d,'" + province + "','" + zipcode +"');";
-          
-          int result = stmt.executeUpdate(query);
-          super.disconnect();
-          return true;
-          
-          
-        }catch(SQLException e){
-          System.err.println(e);
-          return false;
-        }
+  		Statement stmt = dbm.getConnection().createStatement();
+        String query = "INSERT INTO branch (`street_name`, `city`, `province`, `zip_code`) "
+          + "VALUES (\"" + streetName + "\",\"" + city + "\",\"" + province + "\",\"" + zipcode +"\");";
+        System.out.println(query);
+         stmt.executeUpdate(query);
+         dbm.disconnect();
 		}
   		
-  	}
   	
   	//delete
   
   	/**
   	 * removeBranch removes an entry in TABLE BRANCH
   	 * @param b branch
+  	 * @throws SQLException 
   	 * @pre for all v:Vehicle, v.branch != b
   	 * @pre for all e:Employee, e.branch != b
   	 * @post an entry in TABLE BRANCH is removed
   	 */
-  	public void removebranch(Branch b){
+  	public void removebranch(Branch b) throws SQLException{
   	  
   	  // get branch id Number:
-  	  // int id_num = b.getID();
+  	  String id_num = b.getBranchID();
   	  
-  	  super.connect();
-  	  
-  		if (super.getConnection() == null)
-      {
-          return false;
-      } else{
-        try{
-          Statement stmt = super.getConnection().createStatement();
-          String query = "DELETE FROM branches WHERE id_num=" + Integer.toString(id_num) +";";
-          
-          int result = stmt.executeUpdate(query);
-          super.disconnect();
-          return true;
-          
-          
-        }catch(SQLException e){
-          System.err.println(e);
-          return false;
-        }
-      }
+  	  dbm.connect();
+  
+      Statement stmt = dbm.getConnection().createStatement();
+      
+      String query = "DELETE FROM branch WHERE br_num=\'" + id_num +"\';";
+      
+      stmt.executeUpdate(query);
+      dbm.disconnect();
   	}
-  	
-  	
-  	/**
-  	 * 
-  	 * @param b
-  	 */
-  	public void changeBranch(Branch b){
-  		
-  	}
+ 
 }
