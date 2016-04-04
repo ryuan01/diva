@@ -1,7 +1,12 @@
 package vehicleManagement;
 
 
+import java.sql.SQLException;
+import java.util.Date;
+
+import databaseManagement.DatabaseManager;
 import systemManagement.Branch;
+import paymentManagement.PaymentManager;
 
 /**
  * 
@@ -11,103 +16,76 @@ import systemManagement.Branch;
 
 public class VehicleManager {
 	
-	int numVehicle = 0;
-	private Vehicle[] list;
-	private Vehicle currentVehicle;		// Holds the Current Vehicle being viewed
-	private Vehicle[] matched; // Holds a list of vehicles matching the Search Results
+	private DatabaseManager db;
 	
 	public VehicleManager() {
-		list = new Vehicle[numVehicle];
+		this.db = DatabaseManager.getInstance();
 	}
 	
 	/**
-	 * Adds a New Vehicle to the list of Vehicles that the Vehicle Manager holds
-	 * @param location
-	 * @param capacity
+	 * Search for vehicles for rent, can be truck or car 
+	 * @param branch_id the branch_id of branch that the customer wishes to pick up
+	 * @param start_date the day the customer wishes to start the rental
+	 * @param type from set (car, truck)
+	 * @return list of vehicles available in that branch
+	 * @pre start_date > new Date()
+	 * @pre type is from (car, truck)
+	 * @post list of vehicles available at that branch
+	 * @throws SQLException searching illegal type
+	 * @throws IllegalArgumentException searching illegal type, or illegal date
+	 */
+	public Vehicle[] searchForVehicle (int branch_id, Date start_date, Date end_date, String type) throws SQLException, IllegalArgumentException{
+		//get list of vehicles
+		Vehicle[] vlist = null;
+		if (start_date.compareTo(new Date()) <= 0){
+			throw new IllegalArgumentException("Start Date must be after today");
+		}
+		if (type.equals("car") || type.equals("truck")){
+			vlist = db.search(branch_id, type, start_date);
+		}
+		else {
+			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
+		}
+		//update their prices
+		updatePrice(vlist,type,start_date,end_date);
+		return vlist;
+	}
+	
+	/**
+	 * Helper to calculate rental price based on date ranges and type
+	 * @param vlist
 	 * @param type
-	 * @param manufacturer
-	 * @param year
-	 * @param color
-	 * @param status
-	 * @param features
-	 * @return list
+	 * @param start_date
+	 * @param end_date
+	 * @throws IllegalArgumentException
 	 */
-	public Vehicle[] add_Vehicle(int location, int capacity, String type, String manufacturer, String year, String color, String status, String features){
-		return list;
-	
+	private void updatePrice(Vehicle[] vlist, String type, Date start_date, Date end_date) throws IllegalArgumentException{
+		// TODO Auto-generated method stub
+		if (type.equals("car")){
+			for (int i=0; i< vlist.length; i++){
+				vlist[i].setPrice(PaymentManager.calculateCarPrice(((Car) vlist[i]).getCarClass(), start_date, end_date));
+			}
+		}
+		else if (type.equals("truck")){
+			for (int i=0; i< vlist.length; i++){
+				vlist[i].setPrice(PaymentManager.calculateTruckPrice(((Truck) vlist[i]).getTruckClass(), start_date, end_date));
+			}
+		}
+		else {
+			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
+		}
+	}
+
+	public Vehicle[] searchForOverdue(int branch_id, String type){
+		Vehicle[] vlist = null;
+		vlist = db.search(branch_id, type);
+		return vlist;
 	}
 	
-	public void set_vehicle_rental_rate(){
-	}
-	
-	/**
-	 * A Method which a Customer can search for a vehicle with the given parameters.
-	 * @param pickupDate
-	 * @param dropoffDate
-	 * @param type
-	 * @param capacity
-	 * @param features
-	 * @return A list of vehicles
-	 */
-	public Vehicle[] searchForVehicle (String pickupDate, String dropoffDate, String type, int capacity, String features, Vehicle[] list){
-		return matched;
-		
-	}
-	
-	/**
-	 * An overloaded method which a Customer can search for a vehicle with the given parameters.
-	 * @param pickupDate
-	 * @param dropoffDate
-	 * @param type
-	 * @param capacity
-	 * @return list of vehicles
-	 */
-	public Vehicle[] search (String pickupDate, String dropoffDate, String type, int capacity, Vehicle[] list){
-		return matched;
-		
-	}
-	/**
-	 * An overloaded method which a Customer can search for a vehicle with the given parameters.
-	 * @param pickupDate
-	 * @param dropoffDate
-	 * @param capacity
-	 * @return list of vehicles
-	 */
-	
-	public Vehicle[] search (String pickupDate, String dropoffDate, int capacity, Vehicle[] list){
-		return matched;
-		
-	}
-	
-	/**
-	 * An overloaded method which a Customer can search for a vehicle with the given parameters.
-	 * @param pickupDate
-	 * @param dropoffDate
-	 * @param type
-	 * @return list of vehicles
-	 */
-	
-	public Vehicle[] search (String pickupDate, String dropoffDate, String type, Vehicle[] list){
-		return matched;
-	}
-	/** 
-	 * An overloaded method which a Customer can search for a vehicle with the given parameters.
-	 * @param pickupDate
-	 * @param dropoffDate
-	 * @return list of vehicles
-	 */
-	
-	public Vehicle[] search (String pickupDate, String dropoffDate, Vehicle[] list){
-		return matched;
-	}
-	
-	/**
-	 * Picks a vehicle from the list of vehicles that matched the search description
-	 * @param matched
-	 * @return currentVehicle
-	 */
-	public Vehicle chosen(Vehicle[] matched){
-		return currentVehicle;
+	public Vehicle[] searchForSale(int branch_id, String type){
+		Vehicle[] vlist = null;
+		vlist = db.searchForSale(branch_id, type);
+		return vlist;
 	}
 		
 }

@@ -111,6 +111,11 @@ public abstract class Account {
 		// TODO Auto-generated method stub
 		return loginId;
 	}
+
+	public int getID() {
+		// TODO Auto-generated method stub
+		return id;
+	}
 	
 	
 }

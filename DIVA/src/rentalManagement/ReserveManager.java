@@ -6,14 +6,14 @@ import java.util.Date;
 import databaseManagement.DatabaseManager;
 
 
-public class ReserveManager {
+class ReserveManager {
 	
 	
-	DatabaseManager dbConnection;
+	private DatabaseManager dbConnection;
 	/**
 	 * A Manager for adding, removing, and modifying Reservations and its attributes.
 	 */
-	public ReserveManager()
+	ReserveManager()
 	{
 		dbConnection = null;
 	}
@@ -22,7 +22,7 @@ public class ReserveManager {
 	 * A Manager for adding, removing, and modifying Reservations and its attributes.
 	 * @param db The database it's connecting.
 	 */
-	public ReserveManager(DatabaseManager db)
+	ReserveManager(DatabaseManager db)
 	{
 		dbConnection = db;
 	}
@@ -36,17 +36,16 @@ public class ReserveManager {
 	 * @param startBranchID The Branch ID Vehicle is Rented.
 	 * @param endBranchID The Branch ID Vehicle is Returned.
 	 * @param customerID Customer login ID of the Reservation.
+	 * @param employeeID 
 	 * @param employeeID Employee login ID of the Reservation.
 	 * @param status Status of the Reservation.
 	 */
-	public boolean addReservation(Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, int employeeID, String status) 
+	boolean addReservation(Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
+			int customerID, String status) 
 	{
 		//the ID = null right now because we don't know yet
 		//we will know the value once the entry is created
-		System.out.println("I got to here in ReserveManager");
-		Reservation r = new Reservation(startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID,customerID, employeeID, status,-1);
-		System.out.println("Reservation object created");
+		Reservation r = new Reservation(startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID,customerID, status,-1);
 		return dbConnection.createReservationEntry(r);
 	}
 	
@@ -57,7 +56,7 @@ public class ReserveManager {
 	 * @param reservID The Reservation ID to be removed.
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	public boolean removeReservation(int customerID, int reservID)
+	boolean removeReservation(int customerID, int reservID)
 	{
 		return dbConnection.removeReservationEntry(reservID);
 	}
@@ -68,7 +67,7 @@ public class ReserveManager {
 	 * @param reservID The Reservation ID to be removed.
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	public boolean removeReservation(int reservID)
+	boolean removeReservation(int reservID)
 	{
 		return dbConnection.removeReservationEntry(reservID);
 	}
@@ -78,7 +77,7 @@ public class ReserveManager {
 	 * @param id The type of search executed, can be vehicleID, branchID, reservationID, customerID, employeeID, equipID, reservStatus.
 	 * @return List of qualifying Reservations from the search
 	 */
-	public Reservation[] searchReservations(int reservID,Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
+	Reservation[] searchReservations(int reservID,Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
 			int customerID, int employeeID, String status)
 	{
 		return dbConnection.searchReservationEntries(reservID,startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
@@ -93,10 +92,12 @@ public class ReserveManager {
 	 * If existing equipID is passed, then it is removed, if a non-existing equipID is passed, then it is added.
 	 * @pre Only Reservation Account owner or Employee calls this method.
 	 */
-	public boolean changeReservation(int reservID, Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
+	/* Robin: if we have time
+	boolean changeReservation(int reservID, Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
 			int customerID, int employeeID, String status)
 	{
 		return dbConnection.modifyReservationEntries(reservID, startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
 				customerID, employeeID, status);
 	}
+	*/
 }

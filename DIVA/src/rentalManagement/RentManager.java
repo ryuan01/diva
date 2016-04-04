@@ -5,9 +5,9 @@ import java.util.Date;
 
 import accountManagement.Account;
 import databaseManagement.DatabaseManager;
-import paymentManagement.paymentManager;
+import paymentManagement.PaymentManager;
 
-public class RentManager {
+class RentManager {
 	
 	
 		DatabaseManager dbConnection;
@@ -15,15 +15,15 @@ public class RentManager {
 		/**
 		 * A Rental Manager that creates, and modifies Rentals.
 		 */
-		public RentManager()
+		RentManager()
 		{
-			
+			dbConnection = null;
 		}
 		
 		/**
 		 * A Rental Manager that creates, and modifies Rentals.
 		 */
-		public RentManager(DatabaseManager db)
+		RentManager(DatabaseManager db)
 		{
 			dbConnection = db;
 		}
@@ -32,14 +32,14 @@ public class RentManager {
 		 * Begins the Rental.
 		 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
 		 */
-		public void startRental(int reservID,String description)
+		void startRental(int reservID,String description)
 		{
 			// order of execution:
-			Report report = new Report(new Date(System.currentTimeMillis()), description, reservID);
+			Report report = new Report(new Date(System.currentTimeMillis()), description, reservID,"inspection");
 			
 			dbConnection.addReport(report);
 			
-			payForRental(dbConnection.getReservationAccount(reservID),reservID, typeOfPayment);
+			payForRental(dbConnection.getReservationAccount(reservID),reservID);
 			
 			dbConnection.changeReservationStatus(reservID, "Rented");
 		}
@@ -51,8 +51,8 @@ public class RentManager {
 		 * @param typeOfPayment Debit for debit card, Credit for credit card, Cash for cash, SRP for SuperRent points.
 		 * @pre typeOfPayment == "debit" && typeOfPayment == "credit" && typeOfPayment == "cash" && typeOfPayment == "SRP"
 		 */
-		public void payForRental(Account a, int reservID, String typeOfPayment)
+		void payForRental(Account a, int reservID)
 		{
-			paymentManager.makePayment(a, paymentManager.calculateRentprice(reservID),typeOfPayment);
+			PaymentManager.makePayment(a, PaymentManager.calculateRentprice(reservID));
 		}
 }

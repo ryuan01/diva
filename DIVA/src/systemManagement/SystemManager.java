@@ -27,7 +27,7 @@ public class SystemManager {
 	 */
 	public boolean addBranch(String address, String city, String province, String zipcode) {
 		
-		return dbConnection.createBranchEntry(new Branch(-1,address,city,province,zipcode));
+		return dbConnection.createBranchEntry(new Branch(-1, address,city,province,zipcode));
 	}
 	
 	public boolean changeBranch(int id,String address, String city, String province, String zipcode)
@@ -55,7 +55,7 @@ public class SystemManager {
 	 * @pos The system is in the ready state
 	 */
 	public void startUp(String branchNumber) {
-		 DatabaseManager.getInstance(); 
+		DatabaseManager.getInstance(); 
 	}
 	
 	/**

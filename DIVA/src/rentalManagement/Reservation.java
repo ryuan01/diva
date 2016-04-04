@@ -22,7 +22,7 @@ public class Reservation {
 	private int endBranchID;
 	private int customerAccountID;
 	private String status;
-	private int employeeAccountID;
+	//private int employeeAccountID; <-- won't be stored
 	private int reservID;
 	
 	/**
@@ -38,7 +38,6 @@ public class Reservation {
 		endBranchID = 0;
 		customerAccountID = 0;
 		status = "";
-		employeeAccountID = 0;
 		// -1 means this doesn't exit
 		reservID = -1;
 		
@@ -57,7 +56,7 @@ public class Reservation {
 	 * @param empl The Employee log in ID Reservation belongs to.
 	 * @param id The Reservation ID.
 	 */
-	public Reservation(Date startDate, Date endDate, int vehID, int[] e, int startBranch, int endBranch, int cusID, int empID, String s, 
+	public Reservation(Date startDate, Date endDate, int vehID, int[] e, int startBranch, int endBranch, int cusID, String s, 
 			 int id)
 	{
 		this.startDate = startDate;
@@ -68,7 +67,6 @@ public class Reservation {
 		endBranchID = endBranch;
 		customerAccountID = cusID;
 		status = s;
-		employeeAccountID = empID;
 		reservID = id;
 	}
 	
@@ -143,15 +141,6 @@ public class Reservation {
 	public void changeCustomerAccount(int newAccountID)
 	{
 		this.customerAccountID = newAccountID;
-	}
-
-	/**
-	 * Modifies the Employee account login ID the Reservation is assigned to.
-	 * @param newAccountID Employee Account login ID the Reservation is assigned to.
-	 */
-	public void changeEmployeeAccountID(int newAccountID)
-	{
-		this.employeeAccountID = newAccountID;
 	}
 	
 	/**
@@ -233,15 +222,6 @@ public class Reservation {
 	public int getCustomerAccountID()
 	{
 		return customerAccountID;
-	}
-	
-	/**
-	 * Returns the Employee Account login ID of the Reservation.
-	 * @return Employee Account login ID of the Reservation.
-	 */
-	public int getEmployeeAccountID()
-	{
-		return employeeAccountID;
 	}
 	
 	/**

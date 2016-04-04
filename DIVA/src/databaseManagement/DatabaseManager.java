@@ -56,6 +56,11 @@ public class DatabaseManager {
     }
     
     //called by shutDown method in system manager
+    /**
+     * Destroys instance
+     * @pre instance = new DatabaseManager()
+     * @post instance = null
+     */
     public static void destroyDatabase()
     {
     	instance = null;
@@ -210,11 +215,6 @@ public class DatabaseManager {
 		return true;
 	}
 	
-	public boolean addAccidentReport(AccidentReport r)
-	{
-		return true;
-	}
-	
 	public Date getReservationEndDate(int reservID)
 	{
 		return null;
@@ -237,17 +237,41 @@ public class DatabaseManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public Vehicle[] search(String branch_id, String type, Date start_date, String[] list) throws SQLException{
-		// Look at the note in getBranch method
-		// Also, don't throw an exception here! throw means pass the problem to the calling class, the calling class
-		// has no SQLException type. This might cause debugging problems
-		conDB.connect();
+	public Vehicle[] search(int branch_id, String type, Date start_date) throws SQLException{
 		//System.out.println("Connected, trying to insert next");
-		Vehicle[] vlist = veDB.search(conDB.getConnection(),branch_id,type,start_date,null);
-		conDB.disconnect();
+		Vehicle[] vlist = veDB.search(branch_id,type,start_date);
 		return vlist;
 	}
 	
+	public Vehicle[] search(int branch_id, String type) {
+		// TODO Auto-generated method stub
+		Vehicle[] vlist = null;
+		if (type.equals("car")){
+			vlist = veDB.searchOverdueCars(branch_id);
+		}
+		else if (type.equals("truck")){
+			vlist = veDB.searchOverdueTrucks(branch_id);
+		}
+		else{
+			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
+		}
+		return vlist;
+	}
+	
+	public Vehicle[] searchForSale(int branch_id, String type) {
+		// TODO Auto-generated method stub
+		Vehicle[] vlist = null;
+		if (type.equals("car")){
+			vlist = veDB.searchForsaleCars(branch_id);
+		}
+		else if (type.equals("truck")){
+			vlist = veDB.searchForsaleTrucks(branch_id);
+		}
+		else{
+			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
+		}
+		return vlist;
+	}
 	
 	
 	// Account related
@@ -283,7 +307,7 @@ public class DatabaseManager {
 		return true;
 	}
 	
-	public boolean addSRPoints(String userName, int points)
+	public boolean addSRPoints(int i, int points)
 	{
 		return true;
 	}

@@ -70,7 +70,7 @@ class VehicleDB {
 	 * @throws SQLException happens when the query didn't complete 
 	 * @return
 	 */
-	Vehicle[] search(Connection c, String branch_id, String type, Date start_date, String[] list) throws SQLException{
+	Vehicle[] search(int branch_id, String type, Date start_date) throws SQLException{
 		//create an arraylist to hold the result
   		ArrayList<Vehicle> vlist = new ArrayList<Vehicle>();
   		
@@ -129,11 +129,11 @@ class VehicleDB {
 	
 	/**
 	 * searchCars searches a list of cars in a specific branch for-sale
-	 * @param branch a branch
+	 * @param branch_id a branch
 	 * @pre branch must be valid 
 	 * @post list of cars matching for sale
 	 */	
-	Car[] searchForsaleCars(String branch) {
+	Car[] searchForsaleCars(int branch_id) {
 		return null;
 	}
 	
@@ -143,17 +143,17 @@ class VehicleDB {
 	 * @pre branch must be valid 
 	 * @post list of trucks matching for sale 
 	 */	
-	Truck[] searchForsaleTrucks(String branch) {
+	Truck[] searchForsaleTrucks(int branch) {
 		return null;
 	}
 
 	/**
 	 * searchCars searches a list of cars in a specific branch overdue
-	 * @param branch a branch
+	 * @param branch_id a branch
 	 * @pre branch must be valid 
 	 * @post list of cars matching overdue 
 	 */	
-	Car[] searchOverdueCars(String branch) {
+	Car[] searchOverdueCars(int branch_id) {
 		return null;
 	}
 	
@@ -163,7 +163,7 @@ class VehicleDB {
 	 * @pre branch must be valid 
 	 * @post list of trucks matching overdue
 	 */	
-	Truck[] searchOverdueTrucks(String branch) {
+	Truck[] searchOverdueTrucks(int branch) {
 		return null;
 	}	
 

@@ -1,6 +1,4 @@
 package rentalManagement;
-
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -36,10 +34,10 @@ public class RentalFacade {
 	 * @param reservID Reservation ID.
 	 */
 	public boolean createReservation(Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, int employeeID, String status) 
+			int customerID, String status) 
 	{
 		return reservMan.addReservation(startDate,endDate,vehicleID,equipIDs,startBranchID, endBranchID, 
-				customerID, employeeID,status);
+				customerID,status);
 	}
 	
 	/**

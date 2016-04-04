@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 import databaseManagement.DatabaseManager;
-import paymentManagement.paymentManager;
+import paymentManagement.PaymentManager;
 
 
 
-public class ReturnManager {
+class ReturnManager {
 
 	
 	
@@ -16,15 +16,15 @@ public class ReturnManager {
 	/**
 	 * A Manager that creates Reports and Receipts for an ending Rental.
 	 */
-	public ReturnManager()
+	ReturnManager()
 	{
-		
+		dbConnection = null;
 	}
 	
 	/**
 	 * A Manager that creates Reports and Receipts for an ending Rental.
 	 */
-	public ReturnManager(DatabaseManager db)
+	ReturnManager(DatabaseManager db)
 	{
 		dbConnection = db;
 	}
@@ -34,24 +34,27 @@ public class ReturnManager {
 	 * Returns a Vehicle from Rental.
 	 * @param reservID Reservation ID of Rental the Vehilce belongs to.
 	 */
-	public void startReturn(int reservID, String description, String dmgDescription,BigDecimal extraPay, String typeOfPayment, String accidentDetail)
+	void startReturn(int reservID, String description, String dmgDescription,BigDecimal extraPay, String typeOfPayment, String accidentDetail)
 	{
+		//use-case: return damaged 
 		if(accidentDetail != "")
 		{
-			AccidentReport r = new AccidentReport(new Date(System.currentTimeMillis()), description, reservID, dmgDescription, extraPay);
+			Report r = new Report(new Date(System.currentTimeMillis()), description, reservID, "accident");
 			
-			dbConnection.addAccidentReport(r);
+			dbConnection.addReport(r);
 			
-			paymentManager.makePayment(dbConnection.getReservationAccount(reservID), extraPay, typeOfPayment);
+			PaymentManager.makePayment(dbConnection.getReservationAccount(reservID), extraPay);
 		}
 		
+		//use-case: return over due 
 		if(checkIfOverdue(reservID))
 		{
-			paymentManager.makePayment(dbConnection.getReservationAccount(reservID),paymentManager.calculateLateprice(reservID), typeOfPayment);
+			PaymentManager.makePayment(dbConnection.getReservationAccount(reservID),PaymentManager.calculateLateprice(reservID));
 		}
 		
 	
-		dbConnection.changeReservationStatus(reservID, "archived");
+		//use-case: return normally, or after paid extra. 
+		dbConnection.changeReservationStatus(reservID, "complete");
 		
 	}
 
@@ -61,7 +64,7 @@ public class ReturnManager {
 	 * @param reservID Reservation ID of Rental to be checked.
 	 * @return True if overdue, False otherwise.
 	 */
-	public boolean checkIfOverdue(int reservID)
+	private boolean checkIfOverdue(int reservID)
 	{
 		// if reservation end date is before current date.
 		if(dbConnection.getReservationEndDate(reservID).compareTo(new Date(System.currentTimeMillis())) < 0)

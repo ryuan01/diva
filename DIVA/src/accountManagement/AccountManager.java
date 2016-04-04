@@ -56,9 +56,9 @@ public class AccountManager {
 		dbConnection.addSRPoints(userName, 500);
 	}
 	
-	public static void accumulatePoints(String userName, int points)
+	public static void accumulatePoints(int i, int points)
 	{
-		dbConnection.addSRPoints(userName,points);
+		dbConnection.addSRPoints(i,points);
 	}
 	
 	public static void leaveSuperCLub(String userName)

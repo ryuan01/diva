@@ -40,7 +40,7 @@ public class DatabaseManagerTest {
 	 */
 	private static void test_add_branch() {
 		// TODO Auto-generated method stub
-		Branch b = new Branch("100 Manitoba Street", "Vancouver", "BC", "V5Y2Z6");
+		Branch b = new Branch(-1, "100 Manitoba Street", "Vancouver", "BC", "V5Y2Z6");
 		try {
 			db.addBranch(b);
 		} catch (SQLException e) {
@@ -70,7 +70,7 @@ public class DatabaseManagerTest {
 	      
 		Vehicle[] vArray =null;
 		try {
-			vArray = db.search("1","car",t,null);
+			vArray = db.search(2,"car",t);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

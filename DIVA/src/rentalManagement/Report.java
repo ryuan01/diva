@@ -3,23 +3,18 @@ package rentalManagement;
 import java.util.Date;
 
 /**
- * 
+ * Inpsection report
  * @author Robin
  *
  */
 public class Report {
 	
-	
 	private String objectClass;
 	private int report_num;
 	private Date reportDate;
-<<<<<<< HEAD
 	private String reportDescription;
-=======
-	private int reporting_clerk;
-	private String comments;
->>>>>>> 1ac1450bc4865cff61553c283d748ebc15b089e5
 	private int reportReservationID;
+	private String type; //can be accident or inspection report 
 	
 	
 	//methods need to be changed.
@@ -29,10 +24,14 @@ public class Report {
 	 * @param description Description of report.
 	 * @param reservID Reservation ID of report.
 	 */
-	public Report(Date d, String description, int reservID)
+	public Report(Date d, String description, int reservID, String type)
 	{
+		objectClass = getClass().getName();
+		report_num = -1; //this need to be updated from database 
 		reportDate = d;
+		reportDescription = description;
 		reportReservationID = reservID;
+		this.type = type;
 	}
 	
 	/**
@@ -45,7 +44,6 @@ public class Report {
 	}
 	
 	/**
-<<<<<<< HEAD
 	 * Modifies report description.
 	 * @param newDescription New description of report.
 	 */
@@ -64,8 +62,6 @@ public class Report {
 	}
 	
 	/**
-=======
->>>>>>> 1ac1450bc4865cff61553c283d748ebc15b089e5
 	 * Returns date of report.
 	 * @return Date of report.
 	 */
@@ -73,7 +69,6 @@ public class Report {
 	{
 		return reportDate;
 	}
-<<<<<<< HEAD
 	
 	/**
 	 * Returns description of report.
@@ -92,6 +87,20 @@ public class Report {
 	{
 		return reportReservationID;
 	}
-=======
->>>>>>> 1ac1450bc4865cff61553c283d748ebc15b089e5
+	
+	/**
+	 * Get report ID
+	 * @return ID
+	 */
+	public int getReportId(){
+		return report_num;
+	}
+	
+	/**
+	 * Get report type 
+	 * @return type {inspection, accident}
+	 */
+	public String getType(){
+		return type;
+	}
 }

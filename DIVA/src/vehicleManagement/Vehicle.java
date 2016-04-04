@@ -1,18 +1,21 @@
 package vehicleManagement;
 
+import java.math.BigDecimal;
+
 /**
  * A vehicle holds data about real Vehicles owned by the rental company
  */
 public class Vehicle {
 	
-	private String objectClass;
-	private String status;
 	private int id; 
 	private String manufacturer;
 	private String v_year; // year of purchase
 	private String model;
 	private String color;
+	private String status;
 	private String path;
+	private String objectClass;
+	private BigDecimal rentalPrice; //used to hold calculated rental price for a vehicle.
 	
 	/**
 	 * Creates a new vehicle
@@ -32,6 +35,8 @@ public class Vehicle {
 		this.status = status;
 		this.model = model;
 		this.path = path;
+		rentalPrice = null;
+		objectClass = getClass().getName();
 	}
 	
 	/**
@@ -153,6 +158,15 @@ public class Vehicle {
 				+" status: " + status
 				+" path: " + path;
 		return tmp;
+	}
+
+	public void setPrice(BigDecimal p) {
+		// TODO Auto-generated method stub
+		this.rentalPrice = p;
+	}
+	
+	public BigDecimal getPrice(){
+		return this.rentalPrice;
 	}
 }
 

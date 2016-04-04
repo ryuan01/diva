@@ -5,38 +5,28 @@
  * 
  */ 
 package vehicleManagement;
+import java.math.BigDecimal;
 
-import java.util.Currency;
-import systemManagement.Branch;
-
-/* Robin */
 /**
  * Equipment class models additional equipments for rentals
+ * @author Robin
+ * @version April 3 2016
  */
 public class Equipment{
 	
 	
 	private String objectClass;
-	
 	private int serialNum;
-	
-	/**
-	 * type can be 'ski rack', 'child safety seat', 'lift gate', or 'car-towing eq'
-	 */
 	private String type;
-	
-	/**
-	 * location refers to id of branch
-	 */
 	private int location;
-	
-	/**
-	 * price of the equipment, by day
-	 */
+	private BigDecimal rentalPrice; //used to hold calculated rental price for a vehicle.
 	
 	public Equipment(int sn, String type, int location){
+		this.serialNum = sn;
 		this.type = type;
 		this.location = location;
+		this.objectClass = getClass().getName();
+		rentalPrice = null;
 	}
 	
 	//setters and getters
@@ -48,22 +38,37 @@ public class Equipment{
 	 * @return Equipment type
 	 */
 	public String getType() {
-		return null;
+		return type;
 	}
-	
+	/**
+	 * Get id of an equipment
+	 * @return id
+	 */
 	public int getSerialNum(){
 		return serialNum;
 	}
 	
+	/**
+	 * Get branch of equipment
+	 * @return branch ID
+	 */
 	public int getEquipmentBranch(){
 		return location;
 	}
 	
+	/**
+	 * Change type of equipment
+	 * @param newType
+	 */
 	public void changeType(String newType)
 	{
 		type = newType;
 	}
 	
+	/**
+	 * Set location of equipment
+	 * @param l branch id 
+	 */
 	public void setLocation(int l){
 		this.location = l;
 	}
