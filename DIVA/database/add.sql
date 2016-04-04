@@ -153,6 +153,23 @@ INSERT INTO equipment VALUES
 (2,2,'child safety seat');
 
 
+-- rental
+INSERT INTO  `test3`.`rental` (
+`reservation_id` ,
+`customer` ,
+`start_date` ,
+`end_date` ,
+`start_branch` ,
+`end_branch` ,
+`state` ,
+`vehicle_id`
+)
+VALUES (
+NULL ,  '1',  '2016-04-04',  '2016-04-05',  '2',  '3',  'reserved',  '1'
+), (
+NULL ,  '1',  '2016-04-06',  '2016-04-07',  '2',  '3',  'reserved',  '4'
+);
+
 -- to be done: insurance_car_price,
--- insurance_truck_price, payment_log, rental, rental_equipment,
+-- insurance_truck_price, payment_log, rental_equipment,
 -- report, vehicle_sale_price

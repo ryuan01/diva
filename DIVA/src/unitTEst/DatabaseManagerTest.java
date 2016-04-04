@@ -14,7 +14,7 @@ import vehicleManagement.Vehicle;
  */
 public class DatabaseManagerTest {
 
-	private static DatabaseManager db = DatabaseManager.getInstance();
+	static DatabaseManager db = DatabaseManager.getInstance();
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -22,9 +22,21 @@ public class DatabaseManagerTest {
 		//each test will be its own method
 		//test_get_branch();
 		
-		//test_search();
+		//test searching cars, returns all, returns 2, returns all
+		/*test_search("car","2006-5-5","2006-5-7");
+		test_search("car","2016-4-5", "2016-4-6");
+		test_search("car","2016-4-7", "2016-4-8");
+		*/
 		
-		test_add_branch(); //works!
+		//test searching trucks, returns all, returns 2, returns all
+		/*test_search("truck","2006-5-5","2006-5-7");
+		test_search("truck","2016-4-7","2016-4-8");
+		test_search("truck","2016-4-8","2016-4-9");
+		*/
+		
+		//test trying to search for strange things
+		test_search("car","2006-5-5","2006-5-5");
+		//test_add_branch(); //works!
 		
 		//test simple query
 		
@@ -40,44 +52,31 @@ public class DatabaseManagerTest {
 	 */
 	private static void test_add_branch() {
 		// TODO Auto-generated method stub
-		Branch b = new Branch(-1, "100 Manitoba Street", "Vancouver", "BC", "V5Y2Z6");
+		/*Branch b = new Branch(-1, "100 Manitoba Street", "Vancouver", "BC", "V5Y2Z6");
 		try {
 			db.addBranch(b);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	/**
 	 * Test db.search();
 	 */
-	private static void test_search() {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-	      SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss zzz");
-	      
-	      String input = "2006-5-5 22:00:00 PDT";
-	      
-	      Date t = null;
-	      
-	      try {
-	    	  t = ft.parse(input);
-	          System.out.println("Parsed Date: " + t);
-	      } catch (ParseException e) {
-	    	  System.err.println(e);
-	      }
+	private static void test_search(String type, String start_date, String end_date) {
 	      
 		Vehicle[] vArray =null;
 		try {
-			vArray = db.search(2,"car",t);
-		} catch (SQLException e) {
+			vArray = db.search(2,type,start_date, end_date);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		for (int i = 0; i<vArray.length; i++){
-			System.out.println(vArray[i].toString());
+			//System.out.println(vArray[i].toString());
+			System.out.println(vArray[i].getID());
 		}	
 	}
 

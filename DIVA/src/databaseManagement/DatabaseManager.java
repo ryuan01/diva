@@ -15,10 +15,8 @@ import java.util.Currency;
 import java.util.Date;
 
 import accountManagement.Account;
-import rentalManagement.AccidentReport;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
-//import accountManagement.Account;
 import systemManagement.Branch;
 import vehicleManagement.Vehicle;
 
@@ -175,10 +173,10 @@ public class DatabaseManager {
 	 */
 	public boolean createReservationEntry(Reservation r) {
 		// Look at the note in getBranch method
-		conDB.connect();
+		/*conDB.connect();
 		//System.out.println("Connected, trying to insert next");
 		reDB.createReservation(conDB.getConnection(), r);
-		conDB.disconnect();
+		conDB.disconnect();*/
 		return true;
 	}
 	
@@ -232,14 +230,15 @@ public class DatabaseManager {
 	 * @param c
 	 * @param branch_id
 	 * @param type
-	 * @param start_date
+	 * @param time
+	 * @param end_date 
 	 * @param list
 	 * @return
 	 * @throws SQLException 
 	 */
-	public Vehicle[] search(int branch_id, String type, Date start_date) throws SQLException{
+	public Vehicle[] search(int branch_id, String type, String start_date, String end_date) throws SQLException{
 		//System.out.println("Connected, trying to insert next");
-		Vehicle[] vlist = veDB.search(branch_id,type,start_date);
+		Vehicle[] vlist = veDB.search(branch_id,type,start_date, end_date);
 		return vlist;
 	}
 	

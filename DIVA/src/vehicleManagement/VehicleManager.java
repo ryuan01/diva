@@ -2,6 +2,8 @@ package vehicleManagement;
 
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import databaseManagement.DatabaseManager;
@@ -33,15 +35,18 @@ public class VehicleManager {
 	 * @post list of vehicles available at that branch
 	 * @throws SQLException searching illegal type
 	 * @throws IllegalArgumentException searching illegal type, or illegal date
+	 * @throws ParseException 
 	 */
-	public Vehicle[] searchForVehicle (int branch_id, Date start_date, Date end_date, String type) throws SQLException, IllegalArgumentException{
+	public Vehicle[] searchForVehicle (int branch_id, String start_date, String end_date, String type) throws SQLException, IllegalArgumentException, ParseException{
 		//get list of vehicles
 		Vehicle[] vlist = null;
-		if (start_date.compareTo(new Date()) <= 0){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		if (sdf.parse(start_date).after(sdf.parse(end_date))){
 			throw new IllegalArgumentException("Start Date must be after today");
 		}
 		if (type.equals("car") || type.equals("truck")){
-			vlist = db.search(branch_id, type, start_date);
+			vlist = db.search(branch_id, type, start_date, end_date);
 		}
 		else {
 			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
@@ -59,7 +64,7 @@ public class VehicleManager {
 	 * @param end_date
 	 * @throws IllegalArgumentException
 	 */
-	private void updatePrice(Vehicle[] vlist, String type, Date start_date, Date end_date) throws IllegalArgumentException{
+	private void updatePrice(Vehicle[] vlist, String type, String start_date, String end_date) throws IllegalArgumentException{
 		// TODO Auto-generated method stub
 		if (type.equals("car")){
 			for (int i=0; i< vlist.length; i++){

@@ -20,8 +20,12 @@ import vehicleManagement.Vehicle;
  */
 class VehicleDB {
 	
+	ConnectDB dbm;
+	
+	
 	VehicleDB() {
 		// TODO Auto-generated constructor stub
+		dbm = new ConnectDB();
 	}
 
 	/**
@@ -66,33 +70,50 @@ class VehicleDB {
 	 * @param branch_id
 	 * @param type
 	 * @param start_date
+	 * @param end_date 
 	 * @param list
 	 * @throws SQLException happens when the query didn't complete 
 	 * @return
 	 */
-	Vehicle[] search(int branch_id, String type, Date start_date) throws SQLException{
+	Vehicle[] search(int branch_id, String type, String start_date, String end_date) throws SQLException{
 		//create an arraylist to hold the result
+  		
+  		Vehicle[] vArray;
+  		
+  		dbm.connect();
+  		if (type.equals("car")){
+  			vArray = getCars(branch_id, start_date,end_date);
+  		}
+  		else if (type.equals("truck")){
+  			vArray = getTrucks(branch_id,start_date,end_date);
+  		}
+  		else {
+  			throw new IllegalArgumentException("Type can only be 'car' or 'truck'");
+  		}
+        dbm.disconnect();
+        
+        return vArray;
+  	}
+	
+	private Vehicle[] getTrucks(int branch_id, String start_date, String end_date) throws SQLException{
+		// TODO Auto-generated method stub
   		ArrayList<Vehicle> vlist = new ArrayList<Vehicle>();
   		
-  		//convert date to SQL type
-  		java.sql.Date sqlDate = new java.sql.Date(start_date.getTime());
-  		
-  		//type will decide which table to combine with 
-    /*    Statement stmt = c.createStatement();
+  		Statement stmt = dbm.getConnection().createStatement();
 
-        String query = "SELECT * FROM " 
-        		+type+" INNER JOIN branch_vehicle  ON "
-        		+type+".vehicle_id = branch_vehicle.vehicle_id " 
+        String query = "SELECT * FROM truck" 
+        		+" INNER JOIN branch_vehicle  ON "
+        		+"truck.vehicle_id = branch_vehicle.vehicle_id " 
         	    +" INNER JOIN vehicle ON "
-        	    +type+".vehicle_id = vehicle.vehicle_id AND "
+        	    +"truck.vehicle_id = vehicle.vehicle_id AND "
         		+" branch_vehicle.location = "
-        	    +Integer.parseInt(branch_id)
-        		+" AND sale_status = 'for rent' "
-        	    +" AND "+type+".vehicle_id NOT IN "
-        	    +"(SELECT "+type+".vehicle_id FROM " 
-        	    +type+" INNER JOIN rental ON "+type+".vehicle_id = rental.vehicle_id "
-        	    +" WHERE rental.end_date >= "
-        	    +sqlDate+");";
+        	    +branch_id
+        		+" AND sale_status = 'for rent'"
+        		+" AND truck.vehicle_id NOT IN "
+        		+"(SELECT truck.vehicle_id FROM truck INNER JOIN rental "
+        		+" ON truck.vehicle_id = rental.vehicle_id" 
+        		+" WHERE rental.end_date >= \'"+start_date+"\'"
+        		+" AND rental.start_date < \'"+end_date+"\');";
         ResultSet rs = stmt.executeQuery(query);
         
         //parse result and add to list of branches
@@ -101,32 +122,93 @@ class VehicleDB {
         	//type isn't in database, need to be updated
         	//features isn't in database
         	
-        	int id = rs.getInt("serial_num");
-        	int location = rs.getInt("location");
-        	String license_plate = rs.getString("license_plate_number");
+        	int id = rs.getInt("vehicle_id");
+        	String v_class = rs.getString("class");
+        	double bl = rs.getDouble("interior_b_l");
+        	double bw = rs.getDouble("interior_b_w");
+        	double bh = rs.getDouble("interior_b_h");
+        	int capacity = rs.getInt("capacity_kg");
         	String manufacturer = rs.getString("manufacturer");
-        	String year_model = rs.getString("year_model");
+        	Date v_year = rs.getDate("v_year");
+        	String model = rs.getString("model");
         	String color = rs.getString("color");
         	String status = rs.getString("sale_status");
+        	String path = rs.getString("path");
+        	
+        	Truck t = new Truck(id, manufacturer, v_year, model, color, status, path,
+        			v_class, bl,bw,bh,capacity);
+        	vlist.add(t);
+        }
+        
+        //clean up
+        rs.close();
+        stmt.close();	
+        
+        //change back to array
+        Vehicle[] vArray = new Truck[vlist.size()];
+        vArray = vlist.toArray(vArray);
+        return vArray;
+	}
+
+	private Vehicle[] getCars(int branch_id, String start_date, String end_date) throws SQLException {
+		// TODO Auto-generated method stub
+  		ArrayList<Vehicle> vlist = new ArrayList<Vehicle>();
+  		Statement stmt = dbm.getConnection().createStatement();
+
+        String query = "SELECT * FROM car" 
+        		+" INNER JOIN branch_vehicle  ON "
+        		+"car.vehicle_id = branch_vehicle.vehicle_id " 
+        	    +" INNER JOIN vehicle ON "
+        	    +"car.vehicle_id = vehicle.vehicle_id AND "
+        		+" branch_vehicle.location = "
+        	    +branch_id
+        		+" AND sale_status = 'for rent'"
+        		+" AND car.vehicle_id NOT IN "
+        		+"(SELECT car.vehicle_id FROM car INNER JOIN rental "
+        		+" ON car.vehicle_id = rental.vehicle_id" 
+        		+" WHERE rental.end_date >= \'"+start_date+"\'"
+        		+" AND rental.start_date < \'"+end_date+"\');";
+        ResultSet rs = stmt.executeQuery(query);
+        
+        //parse result and add to list of branches
+        while (rs.next()){
+        	
+        	//type isn't in database, need to be updated
+        	//features isn't in database
+        	
+        	int id = rs.getInt("vehicle_id");
+        	String v_class = rs.getString("class");
+        	int baggage = rs.getInt("baggage");
+        	String door = rs.getString("door");
+        	boolean transmission = rs.getBoolean("transmission");
+        	boolean air_condition = rs.getBoolean("air_condition");
         	int capacity = rs.getInt("capacity");
+        	int location = rs.getInt("location");
+        	String manufacturer = rs.getString("manufacturer");
+        	Date v_year = rs.getDate("v_year");
+        	String model = rs.getString("model");
+        	String color = rs.getString("color");
+        	String status = rs.getString("sale_status");
+        	String path = rs.getString("path");
         	
         	//need two helper methods: one for car, one for truck
         	//need to separate database for car types and truck types
-        	Vehicle v = new Car(id, String.valueOf(location), capacity, "economy", manufacturer, year_model, color, status, "No feature available");
-        	vlist.add(v);
+        	Car c = new Car(id, manufacturer, v_year, model, color, status, path,
+        			v_class, baggage, door, transmission, air_condition, capacity);
+        	vlist.add(c);
         }
         
         //clean up
         rs.close();
         stmt.close();
-        */
+        
+        
         //change back to array
         Vehicle[] vArray = new Car[vlist.size()];
         vArray = vlist.toArray(vArray);
-        
         return vArray;
-  	}
-	
+	}
+
 	/**
 	 * searchCars searches a list of cars in a specific branch for-sale
 	 * @param branch_id a branch

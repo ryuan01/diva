@@ -1,5 +1,7 @@
 package vehicleManagement;
 
+import java.util.Date;
+
 /**
  * 
  * A Car Class which represents the type of a Vehicle.
@@ -30,7 +32,7 @@ public class Car extends Vehicle{
 	 * @param ac air conditioning or no air air conditioning
 	 * @param ca how many people this car can sit
 	 */
-	public Car(int id, String manufacturer, String year, String model, String color, String status, String path,
+	public Car(int id, String manufacturer, Date year, String model, String color, String status, String path,
 			String c, int b, String d, boolean tran, boolean ac, int ca) {
 		super(id, manufacturer, year, model, color, status, path);
 		car_class = c;
@@ -134,6 +136,20 @@ public class Car extends Vehicle{
 	 */
 	public void setCapacity(int c){
 		capacity = c;
+	}
+	
+	/**
+	 * Overrides toString() method
+	 */
+	public String toString(){
+		String tmp = super.toString();
+		tmp += "Car class: "+car_class+"\n"
+				+"baggage: "+ baggage+"\n"
+				+"door: "+ door+"\n"
+				+"transmission: "+ transmission+"\n"
+				+"air_condition: "+ air_condition+"\n"
+				+"capacity: "+ capacity+"\n";
+		return tmp;
 	}
 }
 

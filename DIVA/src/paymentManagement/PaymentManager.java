@@ -57,13 +57,13 @@ public class PaymentManager {
 	 * @param insurance
 	 * @return final_price
 	 */
-	public static BigDecimal calculateCarPrice(String carClass, Date start_date, Date end_date) {
+	public static BigDecimal calculateCarPrice(String carClass, String start_date, String end_date) {
 		return null;
 		// TODO Auto-generated method stub
 	}
 	
 
-	public static BigDecimal calculateTruckPrice(String truckClass, Date start_date, Date end_date) {
+	public static BigDecimal calculateTruckPrice(String truckClass, String start_date, String end_date) {
 		return null;
 		// TODO Auto-generated method stub
 	}

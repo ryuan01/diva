@@ -1,5 +1,7 @@
 package vehicleManagement;
 
+import java.util.Date;
+
 /**
  * 
  * A Truck Class which represents the type of a Vehicle.
@@ -30,7 +32,7 @@ public class Truck extends Vehicle{
 	 * @param ibh interior width in foot 
 	 * @param ca maximum kg that a truck can hold
 	 */
-	public Truck(int id, String manufacturer, String year, String model, String color, String status, String path,
+	public Truck(int id, String manufacturer, Date year, String model, String color, String status, String path,
 			String c, double ibl, double ibw, double ibh, int ca) {
 		super(id, manufacturer, year, model, color, status, path);
 		// TODO Auto-generated constructor stub
