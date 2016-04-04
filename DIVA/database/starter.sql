@@ -13,14 +13,14 @@ CREATE TABLE users (
 
 -- create a account balance table 
 CREATE TABLE account_balance(
-	account_id SMALLINT UNSIGNED PRIMARY KEY,
+	id_number SMALLINT UNSIGNED PRIMARY KEY,
     balance DECIMAL(6,2) DEFAULT 0,
     FOREIGN KEY (account_id) REFERENCES users(id_number)
 );
 
 -- create a payment log table
 CREATE TABLE payment_log(
-	customer_id SMALLINT UNSIGNED PRIMARY KEY,
+	id_number SMALLINT UNSIGNED PRIMARY KEY,
 	amount DECIMAL(10,2) NOT NULL,
     p_date DATE NOT NULL,
 	reason VARCHAR(200),
@@ -39,7 +39,7 @@ CREATE TABLE branch(
 
 -- create the employee table
 CREATE TABLE employee (
-	emp_id SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
+	id_number SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
     works_at TINYINT(2) UNSIGNED NOT NULL,
     e_type ENUM('Clerk','Manager','SystemAdmin'),
     FOREIGN KEY (works_at) REFERENCES branch(br_num),
@@ -48,7 +48,7 @@ CREATE TABLE employee (
 
 -- create the customer table
 CREATE TABLE customer(
-	cus_id SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
+	id_number SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
 	standing SET('Good','Probation', 'Suspended') NOT NULL DEFAULT 'Good',
 	cc_Num BIGINT(16),
 	name_on_cCard VARCHAR(20),
@@ -57,7 +57,7 @@ CREATE TABLE customer(
 
 -- table for super customers
 CREATE TABLE super_customer(
-	cus_id SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
+	id_number SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
 	points SMALLINT DEFAULT 500,
 	FOREIGN KEY (cus_id) REFERENCES customer(cus_id)
 );
@@ -265,3 +265,12 @@ MODIFY COLUMN account_password VARCHAR(20) NOT NULL;
 
 ALTER TABLE report
 ADD COLUMN r_date DATE NOT NULL;
+
+ALTER TABLE customer
+ADD COLUMN street_name VARCHAR(40) NOT NULL,
+ADD COLUMN city VARCHAR(25) NOT NULL,
+ADD COLUMN province SET('AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT') NOT NULL,
+ADD COLUMN zipcode VARCHAR(6);
+
+ALTER TABLE users
+MODIFY COLUMN email VARCHAR(40) NOT NULL UNIQUE;

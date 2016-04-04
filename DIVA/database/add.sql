@@ -30,9 +30,9 @@ INSERT INTO users VALUES
 
 -- define customers with account
 INSERT INTO customer VALUES
-(1, 'good', null,null);
+(1, 'good', null,null,'11011 Scott Road','Surrey','BC','V3V8B9');
 INSERT INTO customer VALUES
-(2, 'good', null, null);
+(2, 'good', null, null,'10344 King George Boulevard', 'Surrey', 'BC', 'V3T2W5');
 
 -- define super customer
 INSERT INTO super_customer (cus_id) VALUES

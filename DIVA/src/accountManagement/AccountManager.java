@@ -22,6 +22,7 @@ public class AccountManager {
 
 	/**
 	 * Creates a new CustomerAccount record in the database
+	 * Fulfills RAD use-case: Register
 	 * @param firstName The first name of the customer
 	 * @param lastName The last name of the customer
 	 * @param phoneNumber	The customers phone number
@@ -34,8 +35,8 @@ public class AccountManager {
 	 * @pre emailAddressIsUnique(emailAddress)
 	 */
 	public boolean addAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
-		
-		return dbConnection.createAccountEntry(new Account(firstName, lastName, phoneNumber, emailAddress, userName, status));
+		Account a = new Account(firstName, lastName, phoneNumber, emailAddress, userName);
+		return dbConnection.createAccountEntry(a);
 	}
 	
 	public boolean modifyAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {

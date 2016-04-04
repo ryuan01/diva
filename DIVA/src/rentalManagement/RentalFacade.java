@@ -38,7 +38,6 @@ public class RentalFacade {
 	public boolean createReservation(Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
 			int customerID, int employeeID, String status) 
 	{
-		System.out.println("I got to here in RentalFacade");
 		return reservMan.addReservation(startDate,endDate,vehicleID,equipIDs,startBranchID, endBranchID, 
 				customerID, employeeID,status);
 	}
@@ -55,6 +54,7 @@ public class RentalFacade {
 		return reservMan.removeReservation(customerID, reservID);
 	}
 	
+
 	/**
 	 * Removes a Reservation that belongs to anyone.
 	 * Reservations belonging to themselves.
@@ -62,10 +62,13 @@ public class RentalFacade {
 	 * @param reservID The Reservation ID to be removed.
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
+	/*
+	 * Robin: why are we letting people do this?
 	public boolean cancelAnyReservation(int reservID)
 	{
 		return reservMan.removeReservation(reservID);
 	}
+	*/
 	
 	
 	
@@ -90,20 +93,24 @@ public class RentalFacade {
 	 * If existing equipID is passed, then it is removed, if a non-existing equipID is passed, then it is added.
 	 * @pre Only Reservation Account owner or Employee calls this method.
 	 */
+	/* Robin: not currently a use-case, maybe added later
 	public boolean modReservation(int reservID, Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
 			int customerID, int employeeID, String status)
 	{
 		return reservMan.changeReservation(reservID, startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
 				customerID, employeeID, status);
 	}
+	*/
 	
 	/**
 	 * Begins the Rental.
 	 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
 	 */
-	public void createRental(int reservID, String descriptionOfInspection, String typeOfPayment)
+	public void createRental(int reservID, String descriptionOfInspection)
 	{
-		rentMan.startRental(reservID, descriptionOfInspection, typeOfPayment);
+		//report has a rental field. 
+		//type of payment is irrelevant I think
+		rentMan.startRental(reservID, descriptionOfInspection);
 	}
 		
 	// assumes gas is already refilled.

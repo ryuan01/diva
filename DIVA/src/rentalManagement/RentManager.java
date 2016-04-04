@@ -32,7 +32,7 @@ public class RentManager {
 		 * Begins the Rental.
 		 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
 		 */
-		public void startRental(int reservID,String description, String typeOfPayment)
+		public void startRental(int reservID,String description)
 		{
 			// order of execution:
 			Report report = new Report(new Date(System.currentTimeMillis()), description, reservID);

@@ -18,7 +18,7 @@ public abstract class Account {
 	private String loginId;
 	private String objectClass;
 	
-	/**
+	/** cx 
 	 * Creates a new Account object initialized with the given arguments
 	 * @param firstname					The first name of the User of the Account
 	 * @param lastname					The last name of the User of the Account
@@ -27,17 +27,13 @@ public abstract class Account {
 	 * @param loginId					The log in id of the User of the Account
 	 * @param password					The password of the User of the Account
 	 */
-	public Account (String firstname, String lastname, String phoneNumber, String email, String loginId, String status){
+	public Account (String firstname, String lastname, String phoneNumber, String email, String loginId){
 		this.firstname = firstname;
 		this.lastname =  lastname;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.loginId= loginId;
-		this.status = getClass().getName();
-<<<<<<< HEAD
-	
-=======
->>>>>>> 1ac1450bc4865cff61553c283d748ebc15b089e5
+		this.objectClass= getClass().getName();
 	}
 
 	/**
@@ -111,18 +107,6 @@ public abstract class Account {
 	 * Gets the login id of a user account.
 	 * @return loginId
 	 */
-	
-	
-	public String getStatus()
-	{
-		return status;
-	}
-	
-	public void setStatus(String s)
-	{
-		status = s;
-	}
-
 	public String getLoginId() {
 		// TODO Auto-generated method stub
 		return loginId;
