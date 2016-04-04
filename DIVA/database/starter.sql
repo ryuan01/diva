@@ -1,4 +1,4 @@
-CREATE DATABASE test1;
+
 -- If the database already exists, execute the following code:
 -- create the User table 
 CREATE TABLE users (
@@ -15,7 +15,7 @@ CREATE TABLE users (
 CREATE TABLE account_balance(
 	id_number SMALLINT UNSIGNED PRIMARY KEY,
     balance DECIMAL(6,2) DEFAULT 0,
-    FOREIGN KEY (account_id) REFERENCES users(id_number)
+    FOREIGN KEY (id_number) REFERENCES users(id_number)
 );
 
 -- create a payment log table
@@ -24,7 +24,7 @@ CREATE TABLE payment_log(
 	amount DECIMAL(10,2) NOT NULL,
     p_date DATE NOT NULL,
 	reason VARCHAR(200),
-    FOREIGN KEY (customer_id) REFERENCES users(id_number)
+    FOREIGN KEY (id_number) REFERENCES users(id_number)
 );
 
 -- create a branch table
@@ -43,7 +43,7 @@ CREATE TABLE employee (
     works_at TINYINT(2) UNSIGNED NOT NULL,
     e_type ENUM('Clerk','Manager','SystemAdmin'),
     FOREIGN KEY (works_at) REFERENCES branch(br_num),
-	FOREIGN KEY (emp_id) REFERENCES users(id_number)
+	FOREIGN KEY (id_number) REFERENCES users(id_number)
 );
 
 -- create the customer table
@@ -52,14 +52,14 @@ CREATE TABLE customer(
 	standing SET('Good','Probation', 'Suspended') NOT NULL DEFAULT 'Good',
 	cc_Num BIGINT(16),
 	name_on_cCard VARCHAR(20),
-	FOREIGN KEY (cus_id) REFERENCES users(id_number)
+	FOREIGN KEY (id_number) REFERENCES users(id_number)
 );
 
 -- table for super customers
 CREATE TABLE super_customer(
 	id_number SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
 	points SMALLINT DEFAULT 500,
-	FOREIGN KEY (cus_id) REFERENCES customer(cus_id)
+	FOREIGN KEY (id_number) REFERENCES customer(id_number)
 );
 
 -- Create Equipment Price table
@@ -127,7 +127,7 @@ CREATE TABLE rental(
     start_branch TINYINT(2) UNSIGNED NOT NULL,
     end_branch TINYINT(2) UNSIGNED NOT NULL,
     state ENUM('reserved','in-rent','complete'),
-	FOREIGN KEY (customer) REFERENCES customer(cus_id),
+	FOREIGN KEY (customer) REFERENCES customer(id_number),
 	FOREIGN KEY (start_branch) REFERENCES branch(br_num), 
     FOREIGN KEY (end_branch) REFERENCES branch(br_num),
 	CONSTRAINT chk_dates CHECK (end_date > start_date)
@@ -202,7 +202,7 @@ CREATE TABLE report(
 	reporting_clerk  SMALLINT UNSIGNED NOT NULL,
 	rental MEDIUMINT UNSIGNED NOT NULL,
 	comments TEXT(500), 
-	FOREIGN KEY (reporting_clerk) REFERENCES employee(emp_id),
+	FOREIGN KEY (reporting_clerk) REFERENCES employee(id_number),
 	FOREIGN KEY (rental) REFERENCES rental(reservation_id)
 );
 

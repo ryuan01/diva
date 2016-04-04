@@ -35,7 +35,7 @@ INSERT INTO customer VALUES
 (2, 'good', null, null,'10344 King George Boulevard', 'Surrey', 'BC', 'V3T2W5');
 
 -- define super customer
-INSERT INTO super_customer (cus_id) VALUES
+INSERT INTO super_customer (id_number) VALUES
 (1);
 
 -- define employees
@@ -51,21 +51,21 @@ INSERT INTO employee VALUES
 (8,1,'SystemAdmin'); 
 
 -- give each account some balance 0.0
-INSERT INTO account_balance (account_id) VALUES
+INSERT INTO account_balance (id_number) VALUES
 (1);
-INSERT INTO account_balance (account_id) VALUES
+INSERT INTO account_balance (id_number) VALUES
 (2);
-INSERT INTO account_balance (account_id) VALUES
+INSERT INTO account_balance (id_number) VALUES
 (3);
-INSERT INTO account_balance (account_id) VALUES
+INSERT INTO account_balance (id_number) VALUES
 (4);
-INSERT INTO account_balance (account_id) VALUES
+INSERT INTO account_balance (id_number) VALUES
 (5);
-INSERT INTO account_balance (account_id) VALUES
+INSERT INTO account_balance (id_number) VALUES
 (6);
-INSERT INTO account_balance (account_id) VALUES
+INSERT INTO account_balance (id_number) VALUES
 (7);
-INSERT INTO account_balance (account_id) VALUES
+INSERT INTO account_balance (id_number) VALUES
 (8);
 
 -- add a few vehicles, just 3 cars and 2 trucks for now
