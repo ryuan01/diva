@@ -1,12 +1,12 @@
 -- Populate branch
 -- this one is head-quarter
 INSERT INTO branch VALUES
-(1,100,'Manitoba Street','Vancouver','BC','V5Y2Z6');
+(1,'100 Manitoba Street','Vancouver','BC','V5Y2Z6');
 -- these ones are branches for renting and saling
 INSERT INTO branch VALUES
-(2,3211,'Grant McConachie Way','Richmond','BC','V7B 0A4');
+(2,'3211 Grant McConachie Way','Richmond','BC','V7B 0A4');
 INSERT INTO branch VALUES
-(3,757,'Hornby Street','Vancouver','BC','V6Z1S2');
+(3,'757 Hornby Street','Vancouver','BC','V6Z1S2');
 
 -- Populate users
 -- three customers
@@ -15,7 +15,7 @@ INSERT INTO users VALUES
 INSERT INTO users VALUES
 (2,'Marry','Jane','7780000001','marryjane@example.com','mjane01','admin');
 INSERT INTO users VALUES
-(3,'James','Kurt','7780000003','jameskurt@example.com',null,null);
+(3,'James','Kurt','7780000003','jameskurt@example.com','jkurt01','admin');
 -- five employees 
 INSERT INTO users VALUES
 (4,'Steward','Freeman','7780000004','stewardfreeman@example.com','sfreeman01','admin');
