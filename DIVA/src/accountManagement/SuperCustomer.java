@@ -11,4 +11,9 @@ public class SuperCustomer extends Customer{
 		// TODO Auto-generated constructor stub
 	}
 
+	public SuperCustomer(String string, String string2, String string3, String string4, String string5, String string6,
+			int int1) {
+		// TODO Auto-generated constructor stub
+	}
+
 }
