@@ -34,8 +34,13 @@ public class AccountManager {
 	 * @pre phoneNumberIsUnique(phoneNumber)
 	 * @pre emailAddressIsUnique(emailAddress)
 	 */
-	public boolean addAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
-		Account a = new Account(firstName, lastName, phoneNumber, emailAddress, userName);
+	public boolean addCustomerAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
+		Account a = new Customer(firstName, lastName, phoneNumber, emailAddress, userName);
+		return dbConnection.createAccountEntry(a);
+	}
+	
+	public boolean addEmployeeAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, int works_at, String type) {
+		Account a = new Employee(firstName, lastName, phoneNumber, emailAddress, userName, works_at, type);
 		return dbConnection.createAccountEntry(a);
 	}
 	

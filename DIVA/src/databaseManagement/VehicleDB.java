@@ -78,7 +78,7 @@ class VehicleDB {
   		java.sql.Date sqlDate = new java.sql.Date(start_date.getTime());
   		
   		//type will decide which table to combine with 
-        Statement stmt = c.createStatement();
+    /*    Statement stmt = c.createStatement();
 
         String query = "SELECT * FROM " 
         		+type+" INNER JOIN branch_vehicle  ON "
@@ -119,7 +119,7 @@ class VehicleDB {
         //clean up
         rs.close();
         stmt.close();
-        
+        */
         //change back to array
         Vehicle[] vArray = new Car[vlist.size()];
         vArray = vlist.toArray(vArray);

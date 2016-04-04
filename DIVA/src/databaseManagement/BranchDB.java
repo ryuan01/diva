@@ -28,10 +28,11 @@ class BranchDB{
   	 */
   	void addBranch(Branch b) throws SQLException{
   		
-  		String streetName = b.getStreetName().replaceAll("[\"]", "");
-  		String city = b.getCity().replaceAll("[\"]", "");
-  		String province = b.getProvince();
-  	 	String zipcode = b.getZipCode();
+  		String[] address = b.getFullAddress().split(" ");
+  		String streetName = address[0];
+  		String city = address[1];
+  		String province = address[2];
+  	 	String zipcode = address[3];
   
   		dbm.connect();
   		
@@ -43,10 +44,15 @@ class BranchDB{
          dbm.disconnect();
 		}
   	
+  	/**
+  	 * 
+  	 * @param b
+  	 * @throws SQLException
+  	 */
   	void removebranch(Branch b) throws SQLException{
   	  
   	  // get branch id Number:
-  	  String id_num = b.getBranchID();
+  	  int id_num = b.getId();
   	  
   	  dbm.connect();
   

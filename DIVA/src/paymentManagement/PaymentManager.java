@@ -5,7 +5,7 @@ import java.util.Date;
 
 import accountManagement.Account;
 import accountManagement.AccountManager;
-import rentalManagement.AccidentReport;
+import accountManagement.SuperCustomer;
 import vehicleManagement.Equipment;
 import vehicleManagement.Vehicle;
 
@@ -58,11 +58,13 @@ public class PaymentManager {
 	 * @return final_price
 	 */
 	public static BigDecimal calculateCarPrice(String carClass, Date start_date, Date end_date) {
+		return null;
 		// TODO Auto-generated method stub
 	}
 	
 
 	public static BigDecimal calculateTruckPrice(String truckClass, Date start_date, Date end_date) {
+		return null;
 		// TODO Auto-generated method stub
 	}
 	
@@ -108,7 +110,7 @@ public static void makePayment(Account a, BigDecimal price) {
 	// TODO Auto-generated method stub
 	// should create a receipt for the payment and pass it to interface to show user.
 	// should prompt interface to try again if payment fails.
-	if(a.getStatus() == "superRent")
+	if(a instanceof SuperCustomer)
 	{
 		AccountManager.accumulatePoints(a.getID(), PaymentManager.moneyToPoints(price));
 	}

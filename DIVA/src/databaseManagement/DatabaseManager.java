@@ -307,7 +307,7 @@ public class DatabaseManager {
 		return true;
 	}
 	
-	public boolean addSRPoints(int i, int points)
+	public boolean addSRPoints(String userName, int points)
 	{
 		return true;
 	}
@@ -338,5 +338,10 @@ public class DatabaseManager {
 	public Branch getBranchEntry(int id)
 	{
 		return null;
+	}
+
+	public void addSRPoints(int i, int points) {
+		// TODO Auto-generated method stub
+		
 	}
 }

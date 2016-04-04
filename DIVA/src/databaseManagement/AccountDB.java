@@ -126,7 +126,6 @@ class AccountDB{
 						rs.getString("phone"),
 						rs.getString("email"),
 						rs.getString("account_uName"),
-						"SuperCustomer",
 						rs.getInt("points"));
 				
 				
@@ -140,8 +139,7 @@ class AccountDB{
 						rs.getString("last_name"),
 						rs.getString("phone"),
 						rs.getString("email"),
-						rs.getString("account_uName"),
-						"customer");			
+						rs.getString("account_uName"));			
 			} else{ // if the username is present, and it's not a customer or a super customer, then it's an employee
 				query = "SELECT * FROM `users`, `employee` WHERE "
 						+ "users.id_number = employee.id_number AND"
@@ -153,7 +151,6 @@ class AccountDB{
 						rs.getString("phone"),
 						rs.getString("email"),
 						rs.getString("account_uName"),
-						"employee",
 						rs.getInt("works_at"),
 						rs.getString("e_type"));
 			}
@@ -198,7 +195,6 @@ class AccountDB{
 						rs.getString("phone"),
 						rs.getString("email"),
 						rs.getString("account_uName"),
-						"SuperCustomer",
 						rs.getInt("points"));
 				
 				
@@ -212,8 +208,7 @@ class AccountDB{
 						rs.getString("last_name"),
 						rs.getString("phone"),
 						rs.getString("email"),
-						rs.getString("account_uName"),
-						"customer");			
+						rs.getString("account_uName"));			
 			} else{ // if the username is present, and it's not a customer or a super customer, then it's an employee
 				query = "SELECT * FROM `users`, `employee` WHERE "
 						+ "users.id_number = employee.id_number AND"
@@ -225,7 +220,6 @@ class AccountDB{
 						rs.getString("phone"),
 						rs.getString("email"),
 						rs.getString("account_uName"),
-						"employee",
 						rs.getInt("works_at"),
 						rs.getString("e_type"));
 			}

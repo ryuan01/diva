@@ -91,22 +91,22 @@ class RentalDB {
 	 * @post r is created
 	 * @param r an reservation
 	 */
-	public void createReservation(Connection c, Reservation r){
+	public void createReservation(Reservation r){
 		
-		//what happens if it is only half of the insertion?
+		/*//what happens if it is only half of the insertion?
         try{
             //insert into Reservation table
-        	insertReservation(c,r);
+        	insertReservation(r);
             
             //insert into equipment_reservation table
-        	insertEqRes(c,r);
+        	insertEqRes(r);
             
             c.close();
             
         }
         catch(SQLException e){
             System.err.println(e);
-        }
+        }*/
 	}
 	
 
@@ -115,8 +115,8 @@ class RentalDB {
 	 * @param r
 	 * @throws SQLException
 	 */
-	private void insertEqRes(Connection c, Reservation r) throws SQLException{
-		// TODO Auto-generated method stub
+	private void insertEqRes(Reservation r) throws SQLException{
+	/*	// TODO Auto-generated method stub
     	String sql = "INSERT INTO `equipment_reservation`(`start_date`, `end_date`,`res_id`, `equip_id`) VALUES (?,?,?,?)";
     	
         for (int i =0; i<r.getEquipments().length; i++){
@@ -125,11 +125,11 @@ class RentalDB {
             st.setDate(1,new java.sql.Date(r.getStartingDate().getTime()));
             st.setDate(2,new java.sql.Date(r.getEndDate().getTime()));
             st.setInt(3, r.getID());
-            st.setInt(4,Integer.parseInt(r.getEquipments()[i]));
+            st.setInt(4,Integer.parseUnsignedInt(r.getEquipments()[i]));
             
             st.executeUpdate();
          
-        }
+        }*/
 	}
 
 	/**
@@ -139,7 +139,7 @@ class RentalDB {
 	 */
 	private void insertReservation(Connection c, Reservation r) throws SQLException{
 		// TODO Auto-generated method stub
-       	String sql = "INSERT INTO `reservation`( `start_date`, `end_date`, `vehicle_id`, `start_branch_id`, `end_branch_id`, `cus_id`, `status`) VALUES (?,?,?,?,?,?,?)";
+    /*   	String sql = "INSERT INTO `reservation`( `start_date`, `end_date`, `vehicle_id`, `start_branch_id`, `end_branch_id`, `cus_id`, `status`) VALUES (?,?,?,?,?,?,?)";
         PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
     	
         stmt.setDate(1,new java.sql.Date(r.getStartingDate().getTime()));
@@ -158,7 +158,7 @@ class RentalDB {
         	//set the ID of reservation to be the auto generated key
             	r.changeID(rs.getInt(1));
         }
-        rs.close();
+        rs.close();*/
 	}
 
 	/**

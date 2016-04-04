@@ -57,7 +57,7 @@ class EquipmentDB {
 		
 		while(rs.next()){
 			
-			equipmentList.add(new Equipment(rs.getInt("serial_num"), rs.getString("eq_type"))); // Add data according to Equipment class
+			equipmentList.add(new Equipment(rs.getInt("serial_num"), rs.getString("eq_type"),rs.getInt("location"))); // Add data according to Equipment class
 		}
 		dbm.disconnect();
 		

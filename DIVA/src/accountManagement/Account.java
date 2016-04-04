@@ -16,9 +16,9 @@ public abstract class Account {
 	private String phoneNumber;
 	private String email;
 	private String loginId;
-	private String objectClass;
-	
-	/** cx 
+	protected String objectClass; //this need to be changed in sub-classes 
+
+	/** 
 	 * Creates a new Account object initialized with the given arguments
 	 * @param firstname					The first name of the User of the Account
 	 * @param lastname					The last name of the User of the Account
@@ -106,7 +106,11 @@ public abstract class Account {
 	/**
 	 * Gets the login id of a user account.
 	 * @return loginId
-	 */
+	 */	
+	public String getObjectClass()
+	{
+		return objectClass;
+	}
 	public String getLoginId() {
 		// TODO Auto-generated method stub
 		return loginId;
@@ -116,6 +120,5 @@ public abstract class Account {
 		// TODO Auto-generated method stub
 		return id;
 	}
-	
 	
 }
