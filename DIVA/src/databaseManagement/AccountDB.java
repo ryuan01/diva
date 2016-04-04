@@ -1,13 +1,11 @@
 package databaseManagement;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Currency;
+import java.sql.*;
 
-import accountManagement.Account;
+import accountManagement.*;
 /**
  * AccountDB provides services related to the creation, deletion, and modification of account
- * @author Robin
  * no invariant 
  */
 class AccountDB{
@@ -73,19 +71,18 @@ class AccountDB{
 
 	/**
 	 * isValidAccount checks if the provided account exists
-	 * @param acc_key_value a key value that represents account object
+	 * @param acc an account object 
 	 * @pre database account is not empty
 	 * @post true if it exists, false if it does not
 	 * @return true if it exists, false if it does not
 	 * @throws SQLException 
 	 */
-	private boolean isValidAccount(Account acc) throws SQLException {
+	private boolean isValidAccount(String username, String type) throws SQLException {
 		dbm.connect();
-		String username = acc.getLoginId(); // Note: username is cases sensitive 
-		
 		
 		Statement stmt = dbm.getConnection().createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
+		String query = "SELECT * FROM users, " + type + " WHERE users.id_number = " + type + ".id_number";
+		ResultSet rs = stmt.executeQuery(query);
 		
 		while(rs.next()){
 			if (username.equals(rs.getString("account_uName"))){
@@ -98,10 +95,11 @@ class AccountDB{
 		return false;
 	}
 	
+	
+	//getter 
 	/**
-	 * getAccountKeyValue gets an account's key value from database
+	 * getAccount gets an account from database
 	 * @param username the username related to a account
-	 * @return 
 	 * @pre isValidUsername(username)
 	 * @post Account object
 	 * @return Account object
@@ -112,11 +110,57 @@ class AccountDB{
 			dbm.connect();
 			
 			Statement stmt = dbm.getConnection().createStatement();
+			String query = "";
+			ResultSet rs = null;
+			Account acct = null;
 				
-			// Problem: how to determine the "type" of account (whether it's a customer, employee, clerk, etc..)
+			if (isValidAccount(username, "super_customer")){
+				query = "SELECT * FROM `users`, `super_customer`, `customer` WHERE "
+						+ "users.id_number = customer.id_number AND "
+						+ "super_customer.id_number = customer.id_number AND"
+						+ "account_uName = \'" + username +"\';";
+				rs = stmt.executeQuery(query);
+				rs.next();
+				acct = new SuperCustomer(rs.getString("first_name"),
+						rs.getString("last_name"),
+						rs.getString("phone"),
+						rs.getString("email"),
+						rs.getString("account_uName"),
+						"SuperCustomer",
+						rs.getInt("points"));
 				
-			dbm.disconnect();
+				
+			} else if (isValidAccount(username, "customer")){
+				query = "SELECT * FROM `users`, `customer` WHERE "
+						+ "users.id_number = customer.id_number AND "
+						+ "account_uName = \'" + username +"\';";
+				rs = stmt.executeQuery(query);
+				rs.next();
+				acct = new Customer(rs.getString("first_name"),
+						rs.getString("last_name"),
+						rs.getString("phone"),
+						rs.getString("email"),
+						rs.getString("account_uName"),
+						"customer");			
+			} else{ // if the username is present, and it's not a customer or a super customer, then it's an employee
+				query = "SELECT * FROM `users`, `employee` WHERE "
+						+ "users.id_number = employee.id_number AND"
+						+ "account_uName = \'" + username +"\';";
+				rs = stmt.executeQuery(query);
+				rs.next();
+				acct = new Employee(rs.getString("first_name"),
+						rs.getString("last_name"),
+						rs.getString("phone"),
+						rs.getString("email"),
+						rs.getString("account_uName"),
+						"employee",
+						rs.getInt("works_at"),
+						rs.getString("e_type"));
+			}
 			
+			
+			dbm.disconnect();
+			return acct;
 		}
 		return null;
 	
@@ -134,24 +178,65 @@ class AccountDB{
 	 * @throws SQLException 
 	 */
 	public Account getAccount(String fname, String lname, String phonenum) throws SQLException {
-		dbm.connect();
-		
-
-		Statement stmt = dbm.getConnection().createStatement();
+		if(isValidAccount(fname,lname,phonenum)){
+			dbm.connect();
+			// Change the implementation to fit...
+			Statement stmt = dbm.getConnection().createStatement();
+			String query = "";
+			ResultSet rs = null;
+			Account acct = null;
+				
+			if (isValidAccount(username, "super_customer")){
+				query = "SELECT * FROM `users`, `super_customer`, `customer` WHERE "
+						+ "users.id_number = customer.id_number AND "
+						+ "super_customer.id_number = customer.id_number AND"
+						+ "account_uName = \'" + username +"\';";
+				rs = stmt.executeQuery(query);
+				rs.next();
+				acct = new SuperCustomer(rs.getString("first_name"),
+						rs.getString("last_name"),
+						rs.getString("phone"),
+						rs.getString("email"),
+						rs.getString("account_uName"),
+						"SuperCustomer",
+						rs.getInt("points"));
+				
+				
+			} else if (isValidAccount(username, "customer")){
+				query = "SELECT * FROM `users`, `customer` WHERE "
+						+ "users.id_number = customer.id_number AND "
+						+ "account_uName = \'" + username +"\';";
+				rs = stmt.executeQuery(query);
+				rs.next();
+				acct = new Customer(rs.getString("first_name"),
+						rs.getString("last_name"),
+						rs.getString("phone"),
+						rs.getString("email"),
+						rs.getString("account_uName"),
+						"customer");			
+			} else{ // if the username is present, and it's not a customer or a super customer, then it's an employee
+				query = "SELECT * FROM `users`, `employee` WHERE "
+						+ "users.id_number = employee.id_number AND"
+						+ "account_uName = \'" + username +"\';";
+				rs = stmt.executeQuery(query);
+				rs.next();
+				acct = new Employee(rs.getString("first_name"),
+						rs.getString("last_name"),
+						rs.getString("phone"),
+						rs.getString("email"),
+						rs.getString("account_uName"),
+						"employee",
+						rs.getInt("works_at"),
+						rs.getString("e_type"));
+			}
 			
-		// problem: how to determine the "type" of account (whether it's a customer, employee, clerk, etc..)
-	
-		dbm.disconnect();
+			
+			dbm.disconnect();
+			return acct;
+		}
 		return null;
+	
 	}
-	
-	//not needed because searchCustomer is just part of getAccount 
-	//searchCustomer();
-	
-	//isValidUsername, the same thing 
-	//unless we want to get the whole list of usernames? 
-	//getusername();
-	
 	
 	//modifier 
 	
@@ -232,6 +317,7 @@ class AccountDB{
 		}
 		
 	}
+		
 	//same as loginPasswordUpdate
 	//updatePassword();
 
