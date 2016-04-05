@@ -32,11 +32,21 @@ class VehicleDB {
 	 * updateVehicleLocation updates the branch that the vehicle belongs to
 	 * @param v vehicle
 	 * @param b branch
+	 * @throws SQLException 
 	 * @pre isValidVehicle(v)
 	 * @pre isValidBranch(b)
 	 * @post v.branch = b
 	 */
-	void updateVehicleLocation(String v_key_value, String b_key_value){
+	void updateVehicleLocation(int v_key_value, int b_key_value) throws SQLException{
+		dbm.connect();
+		Statement stmt = dbm.getConnection().createStatement();
+
+        String query = "UPDATE `branch_vehicle` SET `location`= " 
+        		+b_key_value+" WHERE `vehicle_id` = "+v_key_value+";";
+        stmt.executeUpdate(query);
+        stmt.close();	
+
+		dbm.disconnect();
 		
 	}
 	
@@ -44,13 +54,21 @@ class VehicleDB {
 	/**
 	 * updateVehicleStatus updates the status of an vehicle
 	 * @param v vehicle
-	 * @param status status {reserved, rented, damaged, available, sold}
+	 * @param status status {for rent, for sale, sold}
 	 * @pre isValidVehicle(v)
-	 * @pre status is one of {reserved, rented, damaged, available, sold}
+	 * @pre status is one of {for rent, for sale, sold}
 	 * @post v.status = status
 	 */
-	void updateVehicleStatus(String v_key_value, int status){
-		
+	void updateVehicleStatus(String v_key_value, String status){
+		dbm.connect();
+		Statement stmt = dbm.getConnection().createStatement();
+
+        String query = "UPDATE `vehicle` SET `sales_status`= " 
+        		+status+" WHERE `vehicle_id` = "+v_key_value+";";
+        stmt.executeUpdate(query);
+        stmt.close();	
+
+		dbm.disconnect();
 	}
 	
 	//create

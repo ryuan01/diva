@@ -343,4 +343,16 @@ public class DatabaseManager {
 		// TODO Auto-generated method stub
 		
 	}
+
+	/**
+	 * Update vehicle's owning branch
+	 * @pre vehicle is always assumed to be at its owning branch
+	 * @param v vehicle_id
+	 * @param b branch_id
+	 * @throws SQLException when the update fails
+	 */
+	public void updateVehicleLocation(int v, int b) throws SQLException {
+		// TODO Auto-generated method stub
+		veDB.updateVehicleLocation(v, b);
+	}
 }
