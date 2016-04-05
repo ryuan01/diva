@@ -142,14 +142,14 @@ public class Car extends Vehicle{
 	 * Overrides toString() method
 	 */
 	public String toString(){
-		String tmp = super.toString();
-		tmp += "Car class: "+car_class+"\n"
-				+"baggage: "+ baggage+"\n"
-				+"door: "+ door+"\n"
-				+"transmission: "+ transmission+"\n"
-				+"air_condition: "+ air_condition+"\n"
-				+"capacity: "+ capacity+"\n";
-		return tmp;
+		return "{'id':'"+ this.getID() +"', 'manufacturer':'"+this.getManufacturer()
+				+"','v_year':'"+this.getYear()+"',"+"'model':'"+this.getModel()
+				+"','color':'"+this.getColor()+"','status':'"+this.getStatus()
+				+"','path':'"+this.getPath()+"', 'objectClass':'"+this.getObjectClass()
+				+"','rentalPrice':'"+this.getPrice()+"','car_class':'"+this.car_class
+				+"','baggage':'"+this.baggage+"','door':'"+this.door
+				+"','transmission':'"+this.transmission+"','air_condition':'"+this.air_condition
+				+"','capacity':'"+this.capacity+"'}";
 	}
 }
 

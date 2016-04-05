@@ -1,4 +1,4 @@
-package unitTEst;
+package databaseManagerTest;
 import java.util.*;
 import java.sql.SQLException;
 import java.text.*;
@@ -35,8 +35,11 @@ public class DatabaseManagerTest {
 		*/
 		
 		//test trying to search for strange things
-		test_search("car","2006-5-5","2006-5-5");
+		//test_search("car","2006-5-5","2006-5-5");
 		//test_add_branch(); //works!
+		
+		//test assignvehiclebranch
+		test_assign_vehicle_branch();
 		
 		//test simple query
 		
@@ -45,6 +48,19 @@ public class DatabaseManagerTest {
 		//test a list of account
 		
 		//
+	}
+
+	/**
+	 * test updateVehicleLocation(int v_key_value, int b_key_value)
+	 */
+	private static void test_assign_vehicle_branch() {
+		// TODO Auto-generated method stub
+		try {
+			db.updateVehicleLocation(3, 2);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

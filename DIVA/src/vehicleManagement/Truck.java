@@ -127,4 +127,18 @@ public class Truck extends Vehicle{
 		return "length: "+interior_b_l+" width: "+this.interior_b_w+" height: "+this.interior_b_h;
 	}
 	
+	/**
+	 * Overrides toString() method
+	 */
+	public String toString(){
+		return "{'id':'"+ this.getID() +"', 'manufacturer':'"+this.getManufacturer()
+				+"','v_year':'"+this.getYear()+"',"+"'model':'"+this.getModel()
+				+"','color':'"+this.getColor()+"','status':'"+this.getStatus()
+				+"','path':'"+this.getPath()+"', 'objectClass':'"+this.getObjectClass()
+				+"','rentalPrice':'"+this.getPrice()+"','truck_class':'"+this.truck_class
+				+"','interior_b_l':'"+this.interior_b_l+"','interior_b_w':'"+this.interior_b_w
+				+"','interior_b_h;':'"+this.interior_b_h+"','capacity_kg':'"+this.capacity_kg
+				+"'}";
+	}
+	
 }
