@@ -34,8 +34,9 @@ public class AccountManager {
 	 * @pre phoneNumberIsUnique(phoneNumber)
 	 * @pre emailAddressIsUnique(emailAddress)
 	 */
+	//this need to be updated to contain address info
 	public boolean addCustomerAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status, int id) {
-		Account a = new Customer(firstName, lastName, phoneNumber, emailAddress, userName, id);
+		Account a = new Customer(firstName, lastName, phoneNumber, emailAddress, userName, id, id, status, status, status, status, status);
 		return dbConnection.createAccountEntry(a);
 	}
 	

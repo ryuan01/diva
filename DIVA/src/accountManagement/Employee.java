@@ -32,5 +32,15 @@ public class Employee extends Account{
 	public void setEmp_type(String emp_type) {
 		this.emp_type = emp_type;
 	}
+	/**
+	 * Overrides toString() method
+	 */
+	public String toString(){
+		return "{'id':'"+ this.getID() +"', 'fisrtName':'"+this.getFirstname()
+				+"','lastname':'"+this.getLastname()+"',"+"'phoneNumber;':'"+this.getPhoneNumber()
+				+"','email':'"+this.getEmail()+"','status':'"+this.getLoginId()
+				+"','objectClass':'"+this.getObjectClass()+"', 'works_at':'"+this.works_at
+				+"','emp_type':'"+this.emp_type+"'}";
+	}
 
 }

@@ -118,4 +118,19 @@ public class Customer extends Account{
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
+	
+	/**
+	 * Overrides toString() method
+	 */
+	public String toString(){
+		return "{'id':'"+ this.getID() +"', 'fisrtName':'"+this.getFirstname()
+				+"','lastname':'"+this.getLastname()+"',"+"'phoneNumber':'"+this.getPhoneNumber()
+				+"','email':'"+this.getEmail()+"','status':'"+this.getLoginId()
+				+"','objectClass':'"+this.getObjectClass()+"', 'standing':'"+this.standing
+				+"','cc_num':'"+this.cc_num+"', 'name_on_card':'"+this.name_on_card
+				+"','street_name':'"+this.street_name+"', 'city':'"+this.city
+				+"','province':'"+this.province+"', 'zip':'"+this.zip
+				+"'}";
+	}
+
 }
