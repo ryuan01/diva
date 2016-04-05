@@ -105,6 +105,9 @@ public class Receipt {
 		this.receiptId = receiptId;
 	}
 	
-	
+	public String toString() {
+		return "{'receiptId':'"+ this.receiptId +"', 'price':'"+this.price+"',"
+			+	"'vehicle_rented':'"+this.vehicle_rented+"',"+"'duration':'"+this.duration+"','dropoff_location':'"+this.dropoff_location+"'}";
+	}	
 	
 }

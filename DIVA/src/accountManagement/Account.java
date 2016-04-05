@@ -27,13 +27,14 @@ public abstract class Account {
 	 * @param loginId					The log in id of the User of the Account
 	 * @param password					The password of the User of the Account
 	 */
-	public Account (String firstname, String lastname, String phoneNumber, String email, String loginId){
+	public Account (String firstname, String lastname, String phoneNumber, String email, String loginId, int id){
 		this.firstname = firstname;
 		this.lastname =  lastname;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.loginId= loginId;
 		this.objectClass= getClass().getName();
+		this.id = id;
 	}
 
 	/**

@@ -242,4 +242,27 @@ public class Reservation {
 		return this.reservID;
 	}
 	
+	public String toString() {
+		
+		//Format equiptmentID's
+		
+		String equipIDArray = this.formatEquiptmentIds(this.equipmentIDs);
+		
+		return "{'startDate':'"+ this.startDate.getTime() +"', 'endDate':'"+this.endDate.getTime()+"',"
+			+	"'vehicleID':'"+this.vehicleID+"',"+"'equipmentIds':'"+equipIDArray+"',"
+			+ "'startBranchID':'"+this.startBranchID+"',"+"'endBranchID':'"+this.endBranchID+"',"
+			+ "'customerAccountID':'"+this.customerAccountID+"',"+"'status':'"+this.status+"',"
+			+ "'reservID':'"+this.reservID+"'}";
+	}
+	
+	private String formatEquiptmentIds(int[] array) {
+		String formattedArray = "[";
+		for (int i = 0; i < array.length; i++) {
+			String currentId = ""+array[i];
+			formattedArray += currentId + ",";
+		}
+		formattedArray += "]";
+		return formattedArray;
+	}
+	
 }

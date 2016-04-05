@@ -26,7 +26,7 @@ public class Equipment{
 		this.type = type;
 		this.location = location;
 		this.objectClass = getClass().getName();
-		rentalPrice = null;
+		setRentalPrice(null);
 	}
 	
 	//setters and getters
@@ -71,6 +71,26 @@ public class Equipment{
 	 */
 	public void setLocation(int l){
 		this.location = l;
+	}
+	public String getObjectClass() {
+		return objectClass;
+	}
+
+	public void setObjectClass(String objectClass) {
+		this.objectClass = objectClass;
+	}
+
+	public BigDecimal getRentalPrice() {
+		return rentalPrice;
+	}
+
+	public void setRentalPrice(BigDecimal rentalPrice) {
+		this.rentalPrice = rentalPrice;
+	}
+
+	public String toString() {
+		return "{'objectClass':'"+ this.objectClass +"', 'serialNum':'"+this.serialNum+"',"
+				+	"'type':'"+this.type+"',"+"'location':'"+this.location+"'}";
 	}
 }
 

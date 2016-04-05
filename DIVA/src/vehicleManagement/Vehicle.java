@@ -37,7 +37,7 @@ public class Vehicle {
 		this.model = model;
 		this.path = path;
 		rentalPrice = null;
-		objectClass = getClass().getName();
+		setObjectClass(getClass().getName());
 	}
 	
 	/**
@@ -168,6 +168,13 @@ public class Vehicle {
 	
 	public BigDecimal getPrice(){
 		return this.rentalPrice;
+	}
+	public String getObjectClass() {
+		return objectClass;
+	}
+
+	public void setObjectClass(String objectClass) {
+		this.objectClass = objectClass;
 	}
 }
 

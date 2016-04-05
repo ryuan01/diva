@@ -103,4 +103,12 @@ public class Report {
 	public String getType(){
 		return type;
 	}
+	
+	public String getObjectClass() {
+		return objectClass;
+	}
+
+	public void setObjectClass(String objectClass) {
+		this.objectClass = objectClass;
+	}
 }

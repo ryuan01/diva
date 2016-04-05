@@ -59,4 +59,16 @@ public class Branch {
 		this.province = province;
 		this.zipcode = zipcode;
 	}
+	/**
+	 * @param objectClass the objectClass to set
+	 */
+	public void setObjectClass(String objectClass) {
+		this.objectClass = objectClass;
+	}
+	
+	public String toString() {
+		return "{'objectClass':'"+ this.objectClass +"', 'id':'"+this.id+"',"
+			+	"'address':'"+this.address+"',"+"'city':'"+this.city+"',"
+			+ "'province':'"+this.province+"',"+"'zip':'"+this.zipcode+"'}";
+	}
 }
