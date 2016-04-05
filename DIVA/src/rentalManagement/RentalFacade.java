@@ -1,6 +1,7 @@
 package rentalManagement;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
 
 import databaseManagement.DatabaseManager;
 
@@ -22,8 +23,8 @@ public class RentalFacade {
 	
 	/**
 	 * Creates a Reservation with a date, vehicle, list of equipments, starting branch, ending branch, customer, employee, status, and reservation ID.
-	 * @param startDate Starting Date of the Reservation.
-	 * @param endDate Ending Date of the Reservation.
+	 * @param startD Starting Date of the Reservation.
+	 * @param endD Ending Date of the Reservation.
 	 * @param vehicleID Vehicle ID of the Reservation.
 	 * @param equipIDs Equipment IDs of the Reservation.
 	 * @param startBranchID The Branch ID Vehicle is Rented.
@@ -32,11 +33,12 @@ public class RentalFacade {
 	 * @param employeeID Employee login ID of the Reservation.
 	 * @param status Status of the Reservation.
 	 * @param reservID Reservation ID.
+	 * @throws SQLException 
 	 */
-	public boolean createReservation(Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, String status) 
+	public void createReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
+			int customerID, String status) throws SQLException 
 	{
-		return reservMan.addReservation(startDate,endDate,vehicleID,equipIDs,startBranchID, endBranchID, 
+		reservMan.addReservation(startD,endD,vehicleID,equipIDs,startBranchID, endBranchID, 
 				customerID,status);
 	}
 	
@@ -49,9 +51,10 @@ public class RentalFacade {
 	 */
 	public boolean cancelSelfReservation(int customerID, int reservID)
 	{
+		//the case with customer full name and phone number will return a list of available reservations
+		//then the customer picks one, and it leads to this function in the end.
 		return reservMan.removeReservation(customerID, reservID);
 	}
-	
 
 	/**
 	 * Removes a Reservation that belongs to anyone.
@@ -71,15 +74,13 @@ public class RentalFacade {
 	
 	
 	/**
-	 * Searches for the list of Reservations depending on type of ID passed.
-	 * @param id The type of search executed, can be vehicleID, branchID, reservationID, customerID, employeeID, equipID, reservStatus.
-	 * @return List of qualifying Reservations from the search
+	 * Searches for the a reservations, on unique ID
+	 * @param id unique reservation id
+	 * @return a match
 	 */
-	public Reservation[] findReservations(int reservID, Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, int employeeID, String status)
+	public Reservation findReservations(int reservID)
 	{
-		return reservMan.searchReservations(reservID,startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
-			customerID, employeeID, status);
+		return reservMan.searchReservations(reservID);
 	}
 	
 	
@@ -92,7 +93,7 @@ public class RentalFacade {
 	 * @pre Only Reservation Account owner or Employee calls this method.
 	 */
 	/* Robin: not currently a use-case, maybe added later
-	public boolean modReservation(int reservID, Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
+	public boolean modReservation(int reservID, String startDate,String endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
 			int customerID, int employeeID, String status)
 	{
 		return reservMan.changeReservation(reservID, startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
@@ -115,8 +116,9 @@ public class RentalFacade {
 		/**
 		 * Returns a Vehicle from Rental.
 		 * @param reservID Reservation ID of Rental the Vehilce belongs to.
+		 * @throws ParseException 
 		 */
-	public void createReturn(int reservID, String description, String dmgDescription,BigDecimal extraPay, String typeOfPayment, String accidentDetail)
+	public void createReturn(int reservID, String description, String dmgDescription,BigDecimal extraPay, String typeOfPayment, String accidentDetail) throws ParseException
 	{
 		returnMan.startReturn(reservID, description, dmgDescription,extraPay, typeOfPayment, accidentDetail);
 	}

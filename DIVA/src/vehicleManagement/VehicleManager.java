@@ -81,13 +81,13 @@ public class VehicleManager {
 		}
 	}
 
-	public Vehicle[] searchForOverdue(int branch_id, String type){
+	public Vehicle[] searchForOverdue(int branch_id, String type) throws SQLException{
 		Vehicle[] vlist = null;
 		vlist = db.search(branch_id, type);
 		return vlist;
 	}
 	
-	public Vehicle[] searchForSale(int branch_id, String type){
+	public Vehicle[] searchForSale(int branch_id, String type) throws SQLException{
 		Vehicle[] vlist = null;
 		vlist = db.searchForSale(branch_id, type);
 		return vlist;

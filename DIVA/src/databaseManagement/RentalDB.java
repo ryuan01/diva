@@ -1,11 +1,14 @@
 package databaseManagement;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import paymentManagement.Receipt;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
 import systemManagement.Branch;
+import vehicleManagement.Car;
+import vehicleManagement.Vehicle;
 
 /*Robin */
 /**
@@ -14,10 +17,10 @@ import systemManagement.Branch;
  */
 class RentalDB {
 	
-	private ConnectDB conDB;
+	private ConnectDB dbm;
 	
 	public RentalDB() {
-		conDB = new ConnectDB();
+		dbm = new ConnectDB();
 	}
 
 	//modify 
@@ -27,11 +30,66 @@ class RentalDB {
 	 * @pre isValidReservation(rNum)
 	 * @post Reservation object
 	 * @return Reservation object 
+	 * @throws SQLException 
 	 */
-	public Reservation reservationQuery(int rNum) {
-		return null;
+	public Reservation reservationQuery(int rNum) throws SQLException {
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+  		
+		String query = "SELECT `reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `vehicle_id` FROM `rental`"
+				+" WHERE `reservation_id = "+rNum
+				+" AND `state` = 'reserved';";
+        ResultSet rs = stmt.executeQuery(query);
+        Reservation r = null;
+        //parse result, assume only 1 result comes back since rNum is unique
+        if (rs.next()){
+        	int id = rs.getInt("reservation_id");
+        	int customer = rs.getInt("customer");
+        	String start_date = rs.getString("start_date");
+        	String end_date = rs.getString("end_date");
+        	int start_branch = rs.getInt("start_branch");
+        	int end_branch = rs.getInt("end_branch");
+        	String state= "reserved";
+        	int vehicle_id = rs.getInt("vehicle_id");
+        	ArrayList<Integer> equipments = executeQueryEquipments(rNum);
+        	
+        	//conversion
+        	int[] eqlist = new int[equipments.size()];
+        	for (int i=0; i< equipments.size();i++){
+        		eqlist[i] = equipments.get(i).intValue();
+        	}
+        	//create a resevation 
+        	r = new Reservation(start_date, end_date, vehicle_id, eqlist, start_branch,end_branch,customer,state,id);
+        }
+    	return r;
 	}
 	
+	/**
+	 * 
+	 * @param rNum
+	 * @return
+	 * @throws SQLException
+	 */
+	private ArrayList<Integer> executeQueryEquipments(int rNum) throws SQLException {
+		// TODO Auto-generated method stub
+ 		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+ 		ArrayList<Integer> equipments = new ArrayList<Integer>();
+ 		
+		String query = "SELECT `equipment_id` FROM `rented_equipment` WHERE `reservation_id` = "+rNum+";";
+        ResultSet rs = stmt.executeQuery(query);
+        //parse result, as many additional equipments as possible
+        while (rs.next()){
+        	equipments.add(rs.getInt(1));
+        }
+        //clean up
+        rs.close();
+        stmt.close();
+        
+        //return Integer Array
+        return equipments;
+	}
+
 	/**
 	 * isValidReservation checks if reservation number maps to a persistant reservation
 	 * @param rNum reservation number
@@ -90,23 +148,19 @@ class RentalDB {
 	 * @pre r parameters conforms to database requirements
 	 * @post r is created
 	 * @param r an reservation
+	 * @throws SQLException 
 	 */
-	public void createReservation(Reservation r){
+	public void createReservation(Reservation r) throws SQLException{
 		
-		/*//what happens if it is only half of the insertion?
-        try{
-            //insert into Reservation table
-        	insertReservation(r);
-            
-            //insert into equipment_reservation table
-        	insertEqRes(r);
-            
-            c.close();
-            
-        }
-        catch(SQLException e){
-            System.err.println(e);
-        }*/
+		//what happens if it is only half of the insertion?
+		//then reservation is still created
+		//customer need to cancel it manually through the function cancel_reservation
+		
+        //insert into Reservation table
+    	insertReservation(r);
+        
+        //insert into equipment_reservation table
+    	insertEqRes(r);
 	}
 	
 
@@ -116,49 +170,50 @@ class RentalDB {
 	 * @throws SQLException
 	 */
 	private void insertEqRes(Reservation r) throws SQLException{
-	/*	// TODO Auto-generated method stub
-    	String sql = "INSERT INTO `equipment_reservation`(`start_date`, `end_date`,`res_id`, `equip_id`) VALUES (?,?,?,?)";
+		// TODO Auto-generated method stub
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+  		
+		int[] equipments = r.getEquipments();
+    	String sql;
     	
-        for (int i =0; i<r.getEquipments().length; i++){
-        	PreparedStatement st = c.prepareStatement(sql);
-
-            st.setDate(1,new java.sql.Date(r.getStartingDate().getTime()));
-            st.setDate(2,new java.sql.Date(r.getEndDate().getTime()));
-            st.setInt(3, r.getID());
-            st.setInt(4,Integer.parseUnsignedInt(r.getEquipments()[i]));
-            
-            st.executeUpdate();
-         
-        }*/
+        for (int i =0; i<equipments.length; i++){
+        	sql= "INSERT INTO `rented_equipment`(`reservation_id`, `equipment_id`)" 
+        			+" VALUES ("+r.getID()+ ", "+equipments[i]+")";
+            stmt.executeUpdate(sql);
+        }
+        //clean up
+        stmt.close();
+        dbm.disconnect();
 	}
 
 	/**
 	 * helps to insert into reservation
 	 * @param r
 	 * @throws SQLException
+	 * @pre r.id = -1 because we want to add NEW entry, not duplicate entry
+	 * @post r.id = auto assigned int 
 	 */
-	private void insertReservation(Connection c, Reservation r) throws SQLException{
+	private void insertReservation(Reservation r) throws SQLException{
 		// TODO Auto-generated method stub
-    /*   	String sql = "INSERT INTO `reservation`( `start_date`, `end_date`, `vehicle_id`, `start_branch_id`, `end_branch_id`, `cus_id`, `status`) VALUES (?,?,?,?,?,?,?)";
-        PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-    	
-        stmt.setDate(1,new java.sql.Date(r.getStartingDate().getTime()));
-        stmt.setDate(2,new java.sql.Date(r.getEndDate().getTime()));
-        stmt.setInt(3,Integer.parseInt(r.getVehicleID()));
-        stmt.setInt(4,Integer.parseInt(r.getStartBranchID()));
-        stmt.setInt(5,Integer.parseInt(r.getEndBranchID()));
-        stmt.setInt(6,Integer.parseInt(r.getCustomerAccountID()));
-        stmt.setString(7,r.getStatus());
-
-        stmt.executeUpdate();
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+       	String query = "INSERT INTO `rental`(`reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `state`, `vehicle_id`) "
+       			+" VALUES (NULL, "+r.getCustomerAccountID()+", \'"
+       			+r.getStartingDate()+"\', \'"+ r.getEndDate()+"\', "
+       			+r.getStartBranchID()+", "+r.getEndBranchID()+", 'reserved', "+r.getVehicleID()+");";
+        System.out.println(query);
+	    stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
         
-        ResultSet rs = stmt.getGeneratedKeys();
-        
-        if (rs!= null && rs.next()){
-        	//set the ID of reservation to be the auto generated key
-            	r.changeID(rs.getInt(1));
+        //the following is used when there is auto generated key
+        ResultSet rs=stmt.getGeneratedKeys();
+        if (rs.next()) {
+        	r.changeID(rs.getInt(1));
         }
-        rs.close();*/
+        
+        //clean up
+        stmt.close();
+        dbm.disconnect();
 	}
 
 	/**

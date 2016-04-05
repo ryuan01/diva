@@ -1,7 +1,6 @@
 package vehicleManagement;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * A vehicle holds data about real Vehicles owned by the rental company
@@ -10,7 +9,7 @@ public class Vehicle {
 	
 	private int id; 
 	private String manufacturer;
-	private Date v_year; // year of purchase
+	private String v_year; // year of purchase
 	private String model;
 	private String color;
 	private String status;
@@ -22,16 +21,16 @@ public class Vehicle {
 	 * Creates a new vehicle
 	 * @param id vehicle id
 	 * @param manufacturer company who made this vehicle
-	 * @param year year of purchase
+	 * @param year_date date of purchase
 	 * @param model model of vehicle
 	 * @param color color of vehicle
 	 * @param status for rent, for sale, or sold
 	 * @param path an relative path to find the picture for this vehicle
 	 */
-	public Vehicle(int id, String manufacturer, Date year, String model, String color, String status, String path) {
+	public Vehicle(int id, String manufacturer, String year_date, String model, String color, String status, String path) {
 		this.id = id;
 		this.manufacturer = manufacturer;
-		this.v_year = year;
+		this.v_year = year_date;
 		this.color = color;
 		this.status = status;
 		this.model = model;
@@ -68,7 +67,7 @@ public class Vehicle {
 	 * Returns the year the Vehicle was manufactured
 	 * @return the year this Vehicle was manufactured
 	 */
-	public Date getYear() {
+	public String getYear() {
 		return v_year;
 	}
 
@@ -76,7 +75,7 @@ public class Vehicle {
 	 * Sets the year that the car was manufactured
 	 * @param year The year the car was manufactured
 	 */
-	public void setYear(Date year) {
+	public void setYear(String year) {
 		this.v_year = year;
 	}
 	
@@ -175,6 +174,11 @@ public class Vehicle {
 
 	public void setObjectClass(String objectClass) {
 		this.objectClass = objectClass;
+	}
+
+	public void setID(int int1) {
+		// TODO Auto-generated method stub
+		id = int1;
 	}
 }
 

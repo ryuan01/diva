@@ -19,17 +19,6 @@ class EquipmentDB {
 	EquipmentDB() {
 		dbm = new ConnectDB();
 	}
-
-	/**
-	 * Checks if this is an equipment
-	 * @param t type
-	 * @param n name
-	 * @pre t must be one of the proposed one
-	 * @post true if it is, false if it is not
-	 */
-	private boolean isEquipment(String t, String n) {
-		return false;
-	}
 	
 	/**
 	 * searchAdditionalEquipments searches for a list of available equipments for a type
@@ -64,6 +53,6 @@ class EquipmentDB {
 		return equipmentList.toArray(new Equipment[equipmentList.size()]);
 			
 			
-		}
+	}
 
 }

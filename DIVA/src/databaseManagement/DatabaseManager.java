@@ -5,28 +5,19 @@
 package databaseManagement;
 
 import java.sql.Connection;
-
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
-
 import accountManagement.Account;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
 import systemManagement.Branch;
+import vehicleManagement.Car;
+import vehicleManagement.Truck;
 import vehicleManagement.Vehicle;
 
-/*Robin */
-/*edited by Sammy*/
 /**
- * DatabaseManager deals with connection to database
+ * DatabaseManager deals with all functions that interacts with database
  * @author Robin, Sammy
  */
-
 public class DatabaseManager {
 	
 	// I am modeling as Has-A relationship
@@ -107,59 +98,50 @@ public class DatabaseManager {
 	public void disconnect() {
 		conDB.disconnect();
 	}
-    
-    // AccountDB
-	/*public Account getAccount(String uname) {
-		return accDB.getAccount(uname);
-	}
-	
-	public Account getAccount(String fname, String lname, String phonenum) {
-		return accDB.getAccount(fname, lname, phonenum);
-	}
-	
-	public boolean loginPasswordUpdate(String username, String enOldPw, String enNewPw){
-		return accDB.loginPasswordUpdate(username, enOldPw, enNewPw);
-	}
-	
-	public void accountUpdate(String acc_key_value, String field, String newInfo) {
-		accDB.accountUpdate(acc_key_value, field, newInfo);
-	}
-	
-	public void accountUpdateStatus(Account acc, String status) {
-		accDB.accountUpdateStatus(acc, status);
-	}
-	
-	public void updateAccountPoints(String acc_key_value, int pt) {
-		accDB.updateAccountPoints(acc_key_value, pt);
-	}
-	
-	public void updateAccountBalance(String acc_key_value,Currency amount) {
-		accDB.updateAccountBalance(acc_key_value, amount);
-	}
-	
-	public boolean createAccount(String[] info) {
-		return accDB.createAccount(info);
-	}
-	
-	public void archiveAccount(String acc_key_value) {
-		accDB.archiveAccount(acc_key_value);
-	}*/
-	// BranchDB
-	public  void addBranch(Branch b) throws SQLException{
+ 
+	//Branch Related
+	/**
+	 * 
+	 * @param b
+	 * @throws SQLException
+	 */
+	public void createBranchEntry(Branch b) throws SQLException
+	{
 		branDB.addBranch(b);
 	}
 	
-	/*public  boolean removebranch(String b_key_value) throws SQLException{
-		return branDB.removebranch(b_key_value);
+	/*
+	 * not relevant
+	public boolean modifyBranchEntry(int id,String address, String city, String province, String zipcode)
+	{
+		return true;
+	}*/
+	
+	/**
+	 * 
+	 * @param id
+	 * @throws SQLException
+	 */
+	public void removeBranchEntry(int id) throws SQLException
+	{
+		branDB.removebranch(id);
 	}
 	
-	public  void changeBranch(String b_key_value){
-		branDB.changeBranch(b_key_value);
-	}*/
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public Branch getBranchEntry(int id) throws SQLException
+	{
+		return branDB.getBranch(id);
+	}
 	
 
 	// EquipmentDB
 
+	// probably should be able to add/delete equipments, modify them
 
    
 	// RentalDB
@@ -167,17 +149,14 @@ public class DatabaseManager {
 	/**
 	 * Create an reservation entry in database
 	 * @param r reservation
+	 * @throws SQLException 
 	 * @pre r.id is null
 	 * @pre r is not in database
 	 * @post r.id is updated 
 	 */
-	public boolean createReservationEntry(Reservation r) {
+	public void createReservationEntry(Reservation r) throws SQLException {
 		// Look at the note in getBranch method
-		/*conDB.connect();
-		//System.out.println("Connected, trying to insert next");
-		reDB.createReservation(conDB.getConnection(), r);
-		conDB.disconnect();*/
-		return true;
+		reDB.createReservation(r);
 	}
 	
 	// can be implemented, removes a Reservation from the database completely, not archived.
@@ -193,18 +172,15 @@ public class DatabaseManager {
 	}
 
 	// updated signature
-	public Reservation[] searchReservationEntries(int reservID, Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, int employeeID, String status) {
-		return null;
-		// TODO Auto-generated method stub
-		
-	}
-
-	// updated signature
-	public boolean modifyReservationEntries(int reservID, Date startDate,Date endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
+	public boolean modifyReservationEntries(int reservID, String startDate,String endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
 			int customerID, int employeeID, String status) {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	public Reservation searchReservationEntry(int reservID) throws SQLException {
+		// TODO Auto-generated method stub
+		return reDB.reservationQuery(reservID);
 	}
 
 
@@ -213,7 +189,7 @@ public class DatabaseManager {
 		return true;
 	}
 	
-	public Date getReservationEndDate(int reservID)
+	public String getReservationEndDate(int reservID)
 	{
 		return null;
 	}
@@ -242,7 +218,14 @@ public class DatabaseManager {
 		return vlist;
 	}
 	
-	public Vehicle[] search(int branch_id, String type) {
+	/**
+	 * 
+	 * @param branch_id
+	 * @param type
+	 * @return
+	 * @throws SQLException
+	 */
+	public Vehicle[] search(int branch_id, String type) throws SQLException {
 		// TODO Auto-generated method stub
 		Vehicle[] vlist = null;
 		if (type.equals("car")){
@@ -257,7 +240,14 @@ public class DatabaseManager {
 		return vlist;
 	}
 	
-	public Vehicle[] searchForSale(int branch_id, String type) {
+	/**
+	 * 
+	 * @param branch_id
+	 * @param type
+	 * @return
+	 * @throws SQLException
+	 */
+	public Vehicle[] searchForSale(int branch_id, String type) throws SQLException {
 		// TODO Auto-generated method stub
 		Vehicle[] vlist = null;
 		if (type.equals("car")){
@@ -310,38 +300,14 @@ public class DatabaseManager {
 	{
 		return true;
 	}
+	public void addSRPoints(int i, int points) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	public boolean modifyPassword(String userName, String newPassword)
 	{
 		return true;
-	}
-	
-	
-	
-	//Branch Related
-	public boolean createBranchEntry(Branch b)
-	{
-		return true;
-	}
-	
-	public boolean modifyBranchEntry(int id,String address, String city, String province, String zipcode)
-	{
-		return true;
-	}
-	
-	public boolean removeBranchEntry(int id)
-	{
-		return true;
-	}
-	
-	public Branch getBranchEntry(int id)
-	{
-		return null;
-	}
-
-	public void addSRPoints(int i, int points) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	/**
@@ -365,5 +331,25 @@ public class DatabaseManager {
 	public void updateVehicleStatus(int v, String status) throws SQLException {
 		// TODO Auto-generated method stub
 		veDB.updateVehicleStatus(v, status);
+	}
+
+
+	/**
+	 * Add a vehicle to database
+	 * @param v {car, truck}
+	 * @throws IllegalArgumentException
+	 * @throws SQLException
+	 */
+	public void addVehicle(Vehicle v) throws IllegalArgumentException, SQLException{
+		// TODO Auto-generated method stub
+		if (v instanceof Car){
+			veDB.addCar((Car) v);
+		}
+		else if (v instanceof Truck){
+			veDB.addTruck((Truck)v);
+		}
+		else { //none of above
+			throw new IllegalArgumentException("addVehicle only takes vehicle of type Car or Truck");
+		}
 	}
 }

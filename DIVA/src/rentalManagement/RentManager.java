@@ -1,8 +1,5 @@
 package rentalManagement;
 
-
-import java.util.Date;
-
 import accountManagement.Account;
 import databaseManagement.DatabaseManager;
 import paymentManagement.PaymentManager;
@@ -34,8 +31,8 @@ class RentManager {
 		 */
 		void startRental(int reservID,String description)
 		{
-			// order of execution:
-			Report report = new Report(new Date(System.currentTimeMillis()), description, reservID,"inspection");
+			String current_date = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+			Report report = new Report(current_date, description, reservID,"inspection");
 			
 			dbConnection.addReport(report);
 			

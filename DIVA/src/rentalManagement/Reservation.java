@@ -1,7 +1,6 @@
 package rentalManagement;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Arrays;
 
 import accountManagement.Account;
@@ -14,8 +13,8 @@ import vehicleManagement.Vehicle;
 // Needs javadoc
 public class Reservation {
 
-	private Date startDate;
-	private Date endDate;
+	private String startDate;
+	private String endDate;
 	private int vehicleID;
 	private int[] equipmentIDs;
 	private int startBranchID;
@@ -56,11 +55,11 @@ public class Reservation {
 	 * @param empl The Employee log in ID Reservation belongs to.
 	 * @param id The Reservation ID.
 	 */
-	public Reservation(Date startDate, Date endDate, int vehID, int[] e, int startBranch, int endBranch, int cusID, String s, 
+	public Reservation(String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, String s, 
 			 int id)
 	{
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.startDate = startD;
+		this.endDate = endD;
 		vehicleID = vehID;
 		equipmentIDs = e;
 		startBranchID = startBranch;
@@ -74,7 +73,7 @@ public class Reservation {
 	 * Modifies the starting date of Reservation.
 	 * @param newDate The start date to be changed.
 	 */
-	public void changeStartDate(Date newDate)
+	public void changeStartDate(String newDate)
 	{
 		startDate = newDate;
 	}
@@ -83,7 +82,7 @@ public class Reservation {
 	 * Modifies the ending date of Reservation.
 	 * @param newDate The end date to be changed.
 	 */
-	public void changeEndDate(Date newDate)
+	public void changeEndDate(String newDate)
 	{
 		endDate = newDate;
 	}
@@ -165,7 +164,7 @@ public class Reservation {
 	 * Returns the Date of the Reservation.
 	 * @return Date of the Reservation.
 	 */
-	public Date getStartingDate()
+	public String getStartingDate()
 	{
 		return this.startDate;
 	}
@@ -174,7 +173,7 @@ public class Reservation {
 	 * Returns the end Date of the Reservation.
 	 * @return Date of the Reservation.
 	 */
-	public Date getEndDate()
+	public String getEndDate()
 	{
 		return this.endDate;
 	}
@@ -248,7 +247,8 @@ public class Reservation {
 		
 		String equipIDArray = this.formatEquiptmentIds(this.equipmentIDs);
 		
-		return "{'startDate':'"+ this.startDate.getTime() +"', 'endDate':'"+this.endDate.getTime()+"',"
+		//passing back dates in the format dd-mm-yyyy as Strings.
+		return "{'startDate':'"+ this.startDate +"', 'endDate':'"+this.endDate+"',"
 			+	"'vehicleID':'"+this.vehicleID+"',"+"'equipmentIds':'"+equipIDArray+"',"
 			+ "'startBranchID':'"+this.startBranchID+"',"+"'endBranchID':'"+this.endBranchID+"',"
 			+ "'customerAccountID':'"+this.customerAccountID+"',"+"'status':'"+this.status+"',"

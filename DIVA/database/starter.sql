@@ -283,3 +283,15 @@ ADD COLUMN vehicle_id MEDIUMINT UNSIGNED NOT NULL;
 
 ALTER TABLE rental
 ADD FOREIGN KEY (vehicle_id) REFERENCES vehicle(vehicle_id);
+
+-- needed to change pk so drop and add again
+-- Create rental equipment table
+DROP TABLE rented_equipment;
+
+CREATE TABLE rented_equipment(
+	reservation_id MEDIUMINT UNSIGNED,
+    equipment_id SMALLINT UNSIGNED,
+    FOREIGN KEY (reservation_id) REFERENCES rental(reservation_id),
+    FOREIGN KEY (equipment_id) REFERENCES equipment(serial_num),
+    CONSTRAINT pk_re PRIMARY KEY (reservation_id,equipment_id)
+);

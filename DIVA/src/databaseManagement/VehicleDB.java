@@ -1,12 +1,12 @@
 package databaseManagement;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
-
+import java.sql.PreparedStatement;
 import systemManagement.Branch;
 import vehicleManagement.Car;
 import vehicleManagement.Truck;
@@ -21,6 +21,7 @@ import vehicleManagement.Vehicle;
 class VehicleDB {
 	
 	ConnectDB dbm;
+	java.text.SimpleDateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd");
 	
 	
 	VehicleDB() {
@@ -76,15 +77,76 @@ class VehicleDB {
 	/**
 	 * addVehicle creates an new entry in TABLE VEHICLE
 	 * @param v vehicle
+	 * @throws SQLException 
 	 * @pre isValidVehicle(v)
 	 * @post a new entry in TABLE VEHICLE
 	 */
-	void addCar(Car v) {
-		
+	void addCar(Car v) throws SQLException {
+		//add to vehicle
+		addVehicle(v);
+		//add to car after
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+        String query = "INSERT INTO `car`(`vehicle_id`, `class`, `baggage`, `door`, `transmission`, `air_condition`, `capacity`)"
+        		+" VALUES ("+v.getID()+", \'"+v.getCarClass()+"\', "+v.getBaggage()
+        		+", \'"+v.getDoor()+"\', "+(v.getTransmission()? 1: 0)+", "
+        		+(v.getAC()? 1:0)+", "+v.getCapacity()+");";
+        System.out.println(query);
+	    stmt.executeUpdate(query);
+	    stmt.close();
+	    dbm.disconnect();
 	}
 
 
-	void addTruck(Car v) {
+	void addTruck(Truck v) throws SQLException {
+		//add to vehicle
+		addVehicle(v);
+		//add to truck after 
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+        String query = "INSERT INTO `truck`(`vehicle_id`, `class`, `interior_b_l`, `interior_b_w`, `interior_b_h`, `capacity_kg`)"
+        		+" VALUES ("+v.getID()+", \'"+v.getTruckClass()+"\', "+new BigDecimal(v.getBL())
+        		+", "+new BigDecimal(v.getBW())+", "+new BigDecimal(v.getBH())+", "+v.getCapacity()+");";
+        System.out.println(query);
+	    stmt.executeUpdate(query);
+	    stmt.close();
+	    dbm.disconnect();		
+	}
+	
+	/**
+	 * Add vehicle entry to table vehicle
+	 * @param v vehicle object
+	 * @pre v.id is -1
+	 * @pre update v.id 
+	 * @throws SQLException
+	 */
+	private void addVehicle(Vehicle v) throws SQLException{
+		//check if id should be auto increment or already exist
+		
+		//add the entry
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+  		String query = "INSERT INTO `vehicle`(`vehicle_id`, `manufacturer`, `v_year`, `model`, `color`, `sale_status`, `path`)";
+  		//id isn't set 
+  		if (v.getID() == -1){
+        	query +=" VALUES (NULL, ";
+  		}
+  		else{ // id is set 
+  			query +=" VALUES ( "+v.getID()+", ";
+  		}
+  		query += "\'"+v.getManufacturer()+"\', \'"+v.getYear()+"\', \'"+v.getModel()+"\', \'"+v.getColor()+"\', \'"+v.getStatus()+"\', \'"+v.getPath()+"\');";
+  		System.out.println(query);
+        stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+        
+        //the following is used when there is auto generated key
+        ResultSet rs=stmt.getGeneratedKeys();
+        if (rs.next()) {
+           v.setID(rs.getInt(1)); 
+        }
+        
+        //clean up
+        stmt.close();
+        dbm.disconnect();
 	}
 
 	/**
@@ -120,10 +182,6 @@ class VehicleDB {
 	
 	private Vehicle[] getTrucks(int branch_id, String start_date, String end_date) throws SQLException{
 		// TODO Auto-generated method stub
-  		ArrayList<Vehicle> vlist = new ArrayList<Vehicle>();
-  		
-  		Statement stmt = dbm.getConnection().createStatement();
-
         String query = "SELECT * FROM truck" 
         		+" INNER JOIN branch_vehicle  ON "
         		+"truck.vehicle_id = branch_vehicle.vehicle_id " 
@@ -137,6 +195,20 @@ class VehicleDB {
         		+" ON truck.vehicle_id = rental.vehicle_id" 
         		+" WHERE rental.end_date >= \'"+start_date+"\'"
         		+" AND rental.start_date < \'"+end_date+"\');";
+        return executeQueryTruck(query);
+	}
+
+	/**
+	 * Helper for returning a list of Trucks
+	 * @param query SQL for searching some criteria of trucks
+	 * @return list of trucks matching that criteria
+	 * @throws SQLException
+	 */
+	private Vehicle[] executeQueryTruck(String query) throws SQLException {
+		// TODO Auto-generated method stub
+  		ArrayList<Vehicle> vlist = new ArrayList<Vehicle>();
+  		
+  		Statement stmt = dbm.getConnection().createStatement();
         ResultSet rs = stmt.executeQuery(query);
         
         //parse result and add to list of branches
@@ -147,19 +219,19 @@ class VehicleDB {
         	
         	int id = rs.getInt("vehicle_id");
         	String v_class = rs.getString("class");
-        	double bl = rs.getDouble("interior_b_l");
-        	double bw = rs.getDouble("interior_b_w");
-        	double bh = rs.getDouble("interior_b_h");
+        	BigDecimal bl = rs.getBigDecimal("interior_b_l");
+        	BigDecimal bw = rs.getBigDecimal("interior_b_w");
+        	BigDecimal bh = rs.getBigDecimal("interior_b_h");
         	int capacity = rs.getInt("capacity_kg");
         	String manufacturer = rs.getString("manufacturer");
-        	Date v_year = rs.getDate("v_year");
+        	String v_year = df.format(rs.getDate("v_year"));
         	String model = rs.getString("model");
         	String color = rs.getString("color");
         	String status = rs.getString("sale_status");
         	String path = rs.getString("path");
         	
         	Truck t = new Truck(id, manufacturer, v_year, model, color, status, path,
-        			v_class, bl,bw,bh,capacity);
+        			v_class, bl.toString(),bw.toString(),bh.toString(),capacity);
         	vlist.add(t);
         }
         
@@ -173,11 +245,16 @@ class VehicleDB {
         return vArray;
 	}
 
+	/**
+	 * 
+	 * @param branch_id
+	 * @param start_date
+	 * @param end_date
+	 * @return
+	 * @throws SQLException
+	 */
 	private Vehicle[] getCars(int branch_id, String start_date, String end_date) throws SQLException {
 		// TODO Auto-generated method stub
-  		ArrayList<Vehicle> vlist = new ArrayList<Vehicle>();
-  		Statement stmt = dbm.getConnection().createStatement();
-
         String query = "SELECT * FROM car" 
         		+" INNER JOIN branch_vehicle  ON "
         		+"car.vehicle_id = branch_vehicle.vehicle_id " 
@@ -191,9 +268,21 @@ class VehicleDB {
         		+" ON car.vehicle_id = rental.vehicle_id" 
         		+" WHERE rental.end_date >= \'"+start_date+"\'"
         		+" AND rental.start_date < \'"+end_date+"\');";
+        return executeQueryCar(query);
+	}
+
+	/**
+	 * Helper for returning list of cars (happens often so grouped together)
+	 * @param query SQL for wanting a list of cars with desirable attributes
+	 * @return
+	 * @throws SQLException 
+	 */
+	private Vehicle[] executeQueryCar(String query) throws SQLException {
+		// TODO Auto-generated method stub
+  		ArrayList<Vehicle> vlist = new ArrayList<Vehicle>();
+  		Statement stmt = dbm.getConnection().createStatement();
         ResultSet rs = stmt.executeQuery(query);
-        
-        //parse result and add to list of branches
+        //parse result and add to list of vehicles
         while (rs.next()){
         	
         	//type isn't in database, need to be updated
@@ -206,9 +295,8 @@ class VehicleDB {
         	boolean transmission = rs.getBoolean("transmission");
         	boolean air_condition = rs.getBoolean("air_condition");
         	int capacity = rs.getInt("capacity");
-        	int location = rs.getInt("location");
         	String manufacturer = rs.getString("manufacturer");
-        	Date v_year = rs.getDate("v_year");
+        	String v_year = df.format(rs.getDate("v_year"));
         	String model = rs.getString("model");
         	String color = rs.getString("color");
         	String status = rs.getString("sale_status");
@@ -235,48 +323,95 @@ class VehicleDB {
 	/**
 	 * searchCars searches a list of cars in a specific branch for-sale
 	 * @param branch_id a branch
+	 * @throws SQLException 
 	 * @pre branch must be valid 
 	 * @post list of cars matching for sale
 	 */	
-	Car[] searchForsaleCars(int branch_id) {
-		return null;
+	Vehicle[] searchForsaleCars(int branch_id) throws SQLException {
+		// TODO Auto-generated method stub
+        String query = "SELECT * FROM car" 
+        		+" INNER JOIN branch_vehicle  ON "
+        		+"car.vehicle_id = branch_vehicle.vehicle_id " 
+        	    +" INNER JOIN vehicle ON "
+        	    +"car.vehicle_id = vehicle.vehicle_id AND "
+        		+" branch_vehicle.location = "
+        	    +branch_id
+        		+" AND sale_status = 'for sale'";
+		return executeQueryCar(query);
 	}
 	
 	/**
 	 * searchTrucks searches a list of trucks in a specific branch for-sale
 	 * @param branch a branch
+	 * @throws SQLException 
 	 * @pre branch must be valid 
 	 * @post list of trucks matching for sale 
 	 */	
-	Truck[] searchForsaleTrucks(int branch) {
-		return null;
+	Vehicle[] searchForsaleTrucks(int branch_id) throws SQLException {
+        String query = "SELECT * FROM truck" 
+        		+" INNER JOIN branch_vehicle  ON "
+        		+"truck.vehicle_id = branch_vehicle.vehicle_id " 
+        	    +" INNER JOIN vehicle ON "
+        	    +"truck.vehicle_id = vehicle.vehicle_id AND "
+        		+" branch_vehicle.location = "
+        	    + branch_id
+        		+" AND sale_status = 'for sale'";
+        return executeQueryTruck(query);
 	}
 
 	/**
 	 * searchCars searches a list of cars in a specific branch overdue
 	 * @param branch_id a branch
+	 * @throws SQLException 
 	 * @pre branch must be valid 
 	 * @post list of cars matching overdue 
 	 */	
-	Car[] searchOverdueCars(int branch_id) {
-		return null;
+	Vehicle[] searchOverdueCars(int branch_id) throws SQLException {
+		
+		String current_date = df.format(new java.util.Date());
+        String query = "SELECT * FROM car" 
+        		+" INNER JOIN branch_vehicle  ON "
+        		+"car.vehicle_id = branch_vehicle.vehicle_id " 
+        	    +" INNER JOIN vehicle ON "
+        	    +"car.vehicle_id = vehicle.vehicle_id AND "
+        		+" branch_vehicle.location = "
+        	    +branch_id
+        		+" AND sale_status = 'for rent'"
+        		+" AND car.vehicle_id IN "
+        		+"(SELECT car.vehicle_id FROM car INNER JOIN rental "
+        		+" ON car.vehicle_id = rental.vehicle_id" 
+        		+" WHERE rental.end_date < \'"+current_date+"\'"
+        		+" AND rental.state != 'complete');";
+        return executeQueryCar(query);
 	}
 	
 	/**
 	 * searchTrucks searches a list of trucks in a specific branch overdue
 	 * @param branch a branch
+	 * @throws SQLException 
 	 * @pre branch must be valid 
 	 * @post list of trucks matching overdue
 	 */	
-	Truck[] searchOverdueTrucks(int branch) {
-		return null;
+	Vehicle[] searchOverdueTrucks(int branch_id) throws SQLException {
+		
+		String current_date = df.format(new java.util.Date());
+        String query = "SELECT * FROM truck" 
+        		+" INNER JOIN branch_vehicle  ON "
+        		+"truck.vehicle_id = branch_vehicle.vehicle_id " 
+        	    +" INNER JOIN vehicle ON "
+        	    +"truck.vehicle_id = vehicle.vehicle_id AND "
+        		+" branch_vehicle.location = "
+        	    +branch_id
+        		+" AND sale_status = 'for rent'"
+        		+" AND truck.vehicle_id NOT IN "
+        		+"(SELECT truck.vehicle_id FROM truck INNER JOIN rental "
+        		+" ON truck.vehicle_id = rental.vehicle_id" 
+           		+" WHERE rental.end_date < \'"+current_date+"\'"
+        		+" AND rental.state != 'complete');";
+        return executeQueryTruck(query);
 	}	
 
-	//Alex can you propagate this change?
-	//Actually I think this whole method should be inside Vehicle class
-	//because it is a getter.
-	//so getting vehicles by searching them will load a Vehicle object
-	//and calling v.status will return status? 
+	
 	/**
 	 * getVehicleStatus gets the status of a vehicle
 	 * status can be {reserved, rented, sold, damanged, available}
@@ -284,8 +419,10 @@ class VehicleDB {
 	 * @pre isValidVehicle(v)
 	 * @post vehicle status is returned
 	 */
+	/* not relevant anymore, because vehicle state is implicit to reservation
+	 * maybe version 2.0 add this feature
 	String getvehiclestatus(String v_key_value) {
 		return null;
-	}
+	}*/
 
 }

@@ -1,6 +1,6 @@
 package vehicleManagement;
 
-import java.util.Date;
+import java.math.BigDecimal;
 
 /**
  * 
@@ -10,11 +10,12 @@ import java.util.Date;
 
 public class Truck extends Vehicle{
 
-	//wait to be done
 	private String truck_class;
-	private double interior_b_l;
-	private double interior_b_w;
-	private double interior_b_h;
+	//changed dimensions to strings because of bigdecimal, decimal, and double inconsistency
+	//between SQL and Java
+	private String interior_b_l;
+	private String interior_b_w;
+	private String interior_b_h;
 	private int capacity_kg;
 
 	/**
@@ -32,8 +33,8 @@ public class Truck extends Vehicle{
 	 * @param ibh interior width in foot 
 	 * @param ca maximum kg that a truck can hold
 	 */
-	public Truck(int id, String manufacturer, Date year, String model, String color, String status, String path,
-			String c, double ibl, double ibw, double ibh, int ca) {
+	public Truck(int id, String manufacturer, String year, String model, String color, String status, String path,
+			String c, String ibl, String ibw, String ibh, int ca) {
 		super(id, manufacturer, year, model, color, status, path);
 		// TODO Auto-generated constructor stub
 		this.truck_class = c;
@@ -55,21 +56,21 @@ public class Truck extends Vehicle{
 	 * Get interior length of a truck
 	 * @return interior length in foot and inches 
 	 */
-	public double getBL(){
+	public String getBL(){
 		return this.interior_b_l;
 	}
 	/**
 	 * Get interior width of a truck
 	 * @return interior width in foot and inches 
 	 */
-	public double getBW(){
+	public String getBW(){
 		return this.interior_b_w;
 	}
 	/**
 	 * Get interior height of a truck
 	 * @return interior height in foot and inches 
 	 */
-	public double getBH(){
+	public String getBH(){
 		return this.interior_b_h;
 	}
 	/**
@@ -91,26 +92,29 @@ public class Truck extends Vehicle{
 	/**
 	 * Set interior length
 	 * @param l length in foot
+	 * @pre input is initialized using String so it is exact 
 	 * @post interior_b_l = l
 	 */
-	public void setBL(double l){
-		this.interior_b_l =l;
+	public void setBL(BigDecimal l){
+		this.interior_b_l =l.toString();
 	}
 	/**
 	 * Set interior width
 	 * @param w width in foot
+	 * @pre input is initialized using String so it is exact 
 	 * @post interior_b_w = w
 	 */
-	public void setBW(double w){
-		this.interior_b_w = w;
+	public void setBW(BigDecimal w){
+		this.interior_b_w = w.toString();
 	}
 	/**
 	 * Set interior height
 	 * @param h height in foot
+	 * @pre input is initialized using String so it is exact  
 	 * @post interior_b_h = h
 	 */
-	public void setBH(double h){
-		this.interior_b_h=h;
+	public void setBH(BigDecimal h){
+		this.interior_b_h=h.toString();
 	}
 	/**
 	 * Set capacity of truck

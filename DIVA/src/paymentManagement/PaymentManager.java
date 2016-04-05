@@ -1,7 +1,6 @@
 package paymentManagement;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import accountManagement.Account;
 import accountManagement.AccountManager;
@@ -13,7 +12,7 @@ public class PaymentManager {
 
 	private double tax = 0.05;
 	private int numReceipts = 0;
-	private int maxReceipts = 10000;
+	private int maxReceipts = 10000; // don't need this
 	private double final_price = 0;
 	
 /**

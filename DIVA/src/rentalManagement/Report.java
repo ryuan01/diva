@@ -1,7 +1,5 @@
 package rentalManagement;
 
-import java.util.Date;
-
 /**
  * Inpsection report
  * @author Robin
@@ -11,7 +9,7 @@ public class Report {
 	
 	private String objectClass;
 	private int report_num;
-	private Date reportDate;
+	private String reportDate;
 	private String reportDescription;
 	private int reportReservationID;
 	private String type; //can be accident or inspection report 
@@ -24,7 +22,7 @@ public class Report {
 	 * @param description Description of report.
 	 * @param reservID Reservation ID of report.
 	 */
-	public Report(Date d, String description, int reservID, String type)
+	public Report(String d, String description, int reservID, String type)
 	{
 		objectClass = getClass().getName();
 		report_num = -1; //this need to be updated from database 
@@ -38,7 +36,7 @@ public class Report {
 	 * Modifies report date.
 	 * @param newDate New date of report.
 	 */
-	public void changeReportDate(Date newDate)
+	public void changeReportDate(String newDate)
 	{
 		reportDate = newDate;
 	}
@@ -65,7 +63,7 @@ public class Report {
 	 * Returns date of report.
 	 * @return Date of report.
 	 */
-	public Date getReportDate()
+	public String getReportDate()
 	{
 		return reportDate;
 	}

@@ -45,13 +45,10 @@ class BranchDB{
   	
   	/**
   	 * 
-  	 * @param b
+  	 * @param id_num
   	 * @throws SQLException
   	 */
-  	void removebranch(Branch b) throws SQLException{
-  	  
-  	  // get branch id Number:
-  	  int id_num = b.getId();
+  	void removebranch(int id_num) throws SQLException{
   	  
   	  dbm.connect();
   
@@ -62,4 +59,15 @@ class BranchDB{
       stmt.executeUpdate(query);
       dbm.disconnect();
   	}
+
+  	/**
+  	 * Need to implement
+  	 * @param id
+  	 * @return
+  	 */
+	Branch getBranch(int id) throws SQLException{
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
 }

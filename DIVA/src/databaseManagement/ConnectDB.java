@@ -1,7 +1,7 @@
 /**
  * ConnectDB handles all database connections
  * Author: Saud (Sammy) Almahri
- * Date: March 28'th 2016
+ * @version March 28'th 2016
  */
 package databaseManagement;
 

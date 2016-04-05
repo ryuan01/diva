@@ -2,10 +2,11 @@ package databaseManagerTest;
 import java.util.*;
 import java.sql.SQLException;
 import java.text.*;
-import java.util.Date;
 
 import databaseManagement.DatabaseManager;
 import systemManagement.Branch;
+import vehicleManagement.Car;
+import vehicleManagement.Truck;
 import vehicleManagement.Vehicle;
 /**
  * Unit testing for DatabseManager
@@ -29,28 +30,49 @@ public class DatabaseManagerTest {
 		*/
 		
 		//test searching trucks, returns all, returns 2, returns all
-		/*test_search("truck","2006-5-5","2006-5-7");
-		test_search("truck","2016-4-7","2016-4-8");
+		//test_search("truck","2006-5-5","2006-5-7");
+		/*test_search("truck","2016-4-7","2016-4-8");
 		test_search("truck","2016-4-8","2016-4-9");
 		*/
 		
 		//test trying to search for strange things
 		//test_search("car","2006-5-5","2006-5-5");
-		//test_add_branch(); //works!
 		
 		//test assignvehiclebranch
 		//test_assign_vehicle_branch();
 		
 		//test updateVehicleStatus(int v_key_value, String status)
-		test_update_vehicle_status();
+		//test_update_vehicle_status();
 		
-		//test simple query
+		//test addCar(Car c) and addTruck(Truck t)
+		test_add_vehicle();
+	}
+
+	/**
+	 * test addCar(Car c)
+	 */
+	private static void test_add_vehicle() {
+		// TODO Auto-generated method stub
+
+		//test cars
+		//Vehicle v = new Car(-1, "Chevrolet", "2011-1-1", "Spark", "Blue", "for rent", "photos/economy.jpg", "economy", 2, "3/5", true,true, 5);
 		
-		//add threadpool to test how it goes?
+		//test trucks
+		Vehicle v = new Truck(-1, "U-Haul", "2010-1-1", "", "White", "for rent", "photos/24-foot.jpg", "24-foot", "8.50", "8.00", "24.00",3200);
 		
-		//test a list of account
-		
-		//
+		//error conditions
+		//trying to add duplicate entry
+		//Vehicle v = new Car(-1, "Chevrolet", "2011-1-1", "Spark", "Blue", "for rent", "photos/economy.jpg", "economy", 2, "3/5", true,true, 5);
+		try {
+			db.addVehicle(v);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	/**

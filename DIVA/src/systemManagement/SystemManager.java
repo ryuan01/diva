@@ -1,5 +1,7 @@
 package systemManagement;
 
+import java.sql.SQLException;
+
 import databaseManagement.DatabaseManager;
 
 /**
@@ -24,27 +26,31 @@ public class SystemManager {
 	 * @param addressBuildingNumber  The numerical portion of the branch's address
 	 * @param addressStreetName  The name of the street the branch is located
 	 * @param phoneNumber  The phone number of the new branch
+	 * @throws SQLException 
 	 */
-	public boolean addBranch(String address, String city, String province, String zipcode) {
+	public void addBranch(String address, String city, String province, String zipcode) throws SQLException {
 		
-		return dbConnection.createBranchEntry(new Branch(-1, address,city,province,zipcode));
+		dbConnection.createBranchEntry(new Branch(-1, address,city,province,zipcode));
 	}
 	
+	/*
+	 * not relevant, maybe 2.0
 	public boolean changeBranch(int id,String address, String city, String province, String zipcode)
 	{
 		return dbConnection.modifyBranchEntry(id,address,city,province,zipcode);
-	}
+	}*/
 	
 	/**
 	 * Created from Ben's method destroyBranch
 	 * @param branchNumber
 	 * @return
+	 * @throws SQLException 
 	 */
-	public boolean removeBranch(int id) {
-		return dbConnection.removeBranchEntry(id);
+	public void removeBranch(int id) throws SQLException {
+		dbConnection.removeBranchEntry(id);
 	}
 	
-	public Branch getBranch(int id)
+	public Branch getBranch(int id) throws SQLException
 	{
 		return dbConnection.getBranchEntry(id);
 	}
