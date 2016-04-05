@@ -39,10 +39,9 @@ class BranchDB{
   		Statement stmt = dbm.getConnection().createStatement();
         String query = "INSERT INTO branch (`street_name`, `city`, `province`, `zip_code`) "
           + "VALUES (\"" + streetName + "\",\"" + city + "\",\"" + province + "\",\"" + zipcode +"\");";
-        System.out.println(query);
          stmt.executeUpdate(query);
          dbm.disconnect();
-		}
+	}
   	
   	/**
   	 * 

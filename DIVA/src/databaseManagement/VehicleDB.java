@@ -55,16 +55,17 @@ class VehicleDB {
 	 * updateVehicleStatus updates the status of an vehicle
 	 * @param v vehicle
 	 * @param status status {for rent, for sale, sold}
+	 * @throws SQLException 
 	 * @pre isValidVehicle(v)
 	 * @pre status is one of {for rent, for sale, sold}
 	 * @post v.status = status
 	 */
-	void updateVehicleStatus(String v_key_value, String status){
+	void updateVehicleStatus(int v_key_value, String status) throws SQLException{
 		dbm.connect();
 		Statement stmt = dbm.getConnection().createStatement();
 
-        String query = "UPDATE `vehicle` SET `sales_status`= " 
-        		+status+" WHERE `vehicle_id` = "+v_key_value+";";
+        String query = "UPDATE `vehicle` SET `sale_status` = \'" 
+        		+status+"\' WHERE `vehicle_id` = "+v_key_value+";";
         stmt.executeUpdate(query);
         stmt.close();	
 
@@ -78,9 +79,13 @@ class VehicleDB {
 	 * @pre isValidVehicle(v)
 	 * @post a new entry in TABLE VEHICLE
 	 */
-	void addVehicle(Vehicle v) {
+	void addCar(Car v) {
+		
 	}
-	//need to confirm with whoever is doing rental to see the list
+
+
+	void addTruck(Car v) {
+	}
 
 	/**
 	 * Generic search searches a list of cars available for rental in a specific branch starting specific day

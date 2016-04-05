@@ -9,13 +9,6 @@ public class Customer extends Account{
 	private String province;
 	private String zip;
 	
-	//need to implement
-	public Customer(String firstname, String lastname, String phoneNumber, String email, String loginId, int id) {
-		super(firstname, lastname, phoneNumber, email, loginId, id);
-		// TODO Auto-generated constructor stub
-		super.objectClass = getClass().getName();
-	}
-	
 	public Customer(String firstname, String lastname, String phoneNumber, String email, String loginId, int id,
 			long cc, String name_on_card, String street, String city, String province, String zip) {
 		super(firstname, lastname, phoneNumber, email, loginId, id);

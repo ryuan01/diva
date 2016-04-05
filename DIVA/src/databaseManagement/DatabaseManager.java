@@ -355,4 +355,15 @@ public class DatabaseManager {
 		// TODO Auto-generated method stub
 		veDB.updateVehicleLocation(v, b);
 	}
+
+	/**
+	 * Update vehicle's status from {for rent, for sale, sold}
+	 * @param v vehicle_id
+	 * @param status from {for rent, for sale, sold}
+	 * @throws SQLException when the update fails
+	 */
+	public void updateVehicleStatus(int v, String status) throws SQLException {
+		// TODO Auto-generated method stub
+		veDB.updateVehicleStatus(v, status);
+	}
 }

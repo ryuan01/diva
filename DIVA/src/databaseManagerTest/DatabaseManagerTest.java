@@ -39,7 +39,10 @@ public class DatabaseManagerTest {
 		//test_add_branch(); //works!
 		
 		//test assignvehiclebranch
-		test_assign_vehicle_branch();
+		//test_assign_vehicle_branch();
+		
+		//test updateVehicleStatus(int v_key_value, String status)
+		test_update_vehicle_status();
 		
 		//test simple query
 		
@@ -48,6 +51,19 @@ public class DatabaseManagerTest {
 		//test a list of account
 		
 		//
+	}
+
+	/**
+	 * test updateVehicleStatus(int v_key_value, String status)
+	 */
+	private static void test_update_vehicle_status() {
+		// TODO Auto-generated method stub
+		try {
+			db.updateVehicleStatus(3, "for sale");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
