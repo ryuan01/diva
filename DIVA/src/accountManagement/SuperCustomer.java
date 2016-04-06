@@ -1,6 +1,8 @@
 package accountManagement;
 
-public class SuperCustomer extends Customer{
+import webSerivceManagement.ArrayOfStringsable;
+
+public class SuperCustomer extends Customer implements ArrayOfStringsable{
 
 	private int points;
 	//need to implement

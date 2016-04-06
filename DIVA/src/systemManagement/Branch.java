@@ -1,10 +1,13 @@
 package systemManagement;
+
+import webSerivceManagement.ArrayOfStringsable;
+
 /**
  * Branch is a location where customers can rent/buy cars/trucks and employees work at.
  * @Author: Saud (Sammy) Almahri, Robin
  * @date April 3 2016 
  */
-public class Branch {
+public class Branch implements ArrayOfStringsable{
 	
 	private String objectClass;
 	private int id;

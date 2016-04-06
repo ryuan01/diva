@@ -1,10 +1,13 @@
 package accountManagement;
+
+import webSerivceManagement.ArrayOfStringsable;
+
 /**
  * 
  * @author Robin
  *
  */
-public class Employee extends Account{
+public class Employee extends Account implements ArrayOfStringsable{
 
 	private int works_at;
 	private String emp_type;

@@ -7,12 +7,14 @@
 package vehicleManagement;
 import java.math.BigDecimal;
 
+import webSerivceManagement.ArrayOfStringsable;
+
 /**
  * Equipment class models additional equipments for rentals
  * @author Robin
  * @version April 3 2016
  */
-public class Equipment{
+public class Equipment implements ArrayOfStringsable{
 	
 	
 	private String objectClass;

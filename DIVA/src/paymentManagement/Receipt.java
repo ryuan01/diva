@@ -2,12 +2,14 @@ package paymentManagement;
 
 import java.math.BigDecimal;
 
+import webSerivceManagement.ArrayOfStringsable;
+
 /**
  * 
  * A receipt that is provided to the customer after a rental has been made.
  *
  */
-public class Receipt {
+public class Receipt implements ArrayOfStringsable{
 
 	private int receiptId;
 	private BigDecimal price;

@@ -2,13 +2,15 @@ package vehicleManagement;
 
 import java.math.BigDecimal;
 
+import webSerivceManagement.ArrayOfStringsable;
+
 /**
  * 
  * A Truck Class which represents the type of a Vehicle.
  *
  */
 
-public class Truck extends Vehicle{
+public class Truck extends Vehicle implements ArrayOfStringsable{
 
 	private String truck_class;
 	//changed dimensions to strings because of bigdecimal, decimal, and double inconsistency

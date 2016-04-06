@@ -1,11 +1,13 @@
 package rentalManagement;
 
+import webSerivceManagement.ArrayOfStringsable;
+
 /**
  * Inpsection report
  * @author Robin
  *
  */
-public class Report {
+public class Report implements ArrayOfStringsable{
 	
 	private String objectClass;
 	private int report_num;

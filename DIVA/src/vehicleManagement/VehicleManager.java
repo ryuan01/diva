@@ -81,16 +81,61 @@ public class VehicleManager {
 		}
 	}
 
+	/**
+	 * 
+	 * @param branch_id
+	 * @param type
+	 * @return
+	 * @throws SQLException
+	 */
 	public Vehicle[] searchForOverdue(int branch_id, String type) throws SQLException{
 		Vehicle[] vlist = null;
 		vlist = db.search(branch_id, type);
 		return vlist;
 	}
 	
+	/**
+	 * 
+	 * @param branch_id
+	 * @param type
+	 * @return
+	 * @throws SQLException
+	 */
 	public Vehicle[] searchForSale(int branch_id, String type) throws SQLException{
 		Vehicle[] vlist = null;
 		vlist = db.searchForSale(branch_id, type);
 		return vlist;
+	}
+	
+	/**
+	 * Add a car 
+	 * @param id
+	 * @param manufacturer
+	 * @param year
+	 * @param model
+	 * @param color
+	 * @param status
+	 * @param path
+	 * @param c
+	 * @param b
+	 * @param d
+	 * @param tran
+	 * @param ac
+	 * @param ca
+	 * @return true if the car is added
+	 * @throws SQLException 
+	 * @throws IllegalArgumentException 
+	 */
+	public boolean addCar(int id, String manufacturer, String year, String model, String color, String status, String path,
+			String c, int b, String d, boolean tran, boolean ac, int ca) throws IllegalArgumentException, SQLException{
+		Car a_car = new Car (id, manufacturer, year, model, color, status, path,c, b, d, tran,ac, ca);
+		db.addVehicle(a_car);
+		return true;
+	}
+	
+	public boolean addTruck(int id, String manufacturer, String year, String model, String color, String status, String path,
+			String c, String ibl, String ibw, String ibh, int ca){
+		Truck truck = new Truck (id, manufacturer, year, model, color, status, path,  c, String ibl, String ibw, String ibh, int ca))
 	}
 		
 }

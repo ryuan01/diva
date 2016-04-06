@@ -1,6 +1,8 @@
 package accountManagement;
 
-public class Customer extends Account{
+import webSerivceManagement.ArrayOfStringsable;
+
+public class Customer extends Account implements ArrayOfStringsable{
 	private String standing;
 	private long cc_num;
 	private String name_on_card;

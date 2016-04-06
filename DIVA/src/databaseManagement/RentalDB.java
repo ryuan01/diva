@@ -93,11 +93,26 @@ class RentalDB {
 	/**
 	 * isValidReservation checks if reservation number maps to a persistant reservation
 	 * @param rNum reservation number
+	 * @throws SQLException 
 	 * @pre none
 	 * @post returns true if it exists, otherwise false
 	 */
-	public boolean isValidReservation(int rNum) {
-		return false;
+	public boolean isValidReservation(int rNum) throws SQLException {
+		boolean isValid = false;
+ 		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();		
+		String query = "SELECT `reservation_id` FROM `rental` WHERE "
+					+ "`reservation_id` = "+ rNum;
+        ResultSet rs = stmt.executeQuery(query);
+        //parse result, as many additional equipments as possible
+        if (rs.next()){
+        	isValid = true;
+        }
+        //clean up
+        rs.close();
+        stmt.close();
+
+        return isValid;
 	}
 	
 	/**
@@ -107,8 +122,25 @@ class RentalDB {
 	 * @post list of reservations
 	 * @return list of reservations
 	 */
-	public Reservation[] reservationHistory(String acc_key_value) {
-		return null;
+	public Reservation[] rentalHistory(String acc_key_value) {
+ 		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+  		
+		String query = "SELECT `reservation_id`, `customer` FROM `rental`"
+				+" WHERE `customer` = \'"+acc_key_value+"\';";
+        ResultSet rs = stmt.executeQuery(query);
+        Reservation r = null;
+        //parse result, for list of reservations/rentals related to this customer
+    	ArrayList<Reservation> rentals  = new ArrayList<Reservation>();
+        while (rs.next()){
+        	int id = rs.getInt("reservation_id");
+        	rentals.add(reservationQuery(id));
+        }
+
+        //change back to array
+        Vehicle[] vArray = new Car[vlist.size()];
+        vArray = vlist.toArray(vArray);
+        return vArray;
 	}
 	
 	//should be inside Reservation class  

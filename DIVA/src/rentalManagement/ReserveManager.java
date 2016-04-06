@@ -78,8 +78,9 @@ class ReserveManager {
 	 * Searches for the list of Reservations with all attributes passed.
 	 * @param id The type of search executed, can be vehicleID, branchID, reservationID, customerID, employeeID, equipID, reservStatus.
 	 * @return List of qualifying Reservations from the search
+	 * @throws SQLException 
 	 */
-	Reservation searchReservations(int reservID)
+	Reservation searchReservations(int reservID) throws SQLException
 	{
 		return dbConnection.searchReservationEntry(reservID);
 	}

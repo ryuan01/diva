@@ -1,11 +1,13 @@
 package vehicleManagement;
 
+import webSerivceManagement.ArrayOfStringsable;
+
 /**
  * 
  * A Car Class which represents the type of a Vehicle.
  *
  */
-public class Car extends Vehicle{
+public class Car extends Vehicle implements ArrayOfStringsable{
 
 	private String car_class; 
 	private int baggage;

@@ -208,6 +208,7 @@ class VehicleDB {
 		// TODO Auto-generated method stub
   		ArrayList<Vehicle> vlist = new ArrayList<Vehicle>();
   		
+  		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
         ResultSet rs = stmt.executeQuery(query);
         
@@ -238,6 +239,7 @@ class VehicleDB {
         //clean up
         rs.close();
         stmt.close();	
+        dbm.disconnect();
         
         //change back to array
         Vehicle[] vArray = new Truck[vlist.size()];
@@ -280,6 +282,7 @@ class VehicleDB {
 	private Vehicle[] executeQueryCar(String query) throws SQLException {
 		// TODO Auto-generated method stub
   		ArrayList<Vehicle> vlist = new ArrayList<Vehicle>();
+  		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
         ResultSet rs = stmt.executeQuery(query);
         //parse result and add to list of vehicles
@@ -312,6 +315,7 @@ class VehicleDB {
         //clean up
         rs.close();
         stmt.close();
+        dbm.disconnect();
         
         
         //change back to array
