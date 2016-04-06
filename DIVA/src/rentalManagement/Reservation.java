@@ -8,10 +8,11 @@ import accountManagement.Customer;
 import systemManagement.Branch;
 import vehicleManagement.Equipment;
 import vehicleManagement.Vehicle;
+import webSerivceManagement.ArrayOfStringsable;
 
 //Assumes Date object is passed instead of a primitive.
 // Needs javadoc
-public class Reservation {
+public class Reservation implements ArrayOfStringsable{
 
 	private String startDate;
 	private String endDate;

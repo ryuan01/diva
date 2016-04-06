@@ -14,7 +14,12 @@ public class ReservationTester {
 		//create_reservation();
 		
 		int reservationID = 4;
-		rf.findReservations(reservationID);
+		try {
+			rf.findReservations(reservationID);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//rf.modReservation(reservID, startDate, endDate, vehicleID, equipIDs, startBranchID, endBranchID, customerID, employeeID, status);
 		//rf.findReservations(startDate, endDate, vehicleID, equipIDs, startBranchID, endBranchID, customerID, employeeID, status);

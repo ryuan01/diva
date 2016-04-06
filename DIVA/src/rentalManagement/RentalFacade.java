@@ -77,8 +77,9 @@ public class RentalFacade {
 	 * Searches for the a reservations, on unique ID
 	 * @param id unique reservation id
 	 * @return a match
+	 * @throws SQLException 
 	 */
-	public Reservation findReservations(int reservID)
+	public Reservation findReservations(int reservID) throws SQLException
 	{
 		return reservMan.searchReservations(reservID);
 	}

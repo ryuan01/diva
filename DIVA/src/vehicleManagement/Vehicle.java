@@ -2,10 +2,12 @@ package vehicleManagement;
 
 import java.math.BigDecimal;
 
+import webSerivceManagement.ArrayOfStringsable;
+
 /**
  * A vehicle holds data about real Vehicles owned by the rental company
  */
-public class Vehicle {
+public class Vehicle implements ArrayOfStringsable{
 	
 	private int id; 
 	private String manufacturer;

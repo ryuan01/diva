@@ -6,9 +6,9 @@
 package accountManagement;
 //Kevin , continue to extend
 
+import webSerivceManagement.ArrayOfStringsable;
 
-
-public abstract class Account {
+public abstract class Account implements ArrayOfStringsable{
 
 	private int id;
 	private String firstname;
