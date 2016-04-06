@@ -4,6 +4,7 @@
 
 package databaseManagement;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import accountManagement.Account;
@@ -352,4 +353,66 @@ public class DatabaseManager {
 			throw new IllegalArgumentException("addVehicle only takes vehicle of type Car or Truck");
 		}
 	}
+	
+	// USED BY PAYMENT MANAGER
+	
+	// returns BigDecimal[5][9]
+	public BigDecimal[][] getCarPriceList()
+	{
+		return null;
+	}
+
+	// returns BigDecimal[5][4]
+		public BigDecimal[][] getTruckPriceList()
+		{
+			return null;
+		}
+
+		// returns BigDecimal[3][4]
+		public BigDecimal[][] getEquipmentPriceList()
+		{
+			return null;
+		}
+		
+		// returns BigDecimal[3][9]
+		public BigDecimal[][] getCarInsurancePriceList()
+		{
+			return null;
+		}
+		
+		// returns BigDecimal[3][9]
+		public BigDecimal[][] getTruckInsurancePriceList()
+		{
+			return null;
+		}
+		
+		// sets BigDecimal[5][9]
+		public boolean setCarPriceList(BigDecimal[][] a)
+		{
+			return true;
+		}
+
+		// sets BigDecimal[5][4]
+			public boolean setTruckPriceList(BigDecimal[][] a)
+			{
+				return true;
+			}
+
+			// sets BigDecimal[3][4]
+			public boolean setEquipmentPriceList(BigDecimal[][] a)
+			{
+				return true;
+			}
+			
+			// sets BigDecimal[3][9]
+			public boolean setCarInsurancePriceList(BigDecimal[][] a)
+			{
+				return true;
+			}
+			
+			// sets BigDecimal[3][9]
+			public boolean setTruckInsurancePriceList(BigDecimal[][] a)
+			{
+				return true;
+			}
 }

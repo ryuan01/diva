@@ -5,21 +5,24 @@ import java.math.BigDecimal;
 import accountManagement.Account;
 import accountManagement.AccountManager;
 import accountManagement.SuperCustomer;
+import databaseManagement.DatabaseManager;
 import vehicleManagement.Equipment;
 import vehicleManagement.Vehicle;
 
 public class PaymentManager {
 
-	private double tax = 0.05;
-	private int numReceipts = 0;
-	private int maxReceipts = 10000; // don't need this
-	private double final_price = 0;
+	private static BigDecimal tax;
+	private static PriceList priceList;
+	private static DatabaseManager db;
 	
 /**
  * A payment Manager that creates and holds a list of receipts. 
  * The payment Manager is responsible for the money flow of the system. 	
  */
 	public PaymentManager(){
+		tax = new BigDecimal("0.07");
+		db = DatabaseManager.getInstance();
+		priceList = new PriceList(db);
 	}
 
 	/**
@@ -30,7 +33,7 @@ public class PaymentManager {
 	 * @param dropoff_location
 	 * @return receipt
 	 */
-	public Receipt create_new_Receipt(BigDecimal price, String vehicle_rented, String duration, String dropoff_location){
+	public Receipt create_new_Receipt(BigDecimal price, String vehicle_rented, String dropoff_location){
 		Receipt receipt = new Receipt(numReceipts, price, dropoff_location, dropoff_location, dropoff_location);
 		return receipt;
 	}
@@ -56,9 +59,28 @@ public class PaymentManager {
 	 * @param insurance
 	 * @return final_price
 	 */
+	// format of date "yyyy-mm-dd hh:mm:ss"
 	public static BigDecimal calculateCarPrice(String carClass, String start_date, String end_date) {
-		return null;
-		// TODO Auto-generated method stub
+		switch(carClass){
+		case "economy":
+			if()break;
+		case "compact":
+			break;
+		case "midSize":
+			break;
+		case "standard":
+			break;
+		case "fullSize":
+			break;
+		case "premium":
+			break;
+		case "luxury":
+			break;
+		case "SUV":
+			break;
+		case "Van":
+			break;
+		}
 	}
 	
 
@@ -74,31 +96,6 @@ public class PaymentManager {
 	public static int moneyToPoints(BigDecimal money)
 	{
 		return 0;
-	}
-	
-	/**
-	 * Calculates the price of a transaction given an Equipment
-	 * @param vehicleType
-	 * @param insurance
-	 * @param equipment
-	 * @return final_price
-	 */
-	public double calculate_price(Vehicle vehicleType, Equipment equipment){
-		return final_price;
-	}
-/**
- * Gets the tax.
- * @return tax
- */
-	public double getTax() {
-		return tax;
-	}
-/**
- * Sets the Tax.
- * @param tax
- */
-	public void setTax(double tax) {
-		this.tax = tax;
 	}
 
 	/**

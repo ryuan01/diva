@@ -1,5 +1,9 @@
 package paymentManagement;
 
+import java.math.BigDecimal;
+
+import databaseManagement.DatabaseManager;
+
 //so Kevin: distance, daily, hourly, weekly, are just the arrays (or other kind of data structure)
 //no need to create extra classes
 //same as Car, and Truck: these are just types. so more like a 3D array in my mind.
@@ -14,15 +18,17 @@ package paymentManagement;
  */
 public class PriceList {
 
+	
 	//use BigDeicmal type instead
 	
 	//really just 3 tables
 	// 7 types of rates, 9 types of cars 
-	private double[][] price_car;
-	private double[][] price_truck;
-	private double[][] price_equipment;
-	private double[][] price_car_insurance;
-	private double[][] price_truck_insurance;
+	private DatabaseManager db;
+	private BigDecimal[][] price_car;
+	private BigDecimal[][] price_truck;
+	private BigDecimal[][] price_equipment;
+	private BigDecimal[][] price_car_insurance;
+	private BigDecimal[][] price_truck_insurance;
 /*	private double[] price_Economy;
 	private double[] price_Compact;
 	private double[] price_MidSized;
@@ -45,53 +51,81 @@ public class PriceList {
 	/**
 	 * Loads value from db to create PriceList
 	 */
-	public PriceList(){
-		price_car = new double[7][9];
+	public PriceList(DatabaseManager db){
+		this.db = db;
+		price_car = db.getCarPriceList();
 		//ENUM('24-foot', '15-foot', '12-foot', 'box-truck')
-		price_truck = new double[7][4];
+		price_truck = db.getTruckPriceList();
 		//ENUM('ski rack', 'child safety seat', 'lift gate', 'car-towing eq')
-		price_equipment = new double[3][4];
-		price_car_insurance = new double[3][9];
-		price_truck_insurance = new double[3][4];
+		price_equipment = db.getEquipmentPriceList();
+		price_car_insurance = db.getCarInsurancePriceList();
+		price_truck_insurance = db.getTruckInsurancePriceList();
 	}
 	
-	public double getPriceCar(int i, int j){
+	public BigDecimal getPriceCar(int i, int j){
 		return price_car[i][j];
 	}
 	
-	public double getPriceTruck(int i, int j){
+	public BigDecimal getPriceTruck(int i, int j){
 		return price_truck[i][j];
 	}
 	
-	public double getPriceEquipment(int i, int j){
+	public BigDecimal getPriceEquipment(int i, int j){
 		return price_equipment[i][j];
 	}
 	
-	public double getPriceCarInsurance(int i, int j){
+	public BigDecimal getPriceCarInsurance(int i, int j){
 		return price_car_insurance[i][j];
 	}
 	
-	public double getPriceTruckInsurance(int i, int j){
+	public BigDecimal getPriceTruckInsurance(int i, int j){
 		return price_truck_insurance[i][j];
 	}
 	
-	public void setPriceCar(int i, int j, double p){
+	
+	// Changes price lists
+	
+	
+	public void setPriceCar(int i, int j, BigDecimal p){
 		price_car[i][j] = p;
 	}
 	
-	public void setPriceTruck(int i, int j, double p){
+	public void setPriceTruck(int i, int j, BigDecimal p){
 		price_truck[i][j] = p;
 	}
 	
-	public void setPriceEquipment(int i, int j, double p){
+	public void setPriceEquipment(int i, int j, BigDecimal p){
 		price_equipment[i][j] = p;
 	}
 	
-	public void setPriceCarInsurance(int i, int j, double p){
+	public void setPriceCarInsurance(int i, int j, BigDecimal p){
 		price_car_insurance[i][j] = p;
 	}
 	
-	public void setPriceTruckInsurance(int i, int j, double p){
+	public void setPriceTruckInsurance(int i, int j, BigDecimal p){
 		price_truck_insurance[i][j] = p;
+	}
+	
+	
+	// Updates with database
+	
+	public void updatePriceCar(){
+		db.setCarPriceList(price_car);
+	}
+	
+	public void updatePriceTruck(){
+		db.setTruckPriceList(price_truck);
+	}
+	
+	public void updatePriceEquipment(){
+		db.setEquipmentPriceList(price_equipment);
+	}
+	
+	public void updatePriceCarInsurance(){
+		db.setCarInsurancePriceList(price_car_insurance);
+	}
+	
+	public void updatePriceTruckInsurance(){
+		db.setTruckInsurancePriceList(price_truck_insurance);
 	}
 }
