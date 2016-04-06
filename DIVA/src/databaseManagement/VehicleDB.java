@@ -20,7 +20,7 @@ import vehicleManagement.Vehicle;
  */
 class VehicleDB {
 	
-	ConnectDB dbm;
+	private ConnectDB dbm;
 	java.text.SimpleDateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd");
 	
 	
@@ -165,7 +165,6 @@ class VehicleDB {
   		
   		Vehicle[] vArray;
   		
-  		dbm.connect();
   		if (type.equals("car")){
   			vArray = getCars(branch_id, start_date,end_date);
   		}
@@ -175,7 +174,6 @@ class VehicleDB {
   		else {
   			throw new IllegalArgumentException("Type can only be 'car' or 'truck'");
   		}
-        dbm.disconnect();
         
         return vArray;
   	}

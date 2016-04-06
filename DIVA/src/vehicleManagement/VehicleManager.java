@@ -133,9 +133,31 @@ public class VehicleManager {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param manufacturer
+	 * @param year
+	 * @param model
+	 * @param color
+	 * @param status
+	 * @param path
+	 * @param c
+	 * @param ibl
+	 * @param ibw
+	 * @param ibh
+	 * @param ca
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws SQLException
+	 */
 	public boolean addTruck(int id, String manufacturer, String year, String model, String color, String status, String path,
-			String c, String ibl, String ibw, String ibh, int ca){
-		Truck truck = new Truck (id, manufacturer, year, model, color, status, path,  c, String ibl, String ibw, String ibh, int ca))
+			String c, String ibl, String ibw, String ibh, int ca) throws IllegalArgumentException, SQLException{
+		Truck truck = new Truck (id, manufacturer, year, model, color, status, path,  c, ibl, ibw, ibh, ca);
+		db.addVehicle(truck);
+		return true;
 	}
+	
+	//add
 		
 }

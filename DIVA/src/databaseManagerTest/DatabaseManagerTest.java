@@ -45,7 +45,23 @@ public class DatabaseManagerTest {
 		//test_update_vehicle_status();
 		
 		//test addCar(Car c) and addTruck(Truck t)
-		test_add_vehicle();
+		//test_add_vehicle();
+		
+		test_get_price_list();
+	}
+
+	private static void test_get_price_list() {
+		// TODO Auto-generated method stub
+		try {
+			//db.getCarPriceList();
+			//db.getTruckPriceList();
+			//db.getCarInsurancePriceList();
+			db.getEquipmentPriceList();
+			//db.getTruckInsurancePriceList();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

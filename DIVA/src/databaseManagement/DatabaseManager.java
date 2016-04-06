@@ -29,6 +29,7 @@ public class DatabaseManager {
 	//private EquipmentDB eqDB;
 	private RentalDB reDB;
 	private VehicleDB veDB;
+	private PriceDB prDB;
     
     //singieton design pattern
     private static DatabaseManager instance = null;
@@ -67,6 +68,7 @@ public class DatabaseManager {
 		//eqDB = new EquipmentDB();
 		reDB = new RentalDB();
 		veDB = new VehicleDB();
+		prDB = new PriceDB();
     }
        
 	
@@ -356,63 +358,63 @@ public class DatabaseManager {
 	
 	// USED BY PAYMENT MANAGER
 	
-	// returns BigDecimal[5][9]
-	public BigDecimal[][] getCarPriceList()
+	// returns BigDecimal[9][5]
+	public BigDecimal[][] getCarPriceList() throws SQLException
 	{
-		return null;
+		return prDB.getCarPriceList();
 	}
 
-	// returns BigDecimal[5][4]
-		public BigDecimal[][] getTruckPriceList()
-		{
-			return null;
-		}
+	// returns BigDecimal[4][5]
+	public BigDecimal[][] getTruckPriceList() throws SQLException
+	{
+		return prDB.getTruckPriceList();
+	}
 
-		// returns BigDecimal[3][4]
-		public BigDecimal[][] getEquipmentPriceList()
-		{
-			return null;
-		}
-		
-		// returns BigDecimal[3][9]
-		public BigDecimal[][] getCarInsurancePriceList()
-		{
-			return null;
-		}
-		
-		// returns BigDecimal[3][9]
-		public BigDecimal[][] getTruckInsurancePriceList()
-		{
-			return null;
-		}
-		
-		// sets BigDecimal[5][9]
-		public boolean setCarPriceList(BigDecimal[][] a)
-		{
-			return true;
-		}
+	// returns BigDecimal[4][3]
+	public BigDecimal[][] getEquipmentPriceList() throws SQLException
+	{
+		return prDB.getEquipmentPriceList();
+	}
+	
+	// returns BigDecimal[9][3]
+	public BigDecimal[][] getCarInsurancePriceList() throws SQLException
+	{
+		return prDB.getCarInsurancePriceList();
+	}
+	
+	// returns BigDecimal[3][9]
+	public BigDecimal[][] getTruckInsurancePriceList() throws SQLException
+	{
+		return prDB.getTruckInsurancePriceList();
+	}
+	
+	// sets BigDecimal[5][9]
+	public boolean setCarPriceList(BigDecimal[][] a)
+	{
+		return true;
+	}
 
-		// sets BigDecimal[5][4]
-			public boolean setTruckPriceList(BigDecimal[][] a)
-			{
-				return true;
-			}
+	// sets BigDecimal[5][4]
+	public boolean setTruckPriceList(BigDecimal[][] a)
+	{
+		return true;
+	}
 
-			// sets BigDecimal[3][4]
-			public boolean setEquipmentPriceList(BigDecimal[][] a)
-			{
-				return true;
-			}
-			
-			// sets BigDecimal[3][9]
-			public boolean setCarInsurancePriceList(BigDecimal[][] a)
-			{
-				return true;
-			}
-			
-			// sets BigDecimal[3][9]
-			public boolean setTruckInsurancePriceList(BigDecimal[][] a)
-			{
-				return true;
-			}
+	// sets BigDecimal[3][4]
+	public boolean setEquipmentPriceList(BigDecimal[][] a)
+	{
+		return true;
+	}
+	
+	// sets BigDecimal[3][9]
+	public boolean setCarInsurancePriceList(BigDecimal[][] a)
+	{
+		return true;
+	}
+	
+	// sets BigDecimal[3][9]
+	public boolean setTruckInsurancePriceList(BigDecimal[][] a)
+	{
+		return true;
+	}
 }

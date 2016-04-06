@@ -7,7 +7,7 @@ import webSerivceManagement.ArrayOfStringsable;
 /**
  * A vehicle holds data about real Vehicles owned by the rental company
  */
-public class Vehicle implements ArrayOfStringsable{
+public abstract class Vehicle implements ArrayOfStringsable{
 	
 	private int id; 
 	private String manufacturer;
@@ -144,22 +144,6 @@ public class Vehicle implements ArrayOfStringsable{
 	 */
 	public void setPath(String path){
 		this.path = path;
-	}
-
-	/**
-	 * Returns a string describing the Vehicle
-	 * @return the the description of this vehicle
-	 */
-	public String toString(){
-		String tmp = getClass().getName()+" "
-				+" ID: " +id+"\n"
-				+" manufacturer: "+ manufacturer+"\n"
-				+" year: " + v_year+"\n"
-				+" model: " + model+"\n"
-				+" color: " + color+"\n"
-				+" status: " + status+"\n"
-				+" path: " + path+"\n";
-		return tmp;
 	}
 
 	public void setPrice(BigDecimal p) {
