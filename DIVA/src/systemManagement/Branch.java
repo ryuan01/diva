@@ -1,6 +1,6 @@
 package systemManagement;
 
-import webSerivceManagement.ArrayOfStringsable;
+import webServiceManagement.ArrayOfStringsable;
 
 /**
  * Branch is a location where customers can rent/buy cars/trucks and employees work at.
@@ -11,10 +11,7 @@ public class Branch implements ArrayOfStringsable{
 	
 	private String objectClass;
 	private int id;
-	private String address;
-	private String city;
-	private String province;
-	private String zipcode;
+	private Location location;
 	
 	/**
 	 * Create a branch
@@ -25,10 +22,7 @@ public class Branch implements ArrayOfStringsable{
 	 */
 	public Branch(int id, String address, String city, String province, String zipcode){
 		this.id = id;
-		this.address = address;
-		this.city = city;
-		this.province = province;
-		this.zipcode = zipcode;
+		this.location = new Location(address, city, province, zipcode);
 		this.objectClass = getClass().getName();
 	}
 	
@@ -46,7 +40,7 @@ public class Branch implements ArrayOfStringsable{
 	 * @return address 
 	 */
 	public String getFullAddress(){
-		return address+" "+city+" "+province+" "+zipcode;
+		return location.getAddress() +" "+location.getCity()+" "+ location.getProvince() + " " + location.getZipcode();
 	}
 	
 	/**
@@ -57,10 +51,10 @@ public class Branch implements ArrayOfStringsable{
 	 * @param zipcode
 	 */
 	public void setFullAddress(String address, String city, String province, String zipcode){
-		this.address = address;
-		this.city = city;
-		this.province = province;
-		this.zipcode = zipcode;
+		this.location.setAddress(address);
+		this.location.setCity(city);
+		this.location.setProvince(province);
+		this.location.setZipcode(zipcode);
 	}
 	/**
 	 * @param objectClass the objectClass to set
@@ -71,7 +65,7 @@ public class Branch implements ArrayOfStringsable{
 	
 	public String toString() {
 		return "{'objectClass':'"+ this.objectClass +"', 'id':'"+this.id+"',"
-			+	"'address':'"+this.address+"',"+"'city':'"+this.city+"',"
-			+ "'province':'"+this.province+"',"+"'zip':'"+this.zipcode+"'}";
+			+	"'address':'"+this.location.getAddress()+"',"+"'city':'"+this.location.getCity()+"',"
+			+ "'province':'"+this.location.getProvince()+"',"+"'zip':'"+this.location.getZipcode()+"'}";
 	}
 }

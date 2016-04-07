@@ -110,6 +110,7 @@ public class RentalFacade {
 	{
 		//report has a rental field. 
 		//type of payment is irrelevant I think
+		
 		rentMan.startRental(reservID, descriptionOfInspection);
 	}
 		
@@ -121,6 +122,8 @@ public class RentalFacade {
 		 */
 	public void createReturn(int reservID, String description, String dmgDescription,BigDecimal extraPay, String typeOfPayment, String accidentDetail) throws ParseException
 	{
+		//check for another inspection report/ possibly accident report
+		
 		returnMan.startReturn(reservID, description, dmgDescription,extraPay, typeOfPayment, accidentDetail);
 	}
 }

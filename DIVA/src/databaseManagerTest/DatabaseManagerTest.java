@@ -45,9 +45,9 @@ public class DatabaseManagerTest {
 		//test_update_vehicle_status();
 		
 		//test addCar(Car c) and addTruck(Truck t)
-		//test_add_vehicle();
+		test_add_vehicle();
 		
-		test_get_price_list();
+		//test_get_price_list();
 	}
 
 	private static void test_get_price_list() {
@@ -74,7 +74,7 @@ public class DatabaseManagerTest {
 		//Vehicle v = new Car(-1, "Chevrolet", "2011-1-1", "Spark", "Blue", "for rent", "photos/economy.jpg", "economy", 2, "3/5", true,true, 5);
 		
 		//test trucks
-		Vehicle v = new Truck(-1, "U-Haul", "2010-1-1", "", "White", "for rent", "photos/24-foot.jpg", "24-foot", "8.50", "8.00", "24.00",3200);
+		Vehicle v = new Truck(-1, "U-Haul", "2010-1-1", "", "White", "aa", "photos/24-foot.jpg", "24-foot", "8.50", "8.00", "24.00",3200);
 		
 		//error conditions
 		//trying to add duplicate entry
@@ -86,7 +86,7 @@ public class DatabaseManagerTest {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
 	}

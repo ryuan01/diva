@@ -1,26 +1,21 @@
 package accountManagement;
 
-import webSerivceManagement.ArrayOfStringsable;
+import systemManagement.Location;
+import webServiceManagement.ArrayOfStringsable;
 
 public class Customer extends Account implements ArrayOfStringsable{
 	private String standing;
 	private long cc_num;
 	private String name_on_card;
-	private String street_name;
-	private String city;
-	private String province;
-	private String zip;
+	private Location location;
 	
 	public Customer(String firstname, String lastname, String phoneNumber, String email, String loginId, int id,
-			long cc, String name_on_card, String street, String city, String province, String zip) {
+			long cc, String name_on_card, String address, String city, String province, String zip) {
 		super(firstname, lastname, phoneNumber, email, loginId, id);
 		// TODO Auto-generated constructor stub
+		this.location = new Location (address, city, province, zip);
 		this.cc_num = cc;
 		this.name_on_card = name_on_card;
-		this.street_name = street;
-		this.city = city;
-		this.province = province;
-		this.zip=zip;
 		super.objectClass = getClass().getName();
 	}
 	/**
@@ -66,59 +61,10 @@ public class Customer extends Account implements ArrayOfStringsable{
 	}
 
 	/**
-	 * @return the street_name
+	 * @return the location of customer's home
 	 */
-	public String getStreet_name() {
-		return street_name;
-	}
-
-	/**
-	 * @param street_name the street_name to set
-	 */
-	public void setStreet_name(String street_name) {
-		this.street_name = street_name;
-	}
-
-	/**
-	 * @return the city
-	 */
-	public String getCity() {
-		return city;
-	}
-
-	/**
-	 * @param city the city to set
-	 */
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	/**
-	 * @return the province
-	 */
-	public String getProvince() {
-		return province;
-	}
-
-	/**
-	 * @param province the province to set
-	 */
-	public void setProvince(String province) {
-		this.province = province;
-	}
-
-	/**
-	 * @return the zip
-	 */
-	public String getZip() {
-		return zip;
-	}
-
-	/**
-	 * @param zip the zip to set
-	 */
-	public void setZip(String zip) {
-		this.zip = zip;
+	public Location getLocation() {
+		return this.location;
 	}
 	
 	/**

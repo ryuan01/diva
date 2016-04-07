@@ -7,7 +7,7 @@
 package vehicleManagement;
 import java.math.BigDecimal;
 
-import webSerivceManagement.ArrayOfStringsable;
+import webServiceManagement.ArrayOfStringsable;
 
 /**
  * Equipment class models additional equipments for rentals

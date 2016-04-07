@@ -123,7 +123,7 @@ class RentalDB {
 	 * @return list of reservations
 	 */
 	public Reservation[] rentalHistory(String acc_key_value) {
- 		dbm.connect();
+ 	/*	dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
   		
 		String query = "SELECT `reservation_id`, `customer` FROM `rental`"
@@ -141,6 +141,7 @@ class RentalDB {
         Vehicle[] vArray = new Car[vlist.size()];
         vArray = vlist.toArray(vArray);
         return vArray;
+     */
 	}
 	
 	//should be inside Reservation class  

@@ -68,7 +68,7 @@ public class VehicleManager {
 		// TODO Auto-generated method stub
 		if (type.equals("car")){
 			for (int i=0; i< vlist.length; i++){
-				vlist[i].setPrice(PaymentManager.calculateCarPrice(((Car) vlist[i]).getCarClass(), start_date, end_date));
+				//vlist[i].setPrice(PaymentManager.calculateCarPrice(((Car) vlist[i]).getCarClass(), start_date, end_date));
 			}
 		}
 		else if (type.equals("truck")){
@@ -159,5 +159,8 @@ public class VehicleManager {
 	}
 	
 	//add
+	//remove
+	//change vehicle state {for sale, for rent, sold}
+	// add state: damaged
 		
 }

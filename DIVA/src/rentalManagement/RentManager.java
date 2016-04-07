@@ -32,10 +32,14 @@ class RentManager {
 		void startRental(int reservID,String description)
 		{
 			String current_date = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
-			Report report = new Report(current_date, description, reservID,"inspection");
+			int milage = 0;
+			int gasLevel = 100;
+			//fill out report 
+			Report report = new Report(current_date, description, reservID,milage, gasLevel);
 			
 			dbConnection.addReport(report);
 			
+			//check if it is paid for before payForRental.
 			payForRental(dbConnection.getReservationAccount(reservID),reservID);
 			
 			dbConnection.changeReservationStatus(reservID, "Rented");

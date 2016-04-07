@@ -22,7 +22,7 @@ public class PaymentManager {
 	public PaymentManager(){
 		tax = new BigDecimal("0.07");
 		db = DatabaseManager.getInstance();
-		priceList = new PriceList(db);
+		//priceList = new PriceList(db);
 	}
 
 	/**
@@ -34,24 +34,25 @@ public class PaymentManager {
 	 * @return receipt
 	 */
 	public Receipt create_new_Receipt(BigDecimal price, String vehicle_rented, String dropoff_location){
-		Receipt receipt = new Receipt(numReceipts, price, dropoff_location, dropoff_location, dropoff_location);
-		return receipt;
+		//Receipt receipt = new Receipt(numReceipts, price, dropoff_location, dropoff_location, dropoff_location);
+		//return receipt;
+		return null;
 	}
 /**
  * Gets the Number of Receipts in the Array.
  * @return
  */
-	public int getNumReceipts() {
+/*	public int getNumReceipts() {
 		return numReceipts;
-	}
+	}*/
 
 /**
  * Sets the number of Receipts in the Array
  * @param numReceipts
  */
-	public void setNumReceipts(int numReceipts) {
+/*	public void setNumReceipts(int numReceipts) {
 		this.numReceipts = numReceipts;
-	}
+	}*/
 	
 	/**
 	 * Calculates the final price of the transaction
@@ -60,8 +61,8 @@ public class PaymentManager {
 	 * @return final_price
 	 */
 	// format of date "yyyy-mm-dd hh:mm:ss"
-	public static BigDecimal calculateCarPrice(String carClass, String start_date, String end_date) {
-		switch(carClass){
+/*	public static BigDecimal calculateCarPrice(String carClass, String start_date, String end_date) {
+		/*switch(carClass){
 		case "economy":
 			if()break;
 		case "compact":
@@ -80,8 +81,7 @@ public class PaymentManager {
 			break;
 		case "Van":
 			break;
-		}
-	}
+		}*/
 	
 
 	public static BigDecimal calculateTruckPrice(String truckClass, String start_date, String end_date) {
@@ -102,6 +102,8 @@ public class PaymentManager {
 	 * I don't think this should be static 
 	 * @param reservID
 	 */
+	
+	//don't want static! 
 public static void makePayment(Account a, BigDecimal price) {
 	// TODO Auto-generated method stub
 	// should create a receipt for the payment and pass it to interface to show user.

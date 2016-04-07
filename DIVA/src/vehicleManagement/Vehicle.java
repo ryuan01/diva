@@ -2,7 +2,7 @@ package vehicleManagement;
 
 import java.math.BigDecimal;
 
-import webSerivceManagement.ArrayOfStringsable;
+import webServiceManagement.ArrayOfStringsable;
 
 /**
  * A vehicle holds data about real Vehicles owned by the rental company

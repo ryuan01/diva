@@ -2,7 +2,7 @@ package paymentManagement;
 
 import java.math.BigDecimal;
 
-import webSerivceManagement.ArrayOfStringsable;
+import webServiceManagement.ArrayOfStringsable;
 
 /**
  * 

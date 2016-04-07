@@ -12,9 +12,9 @@ public class VehicleManagerTester {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated met
-		test_search();
+		//test_search();
 		
-		//test_add();
+		test_add();
 		
 	}
 
@@ -23,13 +23,13 @@ public class VehicleManagerTester {
 			try {
 				boolean is_added = 
 						//vmg.addCar(-1, "Chevrolet", "2011-01-01", "Spark", "White", "for rent", "photos/economy.jpg","economy", 2, "3/5", true, true, 5);
-						vmg.addTruck(-1, "U-Haul", "2011-01-01", "", "White", "for sale", "photos/15-foot", "15-foot", "7.08", "8.00", "15.00", 1150);
+						vmg.addTruck(-1, "U-Haul", "2011-01-01", "", "White", "aaa", "photos/15-foot", "15-foot", "7.08", "8.00", "15.00", 1150);
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e.getMessage();
 			}
 	}
 

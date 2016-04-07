@@ -1,6 +1,6 @@
 package accountManagement;
 
-import webSerivceManagement.ArrayOfStringsable;
+import webServiceManagement.ArrayOfStringsable;
 
 public class SuperCustomer extends Customer implements ArrayOfStringsable{
 

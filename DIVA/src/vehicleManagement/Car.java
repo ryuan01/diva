@@ -1,6 +1,6 @@
 package vehicleManagement;
 
-import webSerivceManagement.ArrayOfStringsable;
+import webServiceManagement.ArrayOfStringsable;
 
 /**
  * 

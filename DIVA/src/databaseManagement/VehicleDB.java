@@ -107,7 +107,7 @@ class VehicleDB {
         String query = "INSERT INTO `truck`(`vehicle_id`, `class`, `interior_b_l`, `interior_b_w`, `interior_b_h`, `capacity_kg`)"
         		+" VALUES ("+v.getID()+", \'"+v.getTruckClass()+"\', "+new BigDecimal(v.getBL())
         		+", "+new BigDecimal(v.getBW())+", "+new BigDecimal(v.getBH())+", "+v.getCapacity()+");";
-        System.out.println(query);
+        //System.out.println(query);
 	    stmt.executeUpdate(query);
 	    stmt.close();
 	    dbm.disconnect();		

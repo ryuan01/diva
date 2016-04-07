@@ -1,6 +1,6 @@
 package rentalManagement;
 
-import webSerivceManagement.ArrayOfStringsable;
+import webServiceManagement.ArrayOfStringsable;
 
 /**
  * Inpsection report
@@ -9,29 +9,35 @@ import webSerivceManagement.ArrayOfStringsable;
  */
 public class Report implements ArrayOfStringsable{
 	
+	private static final int MAX_MILEGE = 0; 
 	private String objectClass;
 	private int report_num;
 	private String reportDate;
 	private String reportDescription;
 	private int reportReservationID;
-	private String type; //can be accident or inspection report 
+	private int milage; //0 - MAX_MILEGE
+	private int gasLevel; //unsigned int between 0-100
 	
 	
 	//methods need to be changed.
+
 	/**
-	 * A Report with date, description, and associated reservation.
-	 * @param d Date of report.
-	 * @param description Description of report.
-	 * @param reservID Reservation ID of report.
+	 *  A Report with date, description, and associated reservation.
+	 * @param d
+	 * @param description
+	 * @param reservID
+	 * @param milage
+	 * @param gasLevel
 	 */
-	public Report(String d, String description, int reservID, String type)
+	public Report(String d, String description, int reservID, int milage, int gasLevel)
 	{
 		objectClass = getClass().getName();
 		report_num = -1; //this need to be updated from database 
 		reportDate = d;
 		reportDescription = description;
 		reportReservationID = reservID;
-		this.type = type;
+		this.milage = milage;
+		this.gasLevel = gasLevel;
 	}
 	
 	/**
@@ -96,13 +102,6 @@ public class Report implements ArrayOfStringsable{
 		return report_num;
 	}
 	
-	/**
-	 * Get report type 
-	 * @return type {inspection, accident}
-	 */
-	public String getType(){
-		return type;
-	}
 	
 	public String getObjectClass() {
 		return objectClass;

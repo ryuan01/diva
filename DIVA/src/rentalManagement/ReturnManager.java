@@ -40,7 +40,10 @@ class ReturnManager {
 		if(accidentDetail != "")
 		{
 			String current_date = sdf.format(new java.util.Date());
-			Report r = new Report(current_date, description, reservID, "accident");
+			int milage = 0;
+			int gasLevel = 100;
+			//fill out report 
+			Report r = new Report(current_date, description, reservID,milage, gasLevel);
 			
 			dbConnection.addReport(r);
 			

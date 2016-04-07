@@ -8,7 +8,7 @@ import accountManagement.Customer;
 import systemManagement.Branch;
 import vehicleManagement.Equipment;
 import vehicleManagement.Vehicle;
-import webSerivceManagement.ArrayOfStringsable;
+import webServiceManagement.ArrayOfStringsable;
 
 //Assumes Date object is passed instead of a primitive.
 // Needs javadoc
@@ -24,6 +24,7 @@ public class Reservation implements ArrayOfStringsable{
 	private String status;
 	//private int employeeAccountID; <-- won't be stored
 	private int reservID;
+	//needs a field that says "balance of this rental"
 	
 	/**
 	 * Creates empty Reservation.
