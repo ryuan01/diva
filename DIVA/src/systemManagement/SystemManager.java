@@ -60,7 +60,8 @@ public class SystemManager {
 	 * @pre The system is not already started and running
 	 * @pos The system is in the ready state
 	 */
-	public void startUp(String branchNumber) {
+	public void startUp() {
+		//somehow we need to let System Manager be the only one that can start DB manager.
 		DatabaseManager.getInstance(); 
 	}
 	
@@ -70,7 +71,7 @@ public class SystemManager {
 	 * @pre The system is in the ready state
 	 * @pos The system is terminated
 	 */
-	public void shutDown(String branchNumber) {
+	public void shutDown() {
 		DatabaseManager.destroyDatabase(); 
 	}
 

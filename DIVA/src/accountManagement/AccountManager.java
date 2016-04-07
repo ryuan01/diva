@@ -10,6 +10,9 @@ import databaseManagement.DatabaseManager;
  */
 public class AccountManager {
 	
+	//SAMMY LOOK HERE
+	//please change all the methods here so they throws SQLExceptions,
+	
 	static DatabaseManager dbConnection;
 	/**
 	 * Constructs an AccountManager object

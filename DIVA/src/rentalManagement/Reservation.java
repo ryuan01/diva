@@ -1,6 +1,7 @@
 package rentalManagement;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import accountManagement.Account;
@@ -25,6 +26,7 @@ public class Reservation implements ArrayOfStringsable{
 	//private int employeeAccountID; <-- won't be stored
 	private int reservID;
 	//needs a field that says "balance of this rental"
+	private BigDecimal balance;
 	
 	/**
 	 * Creates empty Reservation.
@@ -58,7 +60,7 @@ public class Reservation implements ArrayOfStringsable{
 	 * @param id The Reservation ID.
 	 */
 	public Reservation(String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, String s, 
-			 int id)
+			 int id, BigDecimal amount)
 	{
 		this.startDate = startD;
 		this.endDate = endD;
@@ -69,6 +71,7 @@ public class Reservation implements ArrayOfStringsable{
 		customerAccountID = cusID;
 		status = s;
 		reservID = id;
+		balance = amount;
 	}
 	
 	/**
@@ -241,6 +244,14 @@ public class Reservation implements ArrayOfStringsable{
 	public int getID()
 	{
 		return this.reservID;
+	}
+	
+	public BigDecimal getBalance(){
+		return balance;
+	}
+	
+	public void setBalance(BigDecimal balance){
+		this.balance = balance;
 	}
 	
 	public String toString() {
