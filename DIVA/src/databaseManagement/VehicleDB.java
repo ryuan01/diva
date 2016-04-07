@@ -91,7 +91,7 @@ class VehicleDB {
         		+" VALUES ("+v.getID()+", \'"+v.getCarClass()+"\', "+v.getBaggage()
         		+", \'"+v.getDoor()+"\', "+(v.getTransmission()? 1: 0)+", "
         		+(v.getAC()? 1:0)+", "+v.getCapacity()+");";
-        System.out.println(query);
+       // System.out.println(query);
 	    stmt.executeUpdate(query);
 	    stmt.close();
 	    dbm.disconnect();
@@ -411,6 +411,61 @@ class VehicleDB {
            		+" WHERE rental.end_date < \'"+current_date+"\'"
         		+" AND rental.state != 'complete');";
         return executeQueryTruck(query);
+	}
+
+	/**
+	 * Helper to remove vehicle from 'vehicle' table after it is no longer a foreign constraint
+	 * @pre always called inside removeCar or removeTruck
+	 * @param vehicle_id
+	 * @throws SQLException 
+	 */
+	private void removeVehicle(int vehicle_id) throws SQLException {
+		// TODO Auto-generated method stub
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+		String query = "DELETE FROM `vehicle` WHERE `vehicle_id` = "+vehicle_id;
+	    stmt.executeUpdate(query);
+	    
+	    stmt.close();
+	    dbm.disconnect();
+	}
+
+	/**
+	 * Delete car from car table 
+	 * @param vehicle_id
+	 * @throws SQLException
+	 */
+	void removeCar(int vehicle_id) throws SQLException {
+		// TODO Auto-generated method stub
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+		String query = "DELETE FROM `car` WHERE `vehicle_id` = "+vehicle_id;
+	    stmt.executeUpdate(query);
+	    
+	    //remove from 'vehicle as well'
+	    removeVehicle(vehicle_id);
+	    
+	    stmt.close();
+	    dbm.disconnect();
+	}
+
+	/**
+	 * 
+	 * @param vehicle_id
+	 * @throws SQLException
+	 */
+	void removeTruck(int vehicle_id) throws SQLException {
+		// TODO Auto-generated method stub
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+		String query = "DELETE FROM `truck` WHERE `vehicle_id` = "+vehicle_id;
+	    stmt.executeUpdate(query);
+	    
+	    //remove from 'vehicle as well'
+	    removeVehicle(vehicle_id);
+	    
+	    stmt.close();
+	    dbm.disconnect();		
 	}	
 
 	

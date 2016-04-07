@@ -49,11 +49,11 @@ public class RentalFacade {
 	 * @param reservID The Reservation ID to be removed.
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	public boolean cancelSelfReservation(int customerID, int reservID)
+	public void cancelSelfReservation(int customerID, int reservID)
 	{
 		//the case with customer full name and phone number will return a list of available reservations
 		//then the customer picks one, and it leads to this function in the end.
-		return reservMan.removeReservation(customerID, reservID);
+		reservMan.removeReservation(customerID, reservID);
 	}
 
 	/**

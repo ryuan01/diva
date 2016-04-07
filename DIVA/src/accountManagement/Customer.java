@@ -76,8 +76,8 @@ public class Customer extends Account implements ArrayOfStringsable{
 				+"','email':'"+this.getEmail()+"','status':'"+this.getLoginId()
 				+"','objectClass':'"+this.getObjectClass()+"', 'standing':'"+this.standing
 				+"','cc_num':'"+this.cc_num+"', 'name_on_card':'"+this.name_on_card
-				+"','street_name':'"+this.street_name+"', 'city':'"+this.city
-				+"','province':'"+this.province+"', 'zip':'"+this.zip
+				+"','street_name':'"+this.location.getAddress()+"', 'city':'"+this.location.getCity()
+				+"','province':'"+this.location.getProvince()+"', 'zip':'"+this.location.getZipcode()
 				+"'}";
 	}
 

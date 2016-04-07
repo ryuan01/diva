@@ -35,18 +35,21 @@ public class AccountManager {
 	 * @pre emailAddressIsUnique(emailAddress)
 	 */
 	//this need to be updated to contain address info
-	public boolean addCustomerAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status, int id) {
+	public void addCustomerAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
+		int id = -1; //let database auto increment id
+		//this is wrong btw, need to be changed
 		Account a = new Customer(firstName, lastName, phoneNumber, emailAddress, userName, id, id, status, status, status, status, status);
-		return dbConnection.createAccountEntry(a);
+		dbConnection.createAccountEntry(a);
 	}
 	
-	public boolean addEmployeeAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, int id, int works_at, String type) {
+	public void addEmployeeAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, int works_at, String type) {
+		int id = -1; //let database auto increment id 
 		Account a = new Employee(firstName, lastName, phoneNumber, emailAddress, userName, works_at, type, id);
-		return dbConnection.createAccountEntry(a);
+		dbConnection.createAccountEntry(a);
 	}
 	
-	public boolean modifyAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
-		return dbConnection.modifyAccountEntry(firstName, lastName, phoneNumber, emailAddress, userName, status);
+	public void modifyAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
+		dbConnection.modifyAccountEntry(firstName, lastName, phoneNumber, emailAddress, userName, status);
 	}
 	
 	/**
@@ -79,8 +82,8 @@ public class AccountManager {
 	 * @pre customer.state == activated
 	 * @pos customer.state == deactivated
 	 */
-	public boolean deleteAccount(String userName) {
-		return dbConnection.removeAccountEntry(userName);
+	public void deleteAccount(String userName) {
+		dbConnection.removeAccountEntry(userName);
 	}
 	
 	/**
@@ -101,8 +104,8 @@ public class AccountManager {
 		return dbConnection.retrievePassword(userName);
 	}
 	
-	public boolean changePassword(String userName, String newPassword)
+	public void changePassword(String userName, String newPassword)
 	{
-		return dbConnection.modifyPassword(userName,newPassword);
+		dbConnection.modifyPassword(userName,newPassword);
 	}
 }

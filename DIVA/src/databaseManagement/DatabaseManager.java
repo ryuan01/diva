@@ -163,9 +163,8 @@ public class DatabaseManager {
 	}
 	
 	// can be implemented, removes a Reservation from the database completely, not archived.
-	public boolean removeReservationEntry(int reservID) {
+	public void removeReservationEntry(int reservID) {
 		// TODO Auto-generated method stub
-		return true;
 	}
 
 	// can be implemented, changes status of reservation only.
@@ -175,10 +174,9 @@ public class DatabaseManager {
 	}
 
 	// updated signature
-	public boolean modifyReservationEntries(int reservID, String startDate,String endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
+	public void modifyReservationEntries(int reservID, String startDate,String endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
 			int customerID, int employeeID, String status) {
 		// TODO Auto-generated method stub
-		return true;
 	}
 	
 	public Reservation searchReservationEntry(int reservID) throws SQLException {
@@ -187,9 +185,8 @@ public class DatabaseManager {
 	}
 
 
-	public boolean addReport(Report r)
+	public void addReport(Report r)
 	{
-		return true;
 	}
 	
 	public String getReservationEndDate(int reservID)
@@ -268,14 +265,12 @@ public class DatabaseManager {
 	
 	// Account related
 	
-	public boolean createAccountEntry(Account a)
+	public void createAccountEntry(Account a)
 	{
-		return true;
 	}
 	
-	public boolean removeAccountEntry(String userName)
+	public void removeAccountEntry(String userName)
 	{
-		return true;
 	}
 	
 	public Account[] searchAccountEntries(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status)
@@ -289,28 +284,24 @@ public class DatabaseManager {
 	}
 	
 	// find account by loginID, loginID should be immutable
-	public boolean modifyAccountEntry(String firstname, String lastname, String phoneNumber, String email, String loginId, String status)
+	public void modifyAccountEntry(String firstname, String lastname, String phoneNumber, String email, String loginId, String status)
 	{
-		return true;
 	}
 	
-	public boolean changeAccountStatus(String userName, String status)
+	public void changeAccountStatus(String userName, String status)
 	{
-		return true;
 	}
 	
-	public boolean addSRPoints(String userName, int points)
+	public void addSRPoints(String userName, int points)
 	{
-		return true;
 	}
 	public void addSRPoints(int i, int points) {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	public boolean modifyPassword(String userName, String newPassword)
+	public void modifyPassword(String userName, String newPassword)
 	{
-		return true;
 	}
 
 	/**
@@ -416,5 +407,24 @@ public class DatabaseManager {
 	public boolean setTruckInsurancePriceList(BigDecimal[][] a)
 	{
 		return true;
+	}
+
+	/**
+	 * Remove vehicle from database 
+	 * @param vehicle_id id that uniquely identifies vehicle
+	 * @param type type of vehicle {'car','truck'}
+	 * @throws SQLException 
+	 */
+	public void removeVehicle(int vehicle_id, String type) throws SQLException {
+		// TODO Auto-generated method stub
+		if (type.equals("car")){
+			veDB.removeCar(vehicle_id);
+		}
+		else if (type.equals("truck")){
+			veDB.removeTruck(vehicle_id);
+		}
+		else {
+			throw new IllegalArgumentException("Vehicle can only be of 'car' or 'truck");
+		}
 	}
 }

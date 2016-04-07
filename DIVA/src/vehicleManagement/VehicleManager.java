@@ -122,15 +122,14 @@ public class VehicleManager {
 	 * @param tran
 	 * @param ac
 	 * @param ca
-	 * @return true if the car is added
 	 * @throws SQLException 
 	 * @throws IllegalArgumentException 
 	 */
-	public boolean addCar(int id, String manufacturer, String year, String model, String color, String status, String path,
+	public void addCar(String manufacturer, String year, String model, String color, String status, String path,
 			String c, int b, String d, boolean tran, boolean ac, int ca) throws IllegalArgumentException, SQLException{
+		int id = -1; //let database auto increment id 
 		Car a_car = new Car (id, manufacturer, year, model, color, status, path,c, b, d, tran,ac, ca);
 		db.addVehicle(a_car);
-		return true;
 	}
 	
 	/**
@@ -147,20 +146,43 @@ public class VehicleManager {
 	 * @param ibw
 	 * @param ibh
 	 * @param ca
-	 * @return
 	 * @throws IllegalArgumentException
 	 * @throws SQLException
 	 */
-	public boolean addTruck(int id, String manufacturer, String year, String model, String color, String status, String path,
+	public void addTruck(String manufacturer, String year, String model, String color, String status, String path,
 			String c, String ibl, String ibw, String ibh, int ca) throws IllegalArgumentException, SQLException{
+		int id = -1; //let database auto increment id 
 		Truck truck = new Truck (id, manufacturer, year, model, color, status, path,  c, ibl, ibw, ibh, ca);
 		db.addVehicle(truck);
-		return true;
 	}
 	
-	//add
 	//remove
-	//change vehicle state {for sale, for rent, sold}
-	// add state: damaged
-		
+	public void removeCar(int vehicle_id) throws SQLException{
+		db.removeVehicle(vehicle_id,"car");
+	}
+	
+	public void removeTruck(int vehicle_id) throws SQLException{
+		db.removeVehicle(vehicle_id, "truck");
+	}
+
+	/**
+	 * Update the state of a vehicle
+	 * @param v vehicle_id
+	 * @param status from set {for sale, for rent, sold, damaged}
+	 * @throws SQLException
+	 */
+	public void changeVehicleState(int v, String status) throws SQLException{
+		db.updateVehicleStatus(v, status);
+	}
+	
+	// vehicle branch change
+	/**
+	 * Update the owning branch of a vehicle
+	 * @param v vehicle_id
+	 * @param b branch_id
+	 * @throws SQLException
+	 */
+	public void changeVehicleBranch(int v, int b) throws SQLException{
+		db.updateVehicleLocation(v, b);
+	}
 }

@@ -295,3 +295,10 @@ CREATE TABLE rented_equipment(
     FOREIGN KEY (equipment_id) REFERENCES equipment(serial_num),
     CONSTRAINT pk_re PRIMARY KEY (reservation_id,equipment_id)
 );
+
+-- vehicle status
+ALTER TABLE vehicle
+MODIFY COLUMN sale_status ENUM('sold', 'for sale', 'for rent', 'damaged') DEFAULT 'for rent';
+
+-- need to alter all DATE to DATETIME
+

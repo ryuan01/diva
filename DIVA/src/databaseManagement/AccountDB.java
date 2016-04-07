@@ -106,7 +106,7 @@ class AccountDB{
 	 * @throws SQLException 
 	 */
 	public Account getAccount(String username) throws SQLException {
-		if(isValidUsername(username)){
+		/*if(isValidUsername(username)){
 			dbm.connect();
 			
 			Statement stmt = dbm.getConnection().createStatement();
@@ -158,7 +158,7 @@ class AccountDB{
 			
 			dbm.disconnect();
 			return acct;
-		}
+		}*/
 		return null;
 	
 	}
@@ -175,7 +175,7 @@ class AccountDB{
 	 * @throws SQLException 
 	 */
 	public Account getAccount(String fname, String lname, String phonenum) throws SQLException {
-		if(isValidAccount(fname,lname,phonenum)){
+		/*if(isValidAccount(fname,lname,phonenum)){
 			dbm.connect();
 			// Change the implementation to fit...
 			Statement stmt = dbm.getConnection().createStatement();
@@ -227,7 +227,7 @@ class AccountDB{
 			
 			dbm.disconnect();
 			return acct;
-		}
+		}*/
 		return null;
 	
 	}
