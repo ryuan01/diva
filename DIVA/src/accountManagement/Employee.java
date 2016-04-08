@@ -20,6 +20,15 @@ public class Employee extends Account implements ArrayOfStringsable{
 		super.objectClass = getClass().getName();
 	}
 	
+	public Employee(String firstname, String lastname, String phoneNumber, 
+			String email, String loginId, String password, int works_at, String emp_type, int id){
+		
+		super(firstname, lastname, phoneNumber, email, loginId, password);
+		this.works_at = works_at;
+		this.emp_type = emp_type;
+		super.objectClass = getClass().getName();
+	}
+	
 	public int getWorks_at() {
 		return works_at;
 	}

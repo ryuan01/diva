@@ -12,9 +12,8 @@ public class Main {
 		AccountManager acm = new AccountManager();
 		
 		try {
-			acm.addCustomerAccount("Sammy", "Alma", "7781231234", "sam.@live.ca", "samahri"
-					, "password", 1234123451, "SAMMY ALMA", "1234 WALL STREET", "New York",
-					"BC", "V5E1X2");
+			acm.addEmployeeAccount("Sammy", "Alma", "7781231234", "sam.@live.ca", "samahri"
+					, "password", 1, "SystemAdmin");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

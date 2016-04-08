@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import accountManagement.Account;
 import accountManagement.Customer;
+import accountManagement.Employee;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
 import systemManagement.Branch;
@@ -271,8 +272,9 @@ public class DatabaseManager {
 	
 	public void createAccountEntry(Account account) throws SQLException{
 		if (account instanceof Customer){
-			System.out.println("DatabaseManager :: createAccountEntry()");
 			accDB.createCustomer((Customer)account);
+		} else if (account instanceof Employee){
+			accDB.createEmployee((Employee)account);
 		}
 	}
 	

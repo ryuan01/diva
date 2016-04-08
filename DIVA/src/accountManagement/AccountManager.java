@@ -53,14 +53,14 @@ public class AccountManager {
 				emailAddress, userName, id,
 				password, ccNum, name_on_cc,
 				address, city, province, zip);
-		System.out.println("AccountManager :: addCustomerAccount");
 		dbConnection.createAccountEntry(acc);
 	}
 	
-	public void addEmployeeAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, int works_at, String type) throws SQLException {
+	public void addEmployeeAccount(String firstName, String lastName, String phoneNumber, 
+			String emailAddress, String userName,String password, int works_at, String type) throws SQLException {
 		int id = -1; //let database auto increment id 
-		Account a = new Employee(firstName, lastName, phoneNumber, emailAddress, userName, works_at, type, id);
-		dbConnection.createAccountEntry(a);
+		Account acc = new Employee(firstName, lastName, phoneNumber, emailAddress, userName, password, works_at, type, id);
+		dbConnection.createAccountEntry(acc);
 	}
 	
 	public void modifyAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {

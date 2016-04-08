@@ -42,7 +42,6 @@ class AccountDB{
 		String city;
 		String province;
 		String zipCode;
-		System.out.println("before if");
 		
 		//database variables
 		Statement stmt;
@@ -55,17 +54,23 @@ class AccountDB{
 			lname = customer.getLastname();
 			phone = customer.getPhoneNumber();
 			email = customer.getEmail();
+			
 			ccNum = customer.getCc_num();
 			ccName = customer.getName_on_card();
 			street = customer.getLocation().getAddress();
 			city = customer.getLocation().getCity();
 			province = customer.getLocation().getProvince();
 			zipCode = customer.getLocation().getZipcode();
-
+			
+			// Connect to the database
 			dbm.connect();
+			
 			conn = dbm.getConnection();
 			stmt = conn.createStatement();
 			
+			
+			
+
 			// to enable more than one transaction
 			conn.setAutoCommit(false);
 					
@@ -82,16 +87,74 @@ class AccountDB{
 					+ "\", \"" + ccName + "\", \"" + street + "\", \"" + city + "\", \"" + province
 					+ "\", \"" + zipCode + "\") ;";
 			
-			
+			// execute the statements
 			stmt.executeUpdate(query);
 			
 			conn.commit(); 
 			conn.setAutoCommit(true);
 			
 			dbm.disconnect();
+		} else{
+			// throw a data already exists error
 		}
 	}
-	
+
+	public void createEmployee(Employee employee) throws SQLException{
+		// Account variables
+		String userName = employee.getLoginId();
+		String password;
+		String fname;
+		String lname;
+		String phone;
+		String email;
+		
+		// Employee variables
+		int works_at;
+		String emp_type;
+		
+		//database variables
+		Statement stmt;
+		Connection conn;
+		String query;
+		
+		if (isValidUsername(userName)){
+			password = employee.getPassword();
+			fname = employee.getFirstname();
+			lname = employee.getLastname();
+			phone = employee.getPhoneNumber();
+			email = employee.getEmail();
+			
+			works_at = employee.getWorks_at();
+			emp_type = employee.getEmp_type();
+			
+			dbm.connect();
+			
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			conn.setAutoCommit(false);
+			
+			// insert into user table
+			query = "INSERT INTO `users` (`first_name`, `last_name`, "
+					+ "`phone`, `email`, `account_uName`, `account_password`) VALUES ( \""
+					+ fname + "\", \"" + lname + "\", \"" + phone + "\", \"" + email 
+					+ "\", \"" + userName + "\", \"" + password + "\");\n";
+			stmt.executeUpdate(query);
+			
+			// insert into employee table
+			query = "INSERT INTO `employee`(`id_number`, `works_at`, `e_type`) VALUES "
+					+ "(LAST_INSERT_ID(), \"" + works_at + "\", \"" + emp_type + "\");";
+			
+			stmt.executeUpdate(query);
+			
+			conn.commit();
+			conn.setAutoCommit(false);
+			
+			dbm.disconnect();
+		} else{
+			// throw a data already exists error
+		}
+	}
 	
 	/**
 	 * getAccount gets an account from database
