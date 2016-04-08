@@ -80,7 +80,6 @@ public class AccountManager {
 		dbConnection.changeAccountStatus(userName, "SRCustomer");
 		//the database automatically adds 500 points when a customer
 		// is upgraded to superCustomer
-		// Yes
 	}
 	
 	public static void accumulatePoints(int i, int points)

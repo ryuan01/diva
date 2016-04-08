@@ -303,6 +303,7 @@ public class DatabaseManager {
 		// upgrade to SuperCustomer
 		if (status.equals("SRCustomer")){
 			accDB.upgradeCustomer(userName);
+			
 		}
 	}
 	

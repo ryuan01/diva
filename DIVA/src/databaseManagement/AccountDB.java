@@ -178,7 +178,7 @@ class AccountDB{
 			rs = stmt.executeQuery(query);
 			
 			// create a SuperCustomer entry
-			rs.next();
+			rs.next(); 
 			SRC_id = rs.getInt("id_number");
 			query = "INSERT INTO `super_customer`(`id_number`) VALUES (" + SRC_id + ");";
 			stmt.executeUpdate(query);
