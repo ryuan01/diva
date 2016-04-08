@@ -9,14 +9,33 @@ public class Customer extends Account implements ArrayOfStringsable{
 	private String name_on_card;
 	private Location location;
 	
-	public Customer(String firstname, String lastname, String phoneNumber, String email, String loginId, int id,
-			long cc, String name_on_card, String address, String city, String province, String zip) {
+	public Customer(String firstname, String lastname, String phoneNumber, 
+			String email, String loginId, int id,
+			long cc, String name_on_card, String address, 
+			String city, String province, String zip) {
+		
 		super(firstname, lastname, phoneNumber, email, loginId, id);
 		// TODO Auto-generated constructor stub
+		
 		this.location = new Location (address, city, province, zip);
 		this.cc_num = cc;
 		this.name_on_card = name_on_card;
 		super.objectClass = getClass().getName();
+	}
+	
+	// with password
+	public Customer(String firstname, String lastname, String phoneNumber, 
+			String email, String loginId, int id, 
+			String password, long cc, String name_on_card, 
+			String address, String city, String province, String zip) {
+		
+		// the super with password
+		super(firstname, lastname, phoneNumber, email, loginId, password);
+		this.location = new Location (address, city, province, zip);
+		this.cc_num = cc;
+		this.name_on_card = name_on_card;
+		super.objectClass = getClass().getName();
+		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * @return the standing

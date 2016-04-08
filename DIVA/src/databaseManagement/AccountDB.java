@@ -29,6 +29,7 @@ class AccountDB{
 	public void createCustomer(Customer customer) throws SQLException{
 		// Account variables
 		String userName = customer.getLoginId();
+		String password;
 		String fname;
 		String lname;
 		String phone;
@@ -41,12 +42,19 @@ class AccountDB{
 		String city;
 		String province;
 		String zipCode;
+		System.out.println("before if");
 		
+		//database variables
+		Statement stmt;
+		Connection conn;
+		String query;
 		
 		if (isValidUsername(userName)){
+			password = customer.getPassword();
 			fname = customer.getFirstname();
 			lname = customer.getLastname();
 			phone = customer.getPhoneNumber();
+			email = customer.getEmail();
 			ccNum = customer.getCc_num();
 			ccName = customer.getName_on_card();
 			street = customer.getLocation().getAddress();
@@ -55,13 +63,31 @@ class AccountDB{
 			zipCode = customer.getLocation().getZipcode();
 
 			dbm.connect();
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
 			
-			Statement stmt = dbm.getConnection().createStatement();
-			
-			// insert into user table
-			String query = "INSERT INTO `users` ";
+			// to enable more than one transaction
+			conn.setAutoCommit(false);
 					
+			// insert into user table
+			query = "INSERT INTO `users` (`first_name`, `last_name`, "
+					+ "`phone`, `email`, `account_uName`, `account_password`) VALUES ( \""
+					+ fname + "\", \"" + lname + "\", \"" + phone + "\", \"" + email 
+					+ "\", \"" + userName + "\", \"" + password + "\");\n";
 			stmt.executeUpdate(query);
+			// insert into customer table
+			query= "INSERT INTO `customer` (`id_number`, `cc_Num`, "
+					+ "`name_on_cCard`, `street_name`, `city`, "
+					+ "`province`, `zipcode`) VALUES (LAST_INSERT_ID(),\"" + ccNum
+					+ "\", \"" + ccName + "\", \"" + street + "\", \"" + city + "\", \"" + province
+					+ "\", \"" + zipCode + "\") ;";
+			
+			
+			stmt.executeUpdate(query);
+			
+			conn.commit(); 
+			conn.setAutoCommit(true);
+			
 			dbm.disconnect();
 		}
 	}
@@ -347,11 +373,11 @@ class AccountDB{
 		while (rs.next()){
 			if (username.equals(rs.getString("account_uName"))){
 				dbm.disconnect();
-				return true;
+				return false;
 			}
 		}
 		dbm.disconnect();
-		return false;
+		return true;
 	}
 	
 	/**

@@ -39,9 +39,10 @@ public abstract class Account implements ArrayOfStringsable{
 		this.id = id;
 	}
 	
+	// with password
 	public Account (String firstname, String lastname, String phoneNumber, String email, String loginId, String pw){
-		Account(firstname, lastname, phoneNumber, email,loginID, -1);
-		this.passowrd = pw;
+		this(firstname, lastname, phoneNumber, email,loginId, -1);
+		this.password = pw;
 	}
 	
 	/**

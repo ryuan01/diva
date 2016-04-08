@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import accountManagement.Account;
+import accountManagement.Customer;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
 import systemManagement.Branch;
@@ -24,7 +25,7 @@ public class DatabaseManager {
 	// I am modeling as Has-A relationship
 	// Not sure if I need to change this? 
 	private ConnectDB conDB; // you don't need to create a ConnectDB object here
-	//private AccountDB accDB;
+	private AccountDB accDB;
 	private BranchDB branDB;
 	//private EquipmentDB eqDB;
 	private RentalDB reDB;
@@ -64,7 +65,7 @@ public class DatabaseManager {
 	*/
     private DatabaseManager(){
 		conDB = new ConnectDB();
-		//accDB = new AccountDB();
+		accDB = new AccountDB();
 		branDB = new BranchDB();
 		//eqDB = new EquipmentDB();
 		reDB = new RentalDB();
@@ -268,8 +269,11 @@ public class DatabaseManager {
 	
 	// Account related
 	
-	public void createAccountEntry(Account a)
-	{
+	public void createAccountEntry(Account account) throws SQLException{
+		if (account instanceof Customer){
+			System.out.println("DatabaseManager :: createAccountEntry()");
+			accDB.createCustomer((Customer)account);
+		}
 	}
 	
 	public void removeAccountEntry(String userName)

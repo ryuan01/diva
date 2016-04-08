@@ -1,5 +1,7 @@
 package accountManagement;
 
+import java.sql.SQLException;
+
 import databaseManagement.DatabaseManager;
 
 /**
@@ -10,10 +12,10 @@ import databaseManagement.DatabaseManager;
  */
 public class AccountManager {
 	
-	//SAMMY LOOK HERE
-	//please change all the methods here so they throws SQLExceptions,
 	
 	static DatabaseManager dbConnection;
+	
+	
 	/**
 	 * Constructs an AccountManager object
 	 */
@@ -32,20 +34,30 @@ public class AccountManager {
 	 * @param emailAddress	The customers email address
 	 * @param userName		The customers userName
 	 * @param password		An encrypted version of The customers password
-	 * @return true if the account was successfully created
+	 * @param 
+	 * @throws SQLException 
 	 * @pre userNameIsUnique(userName)
 	 * @pre phoneNumberIsUnique(phoneNumber)
 	 * @pre emailAddressIsUnique(emailAddress)
 	 */
 	//this need to be updated to contain address info
-	public void addCustomerAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
+	public void addCustomerAccount(String firstName, String lastName, String phoneNumber, 
+			String emailAddress, String userName, String password, 
+			long ccNum, String name_on_cc, String address,
+			String city, String province, String zip) throws SQLException 
+	{
+		
 		int id = -1; //let database auto increment id
-		//this is wrong btw, need to be changed
-		Account a = new Customer(firstName, lastName, phoneNumber, emailAddress, userName, id, id, status, status, status, status, status);
-		dbConnection.createAccountEntry(a);
+		// Need to add validation an dchange signature to boolean (or throw exception) -Sammy
+		Account acc = new Customer(firstName, lastName, phoneNumber, 
+				emailAddress, userName, id,
+				password, ccNum, name_on_cc,
+				address, city, province, zip);
+		System.out.println("AccountManager :: addCustomerAccount");
+		dbConnection.createAccountEntry(acc);
 	}
 	
-	public void addEmployeeAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, int works_at, String type) {
+	public void addEmployeeAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, int works_at, String type) throws SQLException {
 		int id = -1; //let database auto increment id 
 		Account a = new Employee(firstName, lastName, phoneNumber, emailAddress, userName, works_at, type, id);
 		dbConnection.createAccountEntry(a);
