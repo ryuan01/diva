@@ -16,87 +16,57 @@ class AccountDB{
 		dbm = new ConnectDB();
 	}
 
-	/**
-	 * isValidUsername checks if the provided username is in the database
-	 * @param username the proposed username
-	 * @pre database is not empty
-	 * @post true if username exists, false if it does not
-	 * @return true if the username exists
-	 */
-	private boolean isValidUsername(String username) throws SQLException {
-		//Get DatabaseManager instance and connect to the database
-		dbm.connect();
-		
-		// execute the query:
-		Statement stmt = dbm.getConnection().createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM users");
-		
-		// check for uany matching usernames
-		while (rs.next()){
-			if (username.equals(rs.getString("account_uName"))){
-				dbm.disconnect();
-				return true;
-			}
-		}
-		dbm.disconnect();
-		return false;
-	}
+/* ----------------------------------PUBLIC INTERFACE-------------------------------------------*/
 	
 	/**
-	 * isValidLogin checks if the username and pw matches
-	 * @param username a username
-	 * @param pw the encrypted password
+	 * createCustomer adds a new customer account to the database
+	 * @param customer object
 	 * @throws SQLException 
-	 * @pre isValidUsername(username)
-	 * @post true if the there is a match, otherwise false
+	 * @pre !isValidUsername(loginID);
+	 * @post isValidAccount(loginId);
+	 * @throws SQLException
 	 */
-	private boolean isValidLogin(String username, String pw) throws SQLException {
-		if (isValidUsername(username) == true){
-			dbm.connect();
+	public void createCustomer(Customer customer) throws SQLException{
+		// Account variables
+		String userName = customer.getLoginId();
+		String fname;
+		String lname;
+		String phone;
+		String email;
 		
-			Statement stmt = dbm.getConnection().createStatement();
+		//customer variables
+		long ccNum;
+		String ccName;
+		String street;
+		String city;
+		String province;
+		String zipCode;
 		
-			ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
 		
-			while(rs.next()){
-				if ((username.equals(rs.getString("account_uName")) == true) && (pw.equals(rs.getString("account_password")) == true)){
-					dbm.disconnect();
-					return true;
-				}
-			}
-		}
-		
-		return false;
-	}
+		if (isValidUsername(userName)){
+			fname = customer.getFirstname();
+			lname = customer.getLastname();
+			phone = customer.getPhoneNumber();
+			ccNum = customer.getCc_num();
+			ccName = customer.getName_on_card();
+			street = customer.getLocation().getAddress();
+			city = customer.getLocation().getCity();
+			province = customer.getLocation().getProvince();
+			zipCode = customer.getLocation().getZipcode();
 
-	/**
-	 * isValidAccount checks if the provided account exists
-	 * @param acc an account object 
-	 * @pre database account is not empty
-	 * @post true if it exists, false if it does not
-	 * @return true if it exists, false if it does not
-	 * @throws SQLException 
-	 */
-	private boolean isValidAccount(String username, String type) throws SQLException {
-		dbm.connect();
-		
-		Statement stmt = dbm.getConnection().createStatement();
-		String query = "SELECT * FROM users, " + type + " WHERE users.id_number = " + type + ".id_number";
-		ResultSet rs = stmt.executeQuery(query);
-		
-		while(rs.next()){
-			if (username.equals(rs.getString("account_uName"))){
-				dbm.disconnect();
-				return true;
-			}
-				
+			dbm.connect();
+			
+			Statement stmt = dbm.getConnection().createStatement();
+			
+			// insert into user table
+			String query = "INSERT INTO `users` ";
+					
+			stmt.executeUpdate(query);
+			dbm.disconnect();
 		}
-		dbm.disconnect();
-		return false;
 	}
 	
 	
-	//getter 
 	/**
 	 * getAccount gets an account from database
 	 * @param username the username related to a account
@@ -264,23 +234,7 @@ class AccountDB{
 			return false;
 		}
 	}
-	
-	//need to check Kevin's work for naming conventions 
-	/**
-	 * updateAccountPoint updates the points related to an account
-	 * @param acc an account 
-	 * @param pt the pt to be added, can be negative
-	 * @pre isValidAccount(acc)
-	 * @pre pt+acc.points >= 0
-	 * @pre typeof(acc) == SuperRent
-	 * @post acc.points =  pt + acc.points
-	 */
-	public void updateAccountPoints(Account acc, int pt) {
-	}
 		
-	//not too sure if types are just subclasses, how do we update them?
-	//updateaccountype();
-	
 	/**
 	 * createAccount create an new account
 	 * @param info the list of information for a new account, 
@@ -312,9 +266,9 @@ class AccountDB{
 		
 	}
 		
-	//same as loginPasswordUpdate
-	//updatePassword();
 
+/* ----------------------------------PRIVATE METHODS-------------------------------------------*/
+	// PRIVATE METHODS
 	//not sure if we really want this, but OK.
 	//I think for security purpose, we might want to move the validation inside to this class
 	/**
@@ -369,6 +323,85 @@ class AccountDB{
 				dbm.disconnect();
 				return true;
 			}
+		}
+		dbm.disconnect();
+		return false;
+	}
+	
+	/**
+	 * isValidUsername checks if the provided username is in the database
+	 * @param username the proposed username
+	 * @pre database is not empty
+	 * @post true if username exists, false if it does not
+	 * @return true if the username exists
+	 */
+	private boolean isValidUsername(String username) throws SQLException {
+		//Get DatabaseManager instance and connect to the database
+		dbm.connect();
+		
+		// execute the query:
+		Statement stmt = dbm.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+		
+		// check for uany matching usernames
+		while (rs.next()){
+			if (username.equals(rs.getString("account_uName"))){
+				dbm.disconnect();
+				return true;
+			}
+		}
+		dbm.disconnect();
+		return false;
+	}
+	
+	/**
+	 * isValidLogin checks if the username and pw matches
+	 * @param username a username
+	 * @param pw the encrypted password
+	 * @throws SQLException 
+	 * @pre isValidUsername(username)
+	 * @post true if the there is a match, otherwise false
+	 */
+	private boolean isValidLogin(String username, String pw) throws SQLException {
+		if (isValidUsername(username) == true){
+			dbm.connect();
+		
+			Statement stmt = dbm.getConnection().createStatement();
+		
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
+		
+			while(rs.next()){
+				if ((username.equals(rs.getString("account_uName")) == true) && (pw.equals(rs.getString("account_password")) == true)){
+					dbm.disconnect();
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	/**
+	 * isValidAccount checks if the provided account exists
+	 * @param acc an account object 
+	 * @pre database account is not empty
+	 * @post true if it exists, false if it does not
+	 * @return true if it exists, false if it does not
+	 * @throws SQLException 
+	 */
+	private boolean isValidAccount(String username, String type) throws SQLException {
+		dbm.connect();
+		
+		Statement stmt = dbm.getConnection().createStatement();
+		String query = "SELECT * FROM users, " + type + " WHERE users.id_number = " + type + ".id_number";
+		ResultSet rs = stmt.executeQuery(query);
+		
+		while(rs.next()){
+			if (username.equals(rs.getString("account_uName"))){
+				dbm.disconnect();
+				return true;
+			}
+				
 		}
 		dbm.disconnect();
 		return false;

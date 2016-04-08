@@ -52,6 +52,7 @@ public class DatabaseManager {
      * @pre instance = new DatabaseManager()
      * @post instance = null
      */
+    // I'm not sure what this method is for (-samahri)
     public static void destroyDatabase()
     {
     	instance = null;
@@ -89,6 +90,7 @@ public class DatabaseManager {
 	 * @post none
 	 * @return a Connection object
 	 */
+	// We don't need this method in AccountDB (-samahri)
 	public Connection getConnection(){
 		return conDB.getConnection();
 	}
@@ -98,6 +100,7 @@ public class DatabaseManager {
 	 * @pre isConnected()
 	 * @post !isConnect()
 	 */
+	// We don't need this method in AccountDB (-samahri)
 	public void disconnect() {
 		conDB.disconnect();
 	}
@@ -105,7 +108,7 @@ public class DatabaseManager {
 	//Branch Related
 	/**
 	 * 
-	 * @param b
+	 * @param b Branch
 	 * @throws SQLException
 	 */
 	public void createBranchEntry(Branch b) throws SQLException

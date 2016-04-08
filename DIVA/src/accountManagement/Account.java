@@ -16,6 +16,7 @@ public abstract class Account implements ArrayOfStringsable{
 	private String phoneNumber;
 	private String email;
 	private String loginId;
+	private String password;
 	protected String objectClass; //this need to be changed in sub-classes 
 
 	/** 
@@ -33,8 +34,22 @@ public abstract class Account implements ArrayOfStringsable{
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.loginId= loginId;
+		this.password = null;
 		this.objectClass= getClass().getName();
 		this.id = id;
+	}
+	
+	public Account (String firstname, String lastname, String phoneNumber, String email, String loginId, String pw){
+		Account(firstname, lastname, phoneNumber, email,loginID, -1);
+		this.passowrd = pw;
+	}
+	
+	/**
+	 * Gets the account password
+	 * @return password
+	 */
+	public String getPassword(){
+		return password;
 	}
 
 	/**
@@ -85,6 +100,14 @@ public abstract class Account implements ArrayOfStringsable{
 	 */
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+	
+	/**
+	 * Sets the password of a user account
+	 * @param password
+	 */
+	public void setPassword(String pw){
+		this.password = pw;
 	}
 
 	/**
