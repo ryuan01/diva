@@ -10,6 +10,8 @@ import accountManagement.*;
  */
 class AccountDB{
 	
+	private static final String USER = "`users`";
+	private static final String CUSTOMER = "`customer`";
 	private ConnectDB dbm;
 	//checking 
 	public AccountDB() {
@@ -48,7 +50,7 @@ class AccountDB{
 		Connection conn;
 		String query;
 		
-		if (isValidUsername(userName)){
+		if (!doesUsernameExist(userName, USER)){
 			password = customer.getPassword();
 			fname = customer.getFirstname();
 			lname = customer.getLastname();
@@ -68,9 +70,6 @@ class AccountDB{
 			conn = dbm.getConnection();
 			stmt = conn.createStatement();
 			
-			
-			
-
 			// to enable more than one transaction
 			conn.setAutoCommit(false);
 					
@@ -117,7 +116,7 @@ class AccountDB{
 		Connection conn;
 		String query;
 		
-		if (isValidUsername(userName)){
+		if (!doesUsernameExist(userName, USER)){
 			password = employee.getPassword();
 			fname = employee.getFirstname();
 			lname = employee.getLastname();
@@ -156,6 +155,40 @@ class AccountDB{
 		}
 	}
 	
+	public void upgradeCustomer(String username) throws SQLException{
+		//database variables
+		Statement stmt;
+		Connection conn;
+		ResultSet rs;
+		String query;
+		
+		// supercustomer variables
+		int SRC_id;
+		
+		if(isValidAccount(username, CUSTOMER)){
+			dbm.connect();
+			
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			// get the id number associated with the account;
+			query = "SELECT users.id_number FROM `customer`, `users` WHERE "
+					+ "users.id_number = customer.id_number AND "
+					+ "users.Account_uName = \"" + username +"\";"; 
+			rs = stmt.executeQuery(query);
+			
+			// create a SuperCustomer entry
+			rs.next();
+			SRC_id = rs.getInt("id_number");
+			query = "INSERT INTO `super_customer`(`id_number`) VALUES (" + SRC_id + ");";
+			stmt.executeUpdate(query);
+			
+			dbm.disconnect();
+
+		}else{
+			// throw an exception since that username is not a customer
+		}
+	}
 	/**
 	 * getAccount gets an account from database
 	 * @param username the username related to a account
@@ -333,27 +366,27 @@ class AccountDB{
 	 * @pre !isValidUsername(info[0]);
 	 * @post isValidAccount(loginId);
 	 */
-	public boolean createAccount(String[] info) throws SQLException {
-		// Does it need to specify the account type?
-		
-		if (!isValidAccount(info[2], info[3], info[4]) && !isValidUsername(info[0])){
-			dbm.connect();
-			
-			Statement stmt = dbm.getConnection().createStatement();
-			
-			String query = "INSERT INTO `users` (`first_name`,`last_name`,`phone`,`email`,`account_uName`,`account_password`) "+
-					"VALUES ('" + info[2] + "','" + info[3] + "','"+ info[4] + "','"+ info[5] + "','"+ info[0] + "','"
-					+ info[1] + "');";
-			System.out.println();
-			stmt.executeUpdate(query);
-			dbm.disconnect();
-			return true;
-			
-		} else{
-			return false;
-		}
-		
-	}
+//	public boolean createAccount(String[] info) throws SQLException {
+//		// Does it need to specify the account type?
+//		
+//		if (!isValidAccount(info[2], info[3], info[4]) && !isValidUsername(info[0])){
+//			dbm.connect();
+//			
+//			Statement stmt = dbm.getConnection().createStatement();
+//			
+//			String query = "INSERT INTO `users` (`first_name`,`last_name`,`phone`,`email`,`account_uName`,`account_password`) "+
+//					"VALUES ('" + info[2] + "','" + info[3] + "','"+ info[4] + "','"+ info[5] + "','"+ info[0] + "','"
+//					+ info[1] + "');";
+//			System.out.println();
+//			stmt.executeUpdate(query);
+//			dbm.disconnect();
+//			return true;
+//			
+//		} else{
+//			return false;
+//		}
+//		
+//	}
 		
 
 /* ----------------------------------PRIVATE METHODS-------------------------------------------*/
@@ -369,7 +402,7 @@ class AccountDB{
 	 * @throws SQLException 
 	 */
 	private String getEncryptedPassword(String username) throws SQLException {
-		if (isValidUsername(username)){
+		if (doesUsernameExist(username, USER)){
 			dbm.connect();
 			String query = "SELECT account_password FROM users WHERE account_uName = '" + username +"';";
 						
@@ -418,30 +451,32 @@ class AccountDB{
 	}
 	
 	/**
-	 * isValidUsername checks if the provided username is in the database
+	 * doesUsernameExist checks if the provided username is in the database
 	 * @param username the proposed username
 	 * @pre database is not empty
 	 * @post true if username exists, false if it does not
 	 * @return true if the username exists
 	 */
-	private boolean isValidUsername(String username) throws SQLException {
+	private boolean doesUsernameExist(String username, String table) throws SQLException {
 		//Get DatabaseManager instance and connect to the database
 		dbm.connect();
 		
 		// execute the query:
 		Statement stmt = dbm.getConnection().createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+		ResultSet rs = stmt.executeQuery("SELECT * FROM " + table);
 		
-		// check for uany matching usernames
+		// check for any matching usernames
 		while (rs.next()){
 			if (username.equals(rs.getString("account_uName"))){
 				dbm.disconnect();
-				return false;
+				return true;
 			}
 		}
 		dbm.disconnect();
-		return true;
+		return false;
 	}
+	
+
 	
 	/**
 	 * isValidLogin checks if the username and pw matches
@@ -452,7 +487,7 @@ class AccountDB{
 	 * @post true if the there is a match, otherwise false
 	 */
 	private boolean isValidLogin(String username, String pw) throws SQLException {
-		if (isValidUsername(username) == true){
+		if (doesUsernameExist(username, USER) == true){
 			dbm.connect();
 		
 			Statement stmt = dbm.getConnection().createStatement();

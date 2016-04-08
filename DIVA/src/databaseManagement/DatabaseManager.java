@@ -147,12 +147,13 @@ public class DatabaseManager {
 	}
 	
 
-	// EquipmentDB
+	// 
+/*----------------------------------------EquipmentDB--------------------------------------------*/
 
 	// probably should be able to add/delete equipments, modify them
 
    
-	// RentalDB
+/*----------------------------------------RentalDB--------------------------------------------*/
 	
 	/**
 	 * Create an reservation entry in database
@@ -205,7 +206,7 @@ public class DatabaseManager {
 		return null;
 	}
 	
-	//VehicleDB
+/*-----------------------------------------VehicleDB----------------------------------------------*/
 	/**
 	 * Generic search of vehicle available at certain date, certain branch 
 	 * @param c
@@ -268,7 +269,7 @@ public class DatabaseManager {
 	}
 	
 	
-	// Account related
+/*---------------------------------------Account related----------------------------------------------*/
 	
 	public void createAccountEntry(Account account) throws SQLException{
 		if (account instanceof Customer){
@@ -297,13 +298,18 @@ public class DatabaseManager {
 	{
 	}
 	
-	public void changeAccountStatus(String userName, String status)
-	{
+	public void changeAccountStatus(String userName, String status) throws SQLException{
+		
+		// upgrade to SuperCustomer
+		if (status.equals("SRCustomer")){
+			accDB.upgradeCustomer(userName);
+		}
 	}
 	
 	public void addSRPoints(String userName, int points)
 	{
 	}
+	
 	public void addSRPoints(int i, int points) {
 		// TODO Auto-generated method stub
 		
@@ -356,7 +362,7 @@ public class DatabaseManager {
 		}
 	}
 	
-	// USED BY PAYMENT MANAGER
+/* --------------------------------------USED BY PAYMENT MANAGER--------------------------------------*/
 	
 	// returns BigDecimal[9][5]
 	public BigDecimal[][] getCarPriceList() throws SQLException

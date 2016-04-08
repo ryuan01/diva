@@ -73,11 +73,13 @@ public class AccountManager {
 	 * @pre CustomerHasACreditCard()
 	 * @pos getAccount(customer.UserName) instanceof SuperCustomer
 	 * @return true if the customer successfully joined Super Club
+	 * @throws SQLException 
 	 */
-	public static void joinSuperClub(String userName) 
+	public static void joinSuperClub(String userName) throws SQLException 
 	{
 		dbConnection.changeAccountStatus(userName, "SRCustomer");
-		dbConnection.addSRPoints(userName, 500);
+		//the database automatically adds 500 points when a customer
+		// is upgraded to superCustomer
 	}
 	
 	public static void accumulatePoints(int i, int points)
@@ -85,7 +87,7 @@ public class AccountManager {
 		dbConnection.addSRPoints(i,points);
 	}
 	
-	public static void leaveSuperCLub(String userName)
+	public static void leaveSuperCLub(String userName) throws SQLException
 	{
 		dbConnection.changeAccountStatus(userName, "RegisteredCustomer");
 	}

@@ -12,8 +12,7 @@ public class Main {
 		AccountManager acm = new AccountManager();
 		
 		try {
-			acm.addEmployeeAccount("Sammy", "Alma", "7781231234", "sam.@live.ca", "samahri"
-					, "password", 1, "SystemAdmin");
+			acm.joinSuperClub("mjane01");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
