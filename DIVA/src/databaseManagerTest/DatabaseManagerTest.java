@@ -13,6 +13,7 @@ import vehicleManagement.Vehicle;
  * @author Robin
  *
  */
+// edited
 public class DatabaseManagerTest {
 
 	static DatabaseManager db = DatabaseManager.getInstance();
@@ -45,7 +46,7 @@ public class DatabaseManagerTest {
 		//test_update_vehicle_status();
 		
 		//test addCar(Car c) and addTruck(Truck t)
-		test_add_vehicle();
+		//test_add_vehicle();
 		
 		//test_get_price_list();
 	}
