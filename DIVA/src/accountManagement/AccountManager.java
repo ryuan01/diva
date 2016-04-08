@@ -77,6 +77,7 @@ public class AccountManager {
 	 */
 	public static void joinSuperClub(String userName) throws SQLException 
 	{
+		// Why is it Static (-Sammy)
 		dbConnection.changeAccountStatus(userName, "SRCustomer");
 		//the database automatically adds 500 points when a customer
 		// is upgraded to superCustomer
