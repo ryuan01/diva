@@ -28,14 +28,14 @@ public class DatabaseManagerTest {
 		eq[1] = 2;
 		//(String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, 
 		// int id, BigDecimal amount)
-		Reservation r = new Reservation("2016-4-9", "2016-4-10", 1 , eq , 2, 3, 1, -1, new BigDecimal("100.00"));
+		//Reservation r = new Reservation("2016-4-9", "2016-4-10", 1 , eq , 2, 3, 1, -1, new BigDecimal("100.00"));
 		try {
-			dbm.createReservationEntry(r);
+			//dbm.createReservationEntry(r);
 			Reservation[] rs = dbm.reservationHistory(1);
 			for (int i=0; i< rs.length; i++){
 				System.out.println(rs[i].toString());;
 			}
-			//dbm.removeReservationEntry(r.getID());
+			//dbm.removeReservationEntry(16);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

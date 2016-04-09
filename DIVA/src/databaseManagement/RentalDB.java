@@ -163,16 +163,51 @@ class RentalDB {
 	 * @post !isValidReservation(r)
 	 */
 	public void removeReservation(int r_key_value) throws SQLException {
-  	  dbm.connect();
-  
-      Statement stmt = dbm.getConnection().createStatement();
-      
-      String query = "DELETE FROM reservation WHERE reservation_id=" + r_key_value +";";
-      
-      stmt.executeUpdate(query);
-      dbm.disconnect();
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();		
+		dbm.getConnection().setAutoCommit(false);
+		//set save point 
+		Savepoint savepoint1 = dbm.getConnection().setSavepoint("Savepoint1");
+		try {
+		      
+			Reservation r = reservationQuery(r_key_value);
+			removeEquipments(r.getEquipments(), r_key_value, stmt);
+			String query = "DELETE FROM reservation WHERE reservation_id=" + r_key_value +";";
+			
+			stmt.executeUpdate(query);
+	    	//try to execute
+	    	dbm.getConnection().commit();
+	    	
+		} catch (SQLException e) {
+			//this is for unsuccessfully adding any of these entries into database
+			dbm.getConnection().rollback(savepoint1);
+			e.printStackTrace();
+			System.out.println("roll back happened");
+		} finally{
+	        //clean up
+	        stmt.close();
+	        dbm.disconnect();
+		}
 	}
 	
+	/**
+	 * Removes equipments from Reservation
+	 * @param equipments
+	 * @param r_key_value
+	 * @param stmt 
+	 * @throws SQLException 
+	 */
+	private void removeEquipments(int[] equipments, int r_key_value, Statement stmt) throws SQLException {
+		// TODO Auto-generated method stub
+		String sql;
+		for (int i = 0; i< equipments.length; i++){
+	       	sql= "DELETE FROM `rented_equipment`" 
+        			+" WHERE reservation_id = "+r_key_value
+        			+" AND equipment_id = "+equipments[i];
+            stmt.executeUpdate(sql);
+		}
+	}
+
 	//create 
 	/**
 	 * 
@@ -211,12 +246,11 @@ class RentalDB {
 			dbm.getConnection().rollback(savepoint1);
 			e.printStackTrace();
 			System.out.println("roll back happened");
+		} finally{
+	        //clean up
+	        stmt.close();
+	        dbm.disconnect();
 		}
-    	
-        
-        //clean up
-        stmt.close();
-        dbm.disconnect();
 	}
 	
 
