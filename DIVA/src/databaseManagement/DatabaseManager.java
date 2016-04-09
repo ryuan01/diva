@@ -168,22 +168,42 @@ public class DatabaseManager {
 		reDB.createReservation(r);
 	}
 	
-	// can be implemented, removes a Reservation from the database completely, not archived.
-	public void removeReservationEntry(int reservID) {
+	/**
+	 * Return reservation history for a customer
+	 * @param acc_key_value customer account key value
+	 * @return list of reservations associated with a customer
+	 * @throws SQLException 
+	 */
+	public Reservation[] reservationHistory(int acc_key_value) throws SQLException{
+		return reDB.reservationHistory(acc_key_value);
+	}
+	
+	/**
+	 * removes a Reservation from the database completely, not archived
+	 * @param reservID
+	 * @throws SQLException
+	 */
+	public void removeReservationEntry(int reservID) throws SQLException {
 		// TODO Auto-generated method stub
+		reDB.removeReservation(reservID);
 	}
 
 	// can be implemented, changes status of reservation only.
+	// doesn't have a status as of now, maybe implemented later
+	/*
 	public void changeReservationStatus(int reservID, String string) {
 		// TODO Auto-generated method stub
 		
-	}
+	}*/
 
 	// updated signature
+	// maybe hard to do because of how we track reserved dates
+	// for version 2.0 maybe
+	/*
 	public void modifyReservationEntries(int reservID, String startDate,String endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
 			int customerID, int employeeID, String status) {
 		// TODO Auto-generated method stub
-	}
+	}*/
 	
 	/**
 	 * Search database for a reservation

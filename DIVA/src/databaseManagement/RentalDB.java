@@ -120,8 +120,9 @@ class RentalDB {
 	 * @pre isValidAccount(acc)
 	 * @post list of reservations
 	 * @return list of reservations
+	 * @throws SQLException 
 	 */
-	public Reservation[] reservationHistory(String acc_key_value) {
+	public Reservation[] reservationHistory(int acc_key_value) throws SQLException {
  		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
   		
@@ -137,9 +138,9 @@ class RentalDB {
         }
 
         //change back to array
-        Vehicle[] vArray = new Car[vlist.size()];
-        vArray = vlist.toArray(vArray);
-        return vArray;
+        Reservation[] rArray = new Reservation[reservations.size()];
+        rArray = reservations.toArray(rArray);
+        return rArray;
 	}
 	
 	//should be inside Reservation class  
@@ -157,10 +158,19 @@ class RentalDB {
 	/**
 	 * removeReservation to a reservation, or to be cancelled
 	 * @param r reservation 
+	 * @throws SQLException 
 	 * @pre isValidReservation(r)
 	 * @post !isValidReservation(r)
 	 */
-	public void removeReservation(String r_key_value) {
+	public void removeReservation(int r_key_value) throws SQLException {
+  	  dbm.connect();
+  
+      Statement stmt = dbm.getConnection().createStatement();
+      
+      String query = "DELETE FROM reservation WHERE reservation_id=" + r_key_value +";";
+      
+      stmt.executeUpdate(query);
+      dbm.disconnect();
 	}
 	
 	//create 
@@ -182,16 +192,28 @@ class RentalDB {
 	 * @throws SQLException 
 	 */
 	public void createReservation(Reservation r) throws SQLException{
-		
-		//what happens if it is only half of the insertion?
-		//then reservation is still created
-		//customer need to cancel it manually through the function cancel_reservation
-		
-        //insert into Reservation table
-    	insertReservation(r);
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();		
+		dbm.getConnection().setAutoCommit(false);
+		//set save point 
+		Savepoint savepoint1 = dbm.getConnection().setSavepoint("Savepoint1");
+		try {
+			//insert into Reservation table
+	    	insertReservation(r, stmt);
+	        
+	        //insert into equipment_reservation table
+	    	insertEqRes(r);
+		} catch (SQLException e) {
+			//this is for unsuccessfully adding any of these entries into database
+			dbm.getConnection().rollback(savepoint1);
+			e.printStackTrace();
+			System.out.println("roll back happened");
+		}
+    	
         
-        //insert into equipment_reservation table
-    	insertEqRes(r);
+        //clean up
+        stmt.close();
+        dbm.disconnect();
 	}
 	
 
@@ -213,27 +235,23 @@ class RentalDB {
         			+" VALUES ("+r.getID()+ ", "+equipments[i]+")";
             stmt.executeUpdate(sql);
         }
-        //clean up
-        stmt.close();
-        dbm.disconnect();
 	}
 
 	/**
 	 * helps to insert into reservation
 	 * @param r
+	 * @param stmt 
 	 * @throws SQLException
 	 * @pre r.id = -1 because we want to add NEW entry, not duplicate entry
 	 * @post r.id = auto assigned int 
 	 */
-	private void insertReservation(Reservation r) throws SQLException{
+	private void insertReservation(Reservation r, Statement stmt) throws SQLException{
 		// TODO Auto-generated method stub
-  		dbm.connect();
-  		Statement stmt = dbm.getConnection().createStatement();
-       	String query = "INSERT INTO `reservation`(`reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `state`, `vehicle_id`) "
+       	String query = "INSERT INTO `reservation`(`reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `vehicle_id`, `balance`) "
        			+" VALUES (NULL, "+r.getCustomerAccountID()+", \'"
        			+r.getStartingDate()+"\', \'"+ r.getEndDate()+"\', "
        			+r.getStartBranchID()+", "+r.getEndBranchID()+", 'reserved', "+r.getVehicleID()+");";
-        System.out.println(query);
+        //System.out.println(query);
 	    stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
         
         //the following is used when there is auto generated key
@@ -241,10 +259,6 @@ class RentalDB {
         if (rs.next()) {
         	r.changeID(rs.getInt(1));
         }
-        
-        //clean up
-        stmt.close();
-        dbm.disconnect();
 	}
 
 	/**
