@@ -1,10 +1,10 @@
 package databaseManagement;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 
 import paymentManagement.Receipt;
-import rentalManagement.Report;
 import rentalManagement.Reservation;
 import systemManagement.Branch;
 import vehicleManagement.Car;
@@ -12,7 +12,7 @@ import vehicleManagement.Vehicle;
 
 /*Robin */
 /**
- * RentalDB deals with creation, deletion, and modification related to rentals
+ * RentalDB deals with creation, deletion, and modification related to reservations
  * @author Robin
  */
 class RentalDB {
@@ -36,9 +36,8 @@ class RentalDB {
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
   		
-		String query = "SELECT `reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `vehicle_id` FROM `rental`"
-				+" WHERE `reservation_id = "+rNum
-				+" AND `state` = 'reserved';";
+		String query = "SELECT `reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `vehicle_id`, `balance` FROM `reservation`"
+				+" WHERE `reservation_id` = "+rNum +";";
         ResultSet rs = stmt.executeQuery(query);
         Reservation r = null;
         //parse result, assume only 1 result comes back since rNum is unique
@@ -49,8 +48,8 @@ class RentalDB {
         	String end_date = rs.getString("end_date");
         	int start_branch = rs.getInt("start_branch");
         	int end_branch = rs.getInt("end_branch");
-        	String state= "reserved";
         	int vehicle_id = rs.getInt("vehicle_id");
+        	BigDecimal balance = rs.getBigDecimal("balance");
         	ArrayList<Integer> equipments = executeQueryEquipments(rNum);
         	
         	//conversion
@@ -59,7 +58,7 @@ class RentalDB {
         		eqlist[i] = equipments.get(i).intValue();
         	}
         	//create a resevation 
-        	r = new Reservation(start_date, end_date, vehicle_id, eqlist, start_branch,end_branch,customer,state,id);
+        	r = new Reservation(start_date, end_date, vehicle_id, eqlist, start_branch,end_branch,customer,id, balance);
         }
     	return r;
 	}
@@ -101,7 +100,7 @@ class RentalDB {
 		boolean isValid = false;
  		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();		
-		String query = "SELECT `reservation_id` FROM `rental` WHERE "
+		String query = "SELECT `reservation_id` FROM `reservation` WHERE "
 					+ "`reservation_id` = "+ rNum;
         ResultSet rs = stmt.executeQuery(query);
         //parse result, as many additional equipments as possible
@@ -122,31 +121,30 @@ class RentalDB {
 	 * @post list of reservations
 	 * @return list of reservations
 	 */
-	public Reservation[] rentalHistory(String acc_key_value) {
- 	/*	dbm.connect();
+	public Reservation[] reservationHistory(String acc_key_value) {
+ 		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
   		
-		String query = "SELECT `reservation_id`, `customer` FROM `rental`"
+		String query = "SELECT `reservation_id`, `customer` FROM `reservation`"
 				+" WHERE `customer` = \'"+acc_key_value+"\';";
         ResultSet rs = stmt.executeQuery(query);
         Reservation r = null;
-        //parse result, for list of reservations/rentals related to this customer
-    	ArrayList<Reservation> rentals  = new ArrayList<Reservation>();
+        //parse result, for list of reservations/reservations related to this customer
+    	ArrayList<Reservation> reservations  = new ArrayList<Reservation>();
         while (rs.next()){
         	int id = rs.getInt("reservation_id");
-        	rentals.add(reservationQuery(id));
+        	reservations.add(reservationQuery(id));
         }
 
         //change back to array
         Vehicle[] vArray = new Car[vlist.size()];
         vArray = vlist.toArray(vArray);
         return vArray;
-     */
 	}
 	
 	//should be inside Reservation class  
 	/**
-	 * removeReservation to a rental, or to be cancelled
+	 * removeReservation to a reservation, or to be cancelled
 	 * @param r reservation 
 	 * @param info related information to be updated 
 	 * @pre isValidReservation(r)
@@ -157,7 +155,7 @@ class RentalDB {
 	
 	//remove
 	/**
-	 * removeReservation to a rental, or to be cancelled
+	 * removeReservation to a reservation, or to be cancelled
 	 * @param r reservation 
 	 * @pre isValidReservation(r)
 	 * @post !isValidReservation(r)
@@ -231,7 +229,7 @@ class RentalDB {
 		// TODO Auto-generated method stub
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
-       	String query = "INSERT INTO `rental`(`reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `state`, `vehicle_id`) "
+       	String query = "INSERT INTO `reservation`(`reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `state`, `vehicle_id`) "
        			+" VALUES (NULL, "+r.getCustomerAccountID()+", \'"
        			+r.getStartingDate()+"\', \'"+ r.getEndDate()+"\', "
        			+r.getStartBranchID()+", "+r.getEndBranchID()+", 'reserved', "+r.getVehicleID()+");";

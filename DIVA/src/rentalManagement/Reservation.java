@@ -1,14 +1,7 @@
 package rentalManagement;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
-
-import accountManagement.Account;
-import accountManagement.Customer;
-import systemManagement.Branch;
-import vehicleManagement.Equipment;
-import vehicleManagement.Vehicle;
 import webServiceManagement.ArrayOfStringsable;
 
 //Assumes Date object is passed instead of a primitive.
@@ -22,10 +15,9 @@ public class Reservation implements ArrayOfStringsable{
 	private int startBranchID;
 	private int endBranchID;
 	private int customerAccountID;
-	private String status;
 	//private int employeeAccountID; <-- won't be stored
 	private int reservID;
-	//needs a field that says "balance of this rental"
+	//needs a field that says "balance of this reservation"
 	private BigDecimal balance;
 	
 	/**
@@ -40,7 +32,6 @@ public class Reservation implements ArrayOfStringsable{
 		startBranchID = 0;
 		endBranchID = 0;
 		customerAccountID = 0;
-		status = "";
 		// -1 means this doesn't exit
 		reservID = -1;
 		
@@ -59,7 +50,7 @@ public class Reservation implements ArrayOfStringsable{
 	 * @param empl The Employee log in ID Reservation belongs to.
 	 * @param id The Reservation ID.
 	 */
-	public Reservation(String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, String s, 
+	public Reservation(String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, 
 			 int id, BigDecimal amount)
 	{
 		this.startDate = startD;
@@ -69,7 +60,6 @@ public class Reservation implements ArrayOfStringsable{
 		startBranchID = startBranch;
 		endBranchID = endBranch;
 		customerAccountID = cusID;
-		status = s;
 		reservID = id;
 		balance = amount;
 	}
@@ -148,15 +138,6 @@ public class Reservation implements ArrayOfStringsable{
 	}
 	
 	/**
-	 * Modifies the Status of Reservation.
-	 * @param newStatus New status of Reservation.
-	 */
-	public void changeStatus(String newStatus)
-	{
-		this.status = newStatus;
-	}
-	
-	/**
 	 * Modifies the ID of Reservation.
 	 * @param newID New ID of Reservation.
 	 */
@@ -229,15 +210,6 @@ public class Reservation implements ArrayOfStringsable{
 	}
 	
 	/**
-	 * Returns the status of Reservation.
-	 * @return Status of Reservation.
-	 */
-	public String getStatus()
-	{
-		return this.status;
-	}
-	
-	/**
 	 * Returns the ID of Reservation.
 	 * @return ID of Reservation.
 	 */
@@ -264,7 +236,7 @@ public class Reservation implements ArrayOfStringsable{
 		return "{'startDate':'"+ this.startDate +"', 'endDate':'"+this.endDate+"',"
 			+	"'vehicleID':'"+this.vehicleID+"',"+"'equipmentIds':'"+equipIDArray+"',"
 			+ "'startBranchID':'"+this.startBranchID+"',"+"'endBranchID':'"+this.endBranchID+"',"
-			+ "'customerAccountID':'"+this.customerAccountID+"',"+"'status':'"+this.status+"',"
+			+ "'customerAccountID':'"+this.customerAccountID+"',"
 			+ "'reservID':'"+this.reservID+"'}";
 	}
 	

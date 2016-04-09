@@ -185,6 +185,12 @@ public class DatabaseManager {
 		// TODO Auto-generated method stub
 	}
 	
+	/**
+	 * Search database for a reservation
+	 * @param reservID uniquely identifies reservation
+	 * @return reservation object
+	 * @throws SQLException query has problems
+	 */
 	public Reservation searchReservationEntry(int reservID) throws SQLException {
 		// TODO Auto-generated method stub
 		return reDB.reservationQuery(reservID);
@@ -225,7 +231,7 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * 
+	 * Searching for overdue trucks or cars (today)
 	 * @param branch_id
 	 * @param type
 	 * @return

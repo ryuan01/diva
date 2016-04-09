@@ -189,10 +189,10 @@ class VehicleDB {
         	    +branch_id
         		+" AND sale_status = 'for rent'"
         		+" AND truck.vehicle_id NOT IN "
-        		+"(SELECT truck.vehicle_id FROM truck INNER JOIN rental "
-        		+" ON truck.vehicle_id = rental.vehicle_id" 
-        		+" WHERE rental.end_date >= \'"+start_date+"\'"
-        		+" AND rental.start_date < \'"+end_date+"\');";
+        		+"(SELECT truck.vehicle_id FROM truck INNER JOIN reservation "
+        		+" ON truck.vehicle_id = reservation.vehicle_id" 
+        		+" WHERE reservation.end_date >= \'"+start_date+"\'"
+        		+" AND reservation.start_date < \'"+end_date+"\');";
         return executeQueryTruck(query);
 	}
 
@@ -264,10 +264,10 @@ class VehicleDB {
         	    +branch_id
         		+" AND sale_status = 'for rent'"
         		+" AND car.vehicle_id NOT IN "
-        		+"(SELECT car.vehicle_id FROM car INNER JOIN rental "
-        		+" ON car.vehicle_id = rental.vehicle_id" 
-        		+" WHERE rental.end_date >= \'"+start_date+"\'"
-        		+" AND rental.start_date < \'"+end_date+"\');";
+        		+"(SELECT car.vehicle_id FROM car INNER JOIN reservation "
+        		+" ON car.vehicle_id = reservation.vehicle_id" 
+        		+" WHERE reservation.end_date >= \'"+start_date+"\'"
+        		+" AND reservation.start_date < \'"+end_date+"\');";
         return executeQueryCar(query);
 	}
 
@@ -380,10 +380,15 @@ class VehicleDB {
         	    +branch_id
         		+" AND sale_status = 'for rent'"
         		+" AND car.vehicle_id IN "
-        		+"(SELECT car.vehicle_id FROM car INNER JOIN rental "
-        		+" ON car.vehicle_id = rental.vehicle_id" 
-        		+" WHERE rental.end_date < \'"+current_date+"\'"
-        		+" AND rental.state != 'complete');";
+        		+"(SELECT vehicle_id FROM (SELECT car.vehicle_id, car.class, car.baggage, car.door, car.transmission, car.air_condition, car.capacity, "
+        		+ " reservation.customer, reservation.start_date, reservation.end_date, reservation.start_branch, reservation.end_branch, reservation.balance, "
+        		+" rental.is_paid_rental, rental.is_paid_extra_charge "
+        		+" FROM car INNER JOIN reservation "
+        		+" ON car.vehicle_id = reservation.vehicle_id "
+				+" INNER JOIN rental "
+        		+" ON rental.reservation_id = reservation.reservation_id) tmpTable"
+        		+" WHERE tmpTable.end_date < \'"+current_date+"\'"
+        		+");";
         return executeQueryCar(query);
 	}
 	
@@ -397,19 +402,24 @@ class VehicleDB {
 	Vehicle[] searchOverdueTrucks(int branch_id) throws SQLException {
 		
 		String current_date = df.format(new java.util.Date());
-        String query = "SELECT * FROM truck" 
+        String query = "SELECT * FROM truck"
         		+" INNER JOIN branch_vehicle  ON "
-        		+"truck.vehicle_id = branch_vehicle.vehicle_id " 
+        		+" truck.vehicle_id = branch_vehicle.vehicle_id "
         	    +" INNER JOIN vehicle ON "
-        	    +"truck.vehicle_id = vehicle.vehicle_id AND "
+        	    +" truck.vehicle_id = vehicle.vehicle_id AND "
         		+" branch_vehicle.location = "
-        	    +branch_id
-        		+" AND sale_status = 'for rent'"
-        		+" AND truck.vehicle_id NOT IN "
-        		+"(SELECT truck.vehicle_id FROM truck INNER JOIN rental "
-        		+" ON truck.vehicle_id = rental.vehicle_id" 
-           		+" WHERE rental.end_date < \'"+current_date+"\'"
-        		+" AND rental.state != 'complete');";
+        	    + branch_id
+        		+" AND sale_status = 'for rent' "
+        		+" AND truck.vehicle_id "
+				+" IN "
+				+" (SELECT vehicle_id FROM (SELECT truck.vehicle_id, truck.class, truck.interior_b_l, truck.interior_b_w, truck.interior_b_h, truck.capacity_kg , "
+				+" reservation.customer, reservation.start_date, reservation.end_date, reservation.start_branch, reservation.end_branch, reservation.balance, "
+				+" rental.is_paid_rental, rental.is_paid_extra_charge "
+				+" FROM truck INNER JOIN reservation "
+        		+" ON truck.vehicle_id = reservation.vehicle_id "
+				+" INNER JOIN rental "
+        		+" ON rental.reservation_id = reservation.reservation_id) tmpTable "
+        		+" WHERE tmpTable.end_date < \'"+current_date+"\');";
         return executeQueryTruck(query);
 	}
 
