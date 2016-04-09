@@ -75,23 +75,23 @@ public class AccountManager {
 	 * @return true if the customer successfully joined Super Club
 	 * @throws SQLException 
 	 */
-	public static void joinSuperClub(String userName) throws SQLException 
+	public void joinSuperClub(String userName) throws SQLException 
 	{
-		// Why is it Static (-Sammy)
+		
 		dbConnection.changeAccountStatus(userName, "SRCustomer");
 		//the database automatically adds 500 points when a customer
 		// is upgraded to superCustomer
 	}
 	
-	public static void accumulatePoints(int i, int points)
+	public void accumulatePoints(int i, int points)
 	{
 		dbConnection.addSRPoints(i,points);
 	}
 	
-	public static void leaveSuperCLub(String userName) throws SQLException
+	public void leaveSuperCLub(String userName) throws SQLException
 	{
 		dbConnection.changeAccountStatus(userName, "RegisteredCustomer");
-	}
+	} 
 	/**
 	 * Moves the customers account from the activated state into the deactivated state
 	 * @param customer The customer account to be deactivated

@@ -304,6 +304,8 @@ public class DatabaseManager {
 		if (status.equals("SRCustomer")){
 			accDB.upgradeCustomer(userName);
 			
+		} else if (status.equals("RegisteredCustomer")){
+			accDB.downgradeSCustomer(userName);
 		}
 	}
 	

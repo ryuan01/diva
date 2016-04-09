@@ -12,6 +12,7 @@ class AccountDB{
 	
 	private static final String USER = "`users`";
 	private static final String CUSTOMER = "`customer`";
+	private static final String SUPER_CUSTOMER = "`super_customer`";
 	private ConnectDB dbm;
 	//checking 
 	public AccountDB() {
@@ -189,6 +190,44 @@ class AccountDB{
 			// throw an exception since that username is not a customer
 		}
 	}
+	
+	
+	public void downgradeSCustomer(String username) throws SQLException{
+		//database variables
+		Statement stmt;
+		Connection conn;
+		ResultSet rs;
+		String query;
+		
+		int src_id;
+		
+		if(doesUsernameExist(username, SUPER_CUSTOMER))
+		{
+			
+			dbm.connect();
+			
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			// get the id number associated with the account and execute the query;
+			query = "SELECT users.id_number FROM `customer`, `users` WHERE "
+					+ "users.id_number = customer.id_number AND "
+					+ "users.Account_uName = \"" + username +"\";"; 
+			rs = stmt.executeQuery(query);
+			
+			rs.next();
+			src_id = rs.getInt("id_number");
+			
+			// Remove customer from superRent table:
+			query = "DELETE FROM super_customer WHERE id_number = " + src_id;
+			stmt.executeUpdate(query);
+			
+			// disconnect from DB;
+			dbm.disconnect();
+		}
+	}
+	
+	
 	/**
 	 * getAccount gets an account from database
 	 * @param username the username related to a account
@@ -458,12 +497,32 @@ class AccountDB{
 	 * @return true if the username exists
 	 */
 	private boolean doesUsernameExist(String username, String table) throws SQLException {
-		//Get DatabaseManager instance and connect to the database
+		// database ojbects:
+		Connection conn;
+		Statement stmt;
+		ResultSet rs;
+		
+		//
+		String query = "";
+
 		dbm.connect();
+
+		conn = dbm.getConnection();
+		stmt = conn.createStatement();
+		
+		// choose the query
+		if (table.equals(CUSTOMER)){
+			query = "SELECT account_uName FROM users,customer WHERE users.id_number = customer.id_number;";
+		} else if (table.equals(SUPER_CUSTOMER)){
+			query = "SELECT account_uName FROM users,customer, super_customer WHERE "
+					+ "users.id_number = customer.id_number AND "
+					+ "customer.id_number = super_customer.id_number;";
+		} else if (table.equals(USER)){
+			query = "SELECT account_uName FROM users;";
+		}
 		
 		// execute the query:
-		Statement stmt = dbm.getConnection().createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM " + table);
+		rs = stmt.executeQuery(query);
 		
 		// check for any matching usernames
 		while (rs.next()){
@@ -472,6 +531,7 @@ class AccountDB{
 				return true;
 			}
 		}
+		
 		dbm.disconnect();
 		return false;
 	}
