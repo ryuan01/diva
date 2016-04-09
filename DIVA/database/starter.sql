@@ -317,3 +317,6 @@ CREATE TABLE rental(
 	is_paid_extra_charge BOOLEAN,
 	FOREIGN KEY (reservation_id) REFERENCES reservation(reservation_id)
 );	
+
+ALTER TABLE reservation
+ADD CONSTRAINT uc_date_vehicle UNIQUE (start_date,end_date,vehicle_id);

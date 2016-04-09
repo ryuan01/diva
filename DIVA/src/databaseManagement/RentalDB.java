@@ -202,7 +202,10 @@ class RentalDB {
 	    	insertReservation(r, stmt);
 	        
 	        //insert into equipment_reservation table
-	    	insertEqRes(r);
+	    	insertEqRes(r, stmt);
+	    	
+	    	//try to execute
+	    	dbm.getConnection().commit();
 		} catch (SQLException e) {
 			//this is for unsuccessfully adding any of these entries into database
 			dbm.getConnection().rollback(savepoint1);
@@ -220,12 +223,11 @@ class RentalDB {
 	/**
 	 * Helps to add relations between reservation and equipments
 	 * @param r
+	 * @param stmt 
 	 * @throws SQLException
 	 */
-	private void insertEqRes(Reservation r) throws SQLException{
+	private void insertEqRes(Reservation r, Statement stmt) throws SQLException{
 		// TODO Auto-generated method stub
-  		dbm.connect();
-  		Statement stmt = dbm.getConnection().createStatement();
   		
 		int[] equipments = r.getEquipments();
     	String sql;
@@ -247,11 +249,16 @@ class RentalDB {
 	 */
 	private void insertReservation(Reservation r, Statement stmt) throws SQLException{
 		// TODO Auto-generated method stub
-       	String query = "INSERT INTO `reservation`(`reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `vehicle_id`, `balance`) "
-       			+" VALUES (NULL, "+r.getCustomerAccountID()+", \'"
-       			+r.getStartingDate()+"\', \'"+ r.getEndDate()+"\', "
-       			+r.getStartBranchID()+", "+r.getEndBranchID()+", 'reserved', "+r.getVehicleID()+");";
-        //System.out.println(query);
+       	String query = "INSERT INTO `reservation` (`reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `vehicle_id`, `balance`) "
+       			+" VALUES (NULL, "
+       			+r.getCustomerAccountID()
+       			+", \'"+r.getStartingDate()+"\', \'"+ r.getEndDate()+"\', "
+       			+r.getStartBranchID()+", "
+       			+r.getEndBranchID()+", "
+       			+r.getVehicleID()+", "
+       			+r.getBalance()
+       			+");";
+        System.out.println(query);
 	    stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
         
         //the following is used when there is auto generated key
