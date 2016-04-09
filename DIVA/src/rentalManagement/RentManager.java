@@ -42,7 +42,7 @@ class RentManager {
 			//check if it is paid for before payForRental.
 			payForRental(dbConnection.getReservationAccount(reservID),reservID);
 			
-			dbConnection.changeReservationStatus(reservID, "Rented");
+			//dbConnection.changeReservationStatus(reservID, "Rented");
 		}
 
 		

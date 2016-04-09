@@ -36,10 +36,10 @@ public class RentalFacade {
 	 * @throws SQLException 
 	 */
 	public void createReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, String status) throws SQLException 
+			int customerID, BigDecimal balance) throws SQLException 
 	{
 		reservMan.addReservation(startD,endD,vehicleID,equipIDs,startBranchID, endBranchID, 
-				customerID,status);
+				customerID,balance);
 	}
 	
 	/**
@@ -47,13 +47,24 @@ public class RentalFacade {
 	 * Reservations belonging to themselves.
 	 * @param accountID The Customer ID.
 	 * @param reservID The Reservation ID to be removed.
+	 * @throws Exception 
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	public void cancelSelfReservation(int customerID, int reservID)
+	public void cancelSelfReservation(int customerID, int reservID) throws Exception
 	{
 		//the case with customer full name and phone number will return a list of available reservations
 		//then the customer picks one, and it leads to this function in the end.
 		reservMan.removeReservation(customerID, reservID);
+	}
+	
+	/**
+	 * Searches for reservations for an account
+	 * @param customerID account id
+	 * @return reservations under this account
+	 * @throws SQLException 
+	 */
+	public Reservation[] searchReservationForAccount(int customerID) throws SQLException{
+		return reservMan.searchReservationForAccount(customerID);
 	}
 
 	/**
@@ -61,15 +72,14 @@ public class RentalFacade {
 	 * Reservations belonging to themselves.
 	 * @param accountID The Account ID of the Reservation.
 	 * @param reservID The Reservation ID to be removed.
+	 * @return 
+	 * @throws SQLException 
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	/*
-	 * Robin: why are we letting people do this?
-	public boolean cancelAnyReservation(int reservID)
+	public void cancelAnyReservation(int reservID) throws SQLException, NullPointerException
 	{
-		return reservMan.removeReservation(reservID);
+		reservMan.removeReservation(reservID);
 	}
-	*/
 	
 	
 	
@@ -81,7 +91,7 @@ public class RentalFacade {
 	 */
 	public Reservation findReservations(int reservID) throws SQLException
 	{
-		return reservMan.searchReservations(reservID);
+		return reservMan.searchReservation(reservID);
 	}
 	
 	

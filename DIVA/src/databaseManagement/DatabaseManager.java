@@ -183,7 +183,7 @@ public class DatabaseManager {
 	 * @param reservID
 	 * @throws SQLException
 	 */
-	public void removeReservationEntry(int reservID) throws SQLException {
+	public void removeReservationEntry(int reservID) throws SQLException, NullPointerException {
 		// TODO Auto-generated method stub
 		reDB.removeReservation(reservID);
 	}

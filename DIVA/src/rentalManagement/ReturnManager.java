@@ -58,7 +58,7 @@ class ReturnManager {
 		
 	
 		//use-case: return normally, or after paid extra. 
-		dbConnection.changeReservationStatus(reservID, "complete");
+		//dbConnection.changeReservationStatus(reservID, "complete");
 		
 	}
 

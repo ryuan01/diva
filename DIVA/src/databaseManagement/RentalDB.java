@@ -162,7 +162,7 @@ class RentalDB {
 	 * @pre isValidReservation(r)
 	 * @post !isValidReservation(r)
 	 */
-	public void removeReservation(int r_key_value) throws SQLException {
+	public void removeReservation(int r_key_value) throws SQLException,NullPointerException {
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();		
 		dbm.getConnection().setAutoCommit(false);
@@ -178,7 +178,10 @@ class RentalDB {
 	    	//try to execute
 	    	dbm.getConnection().commit();
 	    	
-		} catch (SQLException e) {
+		} catch (NullPointerException e) {
+			throw new NullPointerException ("Reservation with ID "+r_key_value+" does not exist.");
+		}
+		catch (SQLException e) {
 			//this is for unsuccessfully adding any of these entries into database
 			dbm.getConnection().rollback(savepoint1);
 			e.printStackTrace();
