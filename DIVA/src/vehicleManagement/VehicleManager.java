@@ -108,7 +108,7 @@ public class VehicleManager {
 	}
 	
 	/**
-	 * Add a car 
+	 * Add a car and assign a branch to it 
 	 * @param id
 	 * @param manufacturer
 	 * @param year
@@ -126,10 +126,11 @@ public class VehicleManager {
 	 * @throws IllegalArgumentException 
 	 */
 	public void addCar(String manufacturer, String year, String model, String color, String status, String path,
-			String c, int b, String d, boolean tran, boolean ac, int ca) throws IllegalArgumentException, SQLException{
+			String c, int b, String d, boolean tran, boolean ac, int ca, int branch_id) throws IllegalArgumentException, SQLException{
 		int id = -1; //let database auto increment id 
 		Car a_car = new Car (id, manufacturer, year, model, color, status, path,c, b, d, tran,ac, ca);
 		db.addVehicle(a_car);
+		db.addVehicleLocation(a_car.getID(), branch_id);
 	}
 	
 	/**
@@ -150,10 +151,11 @@ public class VehicleManager {
 	 * @throws SQLException
 	 */
 	public void addTruck(String manufacturer, String year, String model, String color, String status, String path,
-			String c, String ibl, String ibw, String ibh, int ca) throws IllegalArgumentException, SQLException{
+			String c, String ibl, String ibw, String ibh, int ca, int branch_id) throws IllegalArgumentException, SQLException{
 		int id = -1; //let database auto increment id 
 		Truck truck = new Truck (id, manufacturer, year, model, color, status, path,  c, ibl, ibw, ibh, ca);
 		db.addVehicle(truck);
+		db.addVehicleLocation(truck.getID(), branch_id);
 	}
 	
 	//remove

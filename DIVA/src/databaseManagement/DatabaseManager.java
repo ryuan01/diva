@@ -337,6 +337,16 @@ public class DatabaseManager {
 		// TODO Auto-generated method stub
 		veDB.updateVehicleLocation(v, b);
 	}
+	
+	/**
+	 * Add vehicle's owning branch when it is first added
+	 * @param v vehicle id
+	 * @param b branch id 
+	 * @throws SQLException
+	 */
+	public void addVehicleLocation(int v, int b) throws SQLException{
+		veDB.addVehicleLocation(v, b);
+	}
 
 	/**
 	 * Update vehicle's status from {for rent, for sale, sold}

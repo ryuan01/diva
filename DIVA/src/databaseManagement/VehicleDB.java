@@ -51,6 +51,17 @@ class VehicleDB {
 		
 	}
 	
+	void addVehicleLocation(int v_key_value, int b_key_value) throws SQLException{
+		dbm.connect();
+		Statement stmt = dbm.getConnection().createStatement();
+
+        String query = "INSERT INTO `branch_vehicle` VALUES (" + v_key_value +", "+b_key_value+")";
+        stmt.executeUpdate(query);
+        stmt.close();	
+
+		dbm.disconnect();
+	}
+	
 
 	/**
 	 * updateVehicleStatus updates the status of an vehicle
