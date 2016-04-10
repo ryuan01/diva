@@ -28,7 +28,7 @@ public class VehicleManagerTest {
 		// TODO Auto-generated method stub
 		try {
 			//vm.addCar("Chrysler", "2010-01-01", "Sonic", "Blue", "for rent", "photos/economy.jpg", "midsized", 2, "4", true,true,5, 1);
-			vm.addTruck("U-haul", "2011-01-01", "", "White", "for rent", "photos/24-foot", "24-foot", "8.50", "8.00", "24.00", 3200, 2);
+			vm.addTruck("U-haul", "2011", "", "White", "for rent", "photos/24-foot", "24-foot", "8.50", "8.00", "24.00", 3200, 2);
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

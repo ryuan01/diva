@@ -5,12 +5,11 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import paymentManagement.Receipt;
+import rentalManagement.AccidentReport;
+import rentalManagement.Rental;
+import rentalManagement.Report;
 import rentalManagement.Reservation;
-import systemManagement.Branch;
-import vehicleManagement.Car;
-import vehicleManagement.Vehicle;
 
-/*Robin */
 /**
  * RentalDB deals with creation, deletion, and modification related to reservations
  * @author Robin
@@ -151,8 +150,10 @@ class RentalDB {
 	 * @pre isValidReservation(r)
 	 * @post !isValidReservation(r)
 	 */
+	// not allowing people to udpate reservation as of now, must cancel and then re-book
+	/*
 	public void updateReservation(String r_key_value, String[] info) {
-	}
+	}*/
 	
 	//remove
 	/**
@@ -212,13 +213,6 @@ class RentalDB {
 	}
 
 	//create 
-	/**
-	 * 
-	 * @param r
-	 */
-	public void createInspectionReport(Report r){
-		
-	}
 	
 	/**
 	 * Create an reservation entry in the database
@@ -304,22 +298,67 @@ class RentalDB {
         	r.changeID(rs.getInt(1));
         }
 	}
-
 	/**
-	 * 
+	 * Create inspection Report 
 	 * @param r
+	 * @param state 
+	 * @throws SQLException 
 	 */
-	public void createAccidentReport(Report r){
-		
+	public void createInspectionReport(Report r, String state) throws SQLException{
+		//Report(String d, String description, int reservID, int milage, int gasLevel)
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+    	String sql= "INSERT INTO `report`(`report_num`, `reporting_clerk`, `reservation`, `milage`, `gasLevel`, `comments`, `report_date`, `state`) "
+    				+" VALUES (NULL, "+ r.getReportClerk()+","
+    				+r.getReportReservationID()+", "
+    				+r.getMilage()+", "
+    				+r.getGasLevel()+", \'"
+    				+r.getReportDescription()+"\', \'"
+    				+r.getReportDate()+"\', \'"
+    				+state
+    				+"\')";
+    	System.out.println(sql);
+        stmt.executeUpdate(sql);
+        stmt.close();
+        dbm.disconnect();
+	}
+	
+	/**
+	 * Create an accident report for an rental
+	 * @param r
+	 * @throws SQLException 
+	 */
+	public void createAccidentReport(AccidentReport r) throws SQLException{
+  		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+    	String sql= "INSERT INTO `report_accident`(`report_num`, `rental_id`, `clerk_id`, `accident_date`, "
+    				+ "`comments`, `driver`, `balance`, `street_name`, `city`, `province`, `zipcode`) "
+    				+" VALUES ( NULL, "
+    				+r.getRentalID()+", "
+    				+r.getClerkID()+", \'"
+    				+r.getDate()+"\', \'"
+    				+r.getDescription()+"\', \'"
+    				+r.getDriver()+"\', "
+    				+r.getAmount()+", \'"
+    				+r.getLocation().getAddress()+"\', \'"
+    				+r.getLocation().getCity()+"\', \'"
+    				+r.getLocation().getProvince()+"\', \'"
+    				+r.getLocation().getZipcode()+"\');";
+    	System.out.println(sql);
+        stmt.executeUpdate(sql);
+        stmt.close();
+        dbm.disconnect();		
 	}
 	
 	/**
 	 * 
 	 * @param r
 	 */
+	// not understanding what this is for
+	/*
 	public void createTransaction(Receipt r){
 		
-	}
+	}*/
 	
 	
 

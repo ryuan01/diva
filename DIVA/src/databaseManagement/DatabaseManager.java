@@ -10,10 +10,12 @@ import java.sql.SQLException;
 import accountManagement.Account;
 import accountManagement.Customer;
 import accountManagement.Employee;
+import rentalManagement.AccidentReport;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
 import systemManagement.Branch;
 import vehicleManagement.Car;
+import vehicleManagement.Equipment;
 import vehicleManagement.Truck;
 import vehicleManagement.Vehicle;
 
@@ -28,7 +30,7 @@ public class DatabaseManager {
 	private ConnectDB conDB; // you don't need to create a ConnectDB object here
 	private AccountDB accDB;
 	private BranchDB branDB;
-	//private EquipmentDB eqDB;
+	private EquipmentDB eqDB;
 	private RentalDB reDB;
 	private VehicleDB veDB;
 	private PriceDB prDB;
@@ -68,7 +70,7 @@ public class DatabaseManager {
 		conDB = new ConnectDB();
 		accDB = new AccountDB();
 		branDB = new BranchDB();
-		//eqDB = new EquipmentDB();
+		eqDB = new EquipmentDB();
 		reDB = new RentalDB();
 		veDB = new VehicleDB();
 		prDB = new PriceDB();
@@ -150,7 +152,17 @@ public class DatabaseManager {
 	// 
 /*----------------------------------------EquipmentDB--------------------------------------------*/
 
-	// probably should be able to add/delete equipments, modify them
+	/**
+	 * Search for additional equipments available
+	 * @param type ENUM('ski rack','child safety seat','lift gate','car-towing eq')
+	 * @param branch_num branch that this equipment belongs to
+	 * @return list of equipments of a type that is available at a branch
+	 * @throws SQLException
+	 */
+	public Equipment[] searchAdditionalEquipments(String type, int branch_num) throws SQLException{
+		return eqDB.searchAdditionalEquipments(type, branch_num);
+	}
+
 
    
 /*----------------------------------------RentalDB--------------------------------------------*/
@@ -217,18 +229,48 @@ public class DatabaseManager {
 	}
 
 
-	public void addReport(Report r)
+	/**
+	 * Add an inspection report for Database
+	 * @param r inspection report 
+	 * @param state: ENUM('before_rental','after_rental')
+	 * @throws SQLException
+	 */
+	public void addReport(Report r, String state) throws SQLException
 	{
+		reDB.createInspectionReport(r, state);
 	}
 	
-	public String getReservationEndDate(int reservID)
-	{
-		return null;
+	/**
+	 * Add an accident report for database
+	 * @param r accident report
+	 * @throws SQLException
+	 */
+	public void addAccidentReport(AccidentReport r) throws SQLException{
+		reDB.createAccidentReport(r);
 	}
 	
-	
-	public Account getReservationAccount(int reservID)
+	/**
+	 * Get the reservation end date
+	 * @param reservID ID that identifies a reservation
+	 * @return end date as a string
+	 * @throws SQLException
+	 */
+	public String getReservationEndDate(int reservID) throws SQLException
 	{
+		Reservation r = reDB.reservationQuery(reservID);
+		return r.getEndDate();
+	}
+	
+	/**
+	 * 
+	 * @param reservID
+	 * @return
+	 * @throws SQLException 
+	 */
+	public Account getReservationAccount(int reservID) throws SQLException
+	{
+		Reservation r = reDB.reservationQuery(reservID);
+		//waiting for sammy's method for getting account from ID		r.getCustomerAccountID();
 		return null;
 	}
 	

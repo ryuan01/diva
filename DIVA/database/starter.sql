@@ -320,3 +320,50 @@ CREATE TABLE rental(
 
 ALTER TABLE reservation
 ADD CONSTRAINT uc_date_vehicle UNIQUE (start_date,end_date,vehicle_id);
+
+DROP TABLE report;
+
+-- re-create report
+CREATE TABLE report(
+	report_num MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	reporting_clerk  SMALLINT UNSIGNED NOT NULL,
+	reservation MEDIUMINT UNSIGNED NOT NULL,
+	milage MEDIUMINT UNSIGNED NOT NULL,
+	gasLevel SMALLINT(3) UNSIGNED NOT NULL,
+	comments TEXT(500), 
+	FOREIGN KEY (reporting_clerk) REFERENCES employee(id_number),
+	FOREIGN KEY (reservation) REFERENCES reservation(reservation_id),
+	CHECK (gasLevel >= 0 AND gasLevel <=100)
+);
+
+ALTER TABLE report
+  ADD report_date DATETIME NOT NULL;
+
+ALTER TABLE report
+ ADD state ENUM('before_rental','after_rental') NOT NULL;
+ 
+ALTER TABLE report
+ ADD CONSTRAINT uc_res_state UNIQUE (reservation,state);
+
+ 
+CREATE TABLE report_accident(
+	report_num MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	rental_id MEDIUMINT UNSIGNED UNIQUE,
+	clerk_id SMALLINT UNSIGNED NOT NULL,
+	accident_date DATETIME NOT NULL,
+	comments TEXT(500),
+	driver VARCHAR(40) NOT NULL,
+	balance DECIMAL(6,2) NOT NULL,	
+	street_name VARCHAR(40) NOT NULL,
+	city VARCHAR(25) NOT NULL,
+	province SET('AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT') NOT NULL,
+	zipcode VARCHAR(6)
+);
+
+ALTER TABLE report_accident
+ADD FOREIGN KEY (rental_id)
+REFERENCES rental(reservation_id);
+
+ALTER TABLE report_accident
+ADD FOREIGN KEY (clerk_id)
+REFERENCES employee(id_number);

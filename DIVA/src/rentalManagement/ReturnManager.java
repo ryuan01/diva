@@ -43,9 +43,9 @@ class ReturnManager {
 			int milage = 0;
 			int gasLevel = 100;
 			//fill out report 
-			Report r = new Report(current_date, description, reservID,milage, gasLevel);
+			Report r = new Report(current_date, description, reservID,milage, gasLevel, gasLevel, -1);
 			
-			dbConnection.addReport(r);
+			dbConnection.addReport(r, "after_rental");
 			
 			PaymentManager.makePayment(dbConnection.getReservationAccount(reservID), extraPay);
 		}

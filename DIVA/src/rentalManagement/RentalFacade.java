@@ -36,10 +36,11 @@ public class RentalFacade {
 	 * @throws SQLException 
 	 */
 	public void createReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, BigDecimal balance) throws SQLException 
+			int customerID) throws SQLException 
 	{
+		//balance need to be calculated
 		reservMan.addReservation(startD,endD,vehicleID,equipIDs,startBranchID, endBranchID, 
-				customerID,balance);
+				customerID, new BigDecimal("100"));
 	}
 	
 	/**
@@ -115,13 +116,14 @@ public class RentalFacade {
 	/**
 	 * Begins the Rental.
 	 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
+	 * @throws SQLException 
 	 */
-	public void createRental(int reservID, String descriptionOfInspection)
+	public void createRental(int clerkID, int reservID, String descriptionOfInspection) throws SQLException
 	{
 		//report has a rental field. 
 		//type of payment is irrelevant I think
 		
-		rentMan.startRental(reservID, descriptionOfInspection);
+		rentMan.startRental(clerkID, reservID, descriptionOfInspection);
 	}
 		
 	// assumes gas is already refilled.

@@ -12,6 +12,7 @@ public class Report implements ArrayOfStringsable{
 	private static final int MAX_MILEGE = 0; 
 	private String objectClass;
 	private int report_num;
+	private int report_clerk_id;
 	private String reportDate;
 	private String reportDescription;
 	private int reportReservationID;
@@ -29,10 +30,12 @@ public class Report implements ArrayOfStringsable{
 	 * @param milage
 	 * @param gasLevel
 	 */
-	public Report(String d, String description, int reservID, int milage, int gasLevel)
+	public Report(int clerk_id, String d, String description, int reservID, int milage, int gasLevel, int report_num)
 	{
+		this.report_num = report_num;
 		objectClass = getClass().getName();
 		report_num = -1; //this need to be updated from database 
+		report_clerk_id = clerk_id;
 		reportDate = d;
 		reportDescription = description;
 		reportReservationID = reservID;
@@ -65,6 +68,22 @@ public class Report implements ArrayOfStringsable{
 	public void changeReportReservationID(int newReportReservationID)
 	{
 		reportReservationID = newReportReservationID;
+	}
+	
+	/**
+	 * Modifies the reporting clerk id
+	 * @param clerk_id identifies clerk
+	 */
+	public void changeReportClerk(int clerk_id){
+		report_clerk_id = clerk_id;
+	}
+	
+	/**
+	 * Returns reporting clerk ID
+	 * @return ID that identifies which clerk is in charge of this report. 
+	 */
+	public int getReportClerk(){
+		return report_clerk_id;
 	}
 	
 	/**
@@ -109,5 +128,21 @@ public class Report implements ArrayOfStringsable{
 
 	public void setObjectClass(String objectClass) {
 		this.objectClass = objectClass;
+	}
+	
+	public void setGasLevel(int g){
+		gasLevel = g;
+	}
+	
+	public void setMilage(int m){
+		milage = m;
+	}
+	
+	public int getGasLevel(){
+		return gasLevel;
+	}
+	
+	public int getMilage(){
+		return milage;
 	}
 }
