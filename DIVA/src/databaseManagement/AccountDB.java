@@ -13,6 +13,8 @@ class AccountDB{
 	private static final String USER = "`users`";
 	private static final String CUSTOMER = "`customer`";
 	private static final String SUPER_CUSTOMER = "`super_customer`";
+	private static final String EMPLOYEE = "`employee`";
+	
 	private ConnectDB dbm;
 	//checking 
 	public AccountDB() {
@@ -227,6 +229,37 @@ class AccountDB{
 		}
 	}
 	
+	public void deleteAccount(String username) throws SQLException{
+		//database variables
+		Statement stmt;
+		Connection conn;
+
+		String query = "";
+		
+		if(doesUsernameExist(username, EMPLOYEE))
+		{
+			query="DELETE users, employee FROM users INNER JOIN employee WHERE "
+					+ "users.id_number = employee.id_number AND "
+					+ "users.account_uName = \"" + username +"\";";
+		}else if (doesUsernameExist(username, SUPER_CUSTOMER)){
+			
+			//query
+		
+		}else if (doesUsernameExist(username, CUSTOMER)){
+//			query = "DELETE users, customer FROM users INNER JOIN customer WHERE "
+//					+ "users.id_number = customer.id_number AND "
+//					+ "users.account_uName =\"" + username +"\";";
+		}
+		
+		dbm.connect();
+		
+		conn = dbm.getConnection();
+		stmt = conn.createStatement();
+		
+		stmt.executeUpdate(query);
+		
+		dbm.disconnect();
+	}
 	
 	/**
 	 * getAccount gets an account from database
@@ -517,8 +550,14 @@ class AccountDB{
 			query = "SELECT account_uName FROM users,customer, super_customer WHERE "
 					+ "users.id_number = customer.id_number AND "
 					+ "customer.id_number = super_customer.id_number;";
-		} else if (table.equals(USER)){
+		} else if(table.equals(EMPLOYEE)){
+			query = "SELECT account_uName FROM users, employee WHERE "
+					+ "users.id_number = employee.id_number";
+			
+		}	else if (table.equals(USER)){
 			query = "SELECT account_uName FROM users;";
+		} else{
+			// throw an error
 		}
 		
 		// execute the query:

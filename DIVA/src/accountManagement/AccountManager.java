@@ -76,7 +76,7 @@ public class AccountManager {
 	 * @throws SQLException 
 	 */
 	public void joinSuperClub(String userName) throws SQLException 
-	{
+	{// Done
 		
 		dbConnection.changeAccountStatus(userName, "SRCustomer");
 		//the database automatically adds 500 points when a customer
@@ -84,12 +84,12 @@ public class AccountManager {
 	}
 	
 	public void accumulatePoints(int i, int points)
-	{
+	{// 
 		dbConnection.addSRPoints(i,points);
 	}
 	
 	public void leaveSuperCLub(String userName) throws SQLException
-	{
+	{// done
 		dbConnection.changeAccountStatus(userName, "RegisteredCustomer");
 	} 
 	/**
@@ -97,10 +97,11 @@ public class AccountManager {
 	 * @param customer The customer account to be deactivated
 	 * @param password The customers password
 	 * @return true if the account was successfully activated
+	 * @throws SQLException 
 	 * @pre customer.state == activated
 	 * @pos customer.state == deactivated
 	 */
-	public void deleteAccount(String userName) {
+	public void deleteAccount(String userName) throws SQLException {
 		dbConnection.removeAccountEntry(userName);
 	}
 	
@@ -109,8 +110,8 @@ public class AccountManager {
 	 * @param firstName The first name of the customer being searched
 	 * @return a list of customers that match the search criteria
 	 */
-	public Account[] searchAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
-		return dbConnection.searchAccountEntries(firstName,lastName,phoneNumber,emailAddress,userName,status);
+	public Account[] searchAccount(String firstName, String lastName, String phoneNumber, String userName) {
+		return dbConnection.searchAccountEntries(firstName,lastName,phoneNumber,userName);
 	}
 	
 	/**

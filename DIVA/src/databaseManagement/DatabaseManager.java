@@ -279,8 +279,9 @@ public class DatabaseManager {
 		}
 	}
 	
-	public void removeAccountEntry(String userName)
+	public void removeAccountEntry(String userName) throws SQLException
 	{
+		accDB.deleteAccount(userName);
 	}
 	
 	public Account[] searchAccountEntries(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status)
