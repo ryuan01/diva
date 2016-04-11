@@ -118,12 +118,24 @@ public class RentalFacade {
 	 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
 	 * @throws SQLException 
 	 */
-	public void createRental(int clerkID, int reservID, String descriptionOfInspection) throws SQLException
+	public void createRental(int clerkID, Reservation r) throws SQLException
 	{
-		//report has a rental field. 
-		//type of payment is irrelevant I think
-		
-		rentMan.startRental(clerkID, reservID, descriptionOfInspection);
+		rentMan.createRental(r, clerkID, );
+	}
+	
+	/**
+	 * Create an inspection report before Rental
+	 * @param clerk_id clerk who processed this request
+	 * @param date date that the inspection happened
+	 * @param description description of certain conditions
+	 * @param rentalID which rental is this report connected to
+	 * @param milage how far the vehicle has been driving
+	 * @param gasLevel gas level between 0 - 100
+	 * @throws SQLException 
+	 */
+	public void createInsectionReportBeforeRental(int clerk_id, String date, String description, int rentalID, int milage, int gasLevel) throws SQLException{
+		Report r = new Report (clerk_id, date, description, rentalID, milage, gasLevel, -1);
+		db.addReport(r, "before_rental");
 	}
 		
 	// assumes gas is already refilled.

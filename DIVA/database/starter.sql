@@ -311,12 +311,15 @@ ALTER TABLE reservation
 ALTER TABLE reservation
   ADD balance DECIMAL(6,2) NOT NULL;
   
+ 
 CREATE TABLE rental(
 	reservation_id MEDIUMINT UNSIGNED PRIMARY KEY,
 	is_paid_rental BOOLEAN,
 	is_paid_extra_charge BOOLEAN,
-	FOREIGN KEY (reservation_id) REFERENCES reservation(reservation_id)
-);	
+	clerk_id  SMALLINT UNSIGNED NOT NULL,
+	FOREIGN KEY (reservation_id) REFERENCES reservation(reservation_id),
+	FOREIGN KEY (clerk_id) REFERENCES employee(id_number)
+);
 
 ALTER TABLE reservation
 ADD CONSTRAINT uc_date_vehicle UNIQUE (start_date,end_date,vehicle_id);
@@ -327,23 +330,21 @@ DROP TABLE report;
 CREATE TABLE report(
 	report_num MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	reporting_clerk  SMALLINT UNSIGNED NOT NULL,
-	reservation MEDIUMINT UNSIGNED NOT NULL,
+	rental_id MEDIUMINT UNSIGNED NOT NULL,
 	milage MEDIUMINT UNSIGNED NOT NULL,
 	gasLevel SMALLINT(3) UNSIGNED NOT NULL,
 	comments TEXT(500), 
+	state ENUM('before_rental','after_rental') NOT NULL,
 	FOREIGN KEY (reporting_clerk) REFERENCES employee(id_number),
-	FOREIGN KEY (reservation) REFERENCES reservation(reservation_id),
+	FOREIGN KEY (rental_id) REFERENCES rental(reservation_id),
 	CHECK (gasLevel >= 0 AND gasLevel <=100)
 );
-
-ALTER TABLE report
-  ADD report_date DATETIME NOT NULL;
-
-ALTER TABLE report
- ADD state ENUM('before_rental','after_rental') NOT NULL;
  
 ALTER TABLE report
- ADD CONSTRAINT uc_res_state UNIQUE (reservation,state);
+ ADD CONSTRAINT uc_res_state UNIQUE (rental_id,state);
+
+ ALTER TABLE report
+  ADD report_date DATETIME NOT NULL;
 
  
 CREATE TABLE report_accident(

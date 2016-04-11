@@ -7,6 +7,7 @@ import databaseManagement.DatabaseManager;
 import rentalManagement.AccidentReport;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
+import systemManagement.Branch;
 
 /**
  * Unit test for databasemanager class
@@ -21,7 +22,20 @@ public class DatabaseManagerTest {
 		// TODO Auto-generated method stub
 		//test_reservation_query(4);
 		//test_create_reservation();
-		test_report();
+		//test_report();
+		test_branch();
+	}
+
+	private static void test_branch() {
+		// TODO Auto-generated method stub
+		Branch b = new Branch(-1, " 100 Manitoba Street", "Vancouver", "BC", "V4TZ7T");
+		System.out.println(b.toString());
+		try {
+			dbm.createBranchEntry(b);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static void test_report() {

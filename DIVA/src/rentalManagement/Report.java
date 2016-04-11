@@ -15,7 +15,7 @@ public class Report implements ArrayOfStringsable{
 	private int report_clerk_id;
 	private String reportDate;
 	private String reportDescription;
-	private int reportReservationID;
+	private int reportRentalID;
 	private int milage; //0 - MAX_MILEGE
 	private int gasLevel; //unsigned int between 0-100
 	
@@ -26,11 +26,11 @@ public class Report implements ArrayOfStringsable{
 	 *  A Report with date, description, and associated reservation.
 	 * @param d
 	 * @param description
-	 * @param reservID
+	 * @param rentalID
 	 * @param milage
 	 * @param gasLevel
 	 */
-	public Report(int clerk_id, String d, String description, int reservID, int milage, int gasLevel, int report_num)
+	public Report(int clerk_id, String d, String description, int rentalID, int milage, int gasLevel, int report_num)
 	{
 		this.report_num = report_num;
 		objectClass = getClass().getName();
@@ -38,7 +38,7 @@ public class Report implements ArrayOfStringsable{
 		report_clerk_id = clerk_id;
 		reportDate = d;
 		reportDescription = description;
-		reportReservationID = reservID;
+		reportRentalID = rentalID;
 		this.milage = milage;
 		this.gasLevel = gasLevel;
 	}
@@ -67,7 +67,7 @@ public class Report implements ArrayOfStringsable{
 	 */
 	public void changeReportReservationID(int newReportReservationID)
 	{
-		reportReservationID = newReportReservationID;
+		reportRentalID = newReportReservationID;
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class Report implements ArrayOfStringsable{
 	 */
 	public int getReportReservationID()
 	{
-		return reportReservationID;
+		return reportRentalID;
 	}
 	
 	/**
