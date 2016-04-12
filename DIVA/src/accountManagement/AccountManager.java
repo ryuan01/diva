@@ -84,7 +84,7 @@ public class AccountManager {
 	}
 	
 	public void accumulatePoints(String username, int points) throws SQLException
-	{// 
+	{// Done
 		if (points > 0){
 			dbConnection.addSRPoints(username,points);
 		} else {

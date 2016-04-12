@@ -293,7 +293,7 @@ public class DatabaseManager {
 	}
 	
 	public void modifyPassword(String userName, String newPassword) throws SQLException{
-		accDB.updatePassword(userName, newPassword);
+		accDB.modifyPassword(userName, newPassword);
 	}
 
 	/**

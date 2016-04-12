@@ -248,6 +248,9 @@ class AccountDB{
 		}
 				
 	}
+	
+	
+	
 	public void downgradeSCustomer(String username) throws SQLException{
 		//database variables
 		Statement stmt;
@@ -518,7 +521,33 @@ class AccountDB{
 		}
 	}
 	
-	public void updatePassword(String userName, String newPassword) throws SQLException{
+	public void modifyPassword(String userName, String newPassword) throws SQLException{
+		// Database variables
+		Connection conn;
+		Statement stmt;
+		String query;
+		
+		if(doesItExist(userName, USER, USERNAME))
+		{
+			query = "UPDATE users SET account_password = \"" + newPassword + "\" "
+					+ "WHERE account_uName = \"" + userName + "\";";
+			
+			dbm.connect();
+			
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			stmt.executeUpdate(query);
+			
+			dbm.disconnect();
+		} else{
+			// throw an exception: username not found
+		}
+		
+		
+		
+		
+		
 		
 	}
 	/* ----------------------------------PRIVATE METHODS-------------------------------------------*/
