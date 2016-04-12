@@ -25,7 +25,6 @@ public class DatabaseManager {
 	
 	// I am modeling as Has-A relationship
 	// Not sure if I need to change this? 
-	private ConnectDB conDB; // you don't need to create a ConnectDB object here
 	private AccountDB accDB;
 	private BranchDB branDB;
 	//private EquipmentDB eqDB;
@@ -65,7 +64,6 @@ public class DatabaseManager {
 	* @post an only DatabasManager object is created
 	*/
     private DatabaseManager(){
-		conDB = new ConnectDB();
 		accDB = new AccountDB();
 		branDB = new BranchDB();
 		//eqDB = new EquipmentDB();
@@ -75,39 +73,8 @@ public class DatabaseManager {
     }
        
 	
-    // ConnectDB
-	/**
-	 * Connect to database
-	 * @pre !isConnect()
-	 * @post isConnected() 
-	 */
-	public void connect() {
-		// you don't need to create a ConnectDB object here
-		conDB.connect();
-	}
-	
-	/**
-	 * Get the connection
-	 * @pre none
-	 * @post none
-	 * @return a Connection object
-	 */
-	// We don't need this method in AccountDB (-samahri)
-	public Connection getConnection(){
-		return conDB.getConnection();
-	}
-	
-	/**
-	 * Disconnect to database
-	 * @pre isConnected()
-	 * @post !isConnect()
-	 */
-	// We don't need this method in AccountDB (-samahri)
-	public void disconnect() {
-		conDB.disconnect();
-	}
- 
-	//Branch Related
+
+//--------------------------------------------Branch Related--------------------------------------
 	/**
 	 * 
 	 * @param b Branch
@@ -284,14 +251,19 @@ public class DatabaseManager {
 		accDB.deleteAccount(userName);
 	}
 	
-	public Account[] searchAccountEntries(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status)
-	{
-		return null;
+	/**
+	 * 
+	 * @param parameter can be either username, lastname, or phonenumber
+	 * @return
+	 * @throws SQLException 
+	 */
+	public Account[] searchAccountEntries(String parameter) throws SQLException{
+		return accDB.getAccounts(parameter);
 	}
 	
-	public String retrievePassword(String userName)
-	{
-		return null;
+	public String retrievePassword(String userName) throws SQLException
+	{// Done
+		return accDB.getEncryptedPassword(userName);
 	}
 	
 	// find account by loginID, loginID should be immutable

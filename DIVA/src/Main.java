@@ -14,13 +14,14 @@ public class Main {
 		
 		try {
 			//acm.joinSuperClub("mjane01");
-			acm.deleteAccount("sfreeman01");
+			System.out.println(acm.getPassword("jdoe01"));
+			//System.out.println("hellooooooo");
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block 
 			e.printStackTrace();
 		}
-//		
+		
 			 
 	}
 }

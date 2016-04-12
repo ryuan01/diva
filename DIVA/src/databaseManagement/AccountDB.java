@@ -1,12 +1,14 @@
 package databaseManagement;
 
+import java.util.ArrayList;
 import java.util.Currency;
 import java.sql.*;
 
 import accountManagement.*;
 /**
  * AccountDB provides services related to the creation, deletion, and modification of account
- * no invariant 
+ * no invariant
+ * @author Saud (Sammy) Almahri 
  */
 class AccountDB{
 	
@@ -14,6 +16,8 @@ class AccountDB{
 	private static final String CUSTOMER = "`customer`";
 	private static final String SUPER_CUSTOMER = "`super_customer`";
 	private static final String EMPLOYEE = "`employee`";
+	private static final String ID_NUM = "users.id_number";
+	private static final String USERNAME = "Account_uName";
 	
 	private ConnectDB dbm;
 	//checking 
@@ -53,7 +57,7 @@ class AccountDB{
 		Connection conn;
 		String query;
 		
-		if (!doesUsernameExist(userName, USER)){
+		if (!doesItExist(userName, USER, USERNAME)){
 			password = customer.getPassword();
 			fname = customer.getFirstname();
 			lname = customer.getLastname();
@@ -119,7 +123,7 @@ class AccountDB{
 		Connection conn;
 		String query;
 		
-		if (!doesUsernameExist(userName, USER)){
+		if (!doesItExist(userName, USER, USERNAME)){
 			password = employee.getPassword();
 			fname = employee.getFirstname();
 			lname = employee.getLastname();
@@ -203,7 +207,7 @@ class AccountDB{
 		
 		int src_id;
 		
-		if(doesUsernameExist(username, SUPER_CUSTOMER))
+		if(doesItExist(username, SUPER_CUSTOMER, USERNAME))
 		{
 			
 			dbm.connect();
@@ -236,16 +240,16 @@ class AccountDB{
 
 		String query = "";
 		
-		if(doesUsernameExist(username, EMPLOYEE))
+		if(doesItExist(username, USER, EMPLOYEE))
 		{
 			query="DELETE users, employee FROM users INNER JOIN employee WHERE "
 					+ "users.id_number = employee.id_number AND "
 					+ "users.account_uName = \"" + username +"\";";
-		}else if (doesUsernameExist(username, SUPER_CUSTOMER)){
+		}else if (doesItExist(username, SUPER_CUSTOMER, USERNAME)){
 			
 			//query
 		
-		}else if (doesUsernameExist(username, CUSTOMER)){
+		}else if (doesItExist(username, CUSTOMER, USERNAME)){
 //			query = "DELETE users, customer FROM users INNER JOIN customer WHERE "
 //					+ "users.id_number = customer.id_number AND "
 //					+ "users.account_uName =\"" + username +"\";";
@@ -263,13 +267,58 @@ class AccountDB{
 	
 	/**
 	 * getAccount gets an account from database
-	 * @param username the username related to a account
-	 * @pre isValidUsername(username)
-	 * @post Account object
-	 * @return Account object
+	 * @param parameter can be either username, lastname, or phonenumber
+	 * @pre (username)
+	 * @return Account[] array
 	 * @throws SQLException 
 	 */
-	public Account getAccount(String username) throws SQLException {
+	public Account[] getAccounts(String parameter) throws SQLException {
+		// assume its last name
+		//database variables
+		Statement stmt;
+		Connection conn;
+		ResultSet rs;
+		String query;
+		
+		// Local variable:
+		ArrayList<Account> accountList = new ArrayList<Account>();
+		ArrayList<String> idNum = new ArrayList<String>();
+		
+		query = "SELECT id_number, last_name, Account_uName, phone FROM `users`";
+		
+		dbm.connect();
+		
+		conn = dbm.getConnection();
+		stmt = conn.createStatement();
+		
+		// get all users
+		rs = stmt.executeQuery(query);
+		
+		while(rs.next()){
+			if (parameter.equals(rs.getString("last_name")) ||
+					parameter.equals(rs.getString("Account_uName")) || 
+					parameter.equals(rs.getString("phone")))
+			{
+				idNum.add(rs.getString("id_number"));
+			}
+		}
+		
+		dbm.disconnect();
+		
+		for (String id : idNum){
+			if (doesItExist(id, EMPLOYEE, ID_NUM)){
+				// add Employee object to accountList
+			} else if (doesItExist(id, SUPER_CUSTOMER, ID_NUM)){
+				// add Customer object to accountList
+			} else if (doesItExist(id, CUSTOMER, ID_NUM)){
+				
+			}
+		}
+		
+		return null;//;accountList.toArray(new array(accountList.size()));
+		
+		
+		
 		/*if(isValidUsername(username)){
 			dbm.connect();
 			
@@ -323,79 +372,10 @@ class AccountDB{
 			dbm.disconnect();
 			return acct;
 		}*/
-		return null;
+		//return null;
 	
 	}
-	
-	/**
-	 * getAccount gets an account from database
-	 * @param fname first name
-	 * @param lname last name
-	 * @param phonenum phone number
-	 * @pre fname, lname, and phonenum are formatted properly
-	 * @pre isValidAccount(fname,lname,phonenum)
-	 * @post Account object 
-	 * @return Account object
-	 * @throws SQLException 
-	 */
-	public Account getAccount(String fname, String lname, String phonenum) throws SQLException {
-		/*if(isValidAccount(fname,lname,phonenum)){
-			dbm.connect();
-			// Change the implementation to fit...
-			Statement stmt = dbm.getConnection().createStatement();
-			String query = "";
-			ResultSet rs = null;
-			Account acct = null;
-				
-			if (isValidAccount(username, "super_customer")){
-				query = "SELECT * FROM `users`, `super_customer`, `customer` WHERE "
-						+ "users.id_number = customer.id_number AND "
-						+ "super_customer.id_number = customer.id_number AND"
-						+ "account_uName = \'" + username +"\';";
-				rs = stmt.executeQuery(query);
-				rs.next();
-				acct = new SuperCustomer(rs.getString("first_name"),
-						rs.getString("last_name"),
-						rs.getString("phone"),
-						rs.getString("email"),
-						rs.getString("account_uName"),
-						rs.getInt("points"));
-				
-				
-			} else if (isValidAccount(username, "customer")){
-				query = "SELECT * FROM `users`, `customer` WHERE "
-						+ "users.id_number = customer.id_number AND "
-						+ "account_uName = \'" + username +"\';";
-				rs = stmt.executeQuery(query);
-				rs.next();
-				acct = new Customer(rs.getString("first_name"),
-						rs.getString("last_name"),
-						rs.getString("phone"),
-						rs.getString("email"),
-						rs.getString("account_uName"));			
-			} else{ // if the username is present, and it's not a customer or a super customer, then it's an employee
-				query = "SELECT * FROM `users`, `employee` WHERE "
-						+ "users.id_number = employee.id_number AND"
-						+ "account_uName = \'" + username +"\';";
-				rs = stmt.executeQuery(query);
-				rs.next();
-				acct = new Employee(rs.getString("first_name"),
-						rs.getString("last_name"),
-						rs.getString("phone"),
-						rs.getString("email"),
-						rs.getString("account_uName"),
-						rs.getInt("works_at"),
-						rs.getString("e_type"));
-			}
-			
-			
-			dbm.disconnect();
-			return acct;
-		}*/
-		return null;
-	
-	}
-	
+		
 	//modifier 
 	
 	//loginupdate as in, updating the password?
@@ -461,8 +441,6 @@ class AccountDB{
 //	}
 		
 
-/* ----------------------------------PRIVATE METHODS-------------------------------------------*/
-	// PRIVATE METHODS
 	//not sure if we really want this, but OK.
 	//I think for security purpose, we might want to move the validation inside to this class
 	/**
@@ -473,8 +451,8 @@ class AccountDB{
 	 * @return encrypted password for that username
 	 * @throws SQLException 
 	 */
-	private String getEncryptedPassword(String username) throws SQLException {
-		if (doesUsernameExist(username, USER)){
+	public String getEncryptedPassword(String username) throws SQLException {
+		if (doesItExist(username, USER, USERNAME)){
 			dbm.connect();
 			String query = "SELECT account_password FROM users WHERE account_uName = '" + username +"';";
 						
@@ -489,6 +467,16 @@ class AccountDB{
 			return null;
 		}
 	}
+	
+	public void updatePassword(String oldPassword, String newPassword){
+		// 
+		Statement stmt;
+		Connection conn;
+		ResultSet rs;
+		String query;
+		
+	}
+	/* ----------------------------------PRIVATE METHODS-------------------------------------------*/
 	/**
 	 * isValidAccount checks if the provided account exists
 	 * @param fname first name
@@ -529,7 +517,7 @@ class AccountDB{
 	 * @post true if username exists, false if it does not
 	 * @return true if the username exists
 	 */
-	private boolean doesUsernameExist(String username, String table) throws SQLException {
+	private boolean doesItExist(String id, String table, String param) throws SQLException {
 		// database ojbects:
 		Connection conn;
 		Statement stmt;
@@ -545,17 +533,17 @@ class AccountDB{
 		
 		// choose the query
 		if (table.equals(CUSTOMER)){
-			query = "SELECT account_uName FROM users,customer WHERE users.id_number = customer.id_number;";
+			query = "SELECT " + param + " FROM users,customer WHERE users.id_number = customer.id_number;";
 		} else if (table.equals(SUPER_CUSTOMER)){
-			query = "SELECT account_uName FROM users,customer, super_customer WHERE "
+			query = "SELECT " + param + " FROM users,customer, super_customer WHERE "
 					+ "users.id_number = customer.id_number AND "
 					+ "customer.id_number = super_customer.id_number;";
 		} else if(table.equals(EMPLOYEE)){
-			query = "SELECT account_uName FROM users, employee WHERE "
+			query = "SELECT " + param + " FROM users, employee WHERE "
 					+ "users.id_number = employee.id_number";
 			
 		}	else if (table.equals(USER)){
-			query = "SELECT account_uName FROM users;";
+			query = "SELECT " + param + " FROM users;";
 		} else{
 			// throw an error
 		}
@@ -565,7 +553,7 @@ class AccountDB{
 		
 		// check for any matching usernames
 		while (rs.next()){
-			if (username.equals(rs.getString("account_uName"))){
+			if (id.equals(rs.getString(param))){
 				dbm.disconnect();
 				return true;
 			}
@@ -586,7 +574,7 @@ class AccountDB{
 	 * @post true if the there is a match, otherwise false
 	 */
 	private boolean isValidLogin(String username, String pw) throws SQLException {
-		if (doesUsernameExist(username, USER) == true){
+		if (doesItExist(username, USER, USERNAME) == true){
 			dbm.connect();
 		
 			Statement stmt = dbm.getConnection().createStatement();
@@ -629,4 +617,16 @@ class AccountDB{
 		dbm.disconnect();
 		return false;
 	}
+	/**
+	 * 
+	 * @param employeeParams = {firstName, lastName, phoneNumber, email, username, works_at,
+	 * type}
+	 * @return
+	 */
+	private Employee getEmployeeObject(String[] employeeParams){
+		
+		return null;
+	}
 }
+
+	
