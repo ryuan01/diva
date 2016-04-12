@@ -27,7 +27,6 @@ public class DatabaseManager {
 	
 	// I am modeling as Has-A relationship
 	// Not sure if I need to change this? 
-	private ConnectDB conDB; // you don't need to create a ConnectDB object here
 	private AccountDB accDB;
 	private BranchDB branDB;
 	private EquipmentDB eqDB;
@@ -56,7 +55,6 @@ public class DatabaseManager {
      * @pre instance = new DatabaseManager()
      * @post instance = null
      */
-    // I'm not sure what this method is for (-samahri)
     public static void destroyDatabase()
     {
     	instance = null;
@@ -67,7 +65,6 @@ public class DatabaseManager {
 	* @post an only DatabasManager object is created
 	*/
     private DatabaseManager(){
-		conDB = new ConnectDB();
 		accDB = new AccountDB();
 		branDB = new BranchDB();
 		eqDB = new EquipmentDB();
@@ -76,39 +73,6 @@ public class DatabaseManager {
 		prDB = new PriceDB();
     }
        
-	
-    // ConnectDB
-	/**
-	 * Connect to database
-	 * @pre !isConnect()
-	 * @post isConnected() 
-	 */
-	public void connect() {
-		// you don't need to create a ConnectDB object here
-		conDB.connect();
-	}
-	
-	/**
-	 * Get the connection
-	 * @pre none
-	 * @post none
-	 * @return a Connection object
-	 */
-	// We don't need this method in AccountDB (-samahri)
-	public Connection getConnection(){
-		return conDB.getConnection();
-	}
-	
-	/**
-	 * Disconnect to database
-	 * @pre isConnected()
-	 * @post !isConnect()
-	 */
-	// We don't need this method in AccountDB (-samahri)
-	public void disconnect() {
-		conDB.disconnect();
-	}
- 
 	//Branch Related
 	/**
 	 * 
@@ -119,6 +83,13 @@ public class DatabaseManager {
 	{
 		branDB.addBranch(b);
 	}
+	
+	/*
+	 * not relevant
+	public boolean modifyBranchEntry(int id,String address, String city, String province, String zipcode)
+	{
+		return true;
+	}*/
 	
 	/*
 	 * not relevant
@@ -166,7 +137,6 @@ public class DatabaseManager {
 
    
 /*----------------------------------------RentalDB--------------------------------------------*/
-	
 	/**
 	 * Create an reservation entry in database
 	 * @param r reservation
@@ -180,6 +150,7 @@ public class DatabaseManager {
 		reDB.createReservation(r);
 	}
 	
+
 	/**
 	 * Return reservation history for a customer
 	 * @param acc_key_value customer account key value
@@ -227,7 +198,6 @@ public class DatabaseManager {
 		// TODO Auto-generated method stub
 		return reDB.reservationQuery(reservID);
 	}
-
 
 	/**
 	 * Add an inspection report for Database
@@ -293,7 +263,11 @@ public class DatabaseManager {
 	}
 	
 	/**
+<<<<<<< HEAD
 	 * Searching for overdue trucks or cars (today)
+=======
+	 * 
+>>>>>>> benZ
 	 * @param branch_id
 	 * @param type
 	 * @return
@@ -420,7 +394,6 @@ public class DatabaseManager {
 		// TODO Auto-generated method stub
 		veDB.updateVehicleStatus(v, status);
 	}
-
 
 	/**
 	 * Add a vehicle to database
