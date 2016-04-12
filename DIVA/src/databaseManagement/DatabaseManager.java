@@ -264,11 +264,7 @@ public class DatabaseManager {
 	}
 	
 	/**
-<<<<<<< HEAD
 	 * Searching for overdue trucks or cars (today)
-=======
-	 * 
->>>>>>> benZ
 	 * @param branch_id
 	 * @param type
 	 * @return
@@ -514,10 +510,13 @@ public class DatabaseManager {
 	 * @throws SQLException
 	 */
 	public void createRental(int reserveID, int clerkID, boolean is_paid_rental, boolean is_paid_extra_charge) throws SQLException {
-		// TODO Auto-generated method stub
 		reDB.createRental(reserveID, clerkID, is_paid_rental, is_paid_extra_charge);
 	}
 
+	public int getAccountForRental(int rental_id) {
+		// TODO Auto-generated method stub
+		return reDB.getAccountForRental(rental_id);
+	}
 	/**
 	 * For ben, get a vehicle inside reservation. 
 	 * @param reservID

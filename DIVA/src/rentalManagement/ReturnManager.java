@@ -1,6 +1,7 @@
 package rentalManagement;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.text.ParseException;
 
 import databaseManagement.DatabaseManager;
@@ -68,8 +69,9 @@ class ReturnManager {
 	 * @param reservID Reservation ID of Rental to be checked.
 	 * @return True if overdue, False otherwise.
 	 * @throws ParseException 
+	 * @throws SQLException 
 	 */
-	private boolean checkIfOverdue(int reservID) throws ParseException
+	boolean checkIfOverdue(int reservID) throws ParseException, SQLException
 	{
 		// if reservation end date is before current date.
 		String current_date = sdf.format(new java.util.Date());
@@ -82,5 +84,37 @@ class ReturnManager {
 		{
 			return false;
 		}
+	}
+
+	BigDecimal addOverdueExtraCharge(int rental_id, String current_date) {
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
+
+	boolean checkReturnBranch(int rental_id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	BigDecimal addWrongReturnBranchExtraCharge(int rental_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	void createAccidentReport(int clerkID, String accident_date, String description, int rentalID,
+			String address, String city, String province, String zipcode, String driver, BigDecimal amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	void payForExtraCharge(int rental_id, BigDecimal amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean readyToReturn(int rental_id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

@@ -1,5 +1,6 @@
 package rentalManagement;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import accountManagement.Account;
@@ -9,7 +10,8 @@ import paymentManagement.PaymentManager;
 class RentManager {
 	
 	
-		DatabaseManager dbConnection;
+		private DatabaseManager dbConnection;
+		private PaymentManager pm; 
 	
 		/**
 		 * A Rental Manager that creates, and modifies Rentals.
@@ -17,6 +19,7 @@ class RentManager {
 		RentManager()
 		{
 			dbConnection = DatabaseManager.getInstance();
+			pm = new PaymentManager();
 		}
 	
 		/**
@@ -39,18 +42,6 @@ class RentManager {
 			payForRental(dbConnection.getReservationAccount(reservID),reservID);
 			
 			//dbConnection.changeReservationStatus(reservID, "Rented");
-		}
-
-		
-		/**
-		 * Calls Accounting system to pay for the Rental.
-		 * @param reservID Reservation ID of Rental to be paid.
-		 * @param typeOfPayment Debit for debit card, Credit for credit card, Cash for cash, SRP for SuperRent points.
-		 * @pre typeOfPayment == "debit" && typeOfPayment == "credit" && typeOfPayment == "cash" && typeOfPayment == "SRP"
-		 */
-		void payForRental(Account a, int reservID)
-		{
-			PaymentManager.makePayment(a, PaymentManager.calculateRentprice(reservID));
 		}
 
 		/**
@@ -82,5 +73,39 @@ class RentManager {
 			// TODO Auto-generated method stub
 			Report r = new Report (clerk_id, date, description, rentalID, milage, gasLevel, -1);
 			dbConnection.addReport(r, status);
+		}
+
+		/**
+		 * Get account related to this rental_id
+		 * @param rental_id
+		 * @return
+		 * @throws SQLException 
+		 */
+		Account getAccountForRental(int rental_id) throws SQLException {
+			// TODO Auto-generated method stub
+			Account account_id = dbConnection.getReservationAccount(rental_id);
+			return account_id;
+		}
+		
+		/**
+		 * Pay for rental, add record, produce receipt, decrease amount owning in rental
+		 * @param account_id
+		 * @param rental_id
+		 * @param amount
+		 */
+		void payForRental(Account account_id, int rental_id, BigDecimal amount) {
+			// TODO Auto-generated method stub
+			pm.makePayment(account_id, pm.calculateRentprice(rental_id), amount);
+		}
+
+		/**
+		 * 
+		 * @param rental_id
+		 * @return 
+		 */
+		boolean readyToLeave(int rental_id) {
+			return false;
+			// TODO Auto-generated method stub
+			
 		}
 }

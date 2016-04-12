@@ -27,14 +27,9 @@ public class PaymentManagerTester {
 	public static void main(String[] args){
 		
 		DatabaseManager db = DatabaseManager.getInstance();
-		try {
-			PriceList list = new PriceList(db);
-			list.print();
-			System.out.println(list.getPriceCar(1, 2));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		PriceList list = new PriceList();
+		list.print();
+		System.out.println(list.getPriceCar(1, 2));
 		
 		String start_date = ("2016-04-28 12:20:40");
 		String end_date = ("2016-04-29 10:20:40");

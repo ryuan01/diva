@@ -372,6 +372,11 @@ class RentalDB {
         stmt.close();
         dbm.disconnect();		
 	}
+
+	int getAccountForRental(int rental_id) {
+		return 0;
+		// TODO Auto-generated method stub
+	}
 	
 	/**
 	 * 
