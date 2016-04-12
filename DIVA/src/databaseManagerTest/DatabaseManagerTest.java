@@ -8,6 +8,7 @@ import rentalManagement.AccidentReport;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
 import systemManagement.Branch;
+import vehicleManagement.Vehicle;
 
 /**
  * Unit test for databasemanager class
@@ -20,10 +21,24 @@ public class DatabaseManagerTest {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//test_reservation_query(4);
+		test_reservation_query(4);
 		//test_create_reservation();
 		//test_report();
-		test_branch();
+		//test_branch();
+		//test_get_reservation_vehicle();
+	}
+
+	private static void test_get_reservation_vehicle() {
+		// TODO Auto-generated method stub
+		try {
+			Vehicle v = 
+					//dbm.getReservationVehicle(1);
+					dbm.getReservationVehicle(20);
+			System.out.println(v.toString());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static void test_branch() {

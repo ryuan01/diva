@@ -522,9 +522,13 @@ public class DatabaseManager {
 	 * For ben, get a vehicle inside reservation. 
 	 * @param reservID
 	 * @return Vehicle
+	 * @throws SQLException 
 	 */
-	public Vehicle getReservationVehicle(int reservID) {
+	public Vehicle getReservationVehicle(int reservID) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		Reservation r = reDB.reservationQuery(reservID);
+		int vehicle_id = r.getVehicleID();
+		Vehicle v = veDB.search(vehicle_id);
+		return v;
 	}
 }

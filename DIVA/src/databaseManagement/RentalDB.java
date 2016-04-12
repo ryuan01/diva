@@ -18,7 +18,7 @@ class RentalDB {
 	
 	private ConnectDB dbm;
 	
-	public RentalDB() {
+	RentalDB() {
 		dbm = new ConnectDB();
 	}
 
@@ -31,7 +31,7 @@ class RentalDB {
 	 * @return Reservation object 
 	 * @throws SQLException 
 	 */
-	public Reservation reservationQuery(int rNum) throws SQLException {
+	Reservation reservationQuery(int rNum) throws SQLException {
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
   		
@@ -95,7 +95,7 @@ class RentalDB {
 	 * @pre none
 	 * @post returns true if it exists, otherwise false
 	 */
-	public boolean isValidReservation(int rNum) throws SQLException {
+	boolean isValidReservation(int rNum) throws SQLException {
 		boolean isValid = false;
  		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();		
@@ -121,7 +121,7 @@ class RentalDB {
 	 * @return list of reservations
 	 * @throws SQLException 
 	 */
-	public Reservation[] reservationHistory(int acc_key_value) throws SQLException {
+	Reservation[] reservationHistory(int acc_key_value) throws SQLException {
  		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
   		
@@ -163,7 +163,7 @@ class RentalDB {
 	 * @pre isValidReservation(r)
 	 * @post !isValidReservation(r)
 	 */
-	public void removeReservation(int r_key_value) throws SQLException,NullPointerException {
+	void removeReservation(int r_key_value) throws SQLException,NullPointerException {
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();		
 		dbm.getConnection().setAutoCommit(false);
@@ -223,7 +223,7 @@ class RentalDB {
 	 * @param r an reservation
 	 * @throws SQLException 
 	 */
-	public void createReservation(Reservation r) throws SQLException{
+	void createReservation(Reservation r) throws SQLException{
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();		
 		dbm.getConnection().setAutoCommit(false);
@@ -304,11 +304,11 @@ class RentalDB {
 	 * @param state 
 	 * @throws SQLException 
 	 */
-	public void createInspectionReport(Report r, String state) throws SQLException{
+	void createInspectionReport(Report r, String state) throws SQLException{
 		//Report(String d, String description, int reservID, int milage, int gasLevel)
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
-    	String sql= "INSERT INTO `report`(`report_num`, `reporting_clerk`, `reservation`, `milage`, `gasLevel`, `comments`, `report_date`, `state`) "
+    	String sql= "INSERT INTO `report`(`report_num`, `reporting_clerk`, `rental_id`, `milage`, `gasLevel`, `comments`, `report_date`, `state`) "
     				+" VALUES (NULL, "+ r.getReportClerk()+","
     				+r.getReportReservationID()+", "
     				+r.getMilage()+", "
@@ -328,7 +328,7 @@ class RentalDB {
 	 * @param r
 	 * @throws SQLException 
 	 */
-	public void createAccidentReport(AccidentReport r) throws SQLException{
+	void createAccidentReport(AccidentReport r) throws SQLException{
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
     	String sql= "INSERT INTO `report_accident`(`report_num`, `rental_id`, `clerk_id`, `accident_date`, "

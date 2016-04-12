@@ -487,6 +487,49 @@ class VehicleDB {
 	    
 	    stmt.close();
 	    dbm.disconnect();		
+	}
+	 /**
+	  * Search for an vehicle according to its ID
+	  * @param vehicle_id
+	  * @return
+	 * @throws SQLException 
+	  */
+	 Vehicle search(int vehicle_id) throws SQLException {
+		// TODO Auto-generated method stub
+		 System.out.println(vehicle_id);
+		 String query; 
+		//is this a truck or car
+		if (isTruck(vehicle_id)){
+			query = " SELECT *"
+					+"FROM  `truck` INNER JOIN `vehicle` WHERE  vehicle.vehicle_id = " +vehicle_id;
+			Truck[] trucks = (Truck[]) executeQueryTruck(query);
+			return trucks[0];
+		}
+		else { // this is a truck
+			query = " SELECT *"
+					+"FROM `car` INNER JOIN `vehicle` WHERE vehicle.vehicle_id = "+ vehicle_id;
+			Car[] cars = (Car[]) executeQueryCar(query);
+			return cars[0];
+		}
+	}
+
+	private boolean isTruck(int vehicle_id) throws SQLException {
+		// TODO Auto-generated method stub
+ 		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+  		String query  = "SELECT `vehicle_id` from truck WHERE `vehicle_id` = "+ vehicle_id;
+        ResultSet rs = stmt.executeQuery(query);
+        //if there is any rs
+        if (rs.next()){
+            rs.close();
+            stmt.close();	
+            dbm.disconnect();
+        	return true;
+        }
+        rs.close();
+        stmt.close();	
+        dbm.disconnect();
+		return false;
 	}	
 
 	
