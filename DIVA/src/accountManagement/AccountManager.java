@@ -23,7 +23,7 @@ public class AccountManager {
 		dbConnection = DatabaseManager.getInstance();
 	}
 	
-	//------------Methods that can be called by an unauthenticated HTTPS user
+	//------------Methods that can be called by an unauthenticated HTTPS user--------//
 
 	/**
 	 * Creates a new CustomerAccount record in the database
@@ -83,9 +83,13 @@ public class AccountManager {
 		// is upgraded to superCustomer
 	}
 	
-	public void accumulatePoints(int i, int points)
-	{// 
-		dbConnection.addSRPoints(i,points);
+	public void accumulatePoints(String username, int points) throws SQLException
+	{// Done
+		if (points > 0){
+			dbConnection.addSRPoints(username,points);
+		} else {
+			// throw an error
+		}
 	}
 	
 	public void leaveSuperCLub(String userName) throws SQLException
@@ -106,24 +110,35 @@ public class AccountManager {
 	}
 	
 	/**
-	 * Returns a list of customers that have the same first name as the parameter
+	 * Returns a list of customers that have the same last name as the parameter
 	 * @param firstName The first name of the customer being searched
 	 * @return a list of customers that match the search criteria
+	 * @throws SQLException 
 	 */
-	public Account[] searchAccount(String firstName, String lastName, String phoneNumber, String userName) {
-		return dbConnection.searchAccountEntries(firstName,lastName,phoneNumber,userName);
+	public Account[] searchAccountByLastName(String lastName) throws SQLException{
+		return dbConnection.searchAccountEntries(lastName);
+	}
+	
+	public Account[] searchAccountByUsername(String username) throws SQLException{
+		return dbConnection.searchAccountEntries(username);
+	}
+	
+	public Account[] searchAccountByPhoneNumber(String phoneNum) throws SQLException{
+		return dbConnection.searchAccountEntries(phoneNum);
 	}
 	
 	/**
 	 * Returns the password of a user, given their user name
 	 * @param userName The user name of the account needing authentication
 	 * @return an encrypted version of the password associated with the UserName
+	 * @throws SQLException 
 	 */
-	public String getPassword(String userName) {
+	public String getPassword(String userName) throws SQLException {
+		// Done
 		return dbConnection.retrievePassword(userName);
 	}
 	
-	public void changePassword(String userName, String newPassword)
+	public void changePassword(String userName, String newPassword) throws SQLException
 	{
 		dbConnection.modifyPassword(userName,newPassword);
 	}

@@ -72,8 +72,9 @@ public class DatabaseManager {
 		veDB = new VehicleDB();
 		prDB = new PriceDB();
     }
-       
-	//Branch Related
+	
+
+//--------------------------------------------Branch Related--------------------------------------
 	/**
 	 * 
 	 * @param b Branch
@@ -318,22 +319,27 @@ public class DatabaseManager {
 			accDB.createCustomer((Customer)account);
 		} else if (account instanceof Employee){
 			accDB.createEmployee((Employee)account);
-		}
+		} // create one for superCustomer account
 	}
 	
 	public void removeAccountEntry(String userName) throws SQLException
 	{
-		accDB.deleteAccount(userName);
+		accDB.removeAccountEntry(userName);
 	}
 	
-	public Account[] searchAccountEntries(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status)
-	{
-		return null;
+	/**
+	 * 
+	 * @param parameter can be either username, lastname, or phonenumber
+	 * @return
+	 * @throws SQLException 
+	 */
+	public Account[] searchAccountEntries(String parameter) throws SQLException{
+		return accDB.getAccounts(parameter);
 	}
 	
-	public String retrievePassword(String userName)
-	{
-		return null;
+	public String retrievePassword(String userName) throws SQLException
+	{// Done
+		return accDB.retrievePassword(userName);
 	}
 	
 	// find account by loginID, loginID should be immutable
@@ -352,8 +358,9 @@ public class DatabaseManager {
 		}
 	}
 	
-	public void addSRPoints(String userName, int points)
+	public void addSRPoints(String userName, int points) throws SQLException
 	{
+		accDB.addSRPoints(userName, points);
 	}
 	
 	public void addSRPoints(int i, int points) {
@@ -361,8 +368,8 @@ public class DatabaseManager {
 		
 	}
 	
-	public void modifyPassword(String userName, String newPassword)
-	{
+	public void modifyPassword(String userName, String newPassword) throws SQLException{
+		accDB.modifyPassword(userName, newPassword);
 	}
 
 	/**
