@@ -11,11 +11,11 @@ public class AthenticateDBTest {
 		AuthenticateDB ad = new AuthenticateDB();
 		
 		try {
-			//System.out.println(ad.getAccountType("Alex"));
-			/*System.out.println(ad.getAccountType("jdoe01"));
+			System.out.println(ad.getAccountType("Alex"));
+			System.out.println(ad.getAccountType("jdoe01"));
 			System.out.println(ad.getAccountType("njohnson01"));
 			System.out.println(ad.getAccountType("obarnes01"));
-			System.out.println(ad.getAccountType("ehunter01"));*/
+			System.out.println(ad.getAccountType("ehunter01"));
 			System.out.println(ad.retrievePassword("Alex"));
 		} catch (IllegalArgumentException | SQLException e) {
 			// TODO Auto-generated catch block
