@@ -3,6 +3,7 @@ package databaseManagement;
 import java.sql.*;
 import systemManagement.Branch;
 import systemManagement.Location;
+import vehicleManagement.Equipment;
 
 /**
  * BranchDB creates, deletes, and modifies data related to Branch
@@ -67,8 +68,27 @@ class BranchDB{
   	 * @return
   	 */
 	Branch getBranch(int id) throws SQLException{
-		return null;
-		// TODO Auto-generated method stub
+	  	
+		Branch b = null;
+		
+		dbm.connect();
+	  
+		Statement stmt = dbm.getConnection().createStatement();
+      
+		String query = "SELECT * FROM `branch` WHERE br_num = " + id;
+		
+		//System.out.println(query);
+		ResultSet rs = stmt.executeQuery(query);
+		
+		
+		
+		if(rs.next()){
+			
+			b = new Branch (rs.getInt("br_num"), rs.getString("street_name"),rs.getString("city"),rs.getString("province"),rs.getString("zip_code"));
+		}
+		dbm.disconnect();
+		
+		return b;
 		
 	}
 }

@@ -21,11 +21,24 @@ public class DatabaseManagerTest {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		test_reservation_query(4);
+		//test_reservation_query(4);
 		//test_create_reservation();
 		//test_report();
 		//test_branch();
 		//test_get_reservation_vehicle();
+		test_get_branch();
+	}
+
+	private static void test_get_branch() {
+		// TODO Auto-generated method stub
+		Branch b = null;
+		try {
+			b = dbm.getBranchEntry(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(b.toString());
 	}
 
 	private static void test_get_reservation_vehicle() {
