@@ -198,6 +198,56 @@ class AccountDB{
 	}
 	
 	
+	public void addSRPoints(String username, int points) throws SQLException{
+		//database variables
+		Statement stmt;
+		Connection conn;
+		ResultSet rs;
+		String query;
+		
+		//local variable
+		int currentBalance;
+		int newBalance;
+		int userID;
+		
+		// check if the user is a superRent customer
+		if (doesItExist(username, SUPER_CUSTOMER, USERNAME)){
+			
+			query = "SELECT points, users.id_number FROM users "
+					+ "INNER JOIN customer ON users.id_number = customer.id_number "
+					+" INNER JOIN super_customer ON customer.id_number = super_customer.id_number "
+					+"WHERE Account_uName = \"" + username + "\";";
+			
+			dbm.connect();
+			
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			// Get the current balance for the user
+			rs = stmt.executeQuery(query);
+			rs.next();
+			
+			// update the balance
+			currentBalance = rs.getInt("points");
+			newBalance = currentBalance + points;
+			
+			userID = rs.getInt("id_number");
+			
+			// store the new balance in the database
+			query = "UPDATE super_customer "
+					+ "SET `points` = " + newBalance + " "
+					+ "WHERE id_number = " + userID +";";
+			stmt.executeUpdate(query);
+			
+			dbm.disconnect();
+			
+			
+			
+		} else{
+			// throw an error: the user is not a superRent customer
+		}
+				
+	}
 	public void downgradeSCustomer(String username) throws SQLException{
 		//database variables
 		Statement stmt;
@@ -233,7 +283,7 @@ class AccountDB{
 		}
 	}
 	
-	public void deleteAccount(String username) throws SQLException{
+	public void removeAccountEntry(String username) throws SQLException{
 		//database variables
 		Statement stmt;
 		Connection conn;
@@ -451,7 +501,7 @@ class AccountDB{
 	 * @return encrypted password for that username
 	 * @throws SQLException 
 	 */
-	public String getEncryptedPassword(String username) throws SQLException {
+	public String retrievePassword(String username) throws SQLException {
 		if (doesItExist(username, USER, USERNAME)){
 			dbm.connect();
 			String query = "SELECT account_password FROM users WHERE account_uName = '" + username +"';";
@@ -468,12 +518,7 @@ class AccountDB{
 		}
 	}
 	
-	public void updatePassword(String oldPassword, String newPassword){
-		// 
-		Statement stmt;
-		Connection conn;
-		ResultSet rs;
-		String query;
+	public void updatePassword(String userName, String newPassword) throws SQLException{
 		
 	}
 	/* ----------------------------------PRIVATE METHODS-------------------------------------------*/

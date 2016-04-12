@@ -83,9 +83,13 @@ public class AccountManager {
 		// is upgraded to superCustomer
 	}
 	
-	public void accumulatePoints(int i, int points)
+	public void accumulatePoints(String username, int points) throws SQLException
 	{// 
-		dbConnection.addSRPoints(i,points);
+		if (points > 0){
+			dbConnection.addSRPoints(username,points);
+		} else {
+			// throw an error
+		}
 	}
 	
 	public void leaveSuperCLub(String userName) throws SQLException
@@ -134,7 +138,7 @@ public class AccountManager {
 		return dbConnection.retrievePassword(userName);
 	}
 	
-	public void changePassword(String userName, String newPassword)
+	public void changePassword(String userName, String newPassword) throws SQLException
 	{
 		dbConnection.modifyPassword(userName,newPassword);
 	}

@@ -243,12 +243,12 @@ public class DatabaseManager {
 			accDB.createCustomer((Customer)account);
 		} else if (account instanceof Employee){
 			accDB.createEmployee((Employee)account);
-		}
+		} // create one for superCustomer account
 	}
 	
 	public void removeAccountEntry(String userName) throws SQLException
 	{
-		accDB.deleteAccount(userName);
+		accDB.removeAccountEntry(userName);
 	}
 	
 	/**
@@ -263,7 +263,7 @@ public class DatabaseManager {
 	
 	public String retrievePassword(String userName) throws SQLException
 	{// Done
-		return accDB.getEncryptedPassword(userName);
+		return accDB.retrievePassword(userName);
 	}
 	
 	// find account by loginID, loginID should be immutable
@@ -282,8 +282,9 @@ public class DatabaseManager {
 		}
 	}
 	
-	public void addSRPoints(String userName, int points)
+	public void addSRPoints(String userName, int points) throws SQLException
 	{
+		accDB.addSRPoints(userName, points);
 	}
 	
 	public void addSRPoints(int i, int points) {
@@ -291,8 +292,8 @@ public class DatabaseManager {
 		
 	}
 	
-	public void modifyPassword(String userName, String newPassword)
-	{
+	public void modifyPassword(String userName, String newPassword) throws SQLException{
+		accDB.updatePassword(userName, newPassword);
 	}
 
 	/**
