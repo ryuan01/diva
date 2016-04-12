@@ -510,4 +510,14 @@ public class DatabaseManager {
 		// TODO Auto-generated method stub
 		reDB.createRental(reserveID, clerkID, is_paid_rental, is_paid_extra_charge);
 	}
+
+	/**
+	 * For ben, get a vehicle inside reservation. 
+	 * @param reservID
+	 * @return Vehicle
+	 */
+	public Vehicle getReservationVehicle(int reservID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -53,8 +53,13 @@ public class PriceList {
 	 * Loads value from db to create PriceList
 	 * @throws SQLException 
 	 */
-	public PriceList(DatabaseManager db) throws SQLException{
-		this.db = db;
+	public PriceList(){
+		this.db =  DatabaseManager.getInstance();
+	}
+
+	//should be initialized once and for all when the system starts.
+	//but how?
+	public void populate() throws SQLException{
 		price_car = db.getCarPriceList();
 		//ENUM('24-foot', '15-foot', '12-foot', 'box-truck')
 		price_truck = db.getTruckPriceList();
@@ -63,7 +68,6 @@ public class PriceList {
 		price_car_insurance = db.getCarInsurancePriceList();
 		price_truck_insurance = db.getTruckInsurancePriceList();
 	}
-	
 	public BigDecimal getPriceCar(int i, int j){
 		return price_car[i][j];
 	}
@@ -129,5 +133,15 @@ public class PriceList {
 	
 	public void updatePriceTruckInsurance(){
 		db.setTruckInsurancePriceList(price_truck_insurance);
+	}
+	
+	public void print(){
+		for (int i = 0; i < price_car.length; i++){
+			for (int j = 0; j < price_car[i].length; j++){
+				System.out.print(price_car[i][j]+" ");
+				
+			}
+			System.out.println();
+		}
 	}
 }

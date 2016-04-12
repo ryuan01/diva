@@ -1,13 +1,11 @@
 package vehicleManagement;
 
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import databaseManagement.DatabaseManager;
-import systemManagement.Branch;
 import paymentManagement.PaymentManager;
 
 /**
@@ -19,9 +17,11 @@ import paymentManagement.PaymentManager;
 public class VehicleManager {
 	
 	private DatabaseManager db;
+	private PaymentManager pm;
 	
 	public VehicleManager() {
 		this.db = DatabaseManager.getInstance();
+		this.pm = new PaymentManager();
 	}
 	
 	/**
@@ -63,17 +63,23 @@ public class VehicleManager {
 	 * @param start_date
 	 * @param end_date
 	 * @throws IllegalArgumentException
+	 * @throws ParseException 
+	 * @throws SQLException 
 	 */
-	private void updatePrice(Vehicle[] vlist, String type, String start_date, String end_date) throws IllegalArgumentException{
+	private void updatePrice(Vehicle[] vlist, String type, String start_date, String end_date) throws IllegalArgumentException, ParseException, SQLException{
 		// TODO Auto-generated method stub
+		pm.populatePriceList();
 		if (type.equals("car")){
 			for (int i=0; i< vlist.length; i++){
-				//vlist[i].setPrice(PaymentManager.calculateCarPrice(((Car) vlist[i]).getCarClass(), start_date, end_date));
+				//System.out.printf("inputs in udatePrice: %s %s %s\n", ((Car) vlist[i]).getCarClass(), start_date, end_date);
+				BigDecimal n = pm.calculateCarPrice(((Car) vlist[i]).getCarClass(), start_date, end_date);
+				//System.out.println("price is : " + n);
+				vlist[i].setPrice(n);
 			}
 		}
 		else if (type.equals("truck")){
 			for (int i=0; i< vlist.length; i++){
-				vlist[i].setPrice(PaymentManager.calculateTruckPrice(((Truck) vlist[i]).getTruckClass(), start_date, end_date));
+				vlist[i].setPrice(pm.calculateTruckPrice(((Truck) vlist[i]).getTruckClass(), start_date, end_date));
 			}
 		}
 		else {
