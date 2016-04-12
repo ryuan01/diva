@@ -121,8 +121,6 @@ public class RentalFacade {
 		//it is assumed that the start_date and end_date are the same as reservation.
 		rentMan.createRental(reservationID, clerkID, false, false);
 	}
-	
-	payForRental;
 	/**
 	 * Create an inspection report before Rental
 	 * @param clerk_id clerk who processed this request
@@ -149,4 +147,18 @@ public class RentalFacade {
 		
 		returnMan.startReturn(reservID, description, dmgDescription,extraPay, typeOfPayment, accidentDetail);
 	}
+
+	/*
+for when the customer comes in the store to pick up a reservation.
+	1. create inspection report 
+	2. create a rental
+	3. pay for rental 
+	4. driveAwayCar ( ) <-- set is_paid_rental = true
+for when the customer returns a vehicle
+	0. check for overdue (add to amount owning : property of the rental )
+	1. check for returning branch (add to amount)
+	2. create after rental inspection report (milage, gas tank level (liters))
+	3. create accident report (create an accident report) (add extra amount owning)
+	3. pay for extra charge () <-- set is_paid_extra_charge = true 
+	*/
 }
