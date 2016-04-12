@@ -17,16 +17,7 @@ class ReserveManager {
 	 */
 	ReserveManager()
 	{
-		dbConnection = null;
-	}
-	
-	/**
-	 * A Manager for adding, removing, and modifying Reservations and its attributes.
-	 * @param db The database it's connecting.
-	 */
-	ReserveManager(DatabaseManager db)
-	{
-		dbConnection = db;
+		dbConnection = DatabaseManager.getInstance();
 	}
 	
 	/**

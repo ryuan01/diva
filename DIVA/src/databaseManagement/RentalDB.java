@@ -349,6 +349,29 @@ class RentalDB {
         stmt.close();
         dbm.disconnect();		
 	}
+
+	/**
+	 * Create an rental
+	 * @param reserveID
+	 * @param clerkID
+	 * @param is_paid_rental
+	 * @param is_paid_extra_charge
+	 * @throws SQLException
+	 */
+	void createRental(int reserveID, int clerkID, boolean is_paid_rental, boolean is_paid_extra_charge) throws SQLException {
+		// TODO Auto-generated method stub
+ 		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+    	String sql= "INSERT INTO `rental`(`reservation_id`, `is_paid_rental`, `is_paid_extra_charge`, `clerk_id`) VALUES ("
+    				+reserveID+", "
+    				+is_paid_rental+", "
+    				+is_paid_extra_charge+", "
+    				+clerkID+")";
+    	System.out.println(sql);
+        stmt.executeUpdate(sql);
+        stmt.close();
+        dbm.disconnect();		
+	}
 	
 	/**
 	 * 

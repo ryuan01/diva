@@ -8,17 +8,15 @@ import databaseManagement.DatabaseManager;
 
 public class RentalFacade {
 
-	DatabaseManager db;
 	ReserveManager reservMan;
 	RentManager rentMan;
 	ReturnManager returnMan;
 	
 	public RentalFacade()
 	{
-		this.db = DatabaseManager.getInstance();
-		reservMan = new ReserveManager(db);
-		rentMan = new RentManager(db);
-		returnMan = new ReturnManager(db);
+		reservMan = new ReserveManager();
+		rentMan = new RentManager();
+		returnMan = new ReturnManager();
 	}
 	
 	/**
@@ -118,11 +116,13 @@ public class RentalFacade {
 	 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
 	 * @throws SQLException 
 	 */
-	public void createRental(int clerkID, Reservation r) throws SQLException
+	public void createRental(int clerkID, int reservationID) throws SQLException
 	{
-		rentMan.createRental(r, clerkID, );
+		//it is assumed that the start_date and end_date are the same as reservation.
+		rentMan.createRental(reservationID, clerkID, false, false);
 	}
 	
+	payForRental;
 	/**
 	 * Create an inspection report before Rental
 	 * @param clerk_id clerk who processed this request
@@ -134,8 +134,7 @@ public class RentalFacade {
 	 * @throws SQLException 
 	 */
 	public void createInsectionReportBeforeRental(int clerk_id, String date, String description, int rentalID, int milage, int gasLevel) throws SQLException{
-		Report r = new Report (clerk_id, date, description, rentalID, milage, gasLevel, -1);
-		db.addReport(r, "before_rental");
+		rentMan.createReport(clerk_id, date, description, rentalID, milage, gasLevel, "before_rental");
 	}
 		
 	// assumes gas is already refilled.

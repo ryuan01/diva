@@ -17,7 +17,7 @@ class ReturnManager {
 	 */
 	ReturnManager()
 	{
-		dbConnection = null;
+		dbConnection = DatabaseManager.getInstance();
 	}
 	
 	/**

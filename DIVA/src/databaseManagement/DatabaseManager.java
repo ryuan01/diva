@@ -521,4 +521,17 @@ public class DatabaseManager {
 			throw new IllegalArgumentException("Vehicle can only be of 'car' or 'truck");
 		}
 	}
+
+	/**
+	 * Create an rental
+	 * @param reserveID
+	 * @param clerkID
+	 * @param is_paid_rental
+	 * @param is_paid_extra_charge
+	 * @throws SQLException
+	 */
+	public void createRental(int reserveID, int clerkID, boolean is_paid_rental, boolean is_paid_extra_charge) throws SQLException {
+		// TODO Auto-generated method stub
+		reDB.createRental(reserveID, clerkID, is_paid_rental, is_paid_extra_charge);
+	}
 }
