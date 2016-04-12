@@ -75,32 +75,33 @@ public class AccountManager {
 	 * @return true if the customer successfully joined Super Club
 	 * @throws SQLException 
 	 */
-	public static void joinSuperClub(String userName) throws SQLException 
-	{
-		// Why is it Static (-Sammy)
+	public void joinSuperClub(String userName) throws SQLException 
+	{// Done
+		
 		dbConnection.changeAccountStatus(userName, "SRCustomer");
 		//the database automatically adds 500 points when a customer
 		// is upgraded to superCustomer
 	}
 	
-	public static void accumulatePoints(int i, int points)
-	{
+	public void accumulatePoints(int i, int points)
+	{// 
 		dbConnection.addSRPoints(i,points);
 	}
 	
-	public static void leaveSuperCLub(String userName) throws SQLException
-	{
+	public void leaveSuperCLub(String userName) throws SQLException
+	{// done
 		dbConnection.changeAccountStatus(userName, "RegisteredCustomer");
-	}
+	} 
 	/**
 	 * Moves the customers account from the activated state into the deactivated state
 	 * @param customer The customer account to be deactivated
 	 * @param password The customers password
 	 * @return true if the account was successfully activated
+	 * @throws SQLException 
 	 * @pre customer.state == activated
 	 * @pos customer.state == deactivated
 	 */
-	public void deleteAccount(String userName) {
+	public void deleteAccount(String userName) throws SQLException {
 		dbConnection.removeAccountEntry(userName);
 	}
 	
@@ -109,8 +110,8 @@ public class AccountManager {
 	 * @param firstName The first name of the customer being searched
 	 * @return a list of customers that match the search criteria
 	 */
-	public Account[] searchAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
-		return dbConnection.searchAccountEntries(firstName,lastName,phoneNumber,emailAddress,userName,status);
+	public Account[] searchAccount(String firstName, String lastName, String phoneNumber, String userName) {
+		return dbConnection.searchAccountEntries(firstName,lastName,phoneNumber,userName);
 	}
 	
 	/**

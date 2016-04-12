@@ -13,11 +13,14 @@ public class Main {
 		AccountManager acm = new AccountManager();
 		
 		try {
-			acm.joinSuperClub("mjane01");
+			//acm.joinSuperClub("mjane01");
+			acm.deleteAccount("sfreeman01");
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block 
 			e.printStackTrace();
 		}
-		
+//		
+			 
 	}
 }
