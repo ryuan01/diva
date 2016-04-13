@@ -2,6 +2,9 @@ package webServiceManagement;
 
 import java.sql.SQLException;
 
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+
 import systemManagement.*;
 
 /**
@@ -9,6 +12,7 @@ import systemManagement.*;
  * @author Alex Daniels
  * @since April 1, 2016
  */
+@WebService
 public class SystemManagerWebInterface {
 	
 	public SystemManagerWebInterface() {
@@ -19,13 +23,14 @@ public class SystemManagerWebInterface {
 	 * Web Interface for the "Starting the System" Service
 	 * @return A String describing the success or failure of the invocation
 	 */
+	@WebMethod
 	public String startTheSystem() {
 		
 		String responseString;
 		try {
 			//Create a SystemManager and call start system
 			SystemManager sm = new SystemManager();
-			sm.startUp("Is this for a password? That would be cool maybe");
+			sm.startUp();
 			
 			//If the system manager doesn't throw an error, return the string "Success"
 			responseString = "success";
@@ -33,7 +38,7 @@ public class SystemManagerWebInterface {
 		
 		//If the SystemManager throws and exception, set responseString to the appropriate error
 		catch(Exception e) { //NEEDS TO BE THE SPECIFIC EXCEPTION THROWN BY THE sm
-			responseString = "Exception Not Implemented";
+			responseString = "Exception - " + e.getMessage();
 		}
 		return responseString;
 	}
@@ -42,6 +47,7 @@ public class SystemManagerWebInterface {
 	 * Web Interface for the "Shutting Down the System" Service
 	 * @return A String describing the success or failure of the invocation
 	 */
+	@WebMethod
 	public String shutdownTheSystem() {
 		
 		//Set responseString to hold the value returned to the caller
@@ -50,7 +56,7 @@ public class SystemManagerWebInterface {
 		try {
 			//Create a SystemManager and try to shutdown the system
 			SystemManager sm = new SystemManager();
-			sm.shutDown("Password?"); //Still asking for a string as argument
+			sm.shutDown(); 
 			
 			//If no error is thrown, set the response text to success
 			responseString = "success";
@@ -59,7 +65,7 @@ public class SystemManagerWebInterface {
 		//If the SystemManager throws and exception, set 
 		//responseString to the appropriate error
 		catch(Exception e) { //NEEDS TO BE THE SPECIFIC EXCEPTION THROWN BY THE sm
-			responseString = "Exception Not Implemented";
+			responseString = "Exception - " + e.getMessage();
 		}
 		
 		//Return the response String
@@ -74,10 +80,11 @@ public class SystemManagerWebInterface {
 	 * @param zipcode the zipcode of the new branch
 	 * @return A string describing the success or failure of the invocation
 	 */
+	@WebMethod
 	public String addBranch(String address,String city,String province,String zipcode) {
 		
 		//Set responseText to hold the value returned to the caller
-		String responseString = "Not Implemented";
+		String responseString;
 		
 		try {
 			//Create a new SystemManager and add a branch with the given attributes
@@ -91,7 +98,7 @@ public class SystemManagerWebInterface {
 		//If the SystemManager throws an exception, set the 
 		//responseString to the appropriate error message
 		catch (SQLException e) {
-			responseString = "ExceptionNotImplemented";
+			responseString = "Exception - " + e.getMessage();
 		}
 		
 		//Return the responseString
@@ -103,10 +110,11 @@ public class SystemManagerWebInterface {
 	 * @param branchID the ID of the branch that is to be removed
 	 * @return a string describing the success or failure of the invocation
 	 */
+	@WebMethod
 	public String removeBranch(int branchID) {
 		
 		//Set responseText to hold the value returned to the caller
-		String responseString = "Not Implemented";
+		String responseString;
 				
 		//Create a new SystemManager and 
 		//try to remove the branch with the given branchID
@@ -119,7 +127,7 @@ public class SystemManagerWebInterface {
 		//If the SystemManager throws an exception, set the responseString
 		//to the appropriate error message
 		catch (SQLException e) {
-			responseString = "Exception Not Implemented";
+			responseString = "Exception - " + e.getMessage();
 		}
 		
 		//Return the responseString
@@ -131,10 +139,11 @@ public class SystemManagerWebInterface {
 	 * @param branchID The id of the branch to be returned as a stringified object
 	 * @return A stringified branch object associated with the given ID
 	 */
+	@WebMethod
 	public String getBranch(int branchID) {
 		
 		//Set responseString to hold the value returned to the caller
-		String responseString = "Not Implemented";
+		String responseString;
 		
 		try {
 			//Create a new SystemManager and try to search for 
@@ -149,7 +158,7 @@ public class SystemManagerWebInterface {
 		//If the SystemManager throws and exception, set 
 		//the responseString to the appropriate error message
 		catch (SQLException e) {
-			responseString = "Exception Not Implemented";
+			responseString = "Exception - " + e.getMessage();
 		}
 		
 		//Return responseString		

@@ -5,10 +5,6 @@ import java.text.ParseException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 
 import vehicleManagement.*;
 
@@ -20,7 +16,6 @@ import vehicleManagement.*;
  * @since March 30th, 2016
  */
 @WebService
-@Path("/vehicle")
 public class VehicleManagerWebInterface {
 	
 	public VehicleManagerWebInterface() {}
@@ -35,9 +30,6 @@ public class VehicleManagerWebInterface {
 	 * String describing the error that occurred (eg "Illegal Parameter" or "No Vehicles Match The Criteria")
 	 */
 	@WebMethod
-	@POST
-	@Produces("text/xml")
-	@Consumes("text/xml")
 	public String[] SearchVehiclesForRent(int branch_id, String start_date, String end_date, String type) {
 	
 		//Declare a list of strings that will be returned to the user
@@ -55,13 +47,13 @@ public class VehicleManagerWebInterface {
 		//If an exception is thrown while trying to search for vehicles
 		//Determine exact error and add it to the 0th index of stringArray
 		catch (IllegalArgumentException e) {
-			stringList = new String[]{"UNIMPLEMENTED!"};
+			stringList = new String[]{"Exception - " + e.getMessage()};
 		} 
 		catch (SQLException e) {
-			stringList =  new String[]{"UNIMPLEMENTED!"};
+			stringList =  new String[]{"Exception - " + e.getMessage()};
 		} 
 		catch (ParseException e) {
-			stringList =  new String[]{"UNIMPLEMENTED!"};
+			stringList =  new String[]{"Exception - " + e.getMessage()};
 		}
 		
 		//Return the stringList
@@ -78,9 +70,6 @@ public class VehicleManagerWebInterface {
 	 * String describing the error that occurred (eg "Illegal Parameter" or "No Vehicles Match The Criteria")
 	 */
 	@WebMethod
-	@POST
-	@Produces("text/xml")
-	@Consumes("text/xml")
 	public String[] searchForOverdueVehicles(int branch_id, String type) {
 	
 		//Declare a list of strings that will be returned to the user
@@ -100,7 +89,7 @@ public class VehicleManagerWebInterface {
 		//If an error is thrown, Determine the exact cause of the error 
 		//and add an error string to the 0th index of stringList
 		catch (SQLException e) {
-			stringList =  new String[]{"UNIMPLEMENTED!"};
+			stringList =  new String[]{"Exception - " + e.getMessage()};
 		}
 		
 		//Return the stringList
@@ -118,9 +107,6 @@ public class VehicleManagerWebInterface {
 	 * String describing the error that occurred (eg "Illegal Parameter" or "No Vehicles Match The Criteria")
 	 */
 	@WebMethod
-	@POST
-	@Produces("text/xml")
-	@Consumes("text/xml")
 	public String[] searchForSale(int branch_id, String type) {
 	
 		//Declare a list of strings that will be returned to the user
@@ -138,7 +124,7 @@ public class VehicleManagerWebInterface {
 		//If an exception is thrown, Determine the cause of the error 
 		//and set the 0th index of stringList to the appropriate error message
 		catch (SQLException e) {
-			stringList =  new String[]{"UNIMPLEMENTED!"};
+			stringList = new String[]{"Exception - " + e.getMessage()};
 		}
 		
 		//Return the stringList
@@ -160,28 +146,30 @@ public class VehicleManagerWebInterface {
 	 * @param transmition auto transmission or manual transmission
 	 * @param airconditioning air conditioning or no air air conditioning
 	 * @param capacity how many people this car can sit
+	 * @param branchID of the branch that will own this vehicle
 	 * @return String describing the success of failure of the invocation
 	 */
+	@WebMethod
 	public String addCar(String manufacturer, String year, String model, String color, String status, String path,
-			String classOfCar, int baggage, String doors, boolean transmition, boolean airconditioning, int capacity) {
+			String classOfCar, int baggage, String doors, boolean transmition, boolean airconditioning, int capacity, int branchID) {
 		
 		//Declare responseString to hold the returned value
-		String responseString = "Not Implemented";
+		String responseString;
 	
 		try {
 			//Create a VehicleManager and try to add a new car based on the given arguments
 			VehicleManager vm = new VehicleManager();
-			vm.addCar(manufacturer, year, model, color, status, path, classOfCar, baggage, doors, transmition, airconditioning, capacity);
+			vm.addCar(manufacturer, year, model, color, status, path, classOfCar, baggage, doors, transmition, airconditioning, capacity, branchID);
 			responseString = "success";
 		} 
 		
 		//If the VehicleManager throws an exception, 
 		//set the 0th index of responseList to the appropriate error message
 		catch (IllegalArgumentException e) {
-			responseString = "UNIMPLEMENTED!";
+			responseString = "Exception - " + e.getMessage();
 		} 
 		catch (SQLException e) {
-			responseString = "UNIMPLEMENTED!";
+			responseString = "Exception - " + e.getMessage();
 		}
 		
 		//Return the response String
@@ -201,10 +189,12 @@ public class VehicleManagerWebInterface {
 	 * @param interiorWidth interior width in feet
 	 * @param interiorHeight height in feet 
 	 * @param maxCapacityInKG maximum kg that a truck can hold
+	 * @param branchID of the branch that will own this vehicle
 	 * @return A String describing the success of failure of the invocation
 	 */
+	@WebMethod
 	public String addTruck(String manufacturer, String year, String model, String color, String status, String path,
-			String type, String interiorLength, String interiorWidth, String interiorHeight, int maxCapacityInKG) {
+			String type, String interiorLength, String interiorWidth, String interiorHeight, int maxCapacityInKG, int branchID) {
 		
 		//Declare variables to hold the response text
 		String responseString;
@@ -213,19 +203,77 @@ public class VehicleManagerWebInterface {
 		try {
 			VehicleManager vm = new VehicleManager();
 			vm.addTruck(manufacturer, year, model, color, status, path,
-					type, interiorLength, interiorWidth, interiorHeight, maxCapacityInKG);
+					type, interiorLength, interiorWidth, interiorHeight, maxCapacityInKG, branchID);
 			responseString = "success";
 		} 
 				
 		//If the VehicleManager throws an exception, set the responseText
 		//to the appropriate error message
 		catch (IllegalArgumentException e) {
-			responseString = "Not Implemented";
+			responseString = "Exception - " + e.getMessage();
 		} 
 		catch (SQLException e) {
-			responseString = "Not Implemented";		
+			responseString = "Exception - " + e.getMessage();		
 		}
 				
+		//return the responseString
+		return responseString;
+	}
+	
+	/**
+	 *Web Interface for the 'Delete a new car from the Database' Service
+	 * @param vehicleID The ID of the vehicle the caller wishes to remove from the database
+	 * @return A string describing the success of the invocation
+	 */
+	public String removeCar(int vehicleID) {
+		//Declare variables to hold the response text
+		String responseString;
+						
+		try {
+			//Create a VehicleManager and try to remove the given car 
+			VehicleManager vm = new VehicleManager();
+			vm.removeCar(vehicleID);
+			responseString = "success";
+		} 
+						
+		//If the VehicleManager throws an exception, set the responseText
+		//to the appropriate error message
+		catch (IllegalArgumentException e) {
+			responseString = "Exception - " + e.getMessage();
+		} 
+		catch (SQLException e) {
+			responseString = "Exception - " + e.getMessage();		
+		}
+						
+		//return the responseString
+		return responseString;
+	}
+	
+	/**
+	 *Web Interface for the 'Delete a new truck from the Database' Service
+	 * @param vehicleID The ID of the vehicle the caller wishes to remove from the database
+	 * @return A string describing the success of the invocation
+	 */
+	public String removeTruck(int vehicleID) {
+		//Declare variables to hold the response text
+		String responseString;
+						
+		try {
+			//Create a VehicleManager and try to remove the given car 
+			VehicleManager vm = new VehicleManager();
+			vm.removeTruck(vehicleID);
+			responseString = "success";
+		} 
+						
+		//If the VehicleManager throws an exception, set the responseText
+		//to the appropriate error message
+		catch (IllegalArgumentException e) {
+			responseString = "Exception - " + e.getMessage();
+		} 
+		catch (SQLException e) {
+			responseString = "Exception - " + e.getMessage();		
+		}
+						
 		//return the responseString
 		return responseString;
 	}
@@ -237,8 +285,9 @@ public class VehicleManagerWebInterface {
 	 * @return A string describing the success of the invocation
 	 */
 	public String changeVehicleBranch(int vehicleID, int branchID) {
+		
 		//Declare variables to hold the response text 
-		String responseString = "Not Implemented";
+		String responseString;
 	
 		try {
 			//Create a vehicleManager and try to modify the branchID of the vehicle
@@ -252,7 +301,7 @@ public class VehicleManagerWebInterface {
 		//If the VehicleManager throws an exception, set the 
 		//responseString to the appropriate error message
 		catch (SQLException e) {
-			responseString = "Not Implemented";
+			responseString = "Exception - " + e.getMessage();		
 		}		
 		
 		//return the responseString
@@ -284,7 +333,7 @@ public class VehicleManagerWebInterface {
 		//If the VehicleManager throws an exception, set the
 		//responseString to the appropriate error message
 		catch (SQLException e) {
-			responseString = "Not Implemented";
+			responseString = "Exception - " + e.getMessage();		
 		}		
 		
 		//return the responseString
