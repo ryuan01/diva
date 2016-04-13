@@ -1,13 +1,11 @@
 package vehicleManagement;
 
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import databaseManagement.DatabaseManager;
-import systemManagement.Branch;
 import paymentManagement.PaymentManager;
 
 /**
@@ -19,9 +17,11 @@ import paymentManagement.PaymentManager;
 public class VehicleManager {
 	
 	private DatabaseManager db;
+	private PaymentManager pm;
 	
 	public VehicleManager() {
 		this.db = DatabaseManager.getInstance();
+		this.pm = new PaymentManager();
 	}
 	
 	/**
@@ -52,7 +52,9 @@ public class VehicleManager {
 			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
 		}
 		//update their prices
-		updatePrice(vlist,type,start_date,end_date);
+		//first calculate the difference between dates.
+		int rate_type = pm.compareDates(start_date, end_date, "vehicle");
+		updatePrice(vlist,type,rate_type);
 		return vlist;
 	}
 	
@@ -63,21 +65,16 @@ public class VehicleManager {
 	 * @param start_date
 	 * @param end_date
 	 * @throws IllegalArgumentException
+	 * @throws ParseException 
+	 * @throws SQLException 
 	 */
-	private void updatePrice(Vehicle[] vlist, String type, String start_date, String end_date) throws IllegalArgumentException{
+	private void updatePrice(Vehicle[] vlist, String type, int rate_type) throws IllegalArgumentException, ParseException, SQLException{
 		// TODO Auto-generated method stub
-		if (type.equals("car")){
-			for (int i=0; i< vlist.length; i++){
-				//vlist[i].setPrice(PaymentManager.calculateCarPrice(((Car) vlist[i]).getCarClass(), start_date, end_date));
-			}
-		}
-		else if (type.equals("truck")){
-			for (int i=0; i< vlist.length; i++){
-				vlist[i].setPrice(PaymentManager.calculateTruckPrice(((Truck) vlist[i]).getTruckClass(), start_date, end_date));
-			}
-		}
-		else {
-			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
+		for (int i=0; i< vlist.length; i++){
+			//System.out.printf("inputs in udatePrice: %s %s %s\n", ((Car) vlist[i]).getCarClass(), start_date, end_date);
+			BigDecimal n = pm.calculatePrice(vlist[i].getVehicleClass(), rate_type);
+			//System.out.println("price is : " + n);
+			vlist[i].setPrice(n);
 		}
 	}
 
@@ -108,7 +105,7 @@ public class VehicleManager {
 	}
 	
 	/**
-	 * Add a car 
+	 * Add a car and assign a branch to it 
 	 * @param id
 	 * @param manufacturer
 	 * @param year
@@ -126,10 +123,11 @@ public class VehicleManager {
 	 * @throws IllegalArgumentException 
 	 */
 	public void addCar(String manufacturer, String year, String model, String color, String status, String path,
-			String c, int b, String d, boolean tran, boolean ac, int ca) throws IllegalArgumentException, SQLException{
+			String c, int b, String d, boolean tran, boolean ac, int ca, int branch_id) throws IllegalArgumentException, SQLException{
 		int id = -1; //let database auto increment id 
 		Car a_car = new Car (id, manufacturer, year, model, color, status, path,c, b, d, tran,ac, ca);
 		db.addVehicle(a_car);
+		db.addVehicleLocation(a_car.getID(), branch_id);
 	}
 	
 	/**
@@ -150,10 +148,11 @@ public class VehicleManager {
 	 * @throws SQLException
 	 */
 	public void addTruck(String manufacturer, String year, String model, String color, String status, String path,
-			String c, String ibl, String ibw, String ibh, int ca) throws IllegalArgumentException, SQLException{
+			String c, String ibl, String ibw, String ibh, int ca, int branch_id) throws IllegalArgumentException, SQLException{
 		int id = -1; //let database auto increment id 
 		Truck truck = new Truck (id, manufacturer, year, model, color, status, path,  c, ibl, ibw, ibh, ca);
 		db.addVehicle(truck);
+		db.addVehicleLocation(truck.getID(), branch_id);
 	}
 	
 	//remove

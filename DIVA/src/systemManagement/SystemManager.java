@@ -50,9 +50,25 @@ public class SystemManager {
 		dbConnection.removeBranchEntry(id);
 	}
 	
+	/**
+	 * Get an branch according to its ID
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
 	public Branch getBranch(int id) throws SQLException
 	{
 		return dbConnection.getBranchEntry(id);
+	}
+	
+	/**
+	 * Get all branches
+	 * @return
+	 * @throws SQLException
+	 */
+	public Branch[] getAllBranch() throws SQLException
+	{
+		return dbConnection.getAllBranchEntries();
 	}
 	
 	/**

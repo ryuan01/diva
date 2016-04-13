@@ -1,31 +1,27 @@
 package rentalManagement;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 
 import databaseManagement.DatabaseManager;
+import paymentManagement.PaymentManager;
+import vehicleManagement.Car;
 
 
 class ReserveManager {
 	
 	
 	private DatabaseManager dbConnection;
+	private PaymentManager pm;
 	/**
 	 * A Manager for adding, removing, and modifying Reservations and its attributes.
 	 */
 	ReserveManager()
 	{
-		dbConnection = null;
-	}
-	
-	/**
-	 * A Manager for adding, removing, and modifying Reservations and its attributes.
-	 * @param db The database it's connecting.
-	 */
-	ReserveManager(DatabaseManager db)
-	{
-		dbConnection = db;
+		dbConnection = DatabaseManager.getInstance();
+		pm = new PaymentManager();
 	}
 	
 	/**
@@ -39,15 +35,18 @@ class ReserveManager {
 	 * @param customerID Customer login ID of the Reservation.
 	 * @param employeeID 
 	 * @param employeeID Employee login ID of the Reservation.
-	 * @param status Status of the Reservation.
 	 * @throws SQLException 
 	 */
 	void addReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, String status) throws SQLException 
+			int customerID) throws SQLException 
 	{
-		//the ID = null right now because we don't know yet
-		//we will know the value once the entry is created
-		Reservation r = new Reservation(startD,endD, vehicleID, equipIDs, startBranchID, endBranchID,customerID, status,-1);
+		//create reservation object and pass that on
+		//(String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, 
+		// int id, BigDecimal amount)
+		BigDecimal balance;
+		Vehicle v = dbConnection.s
+		= pm.calculateCarPrice(((Car) vlist[i]).getCarClass(), start_date, end_date);
+		Reservation r = new Reservation(startD,endD,vehicleID,equipIDs,startBranchID,endBranchID,customerID,-1, balance);
 		dbConnection.createReservationEntry(r);
 	}
 	
@@ -56,22 +55,30 @@ class ReserveManager {
 	 * Reservations belonging to themselves.
 	 * @param accountID The Account ID of the Reservation.
 	 * @param reservID The Reservation ID to be removed.
+	 * @throws Exception 
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	boolean removeReservation(int customerID, int reservID)
+	void removeReservation(int customerID, int reservID) throws Exception
 	{
-		return dbConnection.removeReservationEntry(reservID);
+		Reservation r = dbConnection.searchReservationEntry(reservID);
+		if (r.getCustomerAccountID()== customerID){
+			dbConnection.removeReservationEntry(reservID);
+		}
+		else {
+			throw new Exception("Calling customer does not have the right to access other's reservations");
+		}
 	}
 	
 	/**
 	 * Removes a Reservation belonging to anyone.
 	 * Reservations belonging to themselves.
 	 * @param reservID The Reservation ID to be removed.
+	 * @throws SQLException 
 	 * @pre If(customerID == Customer), customerID must belong to reservID 
 	 */
-	boolean removeReservation(int reservID)
+	void removeReservation(int reservID) throws SQLException
 	{
-		return dbConnection.removeReservationEntry(reservID);
+		dbConnection.removeReservationEntry(reservID);
 	}
 	
 	/**
@@ -80,9 +87,20 @@ class ReserveManager {
 	 * @return List of qualifying Reservations from the search
 	 * @throws SQLException 
 	 */
-	Reservation searchReservations(int reservID) throws SQLException
+	Reservation searchReservation(int reservID) throws SQLException
 	{
 		return dbConnection.searchReservationEntry(reservID);
+	}
+
+	/**
+	 * Searches reservations for an account
+	 * @param customerID reservation ID
+	 * @return reservations under a customer
+	 * @throws SQLException 
+	 */
+	Reservation[] searchReservationForAccount(int customerID) throws SQLException {
+		// TODO Auto-generated method stub
+		return dbConnection.reservationHistory(customerID);
 	}
 	
 	

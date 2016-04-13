@@ -51,7 +51,7 @@ public class Truck extends Vehicle implements ArrayOfStringsable{
 	 * @return truck class
 	 * @post truck class from set ('24-foot', '15-foot', '12-foot', 'box-truck')
 	 */
-	public String getTruckClass(){
+	public String getVehicleClass(){
 		return truck_class;
 	}
 	/**

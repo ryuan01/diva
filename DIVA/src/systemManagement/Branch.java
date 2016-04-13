@@ -27,6 +27,13 @@ public class Branch implements ArrayOfStringsable{
 	}
 	
 	/**
+	 * Get location of a branch
+	 * @return location
+	 */
+	public Location getLocation(){
+		return this.location;
+	}
+	/**
 	 * Get id of branch
 	 * @return id
 	 * @pre id is unique

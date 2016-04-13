@@ -166,6 +166,12 @@ public abstract class Vehicle implements ArrayOfStringsable{
 		// TODO Auto-generated method stub
 		id = int1;
 	}
+	
+	/**
+	 * This will be implemented in Car and Truck
+	 * @return
+	 */
+	public abstract String getVehicleClass();
 }
 
 	

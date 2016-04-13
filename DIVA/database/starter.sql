@@ -118,8 +118,8 @@ CREATE TABLE equipment(
 	FOREIGN KEY (eq_type) REFERENCES equipment_price(eq_type)
 );
 
--- Create rental table
-CREATE TABLE rental(
+-- Create reservation table
+CREATE TABLE reservation(
 	reservation_id MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	customer SMALLINT UNSIGNED NOT NULL,
 	start_date DATE NOT NULL,
@@ -133,11 +133,11 @@ CREATE TABLE rental(
 	CONSTRAINT chk_dates CHECK (end_date > start_date)
 );
 
--- Create rental equipment table
+-- Create reservation equipment table
 CREATE TABLE rented_equipment(
 	reservation_id MEDIUMINT UNSIGNED,
     equipment_id SMALLINT UNSIGNED PRIMARY KEY,
-    FOREIGN KEY (reservation_id) REFERENCES rental(reservation_id),
+    FOREIGN KEY (reservation_id) REFERENCES reservation(reservation_id),
     FOREIGN KEY (equipment_id) REFERENCES equipment(serial_num)
 );
 
@@ -200,10 +200,10 @@ CREATE TABLE report(
 	report_num MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	report_type ENUM('damage','inspection') NOT NULL,
 	reporting_clerk  SMALLINT UNSIGNED NOT NULL,
-	rental MEDIUMINT UNSIGNED NOT NULL,
+	reservation MEDIUMINT UNSIGNED NOT NULL,
 	comments TEXT(500), 
 	FOREIGN KEY (reporting_clerk) REFERENCES employee(id_number),
-	FOREIGN KEY (rental) REFERENCES rental(reservation_id)
+	FOREIGN KEY (reservation) REFERENCES reservation(reservation_id)
 );
 
 ALTER TABLE vehicle
@@ -278,20 +278,20 @@ MODIFY COLUMN email VARCHAR(40) NOT NULL UNIQUE;
 ALTER TABLE branch
 MODIFY COLUMN zip_code VARCHAR(6) NOT NULL UNIQUE;
 
-ALTER TABLE rental
+ALTER TABLE reservation
 ADD COLUMN vehicle_id MEDIUMINT UNSIGNED NOT NULL;
 
-ALTER TABLE rental
+ALTER TABLE reservation
 ADD FOREIGN KEY (vehicle_id) REFERENCES vehicle(vehicle_id);
 
 -- needed to change pk so drop and add again
--- Create rental equipment table
+-- Create reservation equipment table
 DROP TABLE rented_equipment;
 
 CREATE TABLE rented_equipment(
 	reservation_id MEDIUMINT UNSIGNED,
     equipment_id SMALLINT UNSIGNED,
-    FOREIGN KEY (reservation_id) REFERENCES rental(reservation_id),
+    FOREIGN KEY (reservation_id) REFERENCES reservation(reservation_id),
     FOREIGN KEY (equipment_id) REFERENCES equipment(serial_num),
     CONSTRAINT pk_re PRIMARY KEY (reservation_id,equipment_id)
 );
@@ -302,3 +302,82 @@ MODIFY COLUMN sale_status ENUM('sold', 'for sale', 'for rent', 'damaged') DEFAUL
 
 -- need to alter all DATE to DATETIME
 
+ALTER TABLE reservation
+  RENAME TO reservation;
+  
+ALTER TABLE reservation
+  DROP COLUMN state;
+  
+ALTER TABLE reservation
+  ADD balance DECIMAL(6,2) NOT NULL;
+  
+ 
+CREATE TABLE rental(
+	reservation_id MEDIUMINT UNSIGNED PRIMARY KEY,
+	is_paid_rental BOOLEAN,
+	is_paid_extra_charge BOOLEAN,
+	clerk_id  SMALLINT UNSIGNED NOT NULL,
+	FOREIGN KEY (reservation_id) REFERENCES reservation(reservation_id),
+	FOREIGN KEY (clerk_id) REFERENCES employee(id_number)
+);
+
+ALTER TABLE reservation
+ADD CONSTRAINT uc_date_vehicle UNIQUE (start_date,end_date,vehicle_id);
+
+DROP TABLE report;
+
+-- re-create report
+CREATE TABLE report(
+	report_num MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	reporting_clerk  SMALLINT UNSIGNED NOT NULL,
+	rental_id MEDIUMINT UNSIGNED NOT NULL,
+	milage MEDIUMINT UNSIGNED NOT NULL,
+	gasLevel SMALLINT(3) UNSIGNED NOT NULL,
+	comments TEXT(500), 
+	state ENUM('before_rental','after_rental') NOT NULL,
+	FOREIGN KEY (reporting_clerk) REFERENCES employee(id_number),
+	FOREIGN KEY (rental_id) REFERENCES rental(reservation_id),
+	CHECK (gasLevel >= 0 AND gasLevel <=100)
+);
+ 
+ALTER TABLE report
+ ADD CONSTRAINT uc_res_state UNIQUE (rental_id,state);
+
+ ALTER TABLE report
+  ADD report_date DATETIME NOT NULL;
+
+ 
+CREATE TABLE report_accident(
+	report_num MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	rental_id MEDIUMINT UNSIGNED UNIQUE,
+	clerk_id SMALLINT UNSIGNED NOT NULL,
+	accident_date DATETIME NOT NULL,
+	comments TEXT(500),
+	driver VARCHAR(40) NOT NULL,
+	balance DECIMAL(6,2) NOT NULL,	
+	street_name VARCHAR(40) NOT NULL,
+	city VARCHAR(25) NOT NULL,
+	province SET('AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT') NOT NULL,
+	zipcode VARCHAR(6)
+);
+
+ALTER TABLE report_accident
+ADD FOREIGN KEY (rental_id)
+REFERENCES rental(reservation_id);
+
+ALTER TABLE report_accident
+ADD FOREIGN KEY (clerk_id)
+REFERENCES employee(id_number);F
+
+
+-- Create Equipment Price table
+CREATE TABLE equipment_price(
+	class ENUM('ski rack', 'child safety seat', 'lift gate', 'car-towing eq') NOT NULL PRIMARY KEY,
+    perWeek DECIMAL(5,2) NOT NULL,
+    perDay DECIMAL(5,2) NOT NULL,
+    perHour DECIMAL(5,2) NOT NULL
+);
+
+
+ALTER TABLE equipment
+DROP FOREIGN KEY equipment_ibfk_2;

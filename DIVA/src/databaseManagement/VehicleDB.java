@@ -51,6 +51,17 @@ class VehicleDB {
 		
 	}
 	
+	void addVehicleLocation(int v_key_value, int b_key_value) throws SQLException{
+		dbm.connect();
+		Statement stmt = dbm.getConnection().createStatement();
+
+        String query = "INSERT INTO `branch_vehicle` VALUES (" + v_key_value +", "+b_key_value+")";
+        stmt.executeUpdate(query);
+        stmt.close();	
+
+		dbm.disconnect();
+	}
+	
 
 	/**
 	 * updateVehicleStatus updates the status of an vehicle
@@ -88,7 +99,7 @@ class VehicleDB {
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
         String query = "INSERT INTO `car`(`vehicle_id`, `class`, `baggage`, `door`, `transmission`, `air_condition`, `capacity`)"
-        		+" VALUES ("+v.getID()+", \'"+v.getCarClass()+"\', "+v.getBaggage()
+        		+" VALUES ("+v.getID()+", \'"+v.getVehicleClass()+"\', "+v.getBaggage()
         		+", \'"+v.getDoor()+"\', "+(v.getTransmission()? 1: 0)+", "
         		+(v.getAC()? 1:0)+", "+v.getCapacity()+");";
        // System.out.println(query);
@@ -105,7 +116,7 @@ class VehicleDB {
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
         String query = "INSERT INTO `truck`(`vehicle_id`, `class`, `interior_b_l`, `interior_b_w`, `interior_b_h`, `capacity_kg`)"
-        		+" VALUES ("+v.getID()+", \'"+v.getTruckClass()+"\', "+new BigDecimal(v.getBL())
+        		+" VALUES ("+v.getID()+", \'"+v.getVehicleClass()+"\', "+new BigDecimal(v.getBL())
         		+", "+new BigDecimal(v.getBW())+", "+new BigDecimal(v.getBH())+", "+v.getCapacity()+");";
         //System.out.println(query);
 	    stmt.executeUpdate(query);
@@ -189,10 +200,10 @@ class VehicleDB {
         	    +branch_id
         		+" AND sale_status = 'for rent'"
         		+" AND truck.vehicle_id NOT IN "
-        		+"(SELECT truck.vehicle_id FROM truck INNER JOIN rental "
-        		+" ON truck.vehicle_id = rental.vehicle_id" 
-        		+" WHERE rental.end_date >= \'"+start_date+"\'"
-        		+" AND rental.start_date < \'"+end_date+"\');";
+        		+"(SELECT truck.vehicle_id FROM truck INNER JOIN reservation "
+        		+" ON truck.vehicle_id = reservation.vehicle_id" 
+        		+" WHERE reservation.end_date >= \'"+start_date+"\'"
+        		+" AND reservation.start_date < \'"+end_date+"\');";
         return executeQueryTruck(query);
 	}
 
@@ -264,10 +275,10 @@ class VehicleDB {
         	    +branch_id
         		+" AND sale_status = 'for rent'"
         		+" AND car.vehicle_id NOT IN "
-        		+"(SELECT car.vehicle_id FROM car INNER JOIN rental "
-        		+" ON car.vehicle_id = rental.vehicle_id" 
-        		+" WHERE rental.end_date >= \'"+start_date+"\'"
-        		+" AND rental.start_date < \'"+end_date+"\');";
+        		+"(SELECT car.vehicle_id FROM car INNER JOIN reservation "
+        		+" ON car.vehicle_id = reservation.vehicle_id" 
+        		+" WHERE reservation.end_date >= \'"+start_date+"\'"
+        		+" AND reservation.start_date < \'"+end_date+"\');";
         return executeQueryCar(query);
 	}
 
@@ -380,10 +391,15 @@ class VehicleDB {
         	    +branch_id
         		+" AND sale_status = 'for rent'"
         		+" AND car.vehicle_id IN "
-        		+"(SELECT car.vehicle_id FROM car INNER JOIN rental "
-        		+" ON car.vehicle_id = rental.vehicle_id" 
-        		+" WHERE rental.end_date < \'"+current_date+"\'"
-        		+" AND rental.state != 'complete');";
+        		+"(SELECT vehicle_id FROM (SELECT car.vehicle_id, car.class, car.baggage, car.door, car.transmission, car.air_condition, car.capacity, "
+        		+ " reservation.customer, reservation.start_date, reservation.end_date, reservation.start_branch, reservation.end_branch, reservation.balance, "
+        		+" rental.is_paid_rental, rental.is_paid_extra_charge "
+        		+" FROM car INNER JOIN reservation "
+        		+" ON car.vehicle_id = reservation.vehicle_id "
+				+" INNER JOIN rental "
+        		+" ON rental.reservation_id = reservation.reservation_id) tmpTable"
+        		+" WHERE tmpTable.end_date < \'"+current_date+"\'"
+        		+");";
         return executeQueryCar(query);
 	}
 	
@@ -397,19 +413,24 @@ class VehicleDB {
 	Vehicle[] searchOverdueTrucks(int branch_id) throws SQLException {
 		
 		String current_date = df.format(new java.util.Date());
-        String query = "SELECT * FROM truck" 
+        String query = "SELECT * FROM truck"
         		+" INNER JOIN branch_vehicle  ON "
-        		+"truck.vehicle_id = branch_vehicle.vehicle_id " 
+        		+" truck.vehicle_id = branch_vehicle.vehicle_id "
         	    +" INNER JOIN vehicle ON "
-        	    +"truck.vehicle_id = vehicle.vehicle_id AND "
+        	    +" truck.vehicle_id = vehicle.vehicle_id AND "
         		+" branch_vehicle.location = "
-        	    +branch_id
-        		+" AND sale_status = 'for rent'"
-        		+" AND truck.vehicle_id NOT IN "
-        		+"(SELECT truck.vehicle_id FROM truck INNER JOIN rental "
-        		+" ON truck.vehicle_id = rental.vehicle_id" 
-           		+" WHERE rental.end_date < \'"+current_date+"\'"
-        		+" AND rental.state != 'complete');";
+        	    + branch_id
+        		+" AND sale_status = 'for rent' "
+        		+" AND truck.vehicle_id "
+				+" IN "
+				+" (SELECT vehicle_id FROM (SELECT truck.vehicle_id, truck.class, truck.interior_b_l, truck.interior_b_w, truck.interior_b_h, truck.capacity_kg , "
+				+" reservation.customer, reservation.start_date, reservation.end_date, reservation.start_branch, reservation.end_branch, reservation.balance, "
+				+" rental.is_paid_rental, rental.is_paid_extra_charge "
+				+" FROM truck INNER JOIN reservation "
+        		+" ON truck.vehicle_id = reservation.vehicle_id "
+				+" INNER JOIN rental "
+        		+" ON rental.reservation_id = reservation.reservation_id) tmpTable "
+        		+" WHERE tmpTable.end_date < \'"+current_date+"\');";
         return executeQueryTruck(query);
 	}
 
@@ -466,6 +487,49 @@ class VehicleDB {
 	    
 	    stmt.close();
 	    dbm.disconnect();		
+	}
+	 /**
+	  * Search for an vehicle according to its ID
+	  * @param vehicle_id
+	  * @return
+	 * @throws SQLException 
+	  */
+	 Vehicle search(int vehicle_id) throws SQLException {
+		// TODO Auto-generated method stub
+		 System.out.println(vehicle_id);
+		 String query; 
+		//is this a truck or car
+		if (isTruck(vehicle_id)){
+			query = " SELECT *"
+					+"FROM  `truck` INNER JOIN `vehicle` WHERE  vehicle.vehicle_id = " +vehicle_id;
+			Truck[] trucks = (Truck[]) executeQueryTruck(query);
+			return trucks[0];
+		}
+		else { // this is a truck
+			query = " SELECT *"
+					+"FROM `car` INNER JOIN `vehicle` WHERE vehicle.vehicle_id = "+ vehicle_id;
+			Car[] cars = (Car[]) executeQueryCar(query);
+			return cars[0];
+		}
+	}
+
+	private boolean isTruck(int vehicle_id) throws SQLException {
+		// TODO Auto-generated method stub
+ 		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+  		String query  = "SELECT `vehicle_id` from truck WHERE `vehicle_id` = "+ vehicle_id;
+        ResultSet rs = stmt.executeQuery(query);
+        //if there is any rs
+        if (rs.next()){
+            rs.close();
+            stmt.close();	
+            dbm.disconnect();
+        	return true;
+        }
+        rs.close();
+        stmt.close();	
+        dbm.disconnect();
+		return false;
 	}	
 
 	
