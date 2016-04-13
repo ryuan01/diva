@@ -249,6 +249,54 @@ public class DatabaseManager {
 		return null;
 	}
 	
+	/**
+	 * Get reservation vehicle ID
+	 * @param reservID
+	 * @return vehicle ID
+	 * @throws SQLException
+	 */
+	public int getReservationVehicleID(int reservID) throws SQLException
+	{
+		Vehicle v = this.getReservationVehicle(reservID);
+		return v.getID();
+	}
+	
+	/**
+	 * Create an rental
+	 * @param reserveID
+	 * @param clerkID
+	 * @param is_paid_rental
+	 * @param is_paid_extra_charge
+	 * @throws SQLException
+	 */
+	public void createRental(int reserveID, int clerkID, boolean is_paid_rental, boolean is_paid_extra_charge) throws SQLException {
+		reDB.createRental(reserveID, clerkID, is_paid_rental, is_paid_extra_charge);
+	}
+
+	/**
+	 * Get the account for the rental, for calculating price purpose
+	 * @param rental_id
+	 * @return
+	 */
+	public int getAccountForRental(int rental_id) {
+		// TODO Auto-generated method stub
+		return reDB.getAccountForRental(rental_id);
+	}
+	
+	/**
+	 * Get a vehicle inside reservation, for calculating price purpose
+	 * @param reservID
+	 * @return Vehicle
+	 * @throws SQLException 
+	 */
+	public Vehicle getReservationVehicle(int reservID) throws SQLException {
+		// TODO Auto-generated method stub
+		Reservation r = reDB.reservationQuery(reservID);
+		int vehicle_id = r.getVehicleID();
+		Vehicle v = veDB.search(vehicle_id);
+		return v;
+	}
+	
 /*-----------------------------------------VehicleDB----------------------------------------------*/
 	/**
 	 * Generic search of vehicle available at certain date, certain branch 
@@ -311,6 +359,17 @@ public class DatabaseManager {
 		return vlist;
 	}
 	
+	/**
+	 * Get the type of vehicle according to its vehicle ID
+	 * @param vehicle_id
+	 * @return
+	 * @throws SQLException
+	 */
+	public String getTypeOfVehicle(int vehicle_id) throws SQLException
+	{
+		Vehicle v = veDB.search(vehicle_id);
+		return v.getVehicleClass();
+	}
 	
 /*---------------------------------------Account related----------------------------------------------*/
 	
@@ -344,7 +403,7 @@ public class DatabaseManager {
 	}
 	
 	// find account by loginID, loginID should be immutable
-//	public void modifyAccountEntry(String firstname, String lastname, String phoneNumber, String email, String loginId,)
+//	public void modifyAccountEntry(String firstname, String lastname, String phoneNumber, String email)
 //	{
 //	}
 	
@@ -500,35 +559,5 @@ public class DatabaseManager {
 		else {
 			throw new IllegalArgumentException("Vehicle can only be of 'car' or 'truck");
 		}
-	}
-
-	/**
-	 * Create an rental
-	 * @param reserveID
-	 * @param clerkID
-	 * @param is_paid_rental
-	 * @param is_paid_extra_charge
-	 * @throws SQLException
-	 */
-	public void createRental(int reserveID, int clerkID, boolean is_paid_rental, boolean is_paid_extra_charge) throws SQLException {
-		reDB.createRental(reserveID, clerkID, is_paid_rental, is_paid_extra_charge);
-	}
-
-	public int getAccountForRental(int rental_id) {
-		// TODO Auto-generated method stub
-		return reDB.getAccountForRental(rental_id);
-	}
-	/**
-	 * For ben, get a vehicle inside reservation. 
-	 * @param reservID
-	 * @return Vehicle
-	 * @throws SQLException 
-	 */
-	public Vehicle getReservationVehicle(int reservID) throws SQLException {
-		// TODO Auto-generated method stub
-		Reservation r = reDB.reservationQuery(reservID);
-		int vehicle_id = r.getVehicleID();
-		Vehicle v = veDB.search(vehicle_id);
-		return v;
 	}
 }

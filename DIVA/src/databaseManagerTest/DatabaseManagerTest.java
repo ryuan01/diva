@@ -32,7 +32,13 @@ public class DatabaseManagerTest {
 
 	private static void test_rental() {
 		// TODO Auto-generated method stub
-		
+		//dbm.createRental(reserveID, clerkID, is_paid_rental, is_paid_extra_charge);
+		try {
+			dbm.createRental(19, 5, false, false);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static void test_get_branch() {

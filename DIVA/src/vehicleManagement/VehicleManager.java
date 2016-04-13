@@ -68,22 +68,11 @@ public class VehicleManager {
 	 */
 	private void updatePrice(Vehicle[] vlist, String type, String start_date, String end_date) throws IllegalArgumentException, ParseException, SQLException{
 		// TODO Auto-generated method stub
-		pm.populatePriceList();
-		if (type.equals("car")){
-			for (int i=0; i< vlist.length; i++){
-				//System.out.printf("inputs in udatePrice: %s %s %s\n", ((Car) vlist[i]).getCarClass(), start_date, end_date);
-				BigDecimal n = pm.calculateCarPrice(((Car) vlist[i]).getCarClass(), start_date, end_date);
-				//System.out.println("price is : " + n);
-				vlist[i].setPrice(n);
-			}
-		}
-		else if (type.equals("truck")){
-			for (int i=0; i< vlist.length; i++){
-				vlist[i].setPrice(pm.calculateTruckPrice(((Truck) vlist[i]).getTruckClass(), start_date, end_date));
-			}
-		}
-		else {
-			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
+		for (int i=0; i< vlist.length; i++){
+			//System.out.printf("inputs in udatePrice: %s %s %s\n", ((Car) vlist[i]).getCarClass(), start_date, end_date);
+			BigDecimal n = pm.calculatePrice(vlist[i].getVehicleClass(), start_date, end_date);
+			//System.out.println("price is : " + n);
+			vlist[i].setPrice(n);
 		}
 	}
 

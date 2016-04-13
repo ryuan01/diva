@@ -5,6 +5,7 @@ import java.text.ParseException;
 
 import accountManagement.Account;
 import databaseManagement.DatabaseManager;
+import vehicleManagement.Car;
 
 
 public class RentalFacade {
@@ -38,9 +39,9 @@ public class RentalFacade {
 	public void createReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
 			int customerID) throws SQLException 
 	{
-		//balance need to be calculated
+		//balance need to be re-calculated for security purpose 
 		reservMan.addReservation(startD,endD,vehicleID,equipIDs,startBranchID, endBranchID, 
-				customerID, new BigDecimal("100"));
+				customerID);
 	}
 	
 	/**

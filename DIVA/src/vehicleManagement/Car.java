@@ -82,7 +82,7 @@ public class Car extends Vehicle implements ArrayOfStringsable{
 	 * Get class of a car 
 	 * @return a class from set ('economy','compact','midsized','standard','fullsized','premium','luxury','SUV','van')
 	 */
-	public String getCarClass(){
+	public String getVehicleClass(){
 		return car_class;
 	}
 	/**

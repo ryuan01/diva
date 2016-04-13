@@ -24,74 +24,44 @@ public class PriceList {
 	
 	//really just 3 tables
 	// 7 types of rates, 9 types of cars 
-	private DatabaseManager db;
 	private BigDecimal[][] price_car;
 	private BigDecimal[][] price_truck;
 	private BigDecimal[][] price_equipment;
 	private BigDecimal[][] price_car_insurance;
 	private BigDecimal[][] price_truck_insurance;
-/*	private double[] price_Economy;
-	private double[] price_Compact;
-	private double[] price_MidSized;
-	private double[] price_Standard;
-	private double[] price_FullSized;
-	private double[] price_Premium;
-	private double[] price_Luxury;
-	private double[] price_SUV;
-	private double[] price_Van;
-	
-	private double price_TwentyFourFoot;
-	private double price_FifteenFoot;
-	private double price_TwelveFoot;
-	private double price_BoxTruck;
-	
-*/	
-	//there are 7 kinds of rates: dailyRate, weeklyRate, hourlyRate, perKMRate, dailyInsuranceRate,
-	//hourlyInsuranceRate, and weeklyInsuranceRate
 	
 	/**
 	 * Loads value from db to create PriceList
 	 * @throws SQLException 
 	 */
 	public PriceList(){
-		this.db =  DatabaseManager.getInstance();
-	}
-
-	//should be initialized once and for all when the system starts.
-	//but how?
-	public void populate() throws SQLException{
-		price_car = db.getCarPriceList();
-		//ENUM('24-foot', '15-foot', '12-foot', 'box-truck')
-		price_truck = db.getTruckPriceList();
-		//ENUM('ski rack', 'child safety seat', 'lift gate', 'car-towing eq')
-		price_equipment = db.getEquipmentPriceList();
-		price_car_insurance = db.getCarInsurancePriceList();
-		price_truck_insurance = db.getTruckInsurancePriceList();
-	}
-	public BigDecimal getPriceCar(int i, int j){
-		return price_car[i][j];
+		
 	}
 	
-	public BigDecimal getPriceTruck(int i, int j){
-		return price_truck[i][j];
+	public BigDecimal getPriceCar(String type){
+		return db.getPriceRow(type, "car_price");
 	}
 	
-	public BigDecimal getPriceEquipment(int i, int j){
-		return price_equipment[i][j];
+	public BigDecimal getPriceTruck(String type){
+		return db.getPriceRow(type, "truck_price");
 	}
 	
-	public BigDecimal getPriceCarInsurance(int i, int j){
-		return price_car_insurance[i][j];
+	public BigDecimal getPriceEquipment(String type){
+		return db.getPriceRow(type, "equipment_price");
 	}
 	
-	public BigDecimal getPriceTruckInsurance(int i, int j){
-		return price_truck_insurance[i][j];
+	public BigDecimal getPriceCarInsurance(String type){
+		return db.getPriceRow(type, "insurance_car_price");
+	}
+	
+	public BigDecimal getPriceTruckInsurance(String type){
+		return db.getPriceRow(type, "insurance_truck_price");
 	}
 	
 	
 	// Changes price lists
 	
-	
+	/*
 	public void setPriceCar(int i, int j, BigDecimal p){
 		price_car[i][j] = p;
 	}
@@ -134,6 +104,7 @@ public class PriceList {
 	public void updatePriceTruckInsurance(){
 		db.setTruckInsurancePriceList(price_truck_insurance);
 	}
+	*/
 	
 	public void print(){
 		for (int i = 0; i < price_car.length; i++){

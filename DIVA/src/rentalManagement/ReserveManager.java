@@ -6,18 +6,22 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import databaseManagement.DatabaseManager;
+import paymentManagement.PaymentManager;
+import vehicleManagement.Car;
 
 
 class ReserveManager {
 	
 	
 	private DatabaseManager dbConnection;
+	private PaymentManager pm;
 	/**
 	 * A Manager for adding, removing, and modifying Reservations and its attributes.
 	 */
 	ReserveManager()
 	{
 		dbConnection = DatabaseManager.getInstance();
+		pm = new PaymentManager();
 	}
 	
 	/**
@@ -31,15 +35,17 @@ class ReserveManager {
 	 * @param customerID Customer login ID of the Reservation.
 	 * @param employeeID 
 	 * @param employeeID Employee login ID of the Reservation.
-	 * @param balance Status of the Reservation.
 	 * @throws SQLException 
 	 */
 	void addReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, BigDecimal balance) throws SQLException 
+			int customerID) throws SQLException 
 	{
 		//create reservation object and pass that on
 		//(String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, 
 		// int id, BigDecimal amount)
+		BigDecimal balance;
+		Vehicle v = dbConnection.s
+		= pm.calculateCarPrice(((Car) vlist[i]).getCarClass(), start_date, end_date);
 		Reservation r = new Reservation(startD,endD,vehicleID,equipIDs,startBranchID,endBranchID,customerID,-1, balance);
 		dbConnection.createReservationEntry(r);
 	}

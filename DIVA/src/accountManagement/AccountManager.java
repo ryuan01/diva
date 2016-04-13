@@ -64,8 +64,8 @@ public class AccountManager {
 		dbConnection.createAccountEntry(acc);
 	}
 	
-//	public void modifyAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
-//		dbConnection.modifyAccountEntry(firstName, lastName, phoneNumber, emailAddress, userName, status);
+//	public void modifyAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName) {
+//		dbConnection.modifyAccountEntry(firstName, lastName, phoneNumber, emailAddress, userName);
 //	}
 	
 	/**

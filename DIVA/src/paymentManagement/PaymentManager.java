@@ -25,6 +25,7 @@ public class PaymentManager {
 	private PriceList priceList;
 	private DatabaseManager db;
 	private AccountManager am;
+	private DateFormat dateFormat;
 	
 /**
  * A payment Manager that creates and holds a list of receipts. 
@@ -36,10 +37,7 @@ public class PaymentManager {
 		db = DatabaseManager.getInstance();
 		priceList = new PriceList();
 		am = new AccountManager();
-	}
-	
-	public void populatePriceList() throws SQLException{
-		priceList.populate();
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	}
 
 	/**
@@ -89,18 +87,14 @@ public class PaymentManager {
 	 * @param vehicleType
 	 * @param insurance
 	 * @return final_price
+	 * @throws SQLException 
 	 */
 	// format of date "yyyy-mm-dd hh:mm:ss"
-	public BigDecimal calculateCarPrice(String carClass, String start_date, String end_date) throws ParseException{
+	public BigDecimal calculatePrice(String vehicleClass, String start_date, String end_date) throws ParseException, SQLException{
 		
+		Date startDate = dateFormat.parse(start_date);
 		
-		//System.out.println("inputs " + carClass + " " + start_date + " "+end_date);
-		
-		DateFormat startDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date startDate = startDateFormat.parse(start_date);
-		
-		DateFormat endDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date endDate = endDateFormat.parse(end_date);
+		Date endDate = dateFormat.parse(end_date);
 		
 		BigDecimal total;
 		
@@ -115,7 +109,7 @@ public class PaymentManager {
 		BigDecimal hourPrice = BigDecimal.ZERO;
 		
 		//weekly rates
-		switch(carClass){
+		switch(vehicleClass){
 			case "economy":
 				weekPrice = priceList.getPriceCar(0, 2); 
 				dayPrice = priceList.getPriceCar(0, 1); 
@@ -156,39 +150,6 @@ public class PaymentManager {
 				weekPrice = priceList.getPriceCar(8, 2);
 				dayPrice = priceList.getPriceCar(8, 1); 
 				hourPrice = priceList.getPriceCar(8, 0); break;
-			}
-		 
-		total = days.divide(new BigDecimal(7),0, RoundingMode.DOWN).multiply(weekPrice);
-		total = total.add(days.remainder(new BigDecimal(7)).multiply(dayPrice));
-		total = total.add(hours.multiply(hourPrice));
-		
-		//System.out.println("total is: " + total);
-		return total;
-		
-	}
-
-	public BigDecimal calculateTruckPrice(String truckClass, String start_date, String end_date) throws ParseException{
-		
-		DateFormat startDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date startDate = startDateFormat.parse(start_date);
-		
-		DateFormat endDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date endDate = endDateFormat.parse(end_date);
-		
-		BigDecimal total;
-		
-		long daysDuration = getDateDiff(startDate,endDate,TimeUnit.DAYS);
-		long hoursDuration = getDateDiff(startDate,endDate,TimeUnit.HOURS);
-		BigDecimal days = new BigDecimal(daysDuration);
-		BigDecimal hours = new BigDecimal(hoursDuration);
-		hours = hours.remainder(new BigDecimal(24));
-		
-		BigDecimal weekPrice = BigDecimal.ZERO;
-		BigDecimal dayPrice = BigDecimal.ZERO;
-		BigDecimal hourPrice = BigDecimal.ZERO;
-		
-		//weekly rates
-		switch(truckClass){
 			case "24-foot":
 				weekPrice = priceList.getPriceCar(0, 2); 
 				dayPrice = priceList.getPriceCar(0, 1); 
@@ -205,18 +166,15 @@ public class PaymentManager {
 				weekPrice = priceList.getPriceCar(3, 2);
 				dayPrice = priceList.getPriceCar(3, 1); 
 				hourPrice = priceList.getPriceCar(3, 0); break;
-			case "cargo-van":
-				weekPrice = priceList.getPriceCar(4, 2); 
-				dayPrice = priceList.getPriceCar(4, 1); 
-				hourPrice = priceList.getPriceCar(4, 0); break;
-			
 			}
-		
+		 
 		total = days.divide(new BigDecimal(7),0, RoundingMode.DOWN).multiply(weekPrice);
 		total = total.add(days.remainder(new BigDecimal(7)).multiply(dayPrice));
 		total = total.add(hours.multiply(hourPrice));
 		
+		//System.out.println("total is: " + total);
 		return total;
+		
 	}
 	
 	public BigDecimal calculateLateprice(int reservID) throws ParseException, SQLException{
@@ -232,23 +190,10 @@ public class PaymentManager {
 		String reportDate = df.format(today);
 		
 		String reservEndDate = db.getReservationEndDate(reservID);
-		Vehicle reservVehicle = db.getReservationVehicle(reservID);
-		
-		if(reservVehicle instanceof Car)
-		{
-			Car reservCar = (Car)reservVehicle;
+		int reservVehicle = db.getReservationVehicleID(reservID);
+	
 			
-			return calculateCarPrice(reservCar.getCarClass(),reservEndDate,reportDate);
-		}
-		else if(reservVehicle instanceof Truck)
-		{
-			Truck reservTruck = (Truck)reservVehicle;
-			return calculateTruckPrice(reservTruck.getTruckClass(),reservEndDate,reportDate);
-		}
-		else
-		{
-			return null;
-		}
+		return calculatePrice(db.getTypeOfVehicle(reservVehicle),reservEndDate,reportDate);
 	}
 	
 	public int moneyToPoints(BigDecimal money)
@@ -284,4 +229,26 @@ public void makePayment(Account a, BigDecimal price) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public BigDecimal getPriceCar(String type){
+		return db.getPriceRow(type, "car_price");
+	}
+	
+	public BigDecimal getPriceTruck(String type){
+		return db.getPriceRow(type, "truck_price");
+	}
+	
+	public BigDecimal getPriceEquipment(String type){
+		return db.getPriceRow(type, "equipment_price");
+	}
+	
+	public BigDecimal getPriceCarInsurance(String type){
+		return db.getPriceRow(type, "insurance_car_price");
+	}
+	
+	public BigDecimal getPriceTruckInsurance(String type){
+		return db.getPriceRow(type, "insurance_truck_price");
+	}
+	
+	
 }

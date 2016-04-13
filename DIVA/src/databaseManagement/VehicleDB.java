@@ -99,7 +99,7 @@ class VehicleDB {
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
         String query = "INSERT INTO `car`(`vehicle_id`, `class`, `baggage`, `door`, `transmission`, `air_condition`, `capacity`)"
-        		+" VALUES ("+v.getID()+", \'"+v.getCarClass()+"\', "+v.getBaggage()
+        		+" VALUES ("+v.getID()+", \'"+v.getVehicleClass()+"\', "+v.getBaggage()
         		+", \'"+v.getDoor()+"\', "+(v.getTransmission()? 1: 0)+", "
         		+(v.getAC()? 1:0)+", "+v.getCapacity()+");";
        // System.out.println(query);
@@ -116,7 +116,7 @@ class VehicleDB {
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
         String query = "INSERT INTO `truck`(`vehicle_id`, `class`, `interior_b_l`, `interior_b_w`, `interior_b_h`, `capacity_kg`)"
-        		+" VALUES ("+v.getID()+", \'"+v.getTruckClass()+"\', "+new BigDecimal(v.getBL())
+        		+" VALUES ("+v.getID()+", \'"+v.getVehicleClass()+"\', "+new BigDecimal(v.getBL())
         		+", "+new BigDecimal(v.getBW())+", "+new BigDecimal(v.getBH())+", "+v.getCapacity()+");";
         //System.out.println(query);
 	    stmt.executeUpdate(query);
