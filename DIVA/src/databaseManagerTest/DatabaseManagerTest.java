@@ -26,7 +26,13 @@ public class DatabaseManagerTest {
 		//test_report();
 		//test_branch();
 		//test_get_reservation_vehicle();
-		test_get_branch();
+		//test_get_branch();
+		test_rental();
+	}
+
+	private static void test_rental() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private static void test_get_branch() {

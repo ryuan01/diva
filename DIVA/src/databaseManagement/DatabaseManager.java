@@ -120,6 +120,10 @@ public class DatabaseManager {
 		return branDB.getBranch(id);
 	}
 	
+	public Branch[] getAllBranchEntries() throws SQLException
+	{
+		return branDB.getAllBranch();
+	}
 
 	// 
 /*----------------------------------------EquipmentDB--------------------------------------------*/
@@ -330,6 +334,7 @@ public class DatabaseManager {
 	 * @throws SQLException 
 	 */
 	public Account[] searchAccountEntries(String parameter) throws SQLException{
+		// Needs to be done
 		return accDB.getAccounts(parameter);
 	}
 	
@@ -339,9 +344,9 @@ public class DatabaseManager {
 	}
 	
 	// find account by loginID, loginID should be immutable
-	public void modifyAccountEntry(String firstname, String lastname, String phoneNumber, String email, String loginId, String status)
-	{
-	}
+//	public void modifyAccountEntry(String firstname, String lastname, String phoneNumber, String email, String loginId,)
+//	{
+//	}
 	
 	public void changeAccountStatus(String userName, String status) throws SQLException{
 		
@@ -358,16 +363,12 @@ public class DatabaseManager {
 	{
 		accDB.addSRPoints(userName, points);
 	}
-	
-	public void addSRPoints(int i, int points) {
-		// TODO Auto-generated method stub
 		
-	}
-	
 	public void modifyPassword(String userName, String newPassword) throws SQLException{
 		accDB.modifyPassword(userName, newPassword);
 	}
 
+/*---------------------------------------Used By vehicle manager------------------------------*/
 	/**
 	 * Update vehicle's owning branch
 	 * @pre vehicle is always assumed to be at its owning branch

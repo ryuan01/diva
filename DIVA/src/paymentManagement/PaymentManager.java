@@ -21,9 +21,10 @@ import vehicleManagement.Truck;
 
 public class PaymentManager {
 
-	private static BigDecimal tax;
-	private static PriceList priceList;
-	private static DatabaseManager db;
+	private BigDecimal tax;
+	private PriceList priceList;
+	private DatabaseManager db;
+	private AccountManager am;
 	
 /**
  * A payment Manager that creates and holds a list of receipts. 
@@ -34,6 +35,7 @@ public class PaymentManager {
 		tax = new BigDecimal("0.07");
 		db = DatabaseManager.getInstance();
 		priceList = new PriceList();
+		am = new AccountManager();
 	}
 	
 	public void populatePriceList() throws SQLException{
@@ -257,10 +259,11 @@ public class PaymentManager {
 	/**
 	 * I don't think this should be static 
 	 * @param reservID
+	 * @throws SQLException 
 	 */
 	
 	//don't want static! 
-public void makePayment(Account a, BigDecimal price) {
+public void makePayment(Account a, BigDecimal price) throws SQLException {
 	// TODO Auto-generated method stub
 	// should create a receipt for the payment and pass it to interface to show user.
 	// should prompt interface to try again if payment fails.
@@ -273,11 +276,11 @@ public void makePayment(Account a, BigDecimal price) {
 	
 	if(a instanceof SuperCustomer)
 	{
-		//AccountManager.accumulatePoints(a.getID(), PaymentManager.moneyToPoints(price));
+		am.accumulatePoints(a.getLoginId(), am.moneyToPoints(price));
 	}
 }
 
-	public static BigDecimal calculateRentprice(int reservID) {
+	public BigDecimal calculateRentprice(int reservID) {
 		// TODO Auto-generated method stub
 		return null;
 	}

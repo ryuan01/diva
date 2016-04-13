@@ -1,9 +1,13 @@
 package databaseManagement;
 
 import java.sql.*;
+import java.util.ArrayList;
+
 import systemManagement.Branch;
 import systemManagement.Location;
+import vehicleManagement.Car;
 import vehicleManagement.Equipment;
+import vehicleManagement.Vehicle;
 
 /**
  * BranchDB creates, deletes, and modifies data related to Branch
@@ -90,5 +94,39 @@ class BranchDB{
 		
 		return b;
 		
+	}
+
+	/**
+	 * Get all available branches for interface display purpose
+	 * @return all available branches
+	 * @throws SQLException 
+	 */
+	Branch[] getAllBranch() throws SQLException {
+		// TODO Auto-generated method stub
+		Branch b = null;
+		ArrayList<Branch> blist = new ArrayList<Branch>();
+		
+		dbm.connect();
+	  
+		Statement stmt = dbm.getConnection().createStatement();
+      
+		String query = "SELECT * FROM `branch`";
+		
+		//System.out.println(query);
+		ResultSet rs = stmt.executeQuery(query);
+		
+		
+		
+		while(rs.next()){
+			
+			b = new Branch (rs.getInt("br_num"), rs.getString("street_name"),rs.getString("city"),rs.getString("province"),rs.getString("zip_code"));
+			blist.add(b);
+		}
+		dbm.disconnect();
+		
+	      //change back to array
+        Branch[] bArray = new Branch[blist.size()];
+        bArray = blist.toArray(bArray);
+        return bArray;
 	}
 }

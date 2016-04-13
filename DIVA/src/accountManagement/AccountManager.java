@@ -1,5 +1,6 @@
 package accountManagement;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import databaseManagement.DatabaseManager;
@@ -63,9 +64,9 @@ public class AccountManager {
 		dbConnection.createAccountEntry(acc);
 	}
 	
-	public void modifyAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
-		dbConnection.modifyAccountEntry(firstName, lastName, phoneNumber, emailAddress, userName, status);
-	}
+//	public void modifyAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
+//		dbConnection.modifyAccountEntry(firstName, lastName, phoneNumber, emailAddress, userName, status);
+//	}
 	
 	/**
 	 * Changes the customer from a regular customer to a Super Club Member
@@ -141,5 +142,11 @@ public class AccountManager {
 	public void changePassword(String userName, String newPassword) throws SQLException
 	{
 		dbConnection.modifyPassword(userName,newPassword);
+	}
+
+	//Sammy please edit this one
+	public int moneyToPoints(BigDecimal price) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

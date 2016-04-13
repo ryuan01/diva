@@ -12,7 +12,7 @@ public class Customer extends Account implements ArrayOfStringsable{
 	public Customer(String firstname, String lastname, String phoneNumber, 
 			String email, String loginId, int id,
 			long cc, String name_on_card, String address, 
-			String city, String province, String zip) {
+			String city, String province, String zip, String standing) {
 		
 		super(firstname, lastname, phoneNumber, email, loginId, id);
 		// TODO Auto-generated constructor stub
@@ -21,6 +21,7 @@ public class Customer extends Account implements ArrayOfStringsable{
 		this.cc_num = cc;
 		this.name_on_card = name_on_card;
 		super.objectClass = getClass().getName();
+		this.standing = standing;
 	}
 	
 	// with password
@@ -37,6 +38,8 @@ public class Customer extends Account implements ArrayOfStringsable{
 		super.objectClass = getClass().getName();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 	/**
 	 * @return the standing
 	 */

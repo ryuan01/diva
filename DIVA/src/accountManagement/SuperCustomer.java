@@ -24,12 +24,15 @@ public class SuperCustomer extends Customer implements ArrayOfStringsable{
 	 * @param zip
 	 * @param points
 	 */
-	public SuperCustomer(String firstname, String lastname, String phoneNumber, String email, String loginId, int id,
-			long cc, String name_on_card, String street, String city, String province, String zip,int points) {
-			super(firstname,  lastname, phoneNumber, email, loginId, id,
-					cc, name_on_card, street, city,province, zip);
-			this.points = points;
-			super.objectClass = getClass().getName();
+	public SuperCustomer(Customer customer ,int points) {
+			
+		super(customer.getFirstname(), customer.getLastname(), customer.getPhoneNumber(),
+				customer.getEmail(), customer.getLoginId(),customer.getID(), 
+				customer.getCc_num(), customer.getName_on_card(), customer.getLocation().getAddress(),
+				customer.getLocation().getCity(), customer.getLocation().getProvince(),
+				customer.getLocation().getZipcode(), customer.getStanding());
+		this.points = points;
+		super.objectClass = getClass().getName();
 	}
 
 	public int getPoints() {
