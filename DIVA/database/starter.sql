@@ -367,4 +367,17 @@ REFERENCES rental(reservation_id);
 
 ALTER TABLE report_accident
 ADD FOREIGN KEY (clerk_id)
-REFERENCES employee(id_number);
+REFERENCES employee(id_number);F
+
+
+-- Create Equipment Price table
+CREATE TABLE equipment_price(
+	class ENUM('ski rack', 'child safety seat', 'lift gate', 'car-towing eq') NOT NULL PRIMARY KEY,
+    perWeek DECIMAL(5,2) NOT NULL,
+    perDay DECIMAL(5,2) NOT NULL,
+    perHour DECIMAL(5,2) NOT NULL
+);
+
+
+ALTER TABLE equipment
+DROP FOREIGN KEY equipment_ibfk_2;

@@ -42,7 +42,11 @@ public class VehicleManagerTest {
 		// TODO Auto-generated method stub
 		Vehicle[] a;
 		try {
-			a = vm.searchForVehicle(2, "2016-4-9 14:00:00", "2016-4-10 14:00:00", "car");
+			a = vm.searchForVehicle(1, "2016-4-9 14:00:00", "2016-4-10 14:00:00", "car");
+			for (int i=0; i< a.length; i++){
+				System.out.println(a[i].toString());
+			}
+			a = vm.searchForVehicle(1, "2016-4-9 14:00:00", "2016-4-10 14:00:00", "car");
 			for (int i=0; i< a.length; i++){
 				System.out.println(a[i].toString());
 			}

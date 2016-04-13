@@ -19,6 +19,11 @@ import vehicleManagement.Vehicle;
 import vehicleManagement.Car;
 import vehicleManagement.Truck;
 
+/**
+ * Calculates prices for rentals, insurances, and sale
+ * @author Robin
+ *
+ */
 public class PaymentManager {
 
 	private BigDecimal tax;
@@ -26,12 +31,15 @@ public class PaymentManager {
 	private DatabaseManager db;
 	private AccountManager am;
 	private DateFormat dateFormat;
+	private static final int PRICE_ROW_SIZE = 3;
+	private static final int MONTH_DAYS = 28;
+	private static final int WEEK_DAYS = 7;
 	
-/**
- * A payment Manager that creates and holds a list of receipts. 
- * The payment Manager is responsible for the money flow of the system. 	
- * @throws SQLException 
- */
+	/**
+	 * A payment Manager that creates and holds a list of receipts. 
+	 * The payment Manager is responsible for the money flow of the system. 	
+	 * @throws SQLException 
+	 */
 	public PaymentManager(){
 		tax = new BigDecimal("0.07");
 		db = DatabaseManager.getInstance();
@@ -53,21 +61,6 @@ public class PaymentManager {
 		//return receipt;
 		return null;
 	}
-/**
- * Gets the Number of Receipts in the Array.
- * @return
- */
-/*	public int getNumReceipts() {
-		return numReceipts;
-	}*/
-
-/**
- * Sets the number of Receipts in the Array
- * @param numReceipts
- */
-/*	public void setNumReceipts(int numReceipts) {
-		this.numReceipts = numReceipts;
-	}*/
 	
 	/**
 	 * Get a diff between two dates
@@ -76,179 +69,173 @@ public class PaymentManager {
 	 * @param timeUnit the unit in which you want the diff
 	 * @return the diff value, in the provided unit
 	 */
-	public long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+	private long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
 	    long diffInMillies = date2.getTime() - date1.getTime();
 	    return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
 	}
-	
+
+	/**
+	 * Calculate price for rental searches
+	 * @param type class of vehicle or equipments
+	 * @param rate_type index of rate 
+	 * @return calculated price 
+	 * @throws ParseException
+	 * @throws SQLException
+	 * @throws IllegalArgumentException
+	 */
+	public BigDecimal calculatePrice(String type, int rate_type) throws ParseException, SQLException, IllegalArgumentException{
+		
+		BigDecimal[] priceRow;
+		//check if the argument is of type car
+		if (isLegalCarClass(type)){
+			priceRow = getPriceCar(type);			
+		}
+		//or of type truck
+		else if (isLegalTruckClass(type)){
+			priceRow = getPriceTruck(type);					
+		}
+		else if (isLegalEquipmentClass(type)){
+			priceRow = getPriceEquipment(type);
+		}
+		else {
+			throw new IllegalArgumentException("The type "+type+" is not valid.");
+		}
+		return priceRow[rate_type];
+		
+	}
 	
 	/**
-	 * Calculates the final price of the transaction
-	 * @param vehicleType
-	 * @param insurance
-	 * @return final_price
-	 * @throws SQLException 
+	 * Checks for the type of equipment
+	 * @param type
+	 * @return
 	 */
-	// format of date "yyyy-mm-dd hh:mm:ss"
-	public BigDecimal calculatePrice(String vehicleClass, String start_date, String end_date) throws ParseException, SQLException{
-		
-		Date startDate = dateFormat.parse(start_date);
-		
+	private boolean isLegalEquipmentClass(String type) {
+		// TODO Auto-generated method stub
+		if (type.equals("ski rack") || 
+			type.equals("child safety seat") ||
+			type.equals("lift gate") ||
+			type.equals("car-towning eq"))
+			return true;
+		return false;
+	}
+
+	/**
+	 * Checks for the type of truck
+	 * @param type
+	 * @return
+	 */
+	private boolean isLegalTruckClass(String type) {
+		// TODO Auto-generated method stub
+		if (type.equals("24-foot") || 
+			type.equals("15-foot") ||
+			type.equals("12-foot") ||
+			type.equals("box-truck"))
+			return true;
+		return false;
+	}
+
+	/**
+	 * Checks for the type of car
+	 * @param type
+	 * @return
+	 */
+	private boolean isLegalCarClass(String type) {
+		// TODO Auto-generated method stub
+		if (type.equals("economy") || 
+			type.equals("compact") ||
+			type.equals("midsized") ||
+			type.equals("standard") ||
+			type.equals("fullsized") ||
+			type.equals("premium") ||
+			type.equals("SUV") ||
+			type.equals("van") ||
+			type.equals("luxury"))
+			return true;
+		return false;
+	}
+	
+	/**
+	 * Get a row of rental price for car
+	 * @param type a type of car
+	 * @return the row of price for this type of car
+	 * @throws SQLException
+	 */
+	public BigDecimal[] getPriceCar(String type) throws SQLException{
+		if (!priceList.getIsSet("car")){
+			priceList.setCarPrice(db.getAllCarPrice());
+			priceList.setIsSet("car");
+		}
+		return priceList.getCarPrice(type);
+	}
+	
+	/**
+	 * Get a row of rental price for truck
+	 * @param type a type of truck
+	 * @return the row of price for this type of truck
+	 * @throws SQLException
+	 */
+	public BigDecimal[] getPriceTruck(String type) throws SQLException{
+		if (!priceList.getIsSet("truck")){
+			priceList.setTruckPrice(db.getAllTruckPrice());
+			priceList.setIsSet("truck");
+		}
+		return priceList.getTruckPrice(type);
+	}
+	
+	/**
+	 * Get a row of rental price for equipment
+	 * @param type a type of equipment
+	 * @return the row of price for this type of equipment
+	 * @throws SQLException
+	 */
+	public BigDecimal[] getPriceEquipment(String type) throws SQLException{
+		if (!priceList.getIsSet("equipment")){
+			priceList.setTruckPrice(db.getAllEquipmentPrice());
+			priceList.setIsSet("equipment");
+		}
+		return priceList.getEquipmentPrice(type);
+	}
+
+	/**
+	 * Compares the dates and returns rate type
+	 * >1 month => month; >1 week => week; >1 day => day; >1 hour => hour;
+	 * @param start_date
+	 * @param end_date
+	 * @param type : vehicle or equipment or insurance
+	 * @return
+	 * @throws ParseException 
+	 */
+	public int compareDates(String start_date, String end_date, String type) throws ParseException {
+		// TODO Auto-generated method stub
+		int rate_type;
+		Date startDate = dateFormat.parse(start_date);		
 		Date endDate = dateFormat.parse(end_date);
 		
-		BigDecimal total;
-		
 		long daysDuration = getDateDiff(startDate,endDate,TimeUnit.DAYS);
-		long hoursDuration = getDateDiff(startDate,endDate,TimeUnit.HOURS);
-		BigDecimal days = new BigDecimal(daysDuration);
-		BigDecimal hours = new BigDecimal(hoursDuration);
-		hours = hours.remainder(new BigDecimal(24));
 		
-		BigDecimal weekPrice = BigDecimal.ZERO;
-		BigDecimal dayPrice = BigDecimal.ZERO;
-		BigDecimal hourPrice = BigDecimal.ZERO;
-		
-		//weekly rates
-		switch(vehicleClass){
-			case "economy":
-				weekPrice = priceList.getPriceCar(0, 2); 
-				dayPrice = priceList.getPriceCar(0, 1); 
-				hourPrice = priceList.getPriceCar(0, 0); break;
-			case "compact":
-				//System.out.println("im inside compact");
-				weekPrice = priceList.getPriceCar(1, 2); 
-				dayPrice = priceList.getPriceCar(1, 1); 
-				hourPrice = priceList.getPriceCar(1, 0); 
-				
-				//System.out.println(dayPrice + " " + weekPrice + " " + hourPrice);
-				break;
-			case "midsized":
-				weekPrice = priceList.getPriceCar(2, 2); 
-				dayPrice = priceList.getPriceCar(2, 1); 
-				hourPrice = priceList.getPriceCar(2, 0); break;
-			case "standard":
-				weekPrice = priceList.getPriceCar(3, 2);
-				dayPrice = priceList.getPriceCar(3, 1); 
-				hourPrice = priceList.getPriceCar(3, 0); break;
-			case "fullsized":
-				weekPrice = priceList.getPriceCar(4, 2); 
-				dayPrice = priceList.getPriceCar(4, 1); 
-				hourPrice = priceList.getPriceCar(4, 0); break;
-			case "premium":
-				weekPrice = priceList.getPriceCar(5, 2); 
-				dayPrice = priceList.getPriceCar(5, 1); 
-				hourPrice = priceList.getPriceCar(5, 0); break;
-			case "luxury":
-				weekPrice = priceList.getPriceCar(6, 2); 
-				dayPrice = priceList.getPriceCar(6, 1);
-				hourPrice = priceList.getPriceCar(6, 0); break;
-			case "SUV":
-				weekPrice = priceList.getPriceCar(7, 2); 
-				dayPrice = priceList.getPriceCar(7, 1); 
-				hourPrice = priceList.getPriceCar(7, 0); break;
-			case "van":
-				weekPrice = priceList.getPriceCar(8, 2);
-				dayPrice = priceList.getPriceCar(8, 1); 
-				hourPrice = priceList.getPriceCar(8, 0); break;
-			case "24-foot":
-				weekPrice = priceList.getPriceCar(0, 2); 
-				dayPrice = priceList.getPriceCar(0, 1); 
-				hourPrice = priceList.getPriceCar(0, 0); break;
-			case "15-foot":
-				weekPrice = priceList.getPriceCar(1, 2); 
-				dayPrice = priceList.getPriceCar(1, 1); 
-				hourPrice = priceList.getPriceCar(1, 0); break;
-			case "12-foot":
-				weekPrice = priceList.getPriceCar(2, 2); 
-				dayPrice = priceList.getPriceCar(2, 1); 
-				hourPrice = priceList.getPriceCar(2, 0); break;
-			case "box-truck":
-				weekPrice = priceList.getPriceCar(3, 2);
-				dayPrice = priceList.getPriceCar(3, 1); 
-				hourPrice = priceList.getPriceCar(3, 0); break;
-			}
-		 
-		total = days.divide(new BigDecimal(7),0, RoundingMode.DOWN).multiply(weekPrice);
-		total = total.add(days.remainder(new BigDecimal(7)).multiply(dayPrice));
-		total = total.add(hours.multiply(hourPrice));
-		
-		//System.out.println("total is: " + total);
-		return total;
-		
+		if (daysDuration > MONTH_DAYS && type.equals("vehicle")){
+			rate_type = 3; //perMonth
+		}
+		else if (daysDuration > WEEK_DAYS){
+			rate_type = 2; //perWeek
+		}
+		else if (daysDuration > 1){
+			rate_type = 1; //perDay
+		}
+		else{
+			rate_type = 0; //perHour
+		}
+		return rate_type;
 	}
 	
-	public BigDecimal calculateLateprice(int reservID) throws ParseException, SQLException{
-		
-		// Create an instance of SimpleDateFormat used for formatting 
-		// the string representation of date (month/day/year)
-		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-
-		// Get the date today using Calendar object.
-		Date today = Calendar.getInstance().getTime();        
-		// Using DateFormat format method we can create a string 
-		// representation of a date with the defined format.
-		String reportDate = df.format(today);
-		
-		String reservEndDate = db.getReservationEndDate(reservID);
-		int reservVehicle = db.getReservationVehicleID(reservID);
-	
-			
-		return calculatePrice(db.getTypeOfVehicle(reservVehicle),reservEndDate,reportDate);
-	}
-	
-	public int moneyToPoints(BigDecimal money)
-	{
-		return 0;
-	}
-
-	/**
-	 * I don't think this should be static 
-	 * @param reservID
-	 * @throws SQLException 
-	 */
-	
-	//don't want static! 
-public void makePayment(Account a, BigDecimal price) throws SQLException {
-	// TODO Auto-generated method stub
-	// should create a receipt for the payment and pass it to interface to show user.
-	// should prompt interface to try again if payment fails.
-	boolean payment = false;
-	
-	while(payment == false)
-	{
-		
-	}
-	
-	if(a instanceof SuperCustomer)
-	{
-		am.accumulatePoints(a.getLoginId(), am.moneyToPoints(price));
-	}
-}
-
-	public BigDecimal calculateRentprice(int reservID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public BigDecimal getPriceCar(String type){
-		return db.getPriceRow(type, "car_price");
-	}
-	
-	public BigDecimal getPriceTruck(String type){
-		return db.getPriceRow(type, "truck_price");
-	}
-	
-	public BigDecimal getPriceEquipment(String type){
-		return db.getPriceRow(type, "equipment_price");
-	}
-	
-	public BigDecimal getPriceCarInsurance(String type){
+	/*
+	public BigDecimal[] getPriceCarInsurance(String type){
 		return db.getPriceRow(type, "insurance_car_price");
 	}
 	
-	public BigDecimal getPriceTruckInsurance(String type){
+	public BigDecimal[] getPriceTruckInsurance(String type){
 		return db.getPriceRow(type, "insurance_truck_price");
-	}
+	}*/
 	
 	
 }

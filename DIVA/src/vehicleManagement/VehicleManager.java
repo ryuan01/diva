@@ -52,7 +52,9 @@ public class VehicleManager {
 			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
 		}
 		//update their prices
-		updatePrice(vlist,type,start_date,end_date);
+		//first calculate the difference between dates.
+		int rate_type = pm.compareDates(start_date, end_date, "vehicle");
+		updatePrice(vlist,type,rate_type);
 		return vlist;
 	}
 	
@@ -66,11 +68,11 @@ public class VehicleManager {
 	 * @throws ParseException 
 	 * @throws SQLException 
 	 */
-	private void updatePrice(Vehicle[] vlist, String type, String start_date, String end_date) throws IllegalArgumentException, ParseException, SQLException{
+	private void updatePrice(Vehicle[] vlist, String type, int rate_type) throws IllegalArgumentException, ParseException, SQLException{
 		// TODO Auto-generated method stub
 		for (int i=0; i< vlist.length; i++){
 			//System.out.printf("inputs in udatePrice: %s %s %s\n", ((Car) vlist[i]).getCarClass(), start_date, end_date);
-			BigDecimal n = pm.calculatePrice(vlist[i].getVehicleClass(), start_date, end_date);
+			BigDecimal n = pm.calculatePrice(vlist[i].getVehicleClass(), rate_type);
 			//System.out.println("price is : " + n);
 			vlist[i].setPrice(n);
 		}

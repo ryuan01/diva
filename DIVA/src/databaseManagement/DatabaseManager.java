@@ -427,7 +427,7 @@ public class DatabaseManager {
 		accDB.modifyPassword(userName, newPassword);
 	}
 
-/*---------------------------------------Used By vehicle manager------------------------------*/
+/*---------------------------------------Used By vehicleDB------------------------------*/
 	/**
 	 * Update vehicle's owning branch
 	 * @pre vehicle is always assumed to be at its owning branch
@@ -479,68 +479,6 @@ public class DatabaseManager {
 			throw new IllegalArgumentException("addVehicle only takes vehicle of type Car or Truck");
 		}
 	}
-	
-/* --------------------------------------USED BY PAYMENT MANAGER--------------------------------------*/
-	
-	// returns BigDecimal[9][5]
-	public BigDecimal[][] getCarPriceList() throws SQLException
-	{
-		return prDB.getCarPriceList();
-	}
-
-	// returns BigDecimal[4][5]
-	public BigDecimal[][] getTruckPriceList() throws SQLException
-	{
-		return prDB.getTruckPriceList();
-	}
-
-	// returns BigDecimal[4][3]
-	public BigDecimal[][] getEquipmentPriceList() throws SQLException
-	{
-		return prDB.getEquipmentPriceList();
-	}
-	
-	// returns BigDecimal[9][3]
-	public BigDecimal[][] getCarInsurancePriceList() throws SQLException
-	{
-		return prDB.getCarInsurancePriceList();
-	}
-	
-	// returns BigDecimal[3][9]
-	public BigDecimal[][] getTruckInsurancePriceList() throws SQLException
-	{
-		return prDB.getTruckInsurancePriceList();
-	}
-	
-	// sets BigDecimal[5][9]
-	public boolean setCarPriceList(BigDecimal[][] a)
-	{
-		return true;
-	}
-
-	// sets BigDecimal[5][4]
-	public boolean setTruckPriceList(BigDecimal[][] a)
-	{
-		return true;
-	}
-
-	// sets BigDecimal[3][4]
-	public boolean setEquipmentPriceList(BigDecimal[][] a)
-	{
-		return true;
-	}
-	
-	// sets BigDecimal[3][9]
-	public boolean setCarInsurancePriceList(BigDecimal[][] a)
-	{
-		return true;
-	}
-	
-	// sets BigDecimal[3][9]
-	public boolean setTruckInsurancePriceList(BigDecimal[][] a)
-	{
-		return true;
-	}
 
 	/**
 	 * Remove vehicle from database 
@@ -559,5 +497,31 @@ public class DatabaseManager {
 		else {
 			throw new IllegalArgumentException("Vehicle can only be of 'car' or 'truck");
 		}
+	}
+	
+/* --------------------------------------PriceDB--------------------------------------*/
+	
+	/**
+	 * Returns a row of price according to row name and table name 
+	 * @param type row name in specific table
+	 * @param table_name table name in database
+	 * @return row of prices (perHour, perDay, perWeek)
+	 * @throws SQLException 
+	 */
+	public BigDecimal[] getPriceRow(String type, String table_name) throws SQLException {
+		// TODO Auto-generated method stub
+		return prDB.getPriceRow(type,table_name);
+	}
+	
+	public BigDecimal[][] getAllCarPrice() throws SQLException{
+		return prDB.getCarPriceList();
+	}
+	
+	public BigDecimal[][] getAllTruckPrice() throws SQLException{
+		return prDB.getTruckPriceList();
+	}
+	
+	public BigDecimal[][] getAllEquipmentPrice() throws SQLException{
+		return prDB.getEquipmentPriceList();
 	}
 }
