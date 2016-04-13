@@ -90,8 +90,9 @@ public class Customer extends Account implements ArrayOfStringsable{
 	}
 	
 	/**
-	 * Overrides toString() method
+	 * Turns the data assosiated with this object into a JSON String
 	 */
+	@Override
 	public String toString(){
 		return "{'id':'"+ this.getID() +"', 'fisrtName':'"+this.getFirstname()
 				+"','lastname':'"+this.getLastname()+"',"+"'phoneNumber':'"+this.getPhoneNumber()

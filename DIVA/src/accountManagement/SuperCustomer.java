@@ -50,7 +50,7 @@ public class SuperCustomer extends Customer implements ArrayOfStringsable{
 				+"','lastname':'"+this.getLastname()+"',"+"'phoneNumber;':'"+this.getPhoneNumber()
 				+"','email':'"+this.getEmail()+"','status':'"+this.getLoginId()
 				+"','objectClass':'"+this.getObjectClass()+"', 'standing':'"+this.getStanding()
-				+"','cc_num':'"+this.getCc_num()+"', 'name_on_card':'"+this.getName_on_card()
+				+"','name_on_card':'"+this.getName_on_card()
 				+"','street_name':'"+super.getLocation().getAddress()+"', 'city':'"+super.getLocation().getCity()
 				+"','province':'"+super.getLocation().getProvince()+"', 'zip':'"+super.getLocation().getZipcode()
 				+"','points':'"+this.points

@@ -77,4 +77,12 @@ public class Rental {
 	public Reservation getRentalReservation(){
 		return res;
 	}
+	
+	@Override
+	public String toString() {
+				
+		//passing back dates in the format dd-mm-yyyy as Strings.
+		return "{'is_paid_rental':'"+ this.is_paid_rental +"', 'is_paid_extra_charge':'"+this.is_paid_extra_charge+"',"
+			+ "'reservationID':'"+this.res.getID()+"'}";
+	}
 }

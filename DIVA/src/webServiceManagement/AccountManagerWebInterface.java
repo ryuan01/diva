@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 
 import accountManagement.*;
 
@@ -534,5 +536,73 @@ public class AccountManagerWebInterface {
 												
 		//return response string
 		return responseString;
+	}
+	
+	/**
+	 * Returns the userName from the session context rather than the database
+	 * @return The userName assosiated with the context in which this method was invoked
+	 */
+	@WebMethod
+	public String getContextUserName() {
+		
+		//Set responseString to the calling users userName
+		String responseString = context.getUserPrincipal().getName();
+		
+		//If the calling users has a null userName, set responseString to an Error message
+		if (responseString == null) {
+			responseString = "Exception - The user does not have a sessionID";
+		}
+		
+		//return responseString
+		return responseString;
+	}
+
+	/**
+	 * Returns the group that the user belongs to
+	 * @return the users authorizationID (customer, supercustomer, clerk, manager or admin)
+	 */
+	@WebMethod
+	public String getContextGroupID() {
+		
+		//Set responseString to hold the users groupID
+		String responseString;
+		
+		if (context.isUserInRole("customer")) {
+			responseString="customer";
+		}
+		else if (context.isUserInRole("supercustomer")) {
+			responseString="supercustomer";
+		}
+		else if (context.isUserInRole("clerk")) {
+			responseString="clerk";
+		}
+		else if (context.isUserInRole("manager")) {
+			responseString="manager";
+		}
+		else if (context.isUserInRole("admin")) {
+			responseString="admin";
+		}
+		else {
+			responseString="Exception - User is not in any acceptable role";
+		}
+		//Return the response String
+		return responseString;
+	}
+	
+	/**
+	 * The method invalidates the session associated with the calling user, effectively 'logging'
+	 * them out of their current login session.
+	 */
+	@WebMethod
+	public void logout() {
+		
+		//Get the MessageConext
+		MessageContext mc = context.getMessageContext();
+		
+		//Get the session object associated with the calling user
+		HttpSession session = ((javax.servlet.http.HttpServletRequest)mc.get(MessageContext.SERVLET_REQUEST)).getSession();
+		
+		//Invalidate the calling users current session - Effectively 'logging' the user out
+		session.invalidate();
 	}
 }

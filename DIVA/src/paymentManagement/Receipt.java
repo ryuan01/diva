@@ -85,8 +85,8 @@ public class Receipt implements ArrayOfStringsable{
 	
 	public String toString() {
 		return "{'receiptId':'"+ this.receiptId +"', 'price':'"+this.price+"',"
-			+	"'vehicle_rented':'"+this.vehicle_rented+"',"+"'start_Date':'"+this.startDate+"','end_Date':'"+this.endDate+ "',pickUp_branch':'" + this.pickup_branch
-			+"',dropOff_branch':'" + this.dropoff_branch + "'}";
+			+	"'vehicle_rented':'"+this.vehicle_rented+"',"+"'start_Date':'"+this.startDate+"','end_Date':'"+this.endDate+ "','pickUp_branch':'" + this.pickup_branch
+			+"','dropOff_branch':'" + this.dropoff_branch + "'}";
 	}	
 	
 }

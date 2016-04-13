@@ -119,6 +119,7 @@ for when the customer comes in the store to pick up a reservation.
 	1. create a rental
 	2. create inspection report 
 	3. pay for rental 
+	0. create insurance price. 
 	4. driveAwayCar ( ) <-- set is_paid_rental = true*/
 	/**
 	 * Begins the Rental.

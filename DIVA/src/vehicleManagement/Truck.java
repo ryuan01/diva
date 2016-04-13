@@ -9,7 +9,6 @@ import webServiceManagement.ArrayOfStringsable;
  * A Truck Class which represents the type of a Vehicle.
  *
  */
-
 public class Truck extends Vehicle implements ArrayOfStringsable{
 
 	private String truck_class;

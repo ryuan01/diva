@@ -165,4 +165,16 @@ public class AccidentReport{
 	public void setAmount(BigDecimal amount){
 		this.amount = amount;
 	}
+	
+	@Override
+	public String toString() {
+				
+		//passing back dates in the format dd-mm-yyyy as Strings.
+		return "{'report_id':'"+ this.report_id +"', 'clerkID':'"+this.clerkID+"',"
+			+	"'accident_date':'"+this.accident_date+"',"+"'description':'"+description+"',"
+			+ "'rentalID':'"+this.rentalID+"',"+"'address':'"+this.location.getAddress()+"',"
+			+ "'city':'"+this.location.getCity()+"',"+"'province':'"+this.location.getProvince()+"',"
+			+ "'driver':'"+this.driver+"','zip':'"+this.location.getZipcode()+"',"
+			+ "'amount':'"+this.amount+"'}";
+	}
 }

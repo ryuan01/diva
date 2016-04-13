@@ -145,4 +145,15 @@ public class Report implements ArrayOfStringsable{
 	public int getMilage(){
 		return milage;
 	}
+	
+	@Override
+	public String toString() {
+				
+		//passing back dates in the format dd-mm-yyyy as Strings.
+		return "{'objectClass':'"+this.objectClass+"',"
+			+	"'report_num':'"+this.report_num+"',"+"'report_clerk_id':'"+report_clerk_id+"',"
+			+ "'reportDate':'"+this.reportDate+"',"+"'reportDescription:'"+this.reportDescription+"',"
+			+ "'reportRentalID':'"+this.reportRentalID+"',"+"'milage':'"+this.milage+"',"
+			+ "'gasLevel':'"+this.gasLevel+"'}";
+	}
 }

@@ -1,23 +1,14 @@
 package paymentManagement;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.text.ParseException;
-
-import accountManagement.Account;
 import accountManagement.AccountManager;
-import accountManagement.SuperCustomer;
 import databaseManagement.DatabaseManager;
-import vehicleManagement.Equipment;
-import vehicleManagement.Vehicle;
-import vehicleManagement.Car;
-import vehicleManagement.Truck;
 
 /**
  * Calculates prices for rentals, insurances, and sale
