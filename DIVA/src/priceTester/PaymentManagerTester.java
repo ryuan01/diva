@@ -29,7 +29,7 @@ public class PaymentManagerTester {
 		DatabaseManager db = DatabaseManager.getInstance();
 		PriceList list = new PriceList();
 		list.print();
-		System.out.println(list.getPriceCar(1, 2));
+		//System.out.println(list.getPriceCar(1, 2));
 		
 		String start_date = ("2016-04-28 12:20:40");
 		String end_date = ("2016-04-29 10:20:40");

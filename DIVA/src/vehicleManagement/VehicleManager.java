@@ -184,4 +184,7 @@ public class VehicleManager {
 	public void changeVehicleBranch(int v, int b) throws SQLException{
 		db.updateVehicleLocation(v, b);
 	}
+	
+	//---- equipment
+	//search equipment based on vehicle types, a branch is also a factor 
 }

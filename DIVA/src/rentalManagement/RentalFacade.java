@@ -22,6 +22,16 @@ public class RentalFacade {
 		returnMan = new ReturnManager();
 	}
 	
+	//---------------------------reservation related-------------------------------------
+	
+//	1. search for a vehicle
+//	2. returning branch
+//	3. search for additional equipments
+//	5. calculate price for insurance based on parameters
+//	4. calculate price for vehicle + equipments+optional insurance
+//	5. create reservation (add boolean insurance)
+	
+	
 	/**
 	 * Creates a Reservation with a date, vehicle, list of equipments, starting branch, ending branch, customer, employee, status, and reservation ID.
 	 * @param startD Starting Date of the Reservation.
@@ -114,13 +124,15 @@ public class RentalFacade {
 	}
 	*/
 	
-	/*
+	//---------------------------rental related-------------------------------------	
+/*
 for when the customer comes in the store to pick up a reservation.
-	1. create a rental
-	2. create inspection report 
+	1. get customer account
+	2. get reservation
+	3. create inspection report (change in DB to refer to reservation instead) Robin needs to change that
 	3. pay for rental 
-	0. create insurance price. 
-	4. driveAwayCar ( ) <-- set is_paid_rental = true*/
+	4. create rental <-- set is_paid_rental = true
+*/
 	/**
 	 * Begins the Rental.
 	 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
@@ -128,8 +140,8 @@ for when the customer comes in the store to pick up a reservation.
 	 */
 	public void createRental(int clerkID, int reservationID) throws SQLException
 	{
-		//it is assumed that the start_date and end_date are the same as reservation.
-		rentMan.createRental(reservationID, clerkID, false, false);
+		//sammy will implement this properly 
+		rentMan.createRental(reservationID, clerkID, true, false);
 	}
 	/**
 	 * Create an inspection report before Rental
@@ -146,6 +158,7 @@ for when the customer comes in the store to pick up a reservation.
 	}
 		
 	public void payForRental(int rental_id, BigDecimal amount) throws SQLException{
+		//not done Robin
 		Account account_id = rentMan.getAccountForRental(rental_id);
 		rentMan.payForRental(account_id, rental_id, amount);
 	}
@@ -156,16 +169,18 @@ for when the customer comes in the store to pick up a reservation.
 	 * @return
 	 */
 	public boolean readyToLeaveWithVehicle(int rental_id){
+		//not done Sammy
 		return rentMan.readyToLeave(rental_id);
 	}
 	
-	/*for when the customer returns a vehicle
-	0. check for overdue (add to amount owning : property of the rental )
-	1. check for returning branch (add to amount)
-	2. create after rental inspection report (milage, gas tank level (liters))
-	3. create accident report (create an accident report) (add extra amount owning)
-	3. pay for extra charge () <-- set is_paid_extra_charge = true 
-	*/
+//---------------------------return related-------------------------------------
+/*for when the customer returns a vehicle
+0. check for overdue (add to amount owning : property of the rental )
+1. check for returning branch (add to amount)
+2. create after rental inspection report (milage, gas tank level (liters))
+3. create accident report (create an accident report) (add extra amount owning)
+3. pay for extra charge () <-- set is_paid_extra_charge = true 
+*/
 	/**
 	 * Checks for overdue, add to owning amount if late
 	 * @param rental_id
