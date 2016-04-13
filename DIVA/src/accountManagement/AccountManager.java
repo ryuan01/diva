@@ -63,9 +63,9 @@ public class AccountManager {
 		dbConnection.createAccountEntry(acc);
 	}
 	
-	public void modifyAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
-		dbConnection.modifyAccountEntry(firstName, lastName, phoneNumber, emailAddress, userName, status);
-	}
+//	public void modifyAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String status) {
+//		dbConnection.modifyAccountEntry(firstName, lastName, phoneNumber, emailAddress, userName, status);
+//	}
 	
 	/**
 	 * Changes the customer from a regular customer to a Super Club Member

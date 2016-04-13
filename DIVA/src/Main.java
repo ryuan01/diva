@@ -1,5 +1,6 @@
 import java.sql.SQLException;
 
+import accountManagement.Account;
 import accountManagement.AccountManager;
 
 public class Main {
@@ -14,8 +15,14 @@ public class Main {
 		
 		try {
 			//acm.joinSuperClub("mjane01");
-			System.out.println(acm.getPassword("jdoe01"));
-			//System.out.println("hellooooooo");
+			//acm.changePassword("jjohn00", null); 
+			Account[] accs = acm.searchAccountByLastName("Johnson");
+			for(Account acc : accs){
+				System.out.println(acc.getFirstname());
+			}
+//			acm.addCustomerAccount("sammy", "Al", "775555666", "Sammy@live", "sam", "123123124",
+//					12341412345l, "SAMMY", "1243 new york St", "Vanoucver", "BC", "1w23e4");
+			
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block 

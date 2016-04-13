@@ -104,17 +104,17 @@ public class PaymentManager {
 	 */
 	
 	//don't want static! 
-public static void makePayment(Account a, BigDecimal price) {
+public void makePayment(Account a, BigDecimal price) {
 	// TODO Auto-generated method stub
 	// should create a receipt for the payment and pass it to interface to show user.
 	// should prompt interface to try again if payment fails.
 	if(a instanceof SuperCustomer)
 	{
-		AccountManager.accumulatePoints(a.getID(), PaymentManager.moneyToPoints(price));
+		AccountManager.accumulatePoints(a.getLoginId(), PaymentManager.moneyToPoints(price));
 	}
 }
 
-	public static BigDecimal calculateRentprice(int reservID) {
+	public BigDecimal calculateRentprice(int reservID) {
 		// TODO Auto-generated method stub
 		return null;
 	}
