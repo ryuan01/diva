@@ -18,8 +18,8 @@ public class VehicleManagerTest {
 	private static VehicleManager vm = new VehicleManager();
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//test_search_overdue();
-		test_search();
+		test_search_overdue();
+		//test_search();
 		//test_add_vehicle();
 		
 	}
@@ -62,8 +62,8 @@ public class VehicleManagerTest {
 	private static void test_search_overdue() {
 		// TODO Auto-generated method stub
 		try {
-			//Car[] a = (Car[]) vm.searchForOverdue(2, "car");
-			Truck[] a = (Truck[])vm.searchForOverdue(2, "truck");
+			Car[] a = (Car[]) vm.searchForOverdue(2, "car");
+			//Truck[] a = (Truck[])vm.searchForOverdue(2, "truck");
 			for (int i=0; i< a.length; i++){
 				System.out.println(a[i].toString());
 			}

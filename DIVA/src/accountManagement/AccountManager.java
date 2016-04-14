@@ -120,8 +120,8 @@ public class AccountManager {
 		return dbConnection.searchAccountEntries(lastName);
 	}
 	
-	public Account[] searchAccountByUsername(String username) throws SQLException{
-		return dbConnection.searchAccountEntries(username);
+	public Account searchAccountByUsername(String username) throws SQLException{
+		return dbConnection.searchAccountEntries(username)[0];
 	}
 	
 	public Account[] searchAccountByPhoneNumber(String phoneNum) throws SQLException{
