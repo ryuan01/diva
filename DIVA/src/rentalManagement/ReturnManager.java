@@ -13,12 +13,14 @@ class ReturnManager {
 
 	private DatabaseManager dbConnection;
 	private java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+	private PaymentManager paymentManager;
 	/**
 	 * A Manager that creates Reports and Receipts for an ending Rental.
 	 */
 	ReturnManager()
 	{
 		dbConnection = DatabaseManager.getInstance();
+		paymentManager = new PaymentManager();
 	}
 	
 	/**
@@ -87,6 +89,11 @@ class ReturnManager {
 	}
 
 	BigDecimal addOverdueExtraCharge(int rental_id, String current_date) {
+		// dbm --> rentalDB.getReturnDate
+		// balance = paymentManager.getOverduePrice(start_date, current_date)
+		// dbm --> rentalDB.addToBalance(rental_id, balance)
+		// dbm --> rentalDB.setIsPaidExtraCharge(false);
+		// return balance
 		return null;
 		// TODO Auto-generated method stub
 		

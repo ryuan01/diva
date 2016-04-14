@@ -35,7 +35,7 @@ class AccountDB{
 	 * @post isValidAccount(loginId);
 	 * @throws SQLException
 	 */
-	public void createCustomer(Customer customer) throws SQLException{
+	void createCustomer(Customer customer) throws SQLException{
 		// Account variables
 		String userName = customer.getLoginId();
 		String password;

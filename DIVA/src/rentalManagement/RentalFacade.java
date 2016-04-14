@@ -97,22 +97,16 @@ public class RentalFacade {
 	}
 	
 	
-	
-	/**
-	 * Modifies the Reservation based on id passed.
-	 * @param reservID Reservation ID of Reservation to be modified.
-	 * @param id Type of modification of Reservation, can be vehicleID, branchID, reservationID, customerID, employeeID, equipID, reservStatus.
-	 * If existing equipID is passed, then it is removed, if a non-existing equipID is passed, then it is added.
-	 * @pre Only Reservation Account owner or Employee calls this method.
-	 */
-	/* Robin: not currently a use-case, maybe added later
-	public boolean modReservation(int reservID, String startDate,String endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, int employeeID, String status)
-	{
-		return reservMan.changeReservation(reservID, startDate,endDate, vehicleID, equipIDs, startBranchID, endBranchID, 
-				customerID, employeeID, status);
+	public void changeRentalStatus(int rentalID, boolean status){
+		// RentManager --> databasemangaer --> rentalDB
+		
 	}
-	*/
+	
+	public Rental[] searchForRental(int rentalID){
+		// call RentManager.searchForRental --> DatabaseManager --> RentalDB
+		
+		return null;
+	}
 	
 	/*
 for when the customer comes in the store to pick up a reservation.
@@ -127,6 +121,16 @@ for when the customer comes in the store to pick up a reservation.
 	 */
 	public void createRental(int clerkID, int reservationID) throws SQLException
 	{
+		/*
+		 * 1. check if the rental is paid (balance = 0)
+		 * 		1.2 DatabaseManager.checkReservationBalance(reservationID)
+		 *  	1.2 if true, rentMan.createRental(reservationID, clerkID, true, false);
+		 *  	1.4 if false, rentMan.createRental(reservationID, clerkID, false, false);
+		 *  		---> two more methods to
+		 *  				DatabaseManager.searchFoRental(rentalID)
+		 *  				DatabaseManager.changeRentalStatus(rentalID, boolean isPaid)
+		 */
+
 		//it is assumed that the start_date and end_date are the same as reservation.
 		rentMan.createRental(reservationID, clerkID, false, false);
 	}
@@ -155,6 +159,7 @@ for when the customer comes in the store to pick up a reservation.
 	 * @return
 	 */
 	public boolean readyToLeaveWithVehicle(int rental_id){
+		// check if you can leave or not
 		return rentMan.readyToLeave(rental_id);
 	}
 	
@@ -176,6 +181,7 @@ for when the customer comes in the store to pick up a reservation.
 		BigDecimal amountOwning = new BigDecimal("0");
 		if (returnMan.checkIfOverdue(rental_id)){
 			String current_date = df.format(new java.util.Date());
+			// everything works, except this method
 			amountOwning = returnMan.addOverdueExtraCharge(rental_id, current_date);
 		}
 		return amountOwning;

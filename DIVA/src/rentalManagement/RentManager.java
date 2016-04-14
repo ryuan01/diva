@@ -82,6 +82,10 @@ class RentManager {
 		 * @return 
 		 */
 		boolean readyToLeave(int rental_id) {
+			/* 1- check db for isPaidRental (1 == I can leave, 0 == can't leave :( )
+			 *  
+			 */	
+			
 			return false;
 			// TODO Auto-generated method stub
 			

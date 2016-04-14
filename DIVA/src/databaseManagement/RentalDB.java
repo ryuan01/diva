@@ -378,16 +378,15 @@ class RentalDB {
 		// TODO Auto-generated method stub
 	}
 	
-	/**
-	 * 
-	 * @param r
-	 */
-	// not understanding what this is for
-	/*
-	public void createTransaction(Receipt r){
+
+	boolean checkReservationBalance(int reservation_id){
+		// connect to database, check balance in `reservation` table
+		// if 0, then true, otherwise false
 		
-	}*/
-	
-	
+		
+		return false;
+	}
 
 }
+
+

@@ -176,22 +176,13 @@ public class DatabaseManager {
 		reDB.removeReservation(reservID);
 	}
 
-	// can be implemented, changes status of reservation only.
-	// doesn't have a status as of now, maybe implemented later
-	/*
-	public void changeReservationStatus(int reservID, String string) {
-		// TODO Auto-generated method stub
-		
-	}*/
-
-	// updated signature
-	// maybe hard to do because of how we track reserved dates
-	// for version 2.0 maybe
-	/*
-	public void modifyReservationEntries(int reservID, String startDate,String endDate, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, int employeeID, String status) {
-		// TODO Auto-generated method stub
-	}*/
+	/**
+	 * 
+	 */
+	public boolean checkReservationBalance(int reservation_id){
+		return reDB.checkReservationBalance(reservation_id);
+	}
+	
 	
 	/**
 	 * Search database for a reservation
