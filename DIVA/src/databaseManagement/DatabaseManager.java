@@ -152,6 +152,18 @@ public class DatabaseManager {
 	public void insertEquipment(int branch_id, String equipment_type) throws SQLException{
 		eqDB.addEquipment(branch_id, equipment_type);
 	}
+	
+	/**
+	 * Get the type of equipment according to its vehicle ID
+	 * @param equipment_id
+	 * @return
+	 * @throws SQLException
+	 */
+	public String getTypeOfEquipment(int equipment_id) throws SQLException
+	{
+		Equipment e = eqDB.search(equipment_id);
+		return e.getType();
+	}
    
 /*----------------------------------------RentalDB--------------------------------------------*/
 	/**

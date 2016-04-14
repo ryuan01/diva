@@ -22,6 +22,7 @@ import rentalManagement.Reservation;
  */
 public class PaymentManager {
 
+	private MathContext mc;
 	private BigDecimal tax;
 	private PriceList priceList;
 	private DatabaseManager db;
@@ -38,6 +39,7 @@ public class PaymentManager {
 	 * @throws SQLException 
 	 */
 	public PaymentManager(){
+		mc  = new MathContext(2);
 		tax = new BigDecimal("0.07");
 		db = DatabaseManager.getInstance();
 		priceList = new PriceList();
@@ -53,10 +55,9 @@ public class PaymentManager {
 	 * @param dropoff_location
 	 * @return receipt
 	 */
-	public Receipt create_new_Receipt(BigDecimal price, String vehicle_rented, String dropoff_location){
-		//Receipt receipt = new Receipt(numReceipts, price, dropoff_location, dropoff_location, dropoff_location);
-		//return receipt;
-		return null;
+	public Receipt create_new_Receipt(int customerID, String basicInfo, String paymentInfo){
+		Receipt receipt = new Receipt(-1,customerID,basicInfo,paymentInfo);
+		return receipt;
 	}
 	
 	/**
@@ -99,6 +100,69 @@ public class PaymentManager {
 		}
 		return priceRow[rate_type];
 		
+	}
+	
+	public BigDecimal calculateInsurancePrice(String type, int rate_type) throws ParseException, SQLException, IllegalArgumentException
+	{
+		BigDecimal[] priceRow;
+		if(isLegalCarClass(type))
+		{
+			priceRow = getPriceCarInsurance(type);
+		}
+		else if(isLegalTruckClass(type))
+		{
+			priceRow = getPriceTruckInsurance(type);
+		}
+		else
+		{
+			throw new IllegalArgumentException("The type "+type+"is not valid.");
+		}
+		return priceRow[rate_type];
+	}
+	
+	// Calculate total of reservation pre tax
+	public BigDecimal totalPreTax(Reservation reserv) throws ParseException, SQLException
+	{
+		String start_date = reserv.getStartingDate();
+		String end_date = reserv.getEndDate();
+		
+		// For Vehicle
+		// calculate rate_type
+		int vehicle_rate_type;
+		vehicle_rate_type = compareDates(start_date,end_date,"vehicle");
+		
+		// calculate vehicle_price
+		BigDecimal vehicle_price;
+		String vehicle_type = db.getTypeOfVehicle(reserv.getVehicleID());
+		vehicle_price = calculatePrice(vehicle_type,vehicle_rate_type);
+		
+		// calculate vehicle_insurance_price
+		BigDecimal vehicle_insurance_price;
+		vehicle_insurance_price = calculateInsurancePrice(vehicle_type,vehicle_rate_type);
+		
+		// For Equipment
+		// calculate rate_type
+		int equipment_rate_type;
+		equipment_rate_type = compareDates(start_date,end_date,"equipment");
+		
+		// calculate total equip_price
+		BigDecimal equip_price = BigDecimal.ZERO;
+		int[] equip_ids = reserv.getEquipments();
+		for(int i = 0; i < equip_ids.length; i++)
+		{
+			String equip_type = db.getTypeOfEquipment(equip_ids[i]);
+			equip_price = equip_price.add(calculatePrice(equip_type, equipment_rate_type),mc);
+		}
+		
+		// Adds Vehicle price, Vehicle insurance price, Total equipments price
+		BigDecimal total = vehicle_price.add(vehicle_insurance_price.add(equip_price, mc), mc);
+		return total;
+		
+	}
+	
+	public BigDecimal applyTax(BigDecimal price)
+	{
+		return price.multiply(tax, mc);
 	}
 	
 	/**
@@ -224,6 +288,7 @@ public class PaymentManager {
 		}
 		return rate_type;
 	}
+	
 
 	public Receipt makePaymentByCard(Reservation reservation, BigDecimal amount_paid) throws SQLException, IllegalArgumentException {
 		//steps: 1. pay by type (card), front-end made sure it is valid
@@ -231,9 +296,7 @@ public class PaymentManager {
 		//		 3. produce receipts
 		
 		//amount_paid cannot be more than amount_owning when paying by card
-		if (amount_paid.compareTo(new BigDecimal("0")) == -1 || amount_paid.compareTo(reservation.getBalance()) == 1 ){
-			throw new IllegalArgumentException("Cannot pay negative amount or pay more than amount owning when using credit card.");
-		}
+		 
 		
 		String payment_info = "";
 		String basic_info = "";
@@ -277,14 +340,21 @@ public class PaymentManager {
 		return Integer.valueOf(amount_paid.divide(CONVERSION_RATE,RoundingMode.FLOOR).intValue());
 	}
 	
-	/*
-	public BigDecimal[] getPriceCarInsurance(String type){
-		return db.getPriceRow(type, "insurance_car_price");
+	public BigDecimal[] getPriceCarInsurance(String type) throws SQLException{
+		if(!priceList.getIsSet("car_insurance")){
+			priceList.setTruckPrice(db.getAllTruckPrice());
+			priceList.setIsSet("car_insurance");
+		}
+		return priceList.getCarInsurancePrice(type);
 	}
 	
-	public BigDecimal[] getPriceTruckInsurance(String type){
-		return db.getPriceRow(type, "insurance_truck_price");
-	}*/
+	public BigDecimal[] getPriceTruckInsurance(String type)throws SQLException{
+		if(!priceList.getIsSet("truck_insurance")){
+			priceList.setTruckPrice(db.getAllTruckPrice());
+			priceList.setIsSet("truck_insurance");
+		}
+		return priceList.getTruckInsurancePrice(type);
+	}
 	
 	
 }

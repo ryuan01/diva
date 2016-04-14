@@ -66,7 +66,7 @@ public class PriceList {
 	
 	public BigDecimal[] getTruckPrice(String type){
 		int i = Arrays.asList(TRUCK_TYPE).indexOf(type);
-		return price_car[i];
+		return price_truck[i];
 	}
 	
 	public void setEquipmentPrice(BigDecimal[][] prices){
@@ -75,7 +75,17 @@ public class PriceList {
 	
 	public BigDecimal[] getEquipmentPrice(String type){
 		int i = Arrays.asList(EQUIPMENT_TYPE).indexOf(type);
-		return price_car[i];
+		return price_equipment[i];
+	}
+	
+	public BigDecimal[] getCarInsurancePrice(String type){
+		int i = Arrays.asList(CAR_TYPE).indexOf(type);
+		return price_car_insurance[i];
+	}
+	
+	public BigDecimal[] getTruckInsurancePrice(String type){
+		int i = Arrays.asList(TRUCK_TYPE).indexOf(type);
+		return price_truck_insurance[i];
 	}
 	
 	public void setIsSet(String type){
