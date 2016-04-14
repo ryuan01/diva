@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import accountManagement.Account;
 import databaseManagement.DatabaseManager;
 import paymentManagement.PaymentManager;
+import paymentManagement.Receipt;
 
 class RentManager {
 	
@@ -52,41 +53,35 @@ class RentManager {
 			Report r = new Report (clerk_id, date, description, rentalID, milage, gasLevel, -1);
 			dbConnection.addReport(r, status);
 		}
-
-		/**
-		 * Get account related to this rental_id
-		 * @param rental_id
-		 * @return
-		 * @throws SQLException 
-		 */
-		Account getAccountForRental(int rental_id) throws SQLException {
-			// TODO Auto-generated method stub
-			Account account_id = dbConnection.getReservationAccount(rental_id);
-			return account_id;
-		}
 		
 		/**
 		 * Pay for rental, add record, produce receipt, decrease amount owning in rental
-		 * @param account_id
 		 * @param rental_id
 		 * @param amount
+		 * @throws SQLException 
 		 */
-		void payForRental(Account account_id, int rental_id, BigDecimal amount) {
+		Receipt payForRentalByCard(int reserve_id, BigDecimal amount) throws SQLException {
 			// TODO Auto-generated method stub
-			//pm.makePayment(account_id, pm.calculateRentprice(rental_id), amount);
+			Reservation r = dbConnection.searchReservationEntry(reserve_id);
+			Receipt receipt = pm.makePaymentByCard(r, amount);
+			return receipt;
 		}
 
 		/**
-		 * 
-		 * @param rental_id
-		 * @return 
+		 * Pay for rental by points
+		 * @param id
+		 * @param points
 		 */
-		boolean readyToLeave(int rental_id) {
-			/* 1- check db for isPaidRental (1 == I can leave, 0 == can't leave :( )
-			 *  
-			 */	
+		void payForRentalByPoints(int id, int points) {
+			// TODO Auto-generated method stub
 			
-			return false;
+		}
+		/**
+		 * Pay for rental by other methods
+		 * @param id
+		 * @param amount
+		 */
+		void payForRentalByOther(int id, BigDecimal amount) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -98,4 +93,5 @@ class RentManager {
 		Rental getRental(int rentID) throws SQLException{
 			return dbConnection.getRental(rentID);
 		}
+
 }

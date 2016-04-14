@@ -106,16 +106,6 @@ public class RentalFacade {
 		return reservMan.searchReservation(reservID);
 	}
 	
-	
-	public void changeRentalStatus(int rentalID, boolean status) throws SQLException{
-		rentMan.changeRentalStatus(rentalID, status);
-	}
-	
-	public Rental searchForRental(int rentID) throws SQLException{
-		// call RentManager.searchForRental --> DatabaseManager --> RentalDB
-		return rentMan.getRental(rentID);
-	}
-	
 	//---------------------------rental related-------------------------------------	
 /*
 for when the customer comes in the store to pick up a reservation.
@@ -155,14 +145,48 @@ for when the customer comes in the store to pick up a reservation.
 	 * @param gasLevel gas level between 0 - 100
 	 * @throws SQLException 
 	 */
-	public void createInsectionReportBeforeRental(int clerk_id, String date, String description, int rentalID, int milage, int gasLevel) throws SQLException{
-		rentMan.createReport(clerk_id, date, description, rentalID, milage, gasLevel, "before_rental");
+	public void createInsectionReportBeforeRental(int clerk_id, String date, String description, int reserveID, int milage, int gasLevel) throws SQLException{
+		rentMan.createReport(clerk_id, date, description, reserveID, milage, gasLevel, "before_rental");
 	}
 		
-	public void payForRental(int rental_id, BigDecimal amount) throws SQLException{
-		//not done Robin
-		Account account_id = rentMan.getAccountForRental(rental_id);
-		rentMan.payForRental(account_id, rental_id, amount);
+	/**
+	 * Let customer or super customer pays for a rental by card on file
+	 * @param rental_id refers to a rental
+	 * @param amount_paid amount that the customer wishes to pay
+	 * @throws SQLException
+	 */
+	public void payForRentalByCard(int reserve_id, String amount_paid) throws SQLException{
+		BigDecimal amount = new BigDecimal(amount_paid);
+		rentMan.payForRentalByCard(reserve_id, amount);
+	}
+	
+	/**
+	 * Let super customer pays for a rental
+	 * @param rental_id
+	 * @param points
+	 * @throws SQLException
+	 */
+	public void payForRentalByPoints(int reserve_id, int points) throws SQLException{
+		rentMan.payForRentalByPoints(reserve_id,points);
+	}
+	
+	/**
+	 * Let custmomer or super customer pay by rental by other methods
+	 * @param rental_id
+	 * @param amount
+	 * @throws SQLException
+	 */
+	public void payForRentalByOther(int reserve_id, BigDecimal amount) throws SQLException{
+		rentMan.payForRentalByOther(reserve_id,amount);
+	}
+	
+	public void changeRentalStatus(int rentalID, boolean status) throws SQLException{
+		rentMan.changeRentalStatus(rentalID, status);
+	}
+	
+	public Rental searchForRental(int rentID) throws SQLException{
+		// call RentManager.searchForRental --> DatabaseManager --> RentalDB
+		return rentMan.getRental(rentID);
 	}
 	
 //---------------------------return related-------------------------------------

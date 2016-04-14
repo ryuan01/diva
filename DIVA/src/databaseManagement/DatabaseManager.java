@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import accountManagement.Account;
 import accountManagement.Customer;
 import accountManagement.Employee;
+import paymentManagement.Receipt;
 import rentalManagement.AccidentReport;
 import rentalManagement.Rental;
 import rentalManagement.Report;
@@ -133,14 +134,24 @@ public class DatabaseManager {
 	 * Search for additional equipments available
 	 * @param type ENUM('ski rack','child safety seat','lift gate','car-towing eq')
 	 * @param branch_num branch that this equipment belongs to
+	 * @param end_date 
+	 * @param start_date 
 	 * @return list of equipments of a type that is available at a branch
 	 * @throws SQLException
 	 */
-	public Equipment[] searchAdditionalEquipments(String type, int branch_num) throws SQLException{
-		return eqDB.searchAdditionalEquipments(type, branch_num);
+	public Equipment[] searchAdditionalEquipments(String type, int branch_num, String start_date, String end_date) throws SQLException{
+		return eqDB.searchAdditionalEquipments(type, branch_num, start_date, end_date);
 	}
 
-
+	/**
+	 * Adding a new equipment 
+	 * @param equipment_id
+	 * @param equipment_type ENUM('ski rack','child safety seat', 'lift gate','car-towing eq')
+	 * @throws SQLException 
+	 */
+	public void insertEquipment(int branch_id, String equipment_type) throws SQLException{
+		eqDB.addEquipment(branch_id, equipment_type);
+	}
    
 /*----------------------------------------RentalDB--------------------------------------------*/
 	/**
@@ -237,10 +248,9 @@ public class DatabaseManager {
 	public Account getReservationAccount(int reservID) throws SQLException
 	{
 		Reservation r = reDB.reservationQuery(reservID);
-		//waiting for sammy's method for getting account from ID		r.getCustomerAccountID();
-		return null;
+		return getAccountFromID(r.getCustomerAccountID());
 	}
-	
+
 	/**
 	 * Get reservation vehicle ID
 	 * @param reservID
@@ -296,6 +306,16 @@ public class DatabaseManager {
 		int vehicle_id = r.getVehicleID();
 		Vehicle v = veDB.search(vehicle_id);
 		return v;
+	}
+	
+	/**
+	 * Returns a string made from 
+	 * @param id
+	 * @return
+	 */
+	public String getReservationInReceiptForm(int id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 /*-----------------------------------------VehicleDB----------------------------------------------*/
@@ -401,6 +421,19 @@ public class DatabaseManager {
 	public String retrievePassword(String userName) throws SQLException
 	{// Done
 		return accDB.retrievePassword(userName);
+	}
+	
+	/**
+	 * Get an account object based on its account ID
+	 * @param customerAccountID
+	 * @return account object
+	 * @throws SQLException 
+	 */
+	public Account getAccountFromID(int customerAccountID) throws SQLException {
+		// TODO Auto-generated method stub
+		String username = accDB.getUserNameFromId(customerAccountID);
+		System.out.println();
+		return accDB.getAccounts(username)[0];
 	}
 	
 	// find account by loginID, loginID should be immutable
@@ -528,5 +561,10 @@ public class DatabaseManager {
 	
 	public BigDecimal[][] getAllEquipmentPrice() throws SQLException{
 		return prDB.getEquipmentPriceList();
+	}
+
+	public void addReceipt(Receipt receipt) {
+		// TODO Auto-generated method stub
+		
 	}
 }

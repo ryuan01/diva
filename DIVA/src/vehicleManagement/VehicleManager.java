@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+
 import databaseManagement.DatabaseManager;
 import paymentManagement.PaymentManager;
 
@@ -186,5 +188,43 @@ public class VehicleManager {
 	}
 	
 	//---- equipment
-	//search equipment based on vehicle types, a branch is also a factor 
+	/**
+	 * Search equipment based on vehicle type: car or truck
+	 * @param type
+	 * @param branch_num
+	 * @param end_date 
+	 * @param start_date 
+	 * @return
+	 * @throws SQLException
+	 */
+	public Equipment[] searchForEquipments(String type, int branch_num, String start_date, String end_date) throws SQLException{
+		String[] equipment_types;
+		//car: 'ski rack','child safety seat'
+		//truck: 'lift gate','car-towing eq'
+		if (type.equals("car")){
+			equipment_types = new String[]{"ski rack", "child safety seat"};
+		}
+		else if (type.equals("truck")){
+			equipment_types = new String[]{"lift gate", "car-towing eq"};
+		}
+		else {
+			throw new IllegalArgumentException("We only have additional equipments for 'car' or 'truck'.");
+		}
+		Equipment[] first_type_equipment = db.searchAdditionalEquipments(equipment_types[0], branch_num, start_date, end_date);
+		Equipment[] second_type_equipment = db.searchAdditionalEquipments(equipment_types[1], branch_num, start_date, end_date);
+		Equipment[] result = Arrays.copyOf(first_type_equipment, first_type_equipment.length + second_type_equipment.length);
+		System.arraycopy(second_type_equipment, 0, result, first_type_equipment.length, second_type_equipment.length);
+		return result;
+	}
+	
+	/**
+	 * Adding an equipment to an branch
+	 * @param equipment_id
+	 * @param branch_id
+	 * @param equipment_type
+	 * @throws SQLException
+	 */
+	public void addEquipment(int branch_id, String equipment_type) throws SQLException{
+		db.insertEquipment(branch_id, equipment_type);
+	}
 }

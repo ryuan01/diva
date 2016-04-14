@@ -2,6 +2,8 @@ package rentalManagement;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+
+import accountManagement.Account;
 import webServiceManagement.ArrayOfStringsable;
 
 //Assumes Date object is passed instead of a primitive.

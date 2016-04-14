@@ -1,14 +1,19 @@
 package paymentManagement;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.text.ParseException;
+
+import accountManagement.Account;
 import accountManagement.AccountManager;
 import databaseManagement.DatabaseManager;
+import rentalManagement.Reservation;
 
 /**
  * Calculates prices for rentals, insurances, and sale
@@ -25,6 +30,7 @@ public class PaymentManager {
 	private static final int PRICE_ROW_SIZE = 3;
 	private static final int MONTH_DAYS = 28;
 	private static final int WEEK_DAYS = 7;
+	private static final BigDecimal CONVERSION_RATE= new BigDecimal("5"); //5 DOLLARS FOR 1 POINTS
 	
 	/**
 	 * A payment Manager that creates and holds a list of receipts. 
@@ -217,6 +223,58 @@ public class PaymentManager {
 			rate_type = 0; //perHour
 		}
 		return rate_type;
+	}
+
+	public Receipt makePaymentByCard(Reservation reservation, BigDecimal amount_paid) throws SQLException, IllegalArgumentException {
+		//steps: 1. pay by type (card), front-end made sure it is valid
+		//		 2. get points for it if this is a super customer
+		//		 3. produce receipts
+		
+		//amount_paid cannot be more than amount_owning when paying by card
+		if (amount_paid.compareTo(new BigDecimal("0")) == -1 || amount_paid.compareTo(reservation.getBalance()) == 1 ){
+			throw new IllegalArgumentException("Cannot pay negative amount or pay more than amount owning when using credit card.");
+		}
+		
+		String payment_info = "";
+		String basic_info = "";
+		int customer_id = reservation.getCustomerAccountID();
+		//System.out.println(reservation.getID());
+		Account a = db.getReservationAccount(reservation.getID());
+		System.out.println(a.toString());
+		String customer_username = a.getLoginId();
+		
+		//if we have a super rent customer, then he/she will earn points in this transaction
+		if (am.is_super_rent(customer_id)){
+			int points = AmountToPoints(amount_paid);
+			am.accumulatePoints(customer_username, points);
+			payment_info += "Earning points: "+points+"\n";
+			payment_info += "Current points: "+am.getPoints(customer_id)+"\n";
+		}
+		//we have got a normal customer
+		MathContext mc = new MathContext(2); // 2 precision
+		BigDecimal change = reservation.getBalance().subtract(amount_paid, mc);
+		//add this to the receipt
+		payment_info += "Payment by credit: "+amount_paid+"\n";
+		payment_info += "Amount owning after payment: "+change+"\n";
+		
+		//set up basic information too
+		basic_info += db.getReservationInReceiptForm(reservation.getID());
+		
+		//now set up a new receipt object and returns it
+		Receipt receipt = new Receipt(-1, customer_id, basic_info, payment_info);
+		//store that into database
+		db.addReceipt(receipt);
+		return receipt;
+	}
+
+	/**
+	 * Convert 
+	 * @param amount_paid
+	 * @return
+	 */
+	private int AmountToPoints(BigDecimal amount_paid) {
+		// TODO Auto-generated method stub
+		return Integer.valueOf(amount_paid.divide(CONVERSION_RATE,RoundingMode.FLOOR).intValue());
 	}
 	
 	/*

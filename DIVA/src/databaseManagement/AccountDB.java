@@ -714,6 +714,27 @@ class AccountDB{
 		dbm.disconnect();
 		return false;
 	}
+
+	/**
+	 * Get username from account ID
+	 * @param customerAccountID
+	 * @return username
+	 * @throws SQLException 
+	 */
+	String getUserNameFromId(int customerAccountID) throws SQLException {
+		// TODO Auto-generated method stub
+		dbm.connect();
+		String username = "";
+		Statement stmt = dbm.getConnection().createStatement();
+		String query = "SELECT `account_uName` FROM users WHERE users.id_number = "+customerAccountID;
+		ResultSet rs = stmt.executeQuery(query);
+		
+		if (rs.next()){
+			username = rs.getString("account_uName");
+		}
+		dbm.disconnect();
+		return username;
+	}
 }
 
 	

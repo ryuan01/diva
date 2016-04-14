@@ -143,9 +143,27 @@ public class AccountManager {
 	{
 		dbConnection.modifyPassword(userName,newPassword);
 	}
+	
+	/**
+	 * Checks if a customer is of type Super Customer
+	 * @param account_id
+	 * @return
+	 */
+	public boolean is_super_rent(int account_id){
+		//dbConnection.
+		return false;
+	}
+	
+	public void usePoints(int account_id, int points){
+		//dbConnection.
+	}
 
-	//Sammy please edit this one
-	public int moneyToPoints(BigDecimal price) {
+	/**
+	 * Get a customer's current available points according to its ID
+	 * @param customer_id
+	 * @return
+	 */
+	public int getPoints(int customer_id) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
