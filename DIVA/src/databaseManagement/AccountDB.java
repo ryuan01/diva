@@ -21,7 +21,7 @@ class AccountDB{
 	
 	private ConnectDB dbm;
 	//checking 
-	public AccountDB() {
+	AccountDB() {
 		dbm = new ConnectDB();
 	}
 
@@ -109,7 +109,7 @@ class AccountDB{
 	}
 
 	
-	public void createEmployee(Employee employee) throws SQLException{
+	void createEmployee(Employee employee) throws SQLException{
 		// Account variables
 		String userName = employee.getLoginId();
 		String password;
@@ -168,7 +168,7 @@ class AccountDB{
 		dbm.disconnect();
 	}
 	
-	public void upgradeCustomer(String username) throws SQLException{
+	void upgradeCustomer(String username) throws SQLException{
 		//database variables
 		Statement stmt;
 		Connection conn;
@@ -206,7 +206,7 @@ class AccountDB{
 	}
 	
 	
-	public void addSRPoints(String username, int points) throws SQLException{
+	void addSRPoints(String username, int points) throws SQLException{
 		//database variables
 		Statement stmt;
 		Connection conn;
@@ -257,7 +257,7 @@ class AccountDB{
 	
 	
 	
-	public void downgradeSCustomer(String username) throws SQLException{
+	void downgradeSCustomer(String username) throws SQLException{
 		//database variables
 		Statement stmt;
 		Connection conn;
@@ -296,7 +296,7 @@ class AccountDB{
 		dbm.disconnect();
 	}
 	
-	public void removeAccountEntry(String username) throws SQLException{
+	void removeAccountEntry(String username) throws SQLException{
 		//database variables
 		Statement stmt;
 		Connection conn;
@@ -331,7 +331,7 @@ class AccountDB{
 	 * @return Account[] array
 	 * @throws SQLException 
 	 */
-	public Account[] getAccounts(String parameter) throws SQLException {
+	Account[] getAccounts(String parameter) throws SQLException {
 		// assume its last name
 		//database variables
 		Statement stmt;
@@ -532,7 +532,7 @@ class AccountDB{
 	 * @return encrypted password for that username
 	 * @throws SQLException 
 	 */
-	public String retrievePassword(String username) throws SQLException {
+	String retrievePassword(String username) throws SQLException {
 		dbm.connect();
 		
 		if (doesItExist(username, USER, USERNAME)){
@@ -552,7 +552,7 @@ class AccountDB{
 		}
 	}
 	
-	public void modifyPassword(String userName, String newPassword) throws SQLException{
+	void modifyPassword(String userName, String newPassword) throws SQLException{
 		// Database variables
 		Connection conn;
 		Statement stmt;

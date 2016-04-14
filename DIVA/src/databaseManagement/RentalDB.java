@@ -95,9 +95,9 @@ class RentalDB {
 	 * @pre none
 	 * @post returns true if it exists, otherwise false
 	 */
-	boolean isValidReservation(int rNum) throws SQLException {
+	private boolean isValidReservation(int rNum) throws SQLException {
 		boolean isValid = false;
- 		dbm.connect();
+ 		
   		Statement stmt = dbm.getConnection().createStatement();		
 		String query = "SELECT `reservation_id` FROM `reservation` WHERE "
 					+ "`reservation_id` = "+ rNum;
@@ -106,6 +106,7 @@ class RentalDB {
         if (rs.next()){
         	isValid = true;
         }
+        
         //clean up
         rs.close();
         stmt.close();
@@ -385,6 +386,35 @@ class RentalDB {
 		
 		
 		return false;
+	}
+	
+	void changeRentalStatus(int rentalID, boolean status) throws SQLException{
+		Connection conn;
+		Statement stmt;
+		String query;
+		
+		dbm.connect();
+		
+		if (isValidReservation(rentalID)){
+			query = "UPDATE `rental` "
+					+ "SET `is_paid_rental` = " + status + " "
+					+ "WHERE `reservation_id` = " + rentalID + ";";
+			
+			
+			
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			stmt.executeUpdate(query);
+			
+			stmt.close();
+		
+		} else{
+			throw new Error("No reservation found");
+		}
+		
+		dbm.disconnect();
+		
 	}
 
 }

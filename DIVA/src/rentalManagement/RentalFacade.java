@@ -97,8 +97,9 @@ public class RentalFacade {
 	}
 	
 	
-	public void changeRentalStatus(int rentalID, boolean status){
+	public void changeRentalStatus(int rentalID, boolean status) throws SQLException{
 		// RentManager --> databasemangaer --> rentalDB
+		rentMan.changeRentalStatus(rentalID, status);
 		
 	}
 	

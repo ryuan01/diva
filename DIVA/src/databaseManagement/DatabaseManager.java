@@ -409,6 +409,10 @@ public class DatabaseManager {
 		}
 	}
 	
+	public void changeRentalStatus(int rentalID, boolean status) throws SQLException{
+		reDB.changeRentalStatus(rentalID, status);
+	}
+	
 	public void addSRPoints(String userName, int points) throws SQLException
 	{
 		accDB.addSRPoints(userName, points);
