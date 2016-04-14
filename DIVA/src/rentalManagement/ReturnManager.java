@@ -88,13 +88,27 @@ class ReturnManager {
 		}
 	}
 
-	BigDecimal addOverdueExtraCharge(int rental_id, String current_date) {
-		// dbm --> rentalDB.getReturnDate
-		// balance = paymentManager.getOverduePrice(start_date, current_date)
-		// dbm --> rentalDB.addToBalance(rental_id, balance)
-		// dbm --> rentalDB.setIsPaidExtraCharge(false);
-		// return balance
-		return null;
+	BigDecimal addOverdueExtraCharge(int rental_id, String current_date) throws SQLException {
+		// [x] dbm --> rentalDB.getReturnDate 
+		// [] balance = paymentManager.getOverduePrice(start_date, current_date)
+		// [x] dbm --> rentalDB.addToBalance(rental_id, balance)
+		// [x] dbm --> rentalDB.setIsPaidExtraCharge(false);
+		// [x] return balance
+		String endDate;
+		BigDecimal newBalance = new BigDecimal("250");
+		BigDecimal currentBalance;
+		
+		
+		endDate = dbConnection.getReservationEndDate(rental_id);
+		
+		// How do you calculate over due?
+		//newBalance = paymentManager.getOverduePrice(current_date, endDate);
+		currentBalance = dbConnection.getBalance(rental_id).add(newBalance);
+		
+		dbConnection.addToBalance(rental_id, currentBalance);
+		dbConnection.setIs_paid_extra_charge(rental_id, false);
+		
+		return currentBalance;
 		// TODO Auto-generated method stub
 		
 	}

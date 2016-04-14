@@ -181,7 +181,9 @@ public class DatabaseManager {
 	 * 
 	 */
 	public boolean checkReservationBalance(int reservation_id){
-		return reDB.checkReservationBalance(reservation_id);
+		// Used getBalance method instead; can do the same job (sammy)
+		// return reDB.checkReservationBalance(reservation_id);
+		return false;
 	}
 	
 	
@@ -237,7 +239,8 @@ public class DatabaseManager {
 	public Account getReservationAccount(int reservID) throws SQLException
 	{
 		Reservation r = reDB.reservationQuery(reservID);
-		//waiting for sammy's method for getting account from ID		r.getCustomerAccountID();
+		//waiting for sammy's method for getting account from ID r.getCustomerAccountID();
+		// Finished it (-Sammy)
 		return null;
 	}
 	
@@ -297,6 +300,20 @@ public class DatabaseManager {
 		Vehicle v = veDB.search(vehicle_id);
 		return v;
 	}
+	
+	public void addToBalance(int rental_id, BigDecimal balance) throws SQLException{
+		reDB.addToBalance(rental_id, balance);
+	}
+	
+	public void setIs_paid_extra_charge(int rental_id, boolean setValue) throws SQLException{
+		reDB.setIs_paid_extra_charge(rental_id, setValue);
+	}
+	
+	public BigDecimal getBalance(int rentID) throws SQLException{
+		return reDB.getBalance(rentID);
+	}
+	
+	
 	
 /*-----------------------------------------VehicleDB----------------------------------------------*/
 	/**

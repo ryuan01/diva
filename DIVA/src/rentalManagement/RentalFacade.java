@@ -13,6 +13,7 @@ public class RentalFacade {
 	private ReserveManager reservMan;
 	private RentManager rentMan;
 	private ReturnManager returnMan;
+	private DatabaseManager dbm;
 	private java.text.SimpleDateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
 	
 	public RentalFacade()
@@ -128,9 +129,23 @@ for when the customer comes in the store to pick up a reservation.
 		 *  				DatabaseManager.searchFoRental(rentalID)
 		 *  				DatabaseManager.changeRentalStatus(rentalID, boolean isPaid)
 		 */
+		
+		BigDecimal balance;
+		
+		
+		balance = dbm.getBalance(reservationID);
+		
+		if (balance.compareTo(new BigDecimal(0)) == 0){
+			// are equal
+			rentMan.createRental(reservationID, clerkID, true, false);
+		} else{
+			// not equal
+			rentMan.createRental(reservationID, clerkID, false, false);
+		}
+		
 
 		//it is assumed that the start_date and end_date are the same as reservation.
-		rentMan.createRental(reservationID, clerkID, false, false);
+		
 	}
 	/**
 	 * Create an inspection report before Rental
