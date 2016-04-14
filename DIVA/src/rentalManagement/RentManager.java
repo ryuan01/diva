@@ -73,7 +73,7 @@ class RentManager {
 		 */
 		void payForRental(Account account_id, int rental_id, BigDecimal amount) {
 			// TODO Auto-generated method stub
-			pm.makePayment(account_id, pm.calculateRentprice(rental_id), amount);
+			//pm.makePayment(account_id, pm.calculateRentprice(rental_id), amount);
 		}
 
 		/**
@@ -89,5 +89,13 @@ class RentManager {
 			return false;
 			// TODO Auto-generated method stub
 			
+		}
+		
+		void changeRentalStatus(int rentalID, boolean status) throws SQLException{
+			dbConnection.changeRentalStatus(rentalID, status);
+		}
+		
+		Rental getRental(int rentID) throws SQLException{
+			return dbConnection.getRental(rentID);
 		}
 }

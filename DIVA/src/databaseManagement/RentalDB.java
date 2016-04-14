@@ -95,9 +95,9 @@ class RentalDB {
 	 * @pre none
 	 * @post returns true if it exists, otherwise false
 	 */
-	boolean isValidReservation(int rNum) throws SQLException {
+	private boolean isValidReservation(int rNum) throws SQLException {
 		boolean isValid = false;
- 		dbm.connect();
+ 		
   		Statement stmt = dbm.getConnection().createStatement();		
 		String query = "SELECT `reservation_id` FROM `reservation` WHERE "
 					+ "`reservation_id` = "+ rNum;
@@ -106,11 +106,34 @@ class RentalDB {
         if (rs.next()){
         	isValid = true;
         }
+        
         //clean up
         rs.close();
         stmt.close();
 
         return isValid;
+	}
+	
+	private boolean isValidRent(int rentID) throws SQLException{
+		Connection conn;
+		Statement stmt;
+		ResultSet rs;
+		String query;
+		
+		conn = dbm.getConnection();
+		stmt = conn.createStatement();
+		query = "SELECT `reservation_id` "
+				+ "FROM `rental` "
+				+ "WHERE reservation_id = " + rentID + ";";
+		
+		rs = stmt.executeQuery(query);
+		rs.next();
+		
+		if (rentID == rs.getInt("reservation_id")){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	/**
@@ -385,6 +408,121 @@ class RentalDB {
 		
 		
 		return false;
+	}
+	
+	void changeRentalStatus(int rentalID, boolean status) throws SQLException{
+		Connection conn;
+		Statement stmt;
+		String query;
+		
+		dbm.connect();
+		
+		if (isValidReservation(rentalID)){
+			query = "UPDATE `rental` "
+					+ "SET `is_paid_rental` = " + status + " "
+					+ "WHERE `reservation_id` = " + rentalID + ";";
+			
+			
+			
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			stmt.executeUpdate(query);
+			
+			stmt.close();
+		
+		} else{
+			throw new Error("No reservation found");
+		}
+		
+		dbm.disconnect();
+		
+	}
+	
+	Rental getRental(int rentID) throws SQLException{
+		Connection conn;
+		Statement stmt;
+		String query;
+		ResultSet rs;
+		
+		// local variables
+		Reservation reservation;
+		Rental rent;
+		
+		// Reservaton object variables:
+		String startDate;
+		String endDate;
+		int vehicleID;
+		ArrayList<Integer> equipmentsArrayList = new ArrayList<Integer>();
+		int[] equipmentArray;
+		int startBranchID;
+		int endBranchID;
+		int customerID;
+		BigDecimal balance;
+		
+		// rental object variables
+		boolean is_paid_rental;
+		boolean is_paid_extra_charge;
+		
+		
+		dbm.connect();
+		
+		if(isValidRent(rentID))
+		{
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			// 1- get int[] of equipments
+			query = "SELECT `equipment_id` AS id FROM `rented_equipment` "
+					+ "WHERE reservation_id = " + rentID;
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				equipmentsArrayList.add(rs.getInt("id"));
+			}
+			equipmentArray = new int[equipmentsArrayList.size()];
+			for (int i=0; i < equipmentsArrayList.size(); i++){
+				equipmentArray[i] = equipmentsArrayList.get(i);
+			}
+			
+			rs.close();
+			
+			// 2- get reservation
+			query = "SELECT * FROM `reservation` "
+					+ "WHERE reservation_id = " + rentID + ";";
+			rs = stmt.executeQuery(query);
+			rs.next();
+			
+			startDate = rs.getString("start_date");
+			endDate = rs.getString("end_date");
+			vehicleID = rs.getInt("vehicle_id");
+			startBranchID = rs.getInt("start_branch");
+			endBranchID = rs.getInt("end_branch");
+			customerID = rs.getInt("customer");
+			balance = new BigDecimal(rs.getDouble("balance"));
+			
+			
+			// String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, 
+			 //int id, BigDecimal amount)
+			reservation = new Reservation(startDate, endDate, vehicleID, equipmentArray,
+			startBranchID, endBranchID, customerID, rentID, balance);
+			
+			// 3- get rental
+			query = "SELECT * FROM `rental` "
+					+ "WHERE reservation_id = " + rentID + ";";
+			
+			rs = stmt.executeQuery(query);
+			rs.next();
+			
+			is_paid_rental = rs.getBoolean("is_paid_rental");
+			is_paid_extra_charge = rs.getBoolean("is_paid_extra_charge");
+
+			rent = new Rental(reservation, is_paid_rental, is_paid_extra_charge);
+			return rent;
+			
+		} else{
+			return null;
+		}
 	}
 
 }
