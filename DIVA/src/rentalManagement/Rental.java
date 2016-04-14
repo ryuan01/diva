@@ -9,7 +9,7 @@ public class Rental {
 	
 	private boolean is_paid_rental;
 	private boolean is_paid_extra_charge;
-	Reservation res;
+	private Reservation res;
 
 	/**
 	 * Default constructor should not be used
@@ -28,6 +28,12 @@ public class Rental {
 		res = r;
 		is_paid_rental = false;
 		is_paid_extra_charge = false;
+	}
+	
+	public Rental(Reservation r, boolean is_paid_rental, boolean is_paid_extra_charge){
+		res = r;
+		this.is_paid_rental = is_paid_rental;
+		this.is_paid_extra_charge = is_paid_extra_charge;
 	}
 	
 	/**

@@ -11,6 +11,7 @@ import accountManagement.Account;
 import accountManagement.Customer;
 import accountManagement.Employee;
 import rentalManagement.AccidentReport;
+import rentalManagement.Rental;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
 import systemManagement.Branch;
@@ -263,7 +264,16 @@ public class DatabaseManager {
 	public void createRental(int reserveID, int clerkID, boolean is_paid_rental, boolean is_paid_extra_charge) throws SQLException {
 		reDB.createRental(reserveID, clerkID, is_paid_rental, is_paid_extra_charge);
 	}
-
+	
+	/**
+	 * Get a rental object based on rental_id
+	 * @throws SQLException 
+	 * 
+	 */
+	public Rental getRental(int rentID) throws SQLException{
+		return reDB.getRental(rentID);
+	}
+	
 	/**
 	 * Get the account for the rental, for calculating price purpose
 	 * @param rental_id

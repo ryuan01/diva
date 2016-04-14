@@ -98,15 +98,12 @@ public class RentalFacade {
 	
 	
 	public void changeRentalStatus(int rentalID, boolean status) throws SQLException{
-		// RentManager --> databasemangaer --> rentalDB
 		rentMan.changeRentalStatus(rentalID, status);
-		
 	}
 	
-	public Rental[] searchForRental(int rentalID){
+	public Rental searchForRental(int rentID) throws SQLException{
 		// call RentManager.searchForRental --> DatabaseManager --> RentalDB
-		
-		return null;
+		return rentMan.getRental(rentID);
 	}
 	
 	/*

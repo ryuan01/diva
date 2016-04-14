@@ -94,4 +94,8 @@ class RentManager {
 		void changeRentalStatus(int rentalID, boolean status) throws SQLException{
 			dbConnection.changeRentalStatus(rentalID, status);
 		}
+		
+		Rental getRental(int rentID) throws SQLException{
+			return dbConnection.getRental(rentID);
+		}
 }

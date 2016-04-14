@@ -14,7 +14,7 @@ public class Main {
 			//acm.joinSuperClub("mjane01");
 			//acm.changePassword("jjohn00", null); 
 			
-			rf.changeRentalStatus(18, true);
+			rf.searchForRental(19);
 				
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block 
