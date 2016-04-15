@@ -90,7 +90,7 @@ class EquipmentDB {
 		Statement stmt = dbm.getConnection().createStatement();
 		String query = "SELECT `eq_type` FROM `equipment` WHERE "
 				+"`serial_num` ="+equipment_id;
-		System.out.println(query);
+		//System.out.println(query);
 		ResultSet rs = stmt.executeQuery(query);
 
 		if(rs.next()){

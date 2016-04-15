@@ -193,11 +193,12 @@ for when the customer comes in the store to pick up a reservation.
 	 * Let custmomer or super customer pay by rental by cash
 	 * @param rental_id
 	 * @param amount
+	 * @return 
 	 * @throws SQLException
 	 */
-	public void payForRentalByCash(int reserve_id, String amount) throws SQLException{
+	public Receipt payForRentalByCash(int reserve_id, String amount) throws SQLException{
 		//need to check
-		rentMan.payForRentalByCash(reserve_id,amount);
+		return rentMan.payForRentalByCash(reserve_id,amount);
 	}
 	
 	public void changeRentalStatus(int rentalID, boolean status) throws SQLException{

@@ -496,7 +496,7 @@ class VehicleDB {
 	  */
 	 Vehicle search(int vehicle_id) throws SQLException {
 		// TODO Auto-generated method stub
-		 System.out.println(vehicle_id);
+		 //System.out.println(vehicle_id);
 		 String query; 
 		//is this a truck or car
 		if (isTruck(vehicle_id)){

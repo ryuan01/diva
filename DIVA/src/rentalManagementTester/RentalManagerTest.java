@@ -1,5 +1,6 @@
 package rentalManagementTester;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import paymentManagement.Receipt;
@@ -12,7 +13,19 @@ public class RentalManagerTest {
 	public static void main(String[] args){
 		//test_rental();
 		//test_pay_for_rental_card();
-		test_pay_for_rental_points();
+		//test_pay_for_rental_points();
+		test_pay_for_rental_cash();
+	}
+
+	private static void test_pay_for_rental_cash() {
+		// TODO Auto-generated method stub
+		try {
+			Receipt r = rf.payForRentalByCash(20, "80.00");
+			System.out.println(r.toString());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static void test_pay_for_rental_points() {

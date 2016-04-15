@@ -535,6 +535,11 @@ class RentalDB {
 	 * @throws SQLException
 	 */
 	void addToBalance(int rental_id, BigDecimal balance) throws SQLException{
+		//never add balance to be negative
+		//it only becomes negative when customer pays by cash, which is returned to clerk on the spot
+		if (balance.compareTo(new BigDecimal("0")) == -1){
+			balance = new BigDecimal("0");
+		}
 		Connection conn;
 		Statement stmt;
 		String query;

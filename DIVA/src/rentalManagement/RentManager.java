@@ -88,13 +88,13 @@ class RentManager {
 		 * Pay for rental by cash
 		 * @param id
 		 * @param amount
+		 * @throws SQLException 
 		 */
-		Receipt payForRentalByCash(int reserve_id, String amount) {
+		Receipt payForRentalByCash(int reserve_id, String amount) throws SQLException {
 			Reservation r = dbConnection.searchReservationEntry(reserve_id);
 			BigDecimal balance = r.getBalance();
 			int customer_id = r.getCustomerAccountID();
 			return pm.makePaymentCash(reserve_id, customer_id, balance, amount);
-			
 		}
 		
 		void changeRentalStatus(int rentalID, boolean status) throws SQLException{

@@ -331,7 +331,7 @@ public class PaymentManager {
 		else if (amount_paid.compareTo(new BigDecimal("0")) == -1){
 			throw new IllegalArgumentException("amount paid cannot be negative");
 		}
-		return generalPayment(reserve_id, customer_id,balance,amount);
+		return generalPayment(reserve_id, customer_id,balance,amount,"credit");
 	}
 	
 	/**
@@ -400,7 +400,7 @@ public class PaymentManager {
 		if (amount_paid.compareTo(new BigDecimal("0")) == -1){
 			throw new IllegalArgumentException("amount paid cannot be negative");
 		}
-		return generalPayment(reserve_id, customer_id,balance,amount);
+		return generalPayment(reserve_id, customer_id,balance,amount,"cash");
 	}
 
 	/**
@@ -410,27 +410,28 @@ public class PaymentManager {
 	 * @param customer_id
 	 * @param balance
 	 * @param amount
+	 * @param type "cash" or "credit"
 	 * @return
 	 * @throws SQLException
 	 */
 	private Receipt generalPayment(int reserve_id, int customer_id, BigDecimal balance,
-			String amount) throws SQLException{
+			String amount, String type) throws SQLException{
 		String payment_info = "";
 		String basic_info = "";
 		BigDecimal amount_paid = new BigDecimal(amount);
 		//if we have a super rent customer, then he/she will earn points in this transaction
 		synchronized(this){
 			if (is_super_rent(customer_id)){
-			int points = amountToPoints(amount_paid);
-			db.addSRPoints(customer_id, points);
-			payment_info += "Earning points: "+points+"\n";
+				int points = amountToPoints(amount_paid);
+				db.addSRPoints(customer_id, points);
+				payment_info += "Earning points: "+points+"\n";
 			}
 			//we have got a normal customer
 			BigDecimal change = balance.subtract(amount_paid).setScale(2, RoundingMode.CEILING);
 			//set this balance to database
 			db.addToBalance(reserve_id, change);
 			//add this to the receipt
-			payment_info += "Payment by credit: "+amount_paid+"\n";
+			payment_info += "Payment by "+type+": "+amount_paid+"\n";
 			payment_info += "Amount owning after payment: "+change+"\n";
 		}
 		//System.exit(0);
