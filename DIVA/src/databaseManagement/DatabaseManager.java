@@ -622,8 +622,8 @@ public class DatabaseManager {
 		
 	}
 	//sammy: we need to search receipt based on customer_id
-	public Receipt searchReceipt(int customer_id){
-		return null;
+	public Receipt searchReceipt(int customer_id) throws SQLException, Error{
+		return prDB.getReceipt(customer_id);
 	}
 	
 	//sammy: please create a database table for `receipt` that contains the private variables of `receipt` object

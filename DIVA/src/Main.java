@@ -14,7 +14,8 @@ public class Main {
 		DatabaseManager dbm = DatabaseManager.getInstance();
 		
 		try {
-			dbm.addReceipt(new Receipt(-1, 1, "basic Info", "receipt info"));
+			Receipt r = dbm.searchReceipt(1);
+			System.out.println(r.getPaymentInfo());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

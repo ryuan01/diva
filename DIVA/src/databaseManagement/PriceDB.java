@@ -256,10 +256,67 @@ class PriceDB {
 			 dbm.disconnect();
 		 } else{
 			 dbm.disconnect();
-			 throw new Error("customer is registered in the system");
+			 throw new Error("customer is not registered in the system");
 			 }
 		 }
 		 
+	 	/**
+	 	 * @author saud (sammy) almahri
+	 	 * @param customer_id
+	 	 * @return
+	 	 * @throws Error 
+	 	 * @throws SQLException 
+	 	 */
+	 
+	 Receipt getReceipt(int customer_id) throws SQLException, Error{
+		 Connection conn;
+		 Statement stmt;
+		 String query;
+		 ResultSet rs;
+		 
+		 //receipt variables
+		 int receipt_id;
+		 String basic_info;
+		 String payment_info;
+		 
+		 Receipt r = null;
+		 
+		 dbm.connect();
+		 
+		 if (isElementAvailable(customer_id, CUSTOMER)){
+			 query = "SELECT * FROM receipt "
+			 		+ "WHERE customer_id = " + customer_id +";";
+			 conn = dbm.getConnection();
+			 stmt = conn.createStatement();
+			 
+			 rs = stmt.executeQuery(query);
+			 
+			 while(rs.next()){
+				 if(rs.getInt("customer_id") == customer_id){
+					 receipt_id = rs.getInt("receipt_id");
+					 basic_info = rs.getString("basic_info");
+					 payment_info = rs.getString("payment_info");
+					 
+					 r = new Receipt(receipt_id, customer_id, basic_info, payment_info);
+					 
+					 
+					 
+
+				 }
+			 }
+			
+		 }else{
+			 dbm.disconnect();
+			 throw new Error("customer is not registered in the system");
+		 }
+		 
+		 rs.close();
+		 stmt.close();
+		 dbm.disconnect(); 
+		 return r;
+	 }
+	 
+	 
 	 /**
 	  * @author saud (sammy) almahri
 	  * @param receiptID
