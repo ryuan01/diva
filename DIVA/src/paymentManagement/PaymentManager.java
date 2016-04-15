@@ -164,7 +164,9 @@ public class PaymentManager {
 		for(int i = 0; i < equip_ids.length; i++)
 		{
 			String equip_type = db.getTypeOfEquipment(equip_ids[i]);
-			equip_price = equip_price.add(calculatePrice(equip_type, equipment_rate_type),mc);
+			equip_price = new BigDecimal ("10.00");
+			//todo
+			//equip_price = equip_price.add(calculatePrice(equip_type, equipment_rate_type),mc);
 		}
 		
 		// Adds Vehicle price, Vehicle insurance price, Total equipments price
