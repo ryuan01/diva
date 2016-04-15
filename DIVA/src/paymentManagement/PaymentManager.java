@@ -240,7 +240,7 @@ public class PaymentManager {
 		int customer_id = reservation.getCustomerAccountID();
 		//System.out.println(reservation.getID());
 		Account a = db.getReservationAccount(reservation.getID());
-		System.out.println(a.toString());
+		//System.out.println(a.toString());
 		String customer_username = a.getLoginId();
 		
 		//if we have a super rent customer, then he/she will earn points in this transaction
@@ -275,6 +275,16 @@ public class PaymentManager {
 	private int AmountToPoints(BigDecimal amount_paid) {
 		// TODO Auto-generated method stub
 		return Integer.valueOf(amount_paid.divide(CONVERSION_RATE,RoundingMode.FLOOR).intValue());
+	}
+
+	public void addExtraCharge(int rental_id, String type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public BigDecimal getExtraCharge(int rental_id, String type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	/*

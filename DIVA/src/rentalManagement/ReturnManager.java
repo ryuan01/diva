@@ -30,40 +30,6 @@ class ReturnManager {
 	{
 		dbConnection = db;
 	}
-	
-	// assumes gas is already refilled.
-	/**
-	 * Returns a Vehicle from Rental.
-	 * @param reservID Reservation ID of Rental the Vehilce belongs to.
-	 * @throws ParseException 
-	 */
-	void startReturn(int reservID, String description, String dmgDescription,BigDecimal extraPay, String typeOfPayment, String accidentDetail) throws ParseException
-	{
-		//use-case: return damaged 
-		if(accidentDetail != "")
-		{
-			String current_date = sdf.format(new java.util.Date());
-			int milage = 0;
-			int gasLevel = 100;
-			//fill out report 
-			Report r = new Report(current_date, description, reservID,milage, gasLevel, gasLevel, -1);
-			
-			dbConnection.addReport(r, "after_rental");
-			
-			PaymentManager.makePayment(dbConnection.getReservationAccount(reservID), extraPay);
-		}
-		
-		//use-case: return over due 
-		if(checkIfOverdue(reservID))
-		{
-			PaymentManager.makePayment(dbConnection.getReservationAccount(reservID),PaymentManager.calculateLateprice(reservID));
-		}
-		
-	
-		//use-case: return normally, or after paid extra. 
-		//dbConnection.changeReservationStatus(reservID, "complete");
-		
-	}
 
 	
 	/**
@@ -99,14 +65,38 @@ class ReturnManager {
 		
 	}
 
-	boolean checkReturnBranch(int rental_id) {
+	/**
+	 * Check if the branch returned to is not the branch that the customer wishes to return to at time of booking
+	 * @param rental_id
+	 * @param current_branch_id
+	 * @return true if it is, false if they are different
+	 * @throws SQLException
+	 */
+	boolean checkReturnBranch(int rental_id, int current_branch_id) throws SQLException {
 		// TODO Auto-generated method stub
+		Reservation reservation = dbConnection.searchReservationEntry(rental_id);
+		if (reservation.getEndBranchID() == current_branch_id){
+			return true;
+		}
 		return false;
 	}
 
+	/**
+	 * Add extra charges for a customer who returned to the wrong branch
+	 * @param rental_id
+	 * @return
+	 */
 	BigDecimal addWrongReturnBranchExtraCharge(int rental_id) {
 		// TODO Auto-generated method stub
-		return null;
+		//need to create a table in database to represent extra charges
+		//in term of adding insurance
+		//in term of wrong branch
+		//in term of accident
+		//in term of not filled up gas tank
+		//in term of extra milage
+		//the above should be two array in pricelist as well
+		paymentManager.addExtraCharge(rental_id, "wrong_return_branch");
+		return paymentManager.getExtraCharge(rental_id, "wrong_return_branch");
 	}
 
 	void createAccidentReport(int clerkID, String accident_date, String description, int rentalID,

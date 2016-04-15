@@ -217,10 +217,13 @@ for when the customer comes in the store to pick up a reservation.
 	/**
 	 * Checks for returning branch, add to owning amount if returned to wrong branch
 	 * @param rental_id
+	 * @throws SQLException 
 	 */
-	public BigDecimal checkReturningBranch(int rental_id){
+	public BigDecimal checkReturningBranch(int rental_id, int current_branch_id) throws SQLException{
+		//done 1:54 PM 2016 April 14
 		BigDecimal amountOwning = new BigDecimal("0");
-		if (returnMan.checkReturnBranch(rental_id)){
+		if (returnMan.checkReturnBranch(rental_id, current_branch_id)){
+			//this method does not work
 			amountOwning = returnMan.addWrongReturnBranchExtraCharge(rental_id);
 		}
 		return amountOwning;

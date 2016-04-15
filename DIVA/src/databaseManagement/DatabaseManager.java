@@ -432,7 +432,8 @@ public class DatabaseManager {
 	public Account getAccountFromID(int customerAccountID) throws SQLException {
 		// TODO Auto-generated method stub
 		String username = accDB.getUserNameFromId(customerAccountID);
-		System.out.println();
+//		System.out.println(username);
+//		System.exit(0);
 		return accDB.getAccounts(username)[0];
 	}
 	
