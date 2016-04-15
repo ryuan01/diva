@@ -12,6 +12,7 @@ import java.text.ParseException;
 
 import accountManagement.Account;
 import accountManagement.AccountManager;
+import accountManagement.SuperCustomer;
 import databaseManagement.DatabaseManager;
 import rentalManagement.Reservation;
 
@@ -22,7 +23,7 @@ import rentalManagement.Reservation;
  */
 public class PaymentManager {
 
-	private MathContext mc;
+	private static MathContext mc = new MathContext(2);
 	private BigDecimal tax;
 	private PriceList priceList;
 	private DatabaseManager db;
@@ -39,7 +40,6 @@ public class PaymentManager {
 	 * @throws SQLException 
 	 */
 	public PaymentManager(){
-		mc  = new MathContext(2);
 		tax = new BigDecimal("0.07");
 		db = DatabaseManager.getInstance();
 		priceList = new PriceList();
@@ -308,38 +308,135 @@ public class PaymentManager {
 	}
 	
 
-	public Receipt makePaymentByCard(Reservation reservation, BigDecimal amount_paid) throws SQLException, IllegalArgumentException {
-		//steps: 1. pay by type (card), front-end made sure it is valid
-		//		 2. get points for it if this is a super customer
-		//		 3. produce receipts
-		
+	//if we have time we will go ahead and implement check for credit card validity
+	/**
+	 * A customer pays for an order through his card on file
+	 * @pre card on file is valid
+	 * @param reserve_id
+	 * @param customer_id
+	 * @param balance amount owning
+	 * @param amount amount to be paid
+	 * @return receipt about this transaction
+	 * @throws SQLException
+	 * @throws IllegalArgumentException
+	 */
+	public Receipt makePaymentByCard(int reserve_id, int customer_id, BigDecimal balance, String amount) throws SQLException, IllegalArgumentException {
 		//amount_paid cannot be more than amount_owning when paying by card
-		 
+		BigDecimal amount_paid = new BigDecimal(amount);
 		
+		//check if the amount_paid is more than balance
+		if (amount_paid.compareTo(balance) == 1){
+			throw new IllegalArgumentException("amount paid cannot exceeds amount owning when paying by card");
+		}
+		else if (amount_paid.compareTo(new BigDecimal("0")) == -1){
+			throw new IllegalArgumentException("amount paid cannot be negative");
+		}
+		return generalPayment(reserve_id, customer_id,balance,amount);
+	}
+	
+	/**
+	 * A customer pays for reservation by using points
+	 * @param reserve_id
+	 * @param customer_id
+	 * @param vehicle_type 
+	 * @param balance
+	 * @param points
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws SQLException 
+	 */
+	public Receipt makePaymentBySRP(int reserve_id, int customer_id, String vehicle_type, BigDecimal balance,  int points) throws IllegalArgumentException, SQLException
+	{
+		//calculate the equivalent price of this amount of points
+		//check if the amount_paid is more than balance
+		BigDecimal amount_paid;
+		BigDecimal change;
+		try{
+			amount_paid = pointsToAmount(points,vehicle_type);
+		}
+		catch (IllegalArgumentException e){
+			throw e;
+		}
+		if (!is_super_rent(customer_id)){
+			throw new IllegalArgumentException("customer must be a super club member to access his/her points");
+		}
+		else if (amount_paid.compareTo(balance) == 1){
+			throw new IllegalArgumentException("amount paid cannot exceeds amount owning when paying by card");
+		}
+		else if (amount_paid.compareTo(new BigDecimal("0")) == -1){
+			throw new IllegalArgumentException("amount paid cannot be negative");
+		}
+
+		synchronized(this){
+			db.deductSRPoints(customer_id, points);
+			change = balance.subtract(amount_paid).setScale(2, RoundingMode.CEILING);
+			db.addToBalance(reserve_id, change);
+			System.out.println(balance+" "+amount_paid+" "+change);
+//			System.exit(0);
+		}
+		
+		String payment_info = "Payment by SuperRent Points: " +points+"\n";
+		payment_info += "Amount owning after payment: "+change+"\n";
+		String basic_info = db.getReservationInReceiptForm(reserve_id);
+		
+		Receipt receipt = new Receipt(-1, customer_id, basic_info, payment_info);
+		db.addReceipt(receipt);
+		return receipt;
+	}
+	
+	/**
+	 * Customer pays for reservation by cash, it is possible to give change
+	 * @param reserve_id
+	 * @param customer_id
+	 * @param balance
+	 * @param amount
+	 * @return
+	 * @throws SQLException 
+	 */
+	public Receipt makePaymentCash(int reserve_id, int customer_id, BigDecimal balance,
+			String amount) throws SQLException {	
+		BigDecimal amount_paid = new BigDecimal(amount);
+		//check if the amount_paid is negative, it can exceeds balance
+		if (amount_paid.compareTo(new BigDecimal("0")) == -1){
+			throw new IllegalArgumentException("amount paid cannot be negative");
+		}
+		return generalPayment(reserve_id, customer_id,balance,amount);
+	}
+
+	/**
+	 * Helper for makePaymentCash and makePaymentCard, because they are very similar except
+	 * the latter does not allow change to be given back
+	 * @param reserve_id
+	 * @param customer_id
+	 * @param balance
+	 * @param amount
+	 * @return
+	 * @throws SQLException
+	 */
+	private Receipt generalPayment(int reserve_id, int customer_id, BigDecimal balance,
+			String amount) throws SQLException{
 		String payment_info = "";
 		String basic_info = "";
-		int customer_id = reservation.getCustomerAccountID();
-		//System.out.println(reservation.getID());
-		Account a = db.getReservationAccount(reservation.getID());
-		//System.out.println(a.toString());
-		String customer_username = a.getLoginId();
-		
+		BigDecimal amount_paid = new BigDecimal(amount);
 		//if we have a super rent customer, then he/she will earn points in this transaction
-		if (am.is_super_rent(customer_id)){
-			int points = AmountToPoints(amount_paid);
-			am.accumulatePoints(customer_username, points);
+		synchronized(this){
+			if (is_super_rent(customer_id)){
+			int points = amountToPoints(amount_paid);
+			db.addSRPoints(customer_id, points);
 			payment_info += "Earning points: "+points+"\n";
-			payment_info += "Current points: "+am.getPoints(customer_id)+"\n";
+			}
+			//we have got a normal customer
+			BigDecimal change = balance.subtract(amount_paid).setScale(2, RoundingMode.CEILING);
+			//set this balance to database
+			db.addToBalance(reserve_id, change);
+			//add this to the receipt
+			payment_info += "Payment by credit: "+amount_paid+"\n";
+			payment_info += "Amount owning after payment: "+change+"\n";
 		}
-		//we have got a normal customer
-		MathContext mc = new MathContext(2); // 2 precision
-		BigDecimal change = reservation.getBalance().subtract(amount_paid, mc);
-		//add this to the receipt
-		payment_info += "Payment by credit: "+amount_paid+"\n";
-		payment_info += "Amount owning after payment: "+change+"\n";
+		//System.exit(0);
 		
 		//set up basic information too
-		basic_info += db.getReservationInReceiptForm(reservation.getID());
+		basic_info += db.getReservationInReceiptForm(reserve_id);
 		
 		//now set up a new receipt object and returns it
 		Receipt receipt = new Receipt(-1, customer_id, basic_info, payment_info);
@@ -347,28 +444,46 @@ public class PaymentManager {
 		db.addReceipt(receipt);
 		return receipt;
 	}
-	
-	public Receipt makePaymentBySRP(Reservation reservation, BigDecimal totalPrice) throws Exception
-	{
-		int customer_id = reservation.getCustomerAccountID();
-		BigDecimal customerSRP = new BigDecimal(db.checkSRPoints(customer_id));
-		
-		// checks if enough points
-		if(customerSRP.compareTo(totalPrice) == -1)
-		{
-			throw new Exception("Insufficient Points");
+	/**
+	 * Checks for type of rental and get the equivalent amount 
+	 * @param points
+	 * @param vehicle_type 
+	 * @pre must be multiple of 1000 or 1500
+	 * @return
+	 * @throws SQLException 
+	 */
+	private BigDecimal pointsToAmount(int points, String vehicle_type) throws IllegalArgumentException, SQLException{
+		// TODO Auto-generated method stub
+		//remember to set the price if not already set
+		if (!priceList.getIsSet("car")){
+			priceList.setCarPrice(db.getAllCarPrice());
+			priceList.setIsSet("car");
 		}
+		if (!priceList.getIsSet("truck")){
+			priceList.setTruckPrice(db.getAllTruckPrice());
+			priceList.setIsSet("truck");
+		}
+		// check type of reserved_vehicle
+		int points_per_day;
+		if (priceList.isLowerEndVehicle(vehicle_type)){
+			points_per_day = 1000;
+		}
+		else{
+			points_per_day = 1500;
+		}
+		int days = points / points_per_day;
+//		System.out.println(vehicle_type+" "+days+" "+ points % points_per_day);
+//		System.exit(0);
+		if (points % points_per_day != 0){
+//			System.out.println("I am here");
+//			System.exit(0);
+			throw new IllegalArgumentException("Points spend has to be multiple of 1000 or 1500 depending on vehicle type");
+		}
+		BigDecimal dailyprice = priceList.getDailyPrice(vehicle_type);
 		
-		// round price up to nearest whole number
-		BigDecimal scaled = totalPrice.setScale(0, RoundingMode.CEILING);
-		db.deductSRPoints(customer_id, scaled.intValueExact());
-		
-		String payment_info = "Payment by SuperRent Points: " +scaled.intValueExact();
-		String basic_info = db.getReservationInReceiptForm(reservation.getID());
-		
-		Receipt receipt = new Receipt(-1, customer_id, basic_info, payment_info);
-		db.addReceipt(receipt);
-		return receipt;
+		return dailyprice.multiply(new BigDecimal(days)).setScale(2, RoundingMode.CEILING);
+//		System.out.println(vehicle_type);
+//		System.exit(0);
 	}
 
 	/**
@@ -376,7 +491,7 @@ public class PaymentManager {
 	 * @param amount_paid
 	 * @return
 	 */
-	private int AmountToPoints(BigDecimal amount_paid) {
+	private int amountToPoints(BigDecimal amount_paid) {
 		// TODO Auto-generated method stub
 		return Integer.valueOf(amount_paid.divide(CONVERSION_RATE,RoundingMode.FLOOR).intValue());
 	}
@@ -446,9 +561,17 @@ public class PaymentManager {
 		return priceList.getExtraChargePrice(type);
 	}
 	
-	//need to calculate insurance price
-	
-	//
-	
-	
+	/**
+	 * Checks if a customer is of type Super Customer
+	 * @param account_id
+	 * @return
+	 * @throws SQLException 
+	 */
+	private boolean is_super_rent(int account_id) throws SQLException{
+		Account a = db.getAccountFromID(account_id);
+		if (a instanceof SuperCustomer){
+			return true;
+		}
+		return false;
+	}
 }

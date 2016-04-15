@@ -22,7 +22,7 @@ public class RentalFacadeTest {
 		eq[1] = 2;
 		
 		try {
-			rf.createReservation("2016-4-9", "2016-4-10", 1 , eq , 2, 3, 1);
+			rf.createReservation("2016-4-9", "2016-4-10", 1 , eq , 2, 3, 1, false);
 			
 			Reservation r = rf.findReservations(18);
 			System.out.println(r.toString());

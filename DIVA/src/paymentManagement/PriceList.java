@@ -107,4 +107,50 @@ public class PriceList {
 			System.out.println();
 		}
 	}
+
+	public BigDecimal getExtraChargePrice(String type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * Get the type of daily price for a vehicle type
+	 * @param vehicle_type
+	 * @return
+	 */
+	public boolean isLowerEndVehicle(String type) throws IllegalArgumentException{
+		// TODO Auto-generated method stub
+		int i = Arrays.asList(CAR_TYPE).indexOf(type);
+		int j = Arrays.asList(TRUCK_TYPE).indexOf(type);
+		
+		if (i == -1 && j == -1){
+			throw new IllegalArgumentException(type+" is not of category car or truck");
+		}
+		else if (i >=0 && i <= 5){
+			return true; //lower end, until premium
+		}
+		else {
+			return false; //higher end
+		}
+	}
+
+	/**
+	 * Get daily price of a vehicle of car or of truck
+	 * @param vehicle_type
+	 * @return
+	 */
+	public BigDecimal getDailyPrice(String type) {
+		int i = Arrays.asList(CAR_TYPE).indexOf(type);
+		int j = Arrays.asList(TRUCK_TYPE).indexOf(type);
+		
+		if (i == -1 && j == -1){
+			throw new IllegalArgumentException(type+" is not of category car or truck");
+		}
+		else if (i >=0 && j == -1){
+			return price_car[i][1];
+		}
+		else {
+			return price_truck[j][1];
+		}
+	}
 }

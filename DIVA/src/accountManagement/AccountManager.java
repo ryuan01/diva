@@ -1,6 +1,5 @@
 package accountManagement;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import databaseManagement.DatabaseManager;
@@ -144,27 +143,12 @@ public class AccountManager {
 		dbConnection.modifyPassword(userName,newPassword);
 	}
 	
-	/**
-	 * Checks if a customer is of type Super Customer
-	 * @param account_id
-	 * @return
-	 */
-	public boolean is_super_rent(int account_id){
-		//dbConnection.
-		return false;
-	}
-	
 	public void usePoints(int account_id, int points){
 		//dbConnection.
 	}
 
-	/**
-	 * Get a customer's current available points according to its ID
-	 * @param customer_id
-	 * @return
-	 */
-	public int getPoints(int customer_id) {
+	public void accumulatePoints(int customer_id, int points) {
 		// TODO Auto-generated method stub
-		return 0;
+		
 	}
 }

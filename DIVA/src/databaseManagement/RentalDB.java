@@ -9,6 +9,9 @@ import rentalManagement.AccidentReport;
 import rentalManagement.Rental;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
+import systemManagement.Branch;
+import vehicleManagement.Car;
+import vehicleManagement.Vehicle;
 
 /**
  * RentalDB deals with creation, deletion, and modification related to reservations
@@ -35,7 +38,7 @@ class RentalDB {
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
   		
-		String query = "SELECT `reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `vehicle_id`, `balance` FROM `reservation`"
+		String query = "SELECT `reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `vehicle_id`, `balance`, `withInsurance` FROM `reservation`"
 				+" WHERE `reservation_id` = "+rNum +";";
         ResultSet rs = stmt.executeQuery(query);
         Reservation r = null;
@@ -49,6 +52,7 @@ class RentalDB {
         	int end_branch = rs.getInt("end_branch");
         	int vehicle_id = rs.getInt("vehicle_id");
         	BigDecimal balance = rs.getBigDecimal("balance");
+        	boolean withInsurance = rs.getBoolean("withInsurance");
         	ArrayList<Integer> equipments = executeQueryEquipments(rNum);
         	
         	//conversion
@@ -57,7 +61,7 @@ class RentalDB {
         		eqlist[i] = equipments.get(i).intValue();
         	}
         	//create a resevation 
-        	r = new Reservation(start_date, end_date, vehicle_id, eqlist, start_branch,end_branch,customer,id, balance);
+        	r = new Reservation(start_date, end_date, vehicle_id, eqlist, start_branch,end_branch,customer,id, balance,withInsurance);
         }
     	return r;
 	}
@@ -456,6 +460,7 @@ class RentalDB {
 		int endBranchID;
 		int customerID;
 		BigDecimal balance;
+		boolean isInsurance;
 		
 		// rental object variables
 		boolean is_paid_rental;
@@ -497,12 +502,13 @@ class RentalDB {
 			endBranchID = rs.getInt("end_branch");
 			customerID = rs.getInt("customer");
 			balance = new BigDecimal(rs.getDouble("balance"));
+			isInsurance = rs.getBoolean("withInsurance");
 			
 			
 			// String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, 
 			 //int id, BigDecimal amount)
 			reservation = new Reservation(startDate, endDate, vehicleID, equipmentArray,
-			startBranchID, endBranchID, customerID, rentID, balance);
+			startBranchID, endBranchID, customerID, rentID, balance,isInsurance);
 			
 			// 3- get rental
 			query = "SELECT * FROM `rental` "
@@ -522,6 +528,12 @@ class RentalDB {
 		}
 	}
 	
+	/**
+	 * Change the balance of reservation to the new one
+	 * @param rental_id reservation_id
+	 * @param balance new balance
+	 * @throws SQLException
+	 */
 	void addToBalance(int rental_id, BigDecimal balance) throws SQLException{
 		Connection conn;
 		Statement stmt;
@@ -529,21 +541,17 @@ class RentalDB {
 		
 		query = "UPDATE `reservation` SET balance = " + balance + " "
 				+ "WHERE reservation_id = " + rental_id + ";";
-		
+//		System.out.println(query);
+//		System.exit(0);
 		dbm.connect();
+
+		conn = dbm.getConnection();
+		stmt = conn.createStatement();
 		
-		if (isValidRent(rental_id)){
-			conn = dbm.getConnection();
-			stmt = conn.createStatement();
-		
-			stmt.executeUpdate(query);
+		stmt.executeUpdate(query);
 			
-			stmt.close();
-			dbm.disconnect();
-		} else{
-			dbm.disconnect();
-			throw new Error("Rent id is not available");
-		}
+		stmt.close();
+		dbm.disconnect();
 	}
 	
 	void setIs_paid_extra_charge(int rental_id, boolean setValue) throws SQLException{

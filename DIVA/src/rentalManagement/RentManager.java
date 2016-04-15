@@ -58,13 +58,15 @@ class RentManager {
 		/**
 		 * Pay for rental, add record, produce receipt, decrease amount owning in rental
 		 * @param rental_id
-		 * @param amount
+		 * @param amount_paid
 		 * @throws SQLException 
 		 */
-		Receipt payForRentalByCard(int reserve_id, BigDecimal amount) throws SQLException {
+		Receipt payForRentalByCard(int reserve_id, String amount_paid) throws SQLException {
 			// TODO Auto-generated method stub
 			Reservation r = dbConnection.searchReservationEntry(reserve_id);
-			Receipt receipt = pm.makePaymentByCard(r, amount);
+			BigDecimal balance = r.getBalance();
+			int customer_id = r.getCustomerAccountID();
+			Receipt receipt = pm.makePaymentByCard(reserve_id, customer_id, balance, amount_paid);
 			return receipt;
 		}
 
@@ -74,19 +76,24 @@ class RentManager {
 		 * @param points
 		 * @throws Exception 
 		 */
-		 Receipt payForRentalByPoints(int id, int points) throws Exception{
-			Reservation r = dbConnection.searchReservationEntry(id);
-			BigDecimal price = pm.totalPreTax(r);
-			BigDecimal total = pm.applyTax(price);
-			return pm.makePaymentBySRP(r, total);
+		Receipt payForRentalByPoints(int reserve_id, int points) throws Exception{
+			Reservation r = dbConnection.searchReservationEntry(reserve_id);
+			BigDecimal balance = r.getBalance();
+			int customer_id = r.getCustomerAccountID();
+			int vehicle_id = r.getVehicleID();
+			String vehicle_type = dbConnection.getTypeOfVehicle(vehicle_id);
+			return pm.makePaymentBySRP(reserve_id, customer_id, vehicle_type, balance, points);
 		}
 		/**
-		 * Pay for rental by other methods
+		 * Pay for rental by cash
 		 * @param id
 		 * @param amount
 		 */
-		void payForRentalByOther(int id, BigDecimal amount) {
-			// TODO Auto-generated method stub
+		Receipt payForRentalByCash(int reserve_id, String amount) {
+			Reservation r = dbConnection.searchReservationEntry(reserve_id);
+			BigDecimal balance = r.getBalance();
+			int customer_id = r.getCustomerAccountID();
+			return pm.makePaymentCash(reserve_id, customer_id, balance, amount);
 			
 		}
 		

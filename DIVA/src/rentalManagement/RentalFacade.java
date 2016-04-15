@@ -47,9 +47,10 @@ public class RentalFacade {
 	 * @param status Status of the Reservation.
 	 * @param reservID Reservation ID.
 	 * @throws SQLException 
+	 * @throws ParseException 
 	 */
 	public void createReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, boolean insurance) throws SQLException 
+			int customerID, boolean insurance) throws SQLException, ParseException 
 	{
 		//balance need to be re-calculated for security purpose 
 		reservMan.addReservation(startD,endD,vehicleID,equipIDs,startBranchID, endBranchID, 
@@ -169,11 +170,12 @@ for when the customer comes in the store to pick up a reservation.
 	 * Let customer or super customer pays for a rental by card on file
 	 * @param rental_id refers to a rental
 	 * @param amount_paid amount that the customer wishes to pay
+	 * @return 
 	 * @throws SQLException
 	 */
-	public void payForRentalByCard(int reserve_id, String amount_paid) throws SQLException{
-		BigDecimal amount = new BigDecimal(amount_paid);
-		rentMan.payForRentalByCard(reserve_id, amount);
+	public Receipt payForRentalByCard(int reserve_id, String amount_paid) throws SQLException{
+		//done
+		return rentMan.payForRentalByCard(reserve_id, amount_paid);
 	}
 		
 	/**
@@ -183,17 +185,19 @@ for when the customer comes in the store to pick up a reservation.
 	 * @throws Exception 
 	 */
 	public Receipt payForRentalByPoints(int reserve_id, int points) throws Exception{
+		//done
 		return rentMan.payForRentalByPoints(reserve_id,points);
 	}
 	
 	/**
-	 * Let custmomer or super customer pay by rental by other methods
+	 * Let custmomer or super customer pay by rental by cash
 	 * @param rental_id
 	 * @param amount
 	 * @throws SQLException
 	 */
-	public void payForRentalByOther(int reserve_id, BigDecimal amount) throws SQLException{
-		rentMan.payForRentalByOther(reserve_id,amount);
+	public void payForRentalByCash(int reserve_id, String amount) throws SQLException{
+		//need to check
+		rentMan.payForRentalByCash(reserve_id,amount);
 	}
 	
 	public void changeRentalStatus(int rentalID, boolean status) throws SQLException{
@@ -203,6 +207,18 @@ for when the customer comes in the store to pick up a reservation.
 	public Rental searchForRental(int rentID) throws SQLException{
 		// call RentManager.searchForRental --> DatabaseManager --> RentalDB
 		return rentMan.getRental(rentID);
+	}
+	
+	/**
+	 * Checks if the balance is 0
+	 * @param rentID
+	 * @throws SQLException
+	 */
+	public boolean readyToLeave(int rentID) throws SQLException{
+		//todo
+		//if the balance is 0, then set is_paid_rental to true and let someone leave, return true
+		//else return false
+		return false;
 	}
 	
 //---------------------------return related-------------------------------------
@@ -262,11 +278,8 @@ for when the customer comes in the store to pick up a reservation.
 	
 	public void createAccidentReport(int clerkID, String accident_date, String description, int rentalID, String address, 
 			String city, String province, String zipcode, String driver, BigDecimal amount){
+		//todo
 		returnMan.createAccidentReport(clerkID,accident_date,description,rentalID,address,city,province,zipcode,driver,amount);
-	}
-	
-	public void payForExtraCharge(int rental_id, BigDecimal amount){
-		returnMan.payForExtraCharge(rental_id,amount);
 	}
 	
 	/**
