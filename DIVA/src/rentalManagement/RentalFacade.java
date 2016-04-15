@@ -15,12 +15,14 @@ public class RentalFacade {
 	private RentManager rentMan;
 	private ReturnManager returnMan;
 	private java.text.SimpleDateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+	private DatabaseManager db;
 	
 	public RentalFacade()
 	{
 		reservMan = new ReserveManager();
 		rentMan = new RentManager();
 		returnMan = new ReturnManager();
+		db = DatabaseManager.getInstance();
 	}
 	
 	//---------------------------reservation related-------------------------------------
@@ -110,12 +112,14 @@ public class RentalFacade {
 	//---------------------------rental related-------------------------------------	
 /*
 for when the customer comes in the store to pick up a reservation.
-	1. get customer account
-	2. get reservation
+	1. done: get customer account
+	2. done: get reservation
 	3. create inspection report (change in DB to refer to reservation instead) Robin needs to change that
-	3. pay for rental 
+	3. SRP done: pay for rental 
 	4. create rental <-- set is_paid_rental = true
 */
+	
+	
 	/**
 	 * Begins the Rental.
 	 * @param reservID Reservation ID of a Rental to be started, calls Database to record rental.
@@ -132,8 +136,14 @@ for when the customer comes in the store to pick up a reservation.
 		 *  				DatabaseManager.searchFoRental(rentalID)
 		 *  				DatabaseManager.changeRentalStatus(rentalID, boolean isPaid)
 		 */
-
 		//it is assumed that the start_date and end_date are the same as reservation.
+		Reservation r = db.searchReservationEntry(reservationID);
+		
+		if(r.getBalance().equals(BigDecimal.ZERO) == true)
+		{
+			rentMan.createRental(reservationID, clerkID, true, false);
+		}
+		
 		rentMan.createRental(reservationID, clerkID, false, false);
 	}
 	/**
@@ -165,11 +175,14 @@ for when the customer comes in the store to pick up a reservation.
 	 * Let super customer pays for a rental, Assumes price and taxes has been calculated
 	 * @param rental_id
 	 * @param points
-	 * @throws SQLException
-	 * @throws ParseException 
+	 * @throws Exception 
 	 */
-	public Receipt payForRentalByPoints(int reserve_id, int points) throws SQLException, ParseException{
-		return rentMan.payForRentalByPoints(reserve_id,points);
+	public Receipt payForRentalByPoints(int reserve_id, int points) throws Exception{
+		Receipt r =  rentMan.payForRentalByPoints(reserve_id,points);
+		Rental rental = db.getRentalFromReservation(reserve_id);
+		rental.setIsPaidRental(true);
+		db.updateRentalPayStatus(reserve_id, true);
+		return r;
 	}
 	
 	/**

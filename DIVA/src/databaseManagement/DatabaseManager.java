@@ -296,6 +296,10 @@ public class DatabaseManager {
 		return reDB.getRental(rentID);
 	}
 	
+	public Rental getRentalFromReservation(int reservID) throws SQLException{
+		return reDB.getRental(reservID);
+	}
+	
 	/**
 	 * Get the account for the rental, for calculating price purpose
 	 * @param rental_id
