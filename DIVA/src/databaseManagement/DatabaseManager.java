@@ -404,7 +404,7 @@ public class DatabaseManager {
 	 * @throws SQLException 
 	 */
 	public Account[] searchAccountEntries(String parameter) throws SQLException{
-		// Needs to be done
+		//done
 		return accDB.getAccounts(parameter);
 	}
 	
@@ -660,19 +660,28 @@ public class DatabaseManager {
 	public void setAllCarPrice(){
 		
 	}
+	
 	public void setAllTruckPrice(){
 		
 	}
+	
 	public void setAllEquipmentPrice(){
 		
 	}
 	//sammy: we need to search receipt based on customer_id
-	public Receipt searchReceipt(int customer_id){
-		return null;
+	public Receipt searchReceipt(int customer_id) throws SQLException, Error{
+		return prDB.getReceipt(customer_id);
 	}
+	
 	//sammy: please create a database table for `receipt` that contains the private variables of `receipt` object
-	public void addReceipt(Receipt receipt) {
-		// TODO Auto-generated method stub
+	/**
+	 * @author saud (sammy) almahri
+	 * @param receipt
+	 * @throws SQLException
+	 * @throws Error
+	 */
+	public void addReceipt(Receipt receipt) throws SQLException, Error {
+		prDB.addReceipt(receipt);
 		
 	}
 	

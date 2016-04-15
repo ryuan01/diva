@@ -54,8 +54,10 @@ public class PaymentManager {
 	 * @param duration
 	 * @param dropoff_location
 	 * @return receipt
+	 * @throws Error 
+	 * @throws SQLException 
 	 */
-	public Receipt create_new_Receipt(int customerID, String basicInfo, String paymentInfo){
+	public Receipt create_new_Receipt(int customerID, String basicInfo, String paymentInfo) throws SQLException, Error{
 		Receipt receipt = new Receipt(-1,customerID,basicInfo,paymentInfo);
 		db.addReceipt(receipt);
 		return receipt;
