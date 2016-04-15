@@ -127,9 +127,9 @@ public class DatabaseManager {
 		return branDB.getAllBranch();
 	}
 	
-	public boolean checkReturnBranch(int rental_id) throws SQLException{
+	public boolean checkReturnBranch(int rental_id, int current_return_branch) throws SQLException{
 		
-		return branDB.checkReturnBranch(rental_id);
+		return branDB.checkReturnBranch(rental_id, current_return_branch);
 	}
 	
 	public BigDecimal addWrongReturnBranchExtraCharge(int rental_id) throws SQLException {
@@ -170,9 +170,7 @@ public class DatabaseManager {
 	 */
 	public String getTypeOfEquipment(int equipment_id) throws SQLException
 	{
-		//sammy please implement this one, I am not sure who started this method.
-		Equipment e = eqDB.search(equipment_id);
-		return e.getType();
+		return eqDB.getEquipmentType(equipment_id);
 	}
    
 /*----------------------------------------RentalDB--------------------------------------------*/
@@ -208,16 +206,6 @@ public class DatabaseManager {
 	public void removeReservationEntry(int reservID) throws SQLException, NullPointerException {
 		reDB.removeReservation(reservID);
 	}
-
-	/**
-	 * 
-	 */
-	public boolean checkReservationBalance(int reservation_id){
-		// Used getBalance method instead; can do the same job (sammy)
-		// return reDB.checkReservationBalance(reservation_id);
-		return false;
-	}
-	
 	
 	/**
 	 * Search database for a reservation
@@ -235,9 +223,9 @@ public class DatabaseManager {
 	 * @param state: ENUM('before_rental','after_rental')
 	 * @throws SQLException
 	 */
-	public void addReport(Report r, String state) throws SQLException
+	public void addReport(Report r) throws SQLException
 	{
-		reDB.createInspectionReport(r, state);
+		reDB.createInspectionReport(r);
 	}
 	
 	/**
@@ -293,8 +281,8 @@ public class DatabaseManager {
 	 * @param is_paid_extra_charge
 	 * @throws SQLException
 	 */
-	public void createRental(int reserveID, int clerkID, boolean is_paid_rental, boolean is_paid_extra_charge) throws SQLException {
-		reDB.createRental(reserveID, clerkID, is_paid_rental, is_paid_extra_charge);
+	public void createRental(int reserveID, int clerkID, boolean is_paid_rental) throws SQLException {
+		reDB.createRental(reserveID, clerkID, is_paid_rental);
 	}
 	
 	/**
@@ -331,38 +319,40 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * Returns a string made from 
-	 * @param id
-	 * @return
+	 * Adding to balance 
+	 * @param rental_id
+	 * @param balance
+	 * @throws SQLException
 	 */
+<<<<<<< HEAD
 	public String getReservationInReceiptForm(int id) {
 		// 
 		return null;
 	}
 	
+=======
+>>>>>>> refs/remotes/origin/master
 	public void addToBalance(int rental_id, BigDecimal balance) throws SQLException{
 		reDB.addToBalance(rental_id, balance);
 	}
 	
-	public void setIs_paid_extra_charge(int rental_id, boolean setValue) throws SQLException{
-		reDB.setIs_paid_extra_charge(rental_id, setValue);
+	public void modifyRentalStatus(int rental_id, boolean is_paid_extra_charge, boolean is_check_overdue,String columnName) throws SQLException{
+		reDB.modifyRentalStatus(rental_id, is_paid_extra_charge, is_check_overdue, columnName);
 	}
 	
 	public BigDecimal getBalance(int rentID) throws SQLException{
+		//System.out.println("im in dbmanager");
 		return reDB.getBalance(rentID);
 	}
-/*-----------------------------------------VehicleDB----------------------------------------------*/
+	
 	/**
-	 * Generic search of vehicle available at certain date, certain branch 
-	 * @param c
-	 * @param branch_id
-	 * @param type
-	 * @param time
-	 * @param end_date 
-	 * @param list
+	 * Get a string that represents all information regarding this reservation with descriptive information
+	 * So for example branch 1 will actually say Location: xxxx street, city, province, zipcode
+	 * @param reserve_id
 	 * @return
 	 * @throws SQLException 
 	 */
+<<<<<<< HEAD
 	public Vehicle[] search(int branch_id, String type, String start_date, String end_date) throws SQLException{
 		//System.out.println("Connected, trying to insert next");
 		Vehicle[] vlist = veDB.search(branch_id,type,start_date, end_date);
@@ -381,7 +371,33 @@ public class DatabaseManager {
 		Vehicle[] vlist = null;
 		if (type.equals("car")){
 			vlist = veDB.searchOverdueCars(branch_id);
+=======
+	public String getReservationInReceiptForm(int reserve_id) throws SQLException {
+		// TODO Auto-generated method stub
+		//get reservation
+		Reservation r = reDB.reservationQuery(reserve_id);
+		//get customer 
+		String username = accDB.getUserNameFromId(r.getCustomerAccountID());
+		Account customer = accDB.getAccounts(username)[0];
+		//get branches
+		Branch start_branch = branDB.getBranch(r.getStartBranchID());
+		Branch end_branch = branDB.getBranch(r.getEndBranchID());
+		//get vehicle
+		Vehicle reserved_vehicle = veDB.search(r.getVehicleID());
+		
+		String basic_info = "\nStart date: "+ r.getStartingDate()+"\n"
+							+"End date: "+r.getEndDate()+"\n"
+							+"Customer name: "+customer.getFirstname()+" "+customer.getLastname()+"\n"
+							+"Start branch: "+start_branch.getFullAddress()+"\n"
+							+"End branch: "+end_branch.getFullAddress()+"\n"
+							+"Vehicle: "+reserved_vehicle.getVehicleClass()+" "+reserved_vehicle.getManufacturer()+" "+reserved_vehicle.getModel()+" "+reserved_vehicle.getYear()+"\n";
+		//get equipments
+		int[] equipment_id = r.getEquipments();
+		for (int i=0; i<equipment_id.length;i++){
+			basic_info += "Equipment: "+eqDB.getEquipmentType(equipment_id[i])+"\n";
+>>>>>>> refs/remotes/origin/master
 		}
+<<<<<<< HEAD
 		else if (type.equals("truck")){
 			vlist = veDB.searchOverdueTrucks(branch_id);
 		}
@@ -423,6 +439,9 @@ public class DatabaseManager {
 	{
 		Vehicle v = veDB.search(vehicle_id);
 		return v.getVehicleClass();
+=======
+		return basic_info;
+>>>>>>> refs/remotes/origin/master
 	}
 	
 /*---------------------------------------Account related----------------------------------------------*/
@@ -490,23 +509,47 @@ public class DatabaseManager {
 		reDB.changeRentalStatus(rentalID, status);
 	}
 	
+	/**
+	 * Adding points to a customer's account according to its username
+	 * @param userName
+	 * @param points
+	 * @throws SQLException
+	 */
 	public void addSRPoints(String userName, int points) throws SQLException
 	{
 		accDB.addSRPoints(userName, points);
 	}
-	
-	public void deductSRPoints(int customerAccountID, int points) throws SQLException
-	{
-		// same as addSRSPoints, but with negative values (the method above)
+
+	/**
+	 * Adding points to a super customer's account according to its ID
+	 * @param customer_id
+	 * @param points
+	 * @throws SQLException 
+	 */
+	public void addSRPoints(int customer_id, int points) throws SQLException {
+		// TODO Auto-generated method stub
+		String username = accDB.getUserNameFromId(customer_id);
+		accDB.addSRPoints(username, points);
 	}
 	
-	public int checkSRPoints(int customerAccountID)
+	/**
+	 * Deduct points to a super customer's account according to its ID
+	 * @param customerAccountID
+	 * @param points
+	 * @throws SQLException
+	 */
+	public void deductSRPoints(int customer_id, int points) throws SQLException
 	{
-		return 0;
+		String username = accDB.getUserNameFromId(customer_id);
+		accDB.addSRPoints(username, -points);
 	}
 		
 	public void modifyPassword(String userName, String newPassword) throws SQLException{
 		accDB.modifyPassword(userName, newPassword);
+	}
+	
+	public String getUsernameFromId(int id) throws SQLException{
+		return accDB.getUserNameFromId(id);
 	}
 
 /*---------------------------------------Used By vehicleDB------------------------------*/
@@ -580,6 +623,78 @@ public class DatabaseManager {
 			throw new IllegalArgumentException("Vehicle can only be of 'car' or 'truck");
 		}
 	}
+	/**
+	 * Generic search of vehicle available at certain date, certain branch 
+	 * @param c
+	 * @param branch_id
+	 * @param type
+	 * @param time
+	 * @param end_date 
+	 * @param list
+	 * @return
+	 * @throws SQLException 
+	 */
+	public Vehicle[] search(int branch_id, String type, String start_date, String end_date) throws SQLException{
+		//System.out.println("Connected, trying to insert next");
+		Vehicle[] vlist = veDB.search(branch_id,type,start_date, end_date);
+		return vlist;
+	}
+	
+	/**
+	 * Searching for overdue trucks or cars (today)
+	 * @param branch_id
+	 * @param type
+	 * @return
+	 * @throws SQLException
+	 */
+	public Vehicle[] search(int branch_id, String type) throws SQLException {
+		// TODO Auto-generated method stub
+		Vehicle[] vlist = null;
+		if (type.equals("car")){
+			vlist = veDB.searchOverdueCars(branch_id);
+		}
+		else if (type.equals("truck")){
+			vlist = veDB.searchOverdueTrucks(branch_id);
+		}
+		else{
+			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
+		}
+		return vlist;
+	}
+	
+	/**
+	 * 
+	 * @param branch_id
+	 * @param type
+	 * @return
+	 * @throws SQLException
+	 */
+	public Vehicle[] searchForSale(int branch_id, String type) throws SQLException {
+		// TODO Auto-generated method stub
+		Vehicle[] vlist = null;
+		if (type.equals("car")){
+			vlist = veDB.searchForsaleCars(branch_id);
+		}
+		else if (type.equals("truck")){
+			vlist = veDB.searchForsaleTrucks(branch_id);
+		}
+		else{
+			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
+		}
+		return vlist;
+	}
+	
+	/**
+	 * Get the type of vehicle according to its vehicle ID
+	 * @param vehicle_id
+	 * @return
+	 * @throws SQLException
+	 */
+	public String getTypeOfVehicle(int vehicle_id) throws SQLException
+	{
+		Vehicle v = veDB.search(vehicle_id);
+		return v.getVehicleClass();
+	}
 	
 /* -------------------------------------------PriceDB--------------------------------------------*/
 	
@@ -642,11 +757,6 @@ public class DatabaseManager {
 		
 	}
 	
-	//sammy: please create a database table for `extra_charge` that contains the following
-	//type	amount
-	//wrong_branch	100.00
-	//gas_tank		0.60 (used to calculate per liter)
-	//overdue		30.00 (used to calculate overdue per day)
 	public BigDecimal[][] getAllExtraChargePrice() {
 		// TODO Auto-generated method stub
 		return null;
@@ -670,5 +780,36 @@ public class DatabaseManager {
 	public void setAllTruckInsurnacePrice(){
 		// TODO Auto-generated method stub
 		
+	}
+
+	/**
+	 * Checks if a rental has an inspection report before rental done
+	 * @param rentID
+	 * @return
+	 * @throws SQLException 
+	 */
+	public boolean hasInspectionReport(int rentID, String status) throws SQLException {
+		// TODO Auto-generated method stub
+		Report report = reDB.searchInspectionReport(rentID, status);
+		if (report == null){
+			return false;
+		}
+		else if (report.getReportState().equals("before_rental")){
+			return true;
+		}
+		else { //there is an after rental report, but no before rental report
+			return false;
+		}
+	}
+
+	/**
+	 * Get ID from username for any user
+	 * @param clerk_username
+	 * @return ID
+	 * @throws Exception 
+	 */
+	public int getIdFromUsername(String username) throws Exception {
+		// TODO Auto-generated method stub
+		return accDB.getIdFromUsername(username);
 	}
 }

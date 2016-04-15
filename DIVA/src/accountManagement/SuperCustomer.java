@@ -28,7 +28,7 @@ public class SuperCustomer extends Customer implements ArrayOfStringsable{
 			
 		super(customer.getFirstname(), customer.getLastname(), customer.getPhoneNumber(),
 				customer.getEmail(), customer.getLoginId(),customer.getID(), 
-				customer.getCc_num(), customer.getName_on_card(), customer.getLocation().getAddress(),
+				customer.getCc_num(), customer.getExpireDate(),customer.getName_on_card(), customer.getLocation().getAddress(),
 				customer.getLocation().getCity(), customer.getLocation().getProvince(),
 				customer.getLocation().getZipcode(), customer.getStanding());
 		this.points = points;

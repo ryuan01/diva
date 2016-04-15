@@ -32,9 +32,9 @@ class RentManager {
 		 * @param is_paid_extra_charge
 		 * @throws SQLException
 		 */
-		void createRental(int reserveID, int clerkID, boolean is_paid_rental, boolean is_paid_extra_charge) throws SQLException {
+		void createRental(int reserveID, int clerkID, boolean is_paid_rental) throws SQLException {
 			// TODO Auto-generated method stub
-			dbConnection.createRental(reserveID,clerkID, is_paid_rental, is_paid_extra_charge);
+			dbConnection.createRental(reserveID,clerkID, is_paid_rental);
 		}
 
 		/**
@@ -51,20 +51,23 @@ class RentManager {
 		void createReport(int clerk_id, String date, String description, int rentalID, int milage, int gasLevel,
 				String status) throws SQLException {
 			// TODO Auto-generated method stub
-			Report r = new Report (clerk_id, date, description, rentalID, milage, gasLevel, -1);
-			dbConnection.addReport(r, status);
+			Report r = new Report (clerk_id, date, description, rentalID, milage, gasLevel, -1, status);
+			dbConnection.addReport(r);
 		}
 		
 		/**
 		 * Pay for rental, add record, produce receipt, decrease amount owning in rental
+		 * @param reserve_id2 
 		 * @param rental_id
-		 * @param amount
+		 * @param amount_paid
 		 * @throws SQLException 
 		 */
-		Receipt payForRentalByCard(int reserve_id, BigDecimal amount) throws SQLException {
+		Receipt payForRentalByCard(int clerk_id, int reserve_id, String amount_paid) throws SQLException {
 			// TODO Auto-generated method stub
 			Reservation r = dbConnection.searchReservationEntry(reserve_id);
-			Receipt receipt = pm.makePaymentByCard(r, amount);
+			BigDecimal balance = r.getBalance();
+			int customer_id = r.getCustomerAccountID();
+			Receipt receipt = pm.makePaymentByCard(clerk_id, reserve_id, customer_id, balance, amount_paid);
 			return receipt;
 		}
 
@@ -74,20 +77,25 @@ class RentManager {
 		 * @param points
 		 * @throws Exception 
 		 */
-		 Receipt payForRentalByPoints(int id, int points) throws Exception{
-			Reservation r = dbConnection.searchReservationEntry(id);
-			BigDecimal price = pm.totalPreTax(r);
-			BigDecimal total = pm.applyTax(price);
-			return pm.makePaymentBySRP(r, total);
+		Receipt payForRentalByPoints(int clerk_id, int reserve_id, int points) throws Exception{
+			Reservation r = dbConnection.searchReservationEntry(reserve_id);
+			BigDecimal balance = r.getBalance();
+			int customer_id = r.getCustomerAccountID();
+			int vehicle_id = r.getVehicleID();
+			String vehicle_type = dbConnection.getTypeOfVehicle(vehicle_id);
+			return pm.makePaymentBySRP(clerk_id, reserve_id, customer_id, vehicle_type, balance, points);
 		}
 		/**
-		 * Pay for rental by other methods
+		 * Pay for rental by cash
 		 * @param id
 		 * @param amount
+		 * @throws SQLException 
 		 */
-		void payForRentalByOther(int id, BigDecimal amount) {
-			// TODO Auto-generated method stub
-			
+		Receipt payForRentalByCash(int clerk_id, int reserve_id, String amount) throws SQLException {
+			Reservation r = dbConnection.searchReservationEntry(reserve_id);
+			BigDecimal balance = r.getBalance();
+			int customer_id = r.getCustomerAccountID();
+			return pm.makePaymentCash(clerk_id, reserve_id, customer_id, balance, amount);
 		}
 		
 		void changeRentalStatus(int rentalID, boolean status) throws SQLException{

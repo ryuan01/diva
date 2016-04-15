@@ -1,6 +1,5 @@
 package accountManagement;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import databaseManagement.DatabaseManager;
@@ -44,15 +43,17 @@ public class AccountManager {
 	//this need to be updated to contain address info
 	public void addCustomerAccount(String firstName, String lastName, String phoneNumber, 
 			String emailAddress, String userName, String password, 
-			long ccNum, String name_on_cc, String address,
+			String ccNum, String name_on_cc, String expire_date, String address,
 			String city, String province, String zip) throws SQLException 
 	{
+		
+		//encrypt CC number
 		
 		int id = -1; //let database auto increment id
 		// Need to add validation an dchange signature to boolean (or throw exception) -Sammy
 		Account acc = new Customer(firstName, lastName, phoneNumber, 
 				emailAddress, userName, id,
-				password, ccNum, name_on_cc,
+				password, ccNum, expire_date, name_on_cc,
 				address, city, province, zip);
 		dbConnection.createAccountEntry(acc);
 	}
@@ -142,29 +143,5 @@ public class AccountManager {
 	public void changePassword(String userName, String newPassword) throws SQLException
 	{
 		dbConnection.modifyPassword(userName,newPassword);
-	}
-	
-	/**
-	 * Checks if a customer is of type Super Customer
-	 * @param account_id
-	 * @return
-	 */
-	public boolean is_super_rent(int account_id){
-		//dbConnection.
-		return false;
-	}
-	
-	public void usePoints(int account_id, int points){
-		//dbConnection.
-	}
-
-	/**
-	 * Get a customer's current available points according to its ID
-	 * @param customer_id
-	 * @return
-	 */
-	public int getPoints(int customer_id) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }

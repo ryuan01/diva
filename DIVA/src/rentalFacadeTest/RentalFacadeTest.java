@@ -22,19 +22,19 @@ public class RentalFacadeTest {
 		eq[1] = 2;
 		
 		try {
-			rf.createReservation("2016-4-9", "2016-4-10", 1 , eq , 2, 3, 1);
+			rf.createReservation("2016-4-9 14:00:00", "2016-4-10 14:00:00", 1 , eq , 2, 3, "asdf", false);
 			
 			Reservation r = rf.findReservations(18);
 			System.out.println(r.toString());
 			
-			Reservation[] rs = rf.searchReservationForAccount(1);
+			Reservation[] rs = rf.searchReservationForAccount("something");
 			for (int i=0; i< rs.length; i++){
 				System.out.println(rs[i].toString());
 			}
 			
 			//rf.cancelSelfReservation(1, 17);
 			
-			rf.cancelAnyReservation(18);
+			//rf.cancelAnyReservation(18);
 		} catch (NullPointerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

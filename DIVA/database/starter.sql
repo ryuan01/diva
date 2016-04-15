@@ -381,3 +381,9 @@ CREATE TABLE equipment_price(
 
 ALTER TABLE equipment
 DROP FOREIGN KEY equipment_ibfk_2;
+
+ALTER TABLE reservation
+  ADD withInsurance TINYINT(1) NOT NULL DEFAULT 0;
+  
+ALTER TABLE super_customer
+ADD CHECK (points>=0)

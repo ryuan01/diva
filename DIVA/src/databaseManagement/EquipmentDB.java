@@ -78,4 +78,29 @@ class EquipmentDB {
 	    dbm.disconnect();
 	}
 
+	/**
+	 * Get a type of equipment by its ID
+	 * @param equipment_id
+	 * @return type
+	 * @throws SQLException 
+	 */
+	String getEquipmentType(int equipment_id) throws SQLException {
+		dbm.connect();
+		
+		Statement stmt = dbm.getConnection().createStatement();
+		String query = "SELECT `eq_type` FROM `equipment` WHERE "
+				+"`serial_num` ="+equipment_id;
+		//System.out.println(query);
+		ResultSet rs = stmt.executeQuery(query);
+
+		if(rs.next()){
+			
+			return rs.getString("eq_type");
+		}
+		dbm.disconnect();
+		
+		//did not find a match
+		return null;
+	}
+
 }

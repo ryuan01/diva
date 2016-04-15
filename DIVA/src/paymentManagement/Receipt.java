@@ -13,6 +13,7 @@ public class Receipt implements ArrayOfStringsable{
 
 	private int receiptId;
 	private int customer_id;
+	private int clerk_id;
 	//basic_info contains all the fields with reservation information
 	private String basic_info;
 	//payment_info contains all the fields with type of payment, how much paid, and change
@@ -23,6 +24,7 @@ public class Receipt implements ArrayOfStringsable{
 	/**
 	 *  Creates a Receipt Object initialized with the following arguments.
 	 * @param receiptId
+	 * @param clerk_id 
 	 * @param price_owning
 	 * @param amount_paid
 	 * @param change
@@ -35,9 +37,10 @@ public class Receipt implements ArrayOfStringsable{
 	 * @param pickup_branch
 	 * @param dropoff_branch
 	 */
-	public Receipt(int receiptId , int customer_id, String basic_info, String payment_info) {
+	public Receipt(int receiptId , int customer_id, int clerk_id, String basic_info, String payment_info) {
 		this.receiptId = receiptId;
 		this.customer_id = customer_id;
+		this.clerk_id = clerk_id;
 		this.basic_info = basic_info;
 		this.payment_info = payment_info;
 	}
@@ -54,6 +57,13 @@ public class Receipt implements ArrayOfStringsable{
 		this.customer_id = customer_id;
 	}
 	
+	public int getReceiptClerk(){
+		return clerk_id;
+	}
+	
+	public void setReceiptClerk(int clerk_id){
+		this.clerk_id = clerk_id;
+	}
 	public String getBasicInfo(){
 		return basic_info;
 	}
@@ -87,7 +97,7 @@ public class Receipt implements ArrayOfStringsable{
 	}
 	
 	public String toString() {
-		return "{'receiptId':'"+ this.receiptId +"', 'customer_id':'"+this.customer_id+"',"
+		return "{'receiptId':'"+ this.receiptId +"', 'customer_id':'"+this.customer_id+"'," +"', 'clerk_id':'"+this.clerk_id
 			+	"'basic_info':'"+this.basic_info+"',"+"'payment_info':'"+this.payment_info+"'}";
 	}	
 	

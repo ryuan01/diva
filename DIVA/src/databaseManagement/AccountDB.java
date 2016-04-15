@@ -45,7 +45,8 @@ class AccountDB{
 		String email;
 		
 		//customer variables
-		long ccNum;
+		String ccNum;
+		String expire_date;
 		String ccName;
 		String street;
 		String city;
@@ -68,6 +69,7 @@ class AccountDB{
 			email = customer.getEmail();
 			
 			ccNum = customer.getCc_num();
+			expire_date = customer.getExpireDate();
 			ccName = customer.getName_on_card();
 			street = customer.getLocation().getAddress();
 			city = customer.getLocation().getCity();
@@ -88,10 +90,10 @@ class AccountDB{
 					+ "\", \"" + userName + "\", \"" + password + "\");\n";
 			stmt.executeUpdate(query);
 			// insert into customer table
-			query= "INSERT INTO `customer` (`id_number`, `cc_Num`, "
+			query= "INSERT INTO `customer` (`id_number`, `cc_Num`, `expire_date`"
 					+ "`name_on_cCard`, `street_name`, `city`, "
 					+ "`province`, `zipcode`) VALUES (LAST_INSERT_ID(),\"" + ccNum
-					+ "\", \"" + ccName + "\", \"" + street + "\", \"" + city + "\", \"" + province
+					+ "\", \"" +expire_date+"\", \""+ ccName + "\", \"" + street + "\", \"" + city + "\", \"" + province
 					+ "\", \"" + zipCode + "\") ;";
 			
 			// execute the statements
@@ -296,7 +298,7 @@ class AccountDB{
 		dbm.disconnect();
 	}
 	
-	void removeAccountEntry(String username) throws SQLException{
+	void removeAccountEntry(String username) throws SQLException, IllegalArgumentException{
 		//database variables
 		Statement stmt;
 		Connection conn;
@@ -305,23 +307,27 @@ class AccountDB{
 		
 		dbm.connect();
 		
-		if(doesItExist(username, USER, EMPLOYEE))
-		{
-			query="DELETE users, employee FROM users INNER JOIN employee WHERE "
-					+ "users.id_number = employee.id_number AND "
-					+ "users.account_uName = \"" + username +"\";";
-		}else if (doesItExist(username, SUPER_CUSTOMER, USERNAME)){
-			dbm.disconnect();
-			throw new Error("can't delete customer account");
-			
+		try {
+			if(doesItExist(username, EMPLOYEE, USERNAME ))
+			{
+				query="DELETE users, employee FROM users INNER JOIN employee WHERE "
+						+ "users.id_number = employee.id_number AND "
+						+ "users.account_uName = \"" + username +"\";";
+				
+				conn = dbm.getConnection();
+				stmt = conn.createStatement();
+				
+				stmt.executeUpdate(query);
+				
+				dbm.disconnect();
+			}else {
+				dbm.disconnect();
+				throw new Error("can't delete customer account");
+				
+			}
+		} catch (IllegalArgumentException e){
+			throw e;
 		}
-		
-		conn = dbm.getConnection();
-		stmt = conn.createStatement();
-		
-		stmt.executeUpdate(query);
-		
-		dbm.disconnect();
 	}
 	
 	/**
@@ -351,7 +357,8 @@ class AccountDB{
 		String userName;
 		
 		// Custoemer variables:
-		long ccNumber;
+		String ccNumber;
+		String expire_date;
 		String nameOnCC;
 		String address;
 		String city;
@@ -423,7 +430,8 @@ class AccountDB{
 					email = rs.getString("email");
 					userName = rs.getString("Account_uName");
 					
-					ccNumber = rs.getLong("cc_Num");
+					ccNumber = rs.getString("cc_Num");
+					expire_date = rs.getString("expire_date");
 					nameOnCC = rs.getString("name_on_cCard");
 					address = rs.getString("street_name");
 					city = rs.getString("city");
@@ -433,7 +441,7 @@ class AccountDB{
 					
 					Customer customer = new Customer(firstN, lastN, phoneNum,
 							email, userName, Integer.parseInt(users),
-							ccNumber, nameOnCC, address, city, province,
+							ccNumber, expire_date, nameOnCC, address, city, province,
 							zipcode, standing);
 					
 					points = rs.getString("points");
@@ -620,12 +628,12 @@ class AccountDB{
 	 * @post true if username exists, false if it does not
 	 * @return true if the username exists
 	 */
-	private boolean doesItExist(String id, String table, String param) throws SQLException {
+	private boolean doesItExist(String id, String table, String param) throws SQLException, IllegalArgumentException {
 		// database ojbects:
 		Connection conn;
 		Statement stmt;
 		ResultSet rs;
-		
+		System.out.println(id+" "+table+" "+param);		
 		//
 		String query = "";
 
@@ -645,8 +653,6 @@ class AccountDB{
 			
 		}	else if (table.equals(USER)){
 			query = "SELECT " + param + " FROM users;";
-		} else{
-			// throw an error
 		}
 		
 		// execute the query:
@@ -658,7 +664,7 @@ class AccountDB{
 				return true;
 			}
 		}
-		return false;
+		throw new IllegalArgumentException("account does not exist");
 	}
 	
 
@@ -734,6 +740,25 @@ class AccountDB{
 		}
 		dbm.disconnect();
 		return username;
+	}
+
+	int getIdFromUsername(String username) throws Exception {
+		// TODO Auto-generated method stub
+		dbm.connect();
+		int id = -1;
+		Statement stmt = dbm.getConnection().createStatement();
+		String query = "SELECT `id_number` FROM users WHERE users.account_uName = \'"+username+"\'";
+		System.out.println(query);
+		ResultSet rs = stmt.executeQuery(query);
+		
+		if (rs.next()){
+			id = rs.getInt("id_number");
+		}
+		else{
+			throw new Exception("account username does not exist");
+		}
+		dbm.disconnect();
+		return id;
 	}
 }
 

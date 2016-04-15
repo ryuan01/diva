@@ -9,6 +9,9 @@ import rentalManagement.AccidentReport;
 import rentalManagement.Rental;
 import rentalManagement.Report;
 import rentalManagement.Reservation;
+import systemManagement.Branch;
+import vehicleManagement.Car;
+import vehicleManagement.Vehicle;
 
 /**
  * RentalDB deals with creation, deletion, and modification related to reservations
@@ -35,7 +38,7 @@ class RentalDB {
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
   		
-		String query = "SELECT `reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `vehicle_id`, `balance` FROM `reservation`"
+		String query = "SELECT `reservation_id`, `customer`, `start_date`, `end_date`, `start_branch`, `end_branch`, `vehicle_id`, `balance`, `withInsurance` FROM `reservation`"
 				+" WHERE `reservation_id` = "+rNum +";";
         ResultSet rs = stmt.executeQuery(query);
         Reservation r = null;
@@ -49,6 +52,7 @@ class RentalDB {
         	int end_branch = rs.getInt("end_branch");
         	int vehicle_id = rs.getInt("vehicle_id");
         	BigDecimal balance = rs.getBigDecimal("balance");
+        	boolean withInsurance = rs.getBoolean("withInsurance");
         	ArrayList<Integer> equipments = executeQueryEquipments(rNum);
         	
         	//conversion
@@ -57,7 +61,7 @@ class RentalDB {
         		eqlist[i] = equipments.get(i).intValue();
         	}
         	//create a resevation 
-        	r = new Reservation(start_date, end_date, vehicle_id, eqlist, start_branch,end_branch,customer,id, balance);
+        	r = new Reservation(start_date, end_date, vehicle_id, eqlist, start_branch,end_branch,customer,id, balance,withInsurance);
         }
     	return r;
 	}
@@ -127,13 +131,12 @@ class RentalDB {
 				+ "WHERE reservation_id = " + rentID + ";";
 		
 		rs = stmt.executeQuery(query);
-		rs.next();
-		
-		if (rentID == rs.getInt("reservation_id")){
-			return true;
-		}else{
-			return false;
+		if (rs.next()){
+			if (rentID == rs.getInt("reservation_id")){
+				return true;
+			}
 		}
+		return false;
 	}
 	
 	/**
@@ -327,7 +330,7 @@ class RentalDB {
 	 * @param state 
 	 * @throws SQLException 
 	 */
-	void createInspectionReport(Report r, String state) throws SQLException{
+	void createInspectionReport(Report r) throws SQLException{
 		//Report(String d, String description, int reservID, int milage, int gasLevel)
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
@@ -338,7 +341,7 @@ class RentalDB {
     				+r.getGasLevel()+", \'"
     				+r.getReportDescription()+"\', \'"
     				+r.getReportDate()+"\', \'"
-    				+state
+    				+r.getReportState()
     				+"\')";
     	System.out.println(sql);
         stmt.executeUpdate(sql);
@@ -381,17 +384,19 @@ class RentalDB {
 	 * @param is_paid_extra_charge
 	 * @throws SQLException
 	 */
-	void createRental(int reserveID, int clerkID, boolean is_paid_rental, boolean is_paid_extra_charge) throws SQLException {
+	void createRental(int reserveID, int clerkID, boolean is_paid_rental) throws SQLException {
 		// TODO Auto-generated method stub
  		dbm.connect();
  		
  		if (isValidReservation(reserveID) && !isValidRent(reserveID)){
 	  		Statement stmt = dbm.getConnection().createStatement();
-	    	String sql= "INSERT INTO `rental`(`reservation_id`, `is_paid_rental`, `is_paid_extra_charge`, `clerk_id`) VALUES ("
+	    	String sql= "INSERT INTO `rental` VALUES ("
 	    				+reserveID+", "
 	    				+is_paid_rental+", "
-	    				+is_paid_extra_charge+", "
-	    				+clerkID+")";
+	    				+false+", "
+	    				+clerkID+", "
+	    				+false+", "
+	    				+false+")";
 	    	System.out.println(sql);
 	        stmt.executeUpdate(sql);
 	        stmt.close();
@@ -456,10 +461,13 @@ class RentalDB {
 		int endBranchID;
 		int customerID;
 		BigDecimal balance;
+		boolean isInsurance;
 		
 		// rental object variables
 		boolean is_paid_rental;
 		boolean is_paid_extra_charge;
+		boolean is_check_overdue;
+		boolean is_check_return_branch;
 		
 		
 		dbm.connect();
@@ -497,12 +505,13 @@ class RentalDB {
 			endBranchID = rs.getInt("end_branch");
 			customerID = rs.getInt("customer");
 			balance = new BigDecimal(rs.getDouble("balance"));
+			isInsurance = rs.getBoolean("withInsurance");
 			
 			
 			// String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, 
 			 //int id, BigDecimal amount)
 			reservation = new Reservation(startDate, endDate, vehicleID, equipmentArray,
-			startBranchID, endBranchID, customerID, rentID, balance);
+			startBranchID, endBranchID, customerID, rentID, balance,isInsurance);
 			
 			// 3- get rental
 			query = "SELECT * FROM `rental` "
@@ -513,8 +522,10 @@ class RentalDB {
 			
 			is_paid_rental = rs.getBoolean("is_paid_rental");
 			is_paid_extra_charge = rs.getBoolean("is_paid_extra_charge");
+			is_check_overdue = rs.getBoolean("is_check_overdue");
+			is_check_return_branch = rs.getBoolean("is_check_return_branch");
 
-			rent = new Rental(reservation, is_paid_rental, is_paid_extra_charge);
+			rent = new Rental(reservation, is_paid_rental, is_paid_extra_charge,is_check_overdue,is_check_return_branch);
 			return rent;
 			
 		} else{
@@ -522,52 +533,35 @@ class RentalDB {
 		}
 	}
 	
+	/**
+	 * Change the balance of reservation to the new one
+	 * @param rental_id reservation_id
+	 * @param balance new balance
+	 * @throws SQLException
+	 */
 	void addToBalance(int rental_id, BigDecimal balance) throws SQLException{
+		//never add balance to be negative
+		//it only becomes negative when customer pays by cash, which is returned to clerk on the spot
+		if (balance.compareTo(new BigDecimal("0")) == -1){
+			balance = new BigDecimal("0");
+		}
 		Connection conn;
 		Statement stmt;
 		String query;
 		
 		query = "UPDATE `reservation` SET balance = " + balance + " "
 				+ "WHERE reservation_id = " + rental_id + ";";
-		
+//		System.out.println(query);
+//		System.exit(0);
 		dbm.connect();
+
+		conn = dbm.getConnection();
+		stmt = conn.createStatement();
 		
-		if (isValidRent(rental_id)){
-			conn = dbm.getConnection();
-			stmt = conn.createStatement();
-		
-			stmt.executeUpdate(query);
+		stmt.executeUpdate(query);
 			
-			stmt.close();
-			dbm.disconnect();
-		} else{
-			dbm.disconnect();
-			throw new Error("Rent id is not available");
-		}
-	}
-	
-	void setIs_paid_extra_charge(int rental_id, boolean setValue) throws SQLException{
-		Connection conn;
-		Statement stmt;
-		String query;
-		
-		query = "UPDATE `rental` SET `is_paid_extra_charge` = " + setValue + " "
-				+ "WHERE reservation_id = " + rental_id + ";";
-		
-		dbm.connect();
-		
-		if(isValidRent(rental_id)){
-			conn = dbm.getConnection();
-			stmt = conn.createStatement();
-			
-			stmt.executeUpdate(query);
-			
-			stmt.close();
-			dbm.disconnect();
-		}else{
-			dbm.disconnect();
-			throw new Error("Rent id is not available");
-		}
+		stmt.close();
+		dbm.disconnect();
 	}
 	
 	BigDecimal getBalance(int rentID) throws SQLException{
@@ -595,12 +589,77 @@ class RentalDB {
 			stmt.close();
 			dbm.disconnect();
 			
+			//System.out.println("balance is inside RentalDB: " +balance);
 			return balance;
 		}else{
 			dbm.disconnect();
 			throw new Error("reservation id is not available");
 		}
 		
+	}
+	
+	/**
+	 * Get an inspection report entry depending on the rental ID
+	 * @param rentID
+	 * @return
+	 * @throws SQLException 
+	 */
+	Report searchInspectionReport(int rentID, String status) throws SQLException {
+		// TODO Auto-generated method stub
+ 		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+  		
+		String query = "SELECT `report_num`, `reporting_clerk`, `rental_id`, `milage`, `gasLevel`, `comments`, `state`, `report_date`"
+					+"FROM `report` WHERE `rental_id` = "+rentID+ " AND `state` = \'"+status+"\'";
+		//System.out.println(query);
+        ResultSet rs = stmt.executeQuery(query);
+        Report r = null;
+        //parse result, assume only 1 result comes back since rNum is unique
+        if (rs.next()){
+        	int report_num = rs.getInt("report_num");
+        	int reporting_clerk = rs.getInt("reporting_clerk");
+        	int rental_id = rs.getInt("rental_id");
+        	int milage = rs.getInt("milage");
+        	int gasLevel = rs.getInt("gasLevel");
+        	String comments = rs.getString("comments");
+        	String state = rs.getString("state");
+        	String date = rs.getString("report_date");
+        	
+        	//Report(int clerk_id, String date, String description, int rentalID, int milage, int gasLevel, int report_num, String state)
+        	r = new Report(reporting_clerk, date, comments, rental_id, milage, gasLevel, report_num, state);
+        }
+        
+        //clean up
+        rs.close();
+        stmt.close();
+        dbm.disconnect();
+    	return r;
+	}
+
+	void modifyRentalStatus(int rental_id, boolean is_paid_extra_charge, boolean is_check_overdue, String columnName) throws SQLException, Error {
+		// TODO Auto-generated method stub
+		Connection conn;
+		Statement stmt;
+		String query;
+		
+		query = "UPDATE `rental` SET `is_paid_extra_charge` = " + is_paid_extra_charge + ", "
+				+"`"+columnName+"` = "+is_check_overdue
+				+ " WHERE reservation_id = " + rental_id + ";";
+		System.out.println(query);
+		dbm.connect();
+		
+		if(isValidRent(rental_id)){
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			stmt.executeUpdate(query);
+			
+			stmt.close();
+			dbm.disconnect();
+		}else{
+			dbm.disconnect();
+			throw new Error("Rent id is not available");
+		}
 	}
 
 }

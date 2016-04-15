@@ -276,6 +276,7 @@ class PriceDB {
 		 
 		 //receipt variables
 		 int receipt_id;
+		 int clerk_id;
 		 String basic_info;
 		 String payment_info;
 		 
@@ -294,10 +295,11 @@ class PriceDB {
 			 while(rs.next()){
 				 if(rs.getInt("customer_id") == customer_id){
 					 receipt_id = rs.getInt("receipt_id");
+					 clerk_id = rs.getInt("clerk_id");
 					 basic_info = rs.getString("basic_info");
 					 payment_info = rs.getString("payment_info");
 					 
-					 r = new Receipt(receipt_id, customer_id, basic_info, payment_info);
+					 r = new Receipt(receipt_id, customer_id, clerk_id, basic_info, payment_info);
 					 
 					 
 					 

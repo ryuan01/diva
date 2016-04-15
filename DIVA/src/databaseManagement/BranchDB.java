@@ -131,14 +131,12 @@ class BranchDB{
         return bArray;
 	}
 	
-	boolean checkReturnBranch(int rental_id) throws SQLException{
+	boolean checkReturnBranch(int rental_id, int current_branch_id) throws SQLException{
 		Connection conn;
 		Statement stmt;
 		ResultSet rs;
 		String query;
 		
-		//
-		int startBranch;
 		int endBranch;
 		
 		query = "SELECT start_branch, end_branch FROM `reservation` "
@@ -153,14 +151,13 @@ class BranchDB{
 			rs = stmt.executeQuery(query);
 			rs.next();
 			
-			startBranch = rs.getInt("start_branch");
 			endBranch = rs.getInt("end_branch");
 			
 			rs.close();
 			stmt.close();
 			dbm.disconnect();
 			
-			if(startBranch == endBranch){
+			if(current_branch_id== endBranch){
 				return true;
 			} else{
 				return false;
