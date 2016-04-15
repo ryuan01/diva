@@ -15,14 +15,14 @@ public class Main {
 			//acm.joinSuperClub("mjane01");
 			//acm.changePassword("jjohn00", null); 
 			
-			rf.checkOverDue(19);
+			rf.checkReturningBranch(19);
 				
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block 
 			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 		}
 		
 			 

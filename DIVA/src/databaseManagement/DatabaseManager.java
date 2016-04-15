@@ -125,6 +125,15 @@ public class DatabaseManager {
 	{
 		return branDB.getAllBranch();
 	}
+	
+	public boolean checkReturnBranch(int rental_id) throws SQLException{
+		
+		return branDB.checkReturnBranch(rental_id);
+	}
+	
+	public BigDecimal addWrongReturnBranchExtraCharge(int rental_id) throws SQLException {
+		return branDB.addWrongReturnBranchExtraCharge(rental_id);
+	}
 
 	// 
 /*----------------------------------------EquipmentDB--------------------------------------------*/

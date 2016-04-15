@@ -101,7 +101,7 @@ class ReturnManager {
 		
 		endDate = dbConnection.getReservationEndDate(rental_id);
 		
-		// How do you calculate over due?
+		// How do you calculate over due? (Sammy)
 		//newBalance = paymentManager.getOverduePrice(current_date, endDate);
 		currentBalance = dbConnection.getBalance(rental_id).add(newBalance);
 		
@@ -113,14 +113,14 @@ class ReturnManager {
 		
 	}
 
-	boolean checkReturnBranch(int rental_id) {
+	boolean checkReturnBranch(int rental_id) throws SQLException {
 		// TODO Auto-generated method stub
-		return false;
+		return dbConnection.checkReturnBranch(rental_id);
 	}
 
-	BigDecimal addWrongReturnBranchExtraCharge(int rental_id) {
+	BigDecimal addWrongReturnBranchExtraCharge(int rental_id) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return dbConnection.addWrongReturnBranchExtraCharge(rental_id) ;
 	}
 
 	void createAccidentReport(int clerkID, String accident_date, String description, int rentalID,

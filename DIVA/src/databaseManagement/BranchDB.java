@@ -1,5 +1,6 @@
 package databaseManagement;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -128,5 +129,116 @@ class BranchDB{
         Branch[] bArray = new Branch[blist.size()];
         bArray = blist.toArray(bArray);
         return bArray;
+	}
+	
+	boolean checkReturnBranch(int rental_id) throws SQLException{
+		Connection conn;
+		Statement stmt;
+		ResultSet rs;
+		String query;
+		
+		//
+		int startBranch;
+		int endBranch;
+		
+		query = "SELECT start_branch, end_branch FROM `reservation` "
+				+ "WHERE reservation_id = " + rental_id + ";";
+		
+		dbm.connect();
+		
+		if (isValidReservation(rental_id)){
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			rs = stmt.executeQuery(query);
+			rs.next();
+			
+			startBranch = rs.getInt("start_branch");
+			endBranch = rs.getInt("end_branch");
+			
+			rs.close();
+			stmt.close();
+			dbm.disconnect();
+			
+			if(startBranch == endBranch){
+				return true;
+			} else{
+				return false;
+			}
+			
+		} else{
+			dbm.disconnect();
+			throw new Error("reservation does not exist!");
+		}
+		
+	}
+	
+	BigDecimal addWrongReturnBranchExtraCharge(int rental_id) throws SQLException {
+		Connection conn;
+		Statement stmt;
+		ResultSet rs;
+		String query;
+		
+		BigDecimal extraCharge = new BigDecimal(0);
+		
+		//
+		BigDecimal currentBalance;
+		
+		
+		dbm.connect();
+		
+		if(isValidReservation(rental_id)){
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			query = "SELECT balance FROM reservation WHERE reservation_id = " + rental_id +";";
+			
+			rs = stmt.executeQuery(query);
+			rs.next();
+			
+			currentBalance = new BigDecimal(rs.getDouble("balance"));
+			currentBalance.add(extraCharge);
+			
+			rs.close();
+			
+			query = "UPDATE reservation SET balance = " + currentBalance + " "
+					+ "WHERE reservation_id = " + rental_id + ";";
+			stmt.executeUpdate(query);
+			
+			stmt.close();
+			dbm.disconnect();
+			
+			return extraCharge;
+					
+		}else{
+			dbm.disconnect();
+			throw new Error("no rental id");
+		}
+	}
+	
+	/**
+	 * isValidReservation checks if reservation number maps to a persistant reservation
+	 * @param rNum reservation number
+	 * @throws SQLException 
+	 * @pre none
+	 * @post returns true if it exists, otherwise false
+	 */
+	private boolean isValidReservation(int rNum) throws SQLException {
+		boolean isValid = false;
+ 		
+  		Statement stmt = dbm.getConnection().createStatement();		
+		String query = "SELECT `reservation_id` FROM `reservation` WHERE "
+					+ "`reservation_id` = "+ rNum;
+        ResultSet rs = stmt.executeQuery(query);
+        //parse result, as many additional equipments as possible
+        if (rs.next()){
+        	isValid = true;
+        }
+        
+        //clean up
+        rs.close();
+        stmt.close();
+
+        return isValid;
 	}
 }
