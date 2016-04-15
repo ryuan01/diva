@@ -43,9 +43,11 @@ public class AccountManager {
 	//this need to be updated to contain address info
 	public void addCustomerAccount(String firstName, String lastName, String phoneNumber, 
 			String emailAddress, String userName, String password, 
-			long ccNum, String name_on_cc, String address,
+			String ccNum, String name_on_cc, String address,
 			String city, String province, String zip) throws SQLException 
 	{
+		
+		//encrypt CC number
 		
 		int id = -1; //let database auto increment id
 		// Need to add validation an dchange signature to boolean (or throw exception) -Sammy
@@ -141,14 +143,5 @@ public class AccountManager {
 	public void changePassword(String userName, String newPassword) throws SQLException
 	{
 		dbConnection.modifyPassword(userName,newPassword);
-	}
-	
-	public void usePoints(int account_id, int points){
-		//dbConnection.
-	}
-
-	public void accumulatePoints(int customer_id, int points) {
-		// TODO Auto-generated method stub
-		
 	}
 }

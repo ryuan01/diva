@@ -309,6 +309,44 @@ public class PaymentManager {
 		return rate_type;
 	}
 	
+	/**
+	 * 
+	 * @param reserve_id
+	 * @param customer_id
+	 * @param balance
+	 * @return
+	 * @throws SQLException 
+	 * @throws ParseException 
+	 */
+	public Receipt makePaymentByCardOnFile(Reservation r, int customer_id) throws ParseException, SQLException{
+		//need work
+		//need to re-calculate total balance
+		BigDecimal balance = totalPreTax(r);
+		balance = applyTax(balance);
+		Receipt receipt = null;
+		//get customer name and credit card info, load the object
+		int ccNum = 0;
+		String expireDate = "";
+		if (isValidCreditCard(ccNum,expireDate)){
+			//pay with it
+			//produce receipt
+		}
+		else {
+			//throw exception
+		}
+		return receipt;
+	}
+
+	/**
+	 * Check if the credit card is valid
+	 * @param ccNum
+	 * @param expireDate
+	 * @return
+	 */
+	private boolean isValidCreditCard(int ccNum, String expireDate) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	//if we have time we will go ahead and implement check for credit card validity
 	/**

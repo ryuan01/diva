@@ -12,9 +12,9 @@ public class RentalManagerTest {
 	
 	public static void main(String[] args){
 		//test_rental();
-		//test_pay_for_rental_card();
+		test_pay_for_rental_card();
 		//test_pay_for_rental_points();
-		test_pay_for_rental_cash();
+		//test_pay_for_rental_cash();
 	}
 
 	private static void test_pay_for_rental_cash() {

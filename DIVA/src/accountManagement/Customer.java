@@ -5,13 +5,13 @@ import webServiceManagement.ArrayOfStringsable;
 
 public class Customer extends Account implements ArrayOfStringsable{
 	private String standing;
-	private long cc_num;
+	private String cc_num;
 	private String name_on_card;
 	private Location location;
 	
 	public Customer(String firstname, String lastname, String phoneNumber, 
 			String email, String loginId, int id,
-			long cc, String name_on_card, String address, 
+			String cc, String name_on_card, String address, 
 			String city, String province, String zip, String standing) {
 		
 		super(firstname, lastname, phoneNumber, email, loginId, id);
@@ -27,8 +27,8 @@ public class Customer extends Account implements ArrayOfStringsable{
 	// with password
 	public Customer(String firstname, String lastname, String phoneNumber, 
 			String email, String loginId, int id, 
-			String password, long cc, String name_on_card, 
-			String address, String city, String province, String zip) {
+			String password, String cc, String name_on_card, 
+			String address, String city, String province, String zip, String standing) {
 		
 		// the super with password
 		super(firstname, lastname, phoneNumber, email, loginId, password);
@@ -36,6 +36,7 @@ public class Customer extends Account implements ArrayOfStringsable{
 		this.cc_num = cc;
 		this.name_on_card = name_on_card;
 		super.objectClass = getClass().getName();
+		this.standing = standing;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -57,14 +58,14 @@ public class Customer extends Account implements ArrayOfStringsable{
 	/**
 	 * @return the cc_num
 	 */
-	public long getCc_num() {
+	public String getCc_num() {
 		return cc_num;
 	}
 
 	/**
 	 * @param cc_num the cc_num to set
 	 */
-	public void setCc_num(long cc_num) {
+	public void setCc_num(String cc_num) {
 		this.cc_num = cc_num;
 	}
 

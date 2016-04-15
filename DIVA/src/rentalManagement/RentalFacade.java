@@ -218,8 +218,16 @@ for when the customer comes in the store to pick up a reservation.
 	public boolean readyToLeave(int rentID) throws SQLException{
 		//todo
 		//if the balance is 0, then set is_paid_rental to true and let someone leave, return true
-		//else return false
-		return false;
+		//else return false		
+		BigDecimal balance = dbm.getBalance(rentID);
+		if (balance.compareTo(new BigDecimal(0)) == 0){
+			// are equal
+			rentMan.changeRentalStatus(rentID, true);
+			return true;
+		} 
+		else{
+			return false;
+		}
 	}
 	
 //---------------------------return related-------------------------------------

@@ -45,7 +45,7 @@ class AccountDB{
 		String email;
 		
 		//customer variables
-		long ccNum;
+		String ccNum;
 		String ccName;
 		String street;
 		String city;
@@ -351,7 +351,7 @@ class AccountDB{
 		String userName;
 		
 		// Custoemer variables:
-		long ccNumber;
+		String ccNumber;
 		String nameOnCC;
 		String address;
 		String city;
@@ -423,7 +423,7 @@ class AccountDB{
 					email = rs.getString("email");
 					userName = rs.getString("Account_uName");
 					
-					ccNumber = rs.getLong("cc_Num");
+					ccNumber = rs.getString("cc_Num");
 					nameOnCC = rs.getString("name_on_cCard");
 					address = rs.getString("street_name");
 					city = rs.getString("city");
