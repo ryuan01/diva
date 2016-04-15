@@ -21,6 +21,7 @@ public class Reservation implements ArrayOfStringsable{
 	private int reservID;
 	//needs a field that says "balance of this reservation"
 	private BigDecimal balance;
+	private boolean withInsurance;
 	
 	/**
 	 * Creates empty Reservation.
@@ -53,7 +54,7 @@ public class Reservation implements ArrayOfStringsable{
 	 * @param id The Reservation ID.
 	 */
 	public Reservation(String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, 
-			 int id, BigDecimal amount)
+			 int id, BigDecimal amount, boolean insurance)
 	{
 		this.startDate = startD;
 		this.endDate = endD;
@@ -64,6 +65,7 @@ public class Reservation implements ArrayOfStringsable{
 		customerAccountID = cusID;
 		reservID = id;
 		balance = amount;
+		withInsurance = insurance;
 	}
 	
 	/**
@@ -250,6 +252,11 @@ public class Reservation implements ArrayOfStringsable{
 		}
 		formattedArray += "]";
 		return formattedArray;
+	}
+	
+	public boolean getInsuranceStatus()
+	{
+		return withInsurance;
 	}
 	
 }

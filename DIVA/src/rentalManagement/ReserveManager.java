@@ -38,15 +38,15 @@ class ReserveManager {
 	 * @throws SQLException 
 	 */
 	void addReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID) throws SQLException 
+			int customerID, boolean insurance) throws SQLException 
 	{
 		//create reservation object and pass that on
 		//(String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, 
 		// int id, BigDecimal amount)
 		BigDecimal balance;
-		Vehicle v = dbConnection.s
+		Vehicle v = dbConnection.;
 		= pm.calculateCarPrice(((Car) vlist[i]).getCarClass(), start_date, end_date);
-		Reservation r = new Reservation(startD,endD,vehicleID,equipIDs,startBranchID,endBranchID,customerID,-1, balance);
+		Reservation r = new Reservation(startD,endD,vehicleID,equipIDs,startBranchID,endBranchID,customerID,-1, balance,insurance);
 		dbConnection.createReservationEntry(r);
 	}
 	
