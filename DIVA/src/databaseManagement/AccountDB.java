@@ -742,16 +742,19 @@ class AccountDB{
 		return username;
 	}
 
-	int getIdFromUsername(String username) throws SQLException {
+	int getIdFromUsername(String username) throws Exception {
 		// TODO Auto-generated method stub
 		dbm.connect();
-		int id;
+		int id = -1;
 		Statement stmt = dbm.getConnection().createStatement();
 		String query = "SELECT `id_number` FROM users WHERE users.account_uName = "+username;
 		ResultSet rs = stmt.executeQuery(query);
 		
 		if (rs.next()){
 			id = rs.getInt("id_number");
+		}
+		else{
+			throw new Exception("account username does not exist");
 		}
 		dbm.disconnect();
 		return id;

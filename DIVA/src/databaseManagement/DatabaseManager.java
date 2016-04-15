@@ -127,9 +127,9 @@ public class DatabaseManager {
 		return branDB.getAllBranch();
 	}
 	
-	public boolean checkReturnBranch(int rental_id) throws SQLException{
+	public boolean checkReturnBranch(int rental_id, int current_return_branch) throws SQLException{
 		
-		return branDB.checkReturnBranch(rental_id);
+		return branDB.checkReturnBranch(rental_id, current_return_branch);
 	}
 	
 	public BigDecimal addWrongReturnBranchExtraCharge(int rental_id) throws SQLException {
@@ -724,9 +724,9 @@ public class DatabaseManager {
 	 * Get ID from username for any user
 	 * @param clerk_username
 	 * @return ID
-	 * @throws SQLException 
+	 * @throws Exception 
 	 */
-	public int getIdFromUsername(String username) throws SQLException {
+	public int getIdFromUsername(String username) throws Exception {
 		// TODO Auto-generated method stub
 		return accDB.getIdFromUsername(username);
 	}

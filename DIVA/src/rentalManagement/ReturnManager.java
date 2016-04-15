@@ -82,32 +82,37 @@ class ReturnManager {
 	/**
 	 * Check if the branch returned to is not the branch that the customer wishes to return to at time of booking
 	 * @param rental_id
+	 * @param current_branch_id 
 	 * @param current_branch_id
 	 * @return true if it is, false if they are different
 	 * @throws SQLException
 	 */
-	boolean checkReturnBranch(int rental_id) throws SQLException {
+	boolean checkReturnBranch(int rental_id, int current_branch_id) throws SQLException {
 		// TODO Auto-generated method stub
-		return dbConnection.checkReturnBranch(rental_id);
+		return dbConnection.checkReturnBranch(rental_id, current_branch_id);
 	}
 
 	/**
 	 * Add extra charges for a customer who returned to the wrong branch
 	 * @param rental_id
+	 * @param current_branch_id 
 	 * @return
 	 */
-	BigDecimal addWrongReturnBranchExtraCharge(int rental_id) throws SQLException {
+	BigDecimal addWrongReturnBranchExtraCharge(int rental_id, int current_branch_id) throws SQLException {
 		// TODO Auto-generated method stub
-		return dbConnection.addWrongReturnBranchExtraCharge(rental_id) ;
+		BigDecimal newBalance = new BigDecimal("0");
+		BigDecimal currentBalance;
+		
+		newBalance = paymentManager.calculateWrongReturnBranchPrice();
+		currentBalance = dbConnection.getBalance(rental_id).add(newBalance);
+		
+		dbConnection.addToBalance(rental_id, currentBalance);
+		dbConnection.modifyRentalStatus(rental_id, false, true,"is_check_return_branch");
+		return currentBalance;
 	}
 
 	void createAccidentReport(int clerkID, String accident_date, String description, int rentalID,
 			String address, String city, String province, String zipcode, String driver, BigDecimal amount) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	void payForExtraCharge(int rental_id, BigDecimal amount) {
 		// TODO Auto-generated method stub
 		
 	}

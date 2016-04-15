@@ -616,4 +616,13 @@ public class PaymentManager {
 		}
 		return false;
 	}
+
+	/**
+	 * place holder right now
+	 * @return
+	 */
+	public BigDecimal calculateWrongReturnBranchPrice() {
+		// TODO Auto-generated method stub
+		return new BigDecimal("100.00");
+	}
 }
