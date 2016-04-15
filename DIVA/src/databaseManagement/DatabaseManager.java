@@ -472,6 +472,16 @@ public class DatabaseManager {
 	{
 		accDB.addSRPoints(userName, points);
 	}
+	
+	public void deductSRPoints(int customerAccountID, int points) throws SQLException
+	{
+		poop
+	}
+	
+	public int checkSRPoints(int customerAccountID)
+	{
+		
+	}
 		
 	public void modifyPassword(String userName, String newPassword) throws SQLException{
 		accDB.modifyPassword(userName, newPassword);

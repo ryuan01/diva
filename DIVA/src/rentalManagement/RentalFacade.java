@@ -5,6 +5,7 @@ import java.text.ParseException;
 
 import accountManagement.Account;
 import databaseManagement.DatabaseManager;
+import paymentManagement.Receipt;
 import vehicleManagement.Car;
 
 
@@ -27,9 +28,9 @@ public class RentalFacade {
 //	1. search for a vehicle
 //	2. returning branch
 //	3. search for additional equipments
-//	5. calculate price for insurance based on parameters
-//	4. calculate price for vehicle + equipments+optional insurance
-//	5. create reservation (add boolean insurance)
+//	5. done: calculate price for insurance based on parameters
+//	4. done: calculate price for vehicle + equipments+optional insurance
+//	5. done: create reservation (add boolean insurance) 
 	
 	
 	/**
@@ -47,11 +48,11 @@ public class RentalFacade {
 	 * @throws SQLException 
 	 */
 	public void createReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID) throws SQLException 
+			int customerID, boolean insurance) throws SQLException 
 	{
 		//balance need to be re-calculated for security purpose 
 		reservMan.addReservation(startD,endD,vehicleID,equipIDs,startBranchID, endBranchID, 
-				customerID);
+				customerID, insurance);
 	}
 	
 	/**
@@ -159,15 +160,16 @@ for when the customer comes in the store to pick up a reservation.
 		BigDecimal amount = new BigDecimal(amount_paid);
 		rentMan.payForRentalByCard(reserve_id, amount);
 	}
-	
+		
 	/**
-	 * Let super customer pays for a rental
+	 * Let super customer pays for a rental, Assumes price and taxes has been calculated
 	 * @param rental_id
 	 * @param points
 	 * @throws SQLException
+	 * @throws ParseException 
 	 */
-	public void payForRentalByPoints(int reserve_id, int points) throws SQLException{
-		rentMan.payForRentalByPoints(reserve_id,points);
+	public Receipt payForRentalByPoints(int reserve_id, int points) throws SQLException, ParseException{
+		return rentMan.payForRentalByPoints(reserve_id,points);
 	}
 	
 	/**

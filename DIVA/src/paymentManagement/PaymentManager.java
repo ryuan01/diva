@@ -120,7 +120,7 @@ public class PaymentManager {
 		return priceRow[rate_type];
 	}
 	
-	// Calculate total of reservation pre tax
+	// Calculate total of reservation pre tax, with and without insurances.
 	public BigDecimal totalPreTax(Reservation reserv) throws ParseException, SQLException
 	{
 		String start_date = reserv.getStartingDate();
@@ -155,14 +155,23 @@ public class PaymentManager {
 		}
 		
 		// Adds Vehicle price, Vehicle insurance price, Total equipments price
-		BigDecimal total = vehicle_price.add(vehicle_insurance_price.add(equip_price, mc), mc);
-		return total;
+		if(reserv.getInsuranceStatus() == true){
+			BigDecimal total = vehicle_price.add(vehicle_insurance_price.add(equip_price, mc), mc);
+			return total;
+		}
+		else
+		{
+			BigDecimal total = vehicle_price.add(equip_price,mc);
+			return total;
+		}
 		
 	}
 	
+	public BigDecimal getOverduePrice(Reservation reserv);
+	
 	public BigDecimal applyTax(BigDecimal price)
 	{
-		return price.multiply(tax, mc);
+		return price.add(price.multiply(tax, mc),mc);
 	}
 	
 	/**
@@ -326,6 +335,29 @@ public class PaymentManager {
 		//now set up a new receipt object and returns it
 		Receipt receipt = new Receipt(-1, customer_id, basic_info, payment_info);
 		//store that into database
+		db.addReceipt(receipt);
+		return receipt;
+	}
+	
+	public Receipt makePaymentBySRP(Reservation reservation, BigDecimal totalPrice) throws Exception
+	{
+		int customer_id = reservation.getCustomerAccountID();
+		BigDecimal customerSRP = new BigDecimal(db.checkSRPoints(customer_id));
+		
+		// checks if enough points
+		if(customerSRP.compareTo(totalPrice) == -1)
+		{
+			throw new Exception("Insufficient Points");
+		}
+		
+		// round price up to nearest whole number
+		BigDecimal scaled = totalPrice.setScale(0, RoundingMode.CEILING);
+		db.deductSRPoints(customer_id, scaled.intValueExact());
+		
+		String payment_info = "Payment by SuperRent Points: " +scaled.intValueExact();
+		String basic_info = db.getReservationInReceiptForm(reservation.getID());
+		
+		Receipt receipt = new Receipt(-1, customer_id, basic_info, payment_info);
 		db.addReceipt(receipt);
 		return receipt;
 	}

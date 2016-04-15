@@ -2,6 +2,7 @@ package rentalManagement;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 import accountManagement.Account;
 import databaseManagement.DatabaseManager;
@@ -71,10 +72,13 @@ class RentManager {
 		 * Pay for rental by points
 		 * @param id
 		 * @param points
+		 * @throws Exception 
 		 */
-		void payForRentalByPoints(int id, int points) {
-			// TODO Auto-generated method stub
-			
+		 Receipt payForRentalByPoints(int id, int points) throws Exception{
+			Reservation r = dbConnection.searchReservationEntry(id);
+			BigDecimal price = pm.totalPreTax(r);
+			BigDecimal total = pm.applyTax(price);
+			return pm.makePaymentBySRP(r, total);
 		}
 		/**
 		 * Pay for rental by other methods
