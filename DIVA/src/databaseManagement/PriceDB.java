@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Connection;
 
+import paymentManagement.Receipt;
 import vehicleManagement.Truck;
 import vehicleManagement.Vehicle;
 
@@ -25,6 +27,8 @@ class PriceDB {
 	private static final int NUMBER_TRUCK_TYPE = 4;
 	private static final int NUMBER_INSURANCE_PRICE_TYPE = 3;
 	private static final int NUMBER_EQ_TYPE = 4;
+	
+	private static final String CUSTOMER = "customer";
 	
 	
 	private ConnectDB dbm;
@@ -213,5 +217,79 @@ class PriceDB {
 	        return prices;
 		
 	}
+	 
+	 /**
+	  * @author saud (sammy) almahri
+	  * @param receipt
+	 * @throws Error 
+	 * @throws SQLException 
+	  */
+	 void addReceipt(Receipt receipt) throws SQLException, Error{
+		 
+		 Connection conn;
+		 Statement stmt;
+		 String query;
+		 
+		 //local variabls 
+		 int customerID;
+		 String basic_info;
+		 String payment_info;
+		
+		 customerID = receipt.getReceiptCustomer();
+		 
+		 dbm.connect();
+		 
+		 if(isElementAvailable(customerID, CUSTOMER)){
+			 basic_info = receipt.getBasicInfo();
+			 payment_info = receipt.getPaymentInfo();
+			 
+			 query = "INSERT INTO `receipt`(`customer_id`,  `payment_info`, `basic_info`) "
+			 		+ "VALUES(" + customerID +",\"" + payment_info + "\",\"" + basic_info +"\");";
+			 
+			 
+			 conn = dbm.getConnection();
+			 stmt = conn.createStatement();
+			 
+			 stmt.executeUpdate(query);
+			 
+			 stmt.close();
+			 dbm.disconnect();
+		 } else{
+			 dbm.disconnect();
+			 throw new Error("customer is registered in the system");
+			 }
+		 }
+		 
+	 /**
+	  * @author saud (sammy) almahri
+	  * @param receiptID
+	  * @return
+	  * @throws SQLException
+	  */
+	 private boolean isElementAvailable(int elementID, String elementName) throws SQLException{
+		 Connection conn;
+		 Statement stmt;
+		 ResultSet rs;
+		 String query;
+		 
+		 conn = dbm.getConnection();
+		 stmt = conn.createStatement();
+		 
+		 query = "SELECT id_number FROM " + elementName + " WHERE id_number = " + elementID +";";
+		 
+		 rs = stmt.executeQuery(query);
+		 
+		 while(rs.next()){
+			 if (rs.getInt("id_number") == elementID){ 
+				 rs.close();
+				 stmt.close();
+				 return true;
+			 } 
+		 }
+		 
+		 rs.close();
+		 stmt.close();
+		 return false;
+	 }
 
 }

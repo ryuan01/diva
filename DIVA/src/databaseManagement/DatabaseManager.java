@@ -449,7 +449,7 @@ public class DatabaseManager {
 	 * @throws SQLException 
 	 */
 	public Account[] searchAccountEntries(String parameter) throws SQLException{
-		// Needs to be done
+		//done
 		return accDB.getAccounts(parameter);
 	}
 	
@@ -499,7 +499,7 @@ public class DatabaseManager {
 	
 	public void deductSRPoints(int customerAccountID, int points) throws SQLException
 	{
-		
+		// same as addSRSPoints, but with negative values (the method above)
 	}
 	
 	public int checkSRPoints(int customerAccountID)
@@ -613,9 +613,11 @@ public class DatabaseManager {
 	public void setAllCarPrice(){
 		
 	}
+	
 	public void setAllTruckPrice(){
 		
 	}
+	
 	public void setAllEquipmentPrice(){
 		
 	}
@@ -623,9 +625,16 @@ public class DatabaseManager {
 	public Receipt searchReceipt(int customer_id){
 		return null;
 	}
+	
 	//sammy: please create a database table for `receipt` that contains the private variables of `receipt` object
-	public void addReceipt(Receipt receipt) {
-		// TODO Auto-generated method stub
+	/**
+	 * @author saud (sammy) almahri
+	 * @param receipt
+	 * @throws SQLException
+	 * @throws Error
+	 */
+	public void addReceipt(Receipt receipt) throws SQLException, Error {
+		prDB.addReceipt(receipt);
 		
 	}
 	
