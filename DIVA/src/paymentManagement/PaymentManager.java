@@ -57,6 +57,7 @@ public class PaymentManager {
 	 */
 	public Receipt create_new_Receipt(int customerID, String basicInfo, String paymentInfo){
 		Receipt receipt = new Receipt(-1,customerID,basicInfo,paymentInfo);
+		db.addReceipt(receipt);
 		return receipt;
 	}
 	
@@ -73,7 +74,7 @@ public class PaymentManager {
 	}
 
 	/**
-	 * Calculate price for rental searches
+	 * Calculate price for rental searches only 
 	 * @param type class of vehicle or equipments
 	 * @param rate_type index of rate 
 	 * @return calculated price 
@@ -102,8 +103,18 @@ public class PaymentManager {
 		
 	}
 	
+	/**
+	 * Calculate insurance price during reservation
+	 * @param type
+	 * @param rate_type
+	 * @return
+	 * @throws ParseException
+	 * @throws SQLException
+	 * @throws IllegalArgumentException
+	 */
 	public BigDecimal calculateInsurancePrice(String type, int rate_type) throws ParseException, SQLException, IllegalArgumentException
 	{
+		//will need to use start_date and end_date
 		BigDecimal[] priceRow;
 		if(isLegalCarClass(type))
 		{
@@ -166,8 +177,6 @@ public class PaymentManager {
 		}
 		
 	}
-	
-	public BigDecimal getOverduePrice(Reservation reserv);
 	
 	public BigDecimal applyTax(BigDecimal price)
 	{
@@ -390,6 +399,12 @@ public class PaymentManager {
 		return priceList.getCarInsurancePrice(type);
 	}
 	
+	/**
+	 * Get price list for truck insurance 
+	 * @param type type of truck, points to a row 
+	 * @return
+	 * @throws SQLException
+	 */
 	public BigDecimal[] getPriceTruckInsurance(String type)throws SQLException{
 		if(!priceList.getIsSet("truck_insurance")){
 			priceList.setTruckPrice(db.getAllTruckPrice());
@@ -397,6 +412,43 @@ public class PaymentManager {
 		}
 		return priceList.getTruckInsurancePrice(type);
 	}
+
+	/**
+	 * Access DB to get overdue price for daily, then use that to calculate
+	 * @param current_date
+	 * @param endDate
+	 * @return
+	 */
+	public BigDecimal calculateOverduePrice(String current_date, String endDate, String type) {
+		// TODO Auto-generated method stub
+		/*
+		 * calculate the differences from current_date and end_date
+		 * multiply by price loaded from database
+		 * return that
+		 */
+		int difference_in_days; //need to calculate
+		BigDecimal extra_charge_price = getExtraChargePrice("overdue");
+		return null;
+	}
+
+	/**
+	 * 
+	 * Load extra charge price into PriceList if it isn't present, and get the row associated with that
+	 * @param type
+	 * @return
+	 */
+	private BigDecimal getExtraChargePrice(String type) {
+		// TODO Auto-generated method stub
+		if(!priceList.getIsSet("extra_charge_price")){
+			priceList.setTruckPrice(db.getAllExtraChargePrice());
+			priceList.setIsSet("extra_charge_price");
+		}
+		return priceList.getExtraChargePrice(type);
+	}
+	
+	//need to calculate insurance price
+	
+	//
 	
 	
 }

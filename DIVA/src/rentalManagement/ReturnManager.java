@@ -54,13 +54,27 @@ class ReturnManager {
 		}
 	}
 
-	BigDecimal addOverdueExtraCharge(int rental_id, String current_date) {
-		// dbm --> rentalDB.getReturnDate
-		// balance = paymentManager.getOverduePrice(start_date, current_date)
-		// dbm --> rentalDB.addToBalance(rental_id, balance)
-		// dbm --> rentalDB.setIsPaidExtraCharge(false);
-		// return balance
-		return null;
+	BigDecimal addOverdueExtraCharge(int rental_id, String current_date) throws SQLException {
+		// [x] dbm --> rentalDB.getReturnDate 
+		// [] balance = paymentManager.getOverduePrice(start_date, current_date)
+		// [x] dbm --> rentalDB.addToBalance(rental_id, balance)
+		// [x] dbm --> rentalDB.setIsPaidExtraCharge(false);
+		// [x] return balance
+		String endDate;
+		BigDecimal newBalance = new BigDecimal("0");
+		BigDecimal currentBalance;
+		
+		
+		endDate = dbConnection.getReservationEndDate(rental_id);
+		
+		// How do you calculate over due? (Sammy)
+		newBalance = paymentManager.calculateOverduePrice(current_date, endDate);
+		currentBalance = dbConnection.getBalance(rental_id).add(newBalance);
+		
+		dbConnection.addToBalance(rental_id, currentBalance);
+		dbConnection.setIs_paid_extra_charge(rental_id, false);
+		
+		return currentBalance;
 		// TODO Auto-generated method stub
 		
 	}
@@ -72,13 +86,9 @@ class ReturnManager {
 	 * @return true if it is, false if they are different
 	 * @throws SQLException
 	 */
-	boolean checkReturnBranch(int rental_id, int current_branch_id) throws SQLException {
+	boolean checkReturnBranch(int rental_id) throws SQLException {
 		// TODO Auto-generated method stub
-		Reservation reservation = dbConnection.searchReservationEntry(rental_id);
-		if (reservation.getEndBranchID() == current_branch_id){
-			return true;
-		}
-		return false;
+		return dbConnection.checkReturnBranch(rental_id);
 	}
 
 	/**
@@ -86,17 +96,9 @@ class ReturnManager {
 	 * @param rental_id
 	 * @return
 	 */
-	BigDecimal addWrongReturnBranchExtraCharge(int rental_id) {
+	BigDecimal addWrongReturnBranchExtraCharge(int rental_id) throws SQLException {
 		// TODO Auto-generated method stub
-		//need to create a table in database to represent extra charges
-		//in term of adding insurance
-		//in term of wrong branch
-		//in term of accident
-		//in term of not filled up gas tank
-		//in term of extra milage
-		//the above should be two array in pricelist as well
-		paymentManager.addExtraCharge(rental_id, "wrong_return_branch");
-		return paymentManager.getExtraCharge(rental_id, "wrong_return_branch");
+		return dbConnection.addWrongReturnBranchExtraCharge(rental_id) ;
 	}
 
 	void createAccidentReport(int clerkID, String accident_date, String description, int rentalID,

@@ -384,32 +384,29 @@ class RentalDB {
 	void createRental(int reserveID, int clerkID, boolean is_paid_rental, boolean is_paid_extra_charge) throws SQLException {
 		// TODO Auto-generated method stub
  		dbm.connect();
-  		Statement stmt = dbm.getConnection().createStatement();
-    	String sql= "INSERT INTO `rental`(`reservation_id`, `is_paid_rental`, `is_paid_extra_charge`, `clerk_id`) VALUES ("
-    				+reserveID+", "
-    				+is_paid_rental+", "
-    				+is_paid_extra_charge+", "
-    				+clerkID+")";
-    	System.out.println(sql);
-        stmt.executeUpdate(sql);
-        stmt.close();
-        dbm.disconnect();		
+ 		
+ 		if (isValidReservation(reserveID) && !isValidRent(reserveID)){
+	  		Statement stmt = dbm.getConnection().createStatement();
+	    	String sql= "INSERT INTO `rental`(`reservation_id`, `is_paid_rental`, `is_paid_extra_charge`, `clerk_id`) VALUES ("
+	    				+reserveID+", "
+	    				+is_paid_rental+", "
+	    				+is_paid_extra_charge+", "
+	    				+clerkID+")";
+	    	System.out.println(sql);
+	        stmt.executeUpdate(sql);
+	        stmt.close();
+	        dbm.disconnect();	
+ 		} else{
+ 			dbm.disconnect();
+ 			throw new Error("reservation deson't exist OR rent already exists!");
+ 		}
 	}
 
 	int getAccountForRental(int rental_id) {
 		return 0;
 		// TODO Auto-generated method stub
 	}
-	
-
-	boolean checkReservationBalance(int reservation_id){
-		// connect to database, check balance in `reservation` table
-		// if 0, then true, otherwise false
 		
-		
-		return false;
-	}
-	
 	void changeRentalStatus(int rentalID, boolean status) throws SQLException{
 		Connection conn;
 		Statement stmt;
@@ -523,6 +520,87 @@ class RentalDB {
 		} else{
 			return null;
 		}
+	}
+	
+	void addToBalance(int rental_id, BigDecimal balance) throws SQLException{
+		Connection conn;
+		Statement stmt;
+		String query;
+		
+		query = "UPDATE `reservation` SET balance = " + balance + " "
+				+ "WHERE reservation_id = " + rental_id + ";";
+		
+		dbm.connect();
+		
+		if (isValidRent(rental_id)){
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+		
+			stmt.executeUpdate(query);
+			
+			stmt.close();
+			dbm.disconnect();
+		} else{
+			dbm.disconnect();
+			throw new Error("Rent id is not available");
+		}
+	}
+	
+	void setIs_paid_extra_charge(int rental_id, boolean setValue) throws SQLException{
+		Connection conn;
+		Statement stmt;
+		String query;
+		
+		query = "UPDATE `rental` SET `is_paid_extra_charge` = " + setValue + " "
+				+ "WHERE reservation_id = " + rental_id + ";";
+		
+		dbm.connect();
+		
+		if(isValidRent(rental_id)){
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			stmt.executeUpdate(query);
+			
+			stmt.close();
+			dbm.disconnect();
+		}else{
+			dbm.disconnect();
+			throw new Error("Rent id is not available");
+		}
+	}
+	
+	BigDecimal getBalance(int rentID) throws SQLException{
+		Connection conn;
+		Statement stmt;
+		ResultSet rs;
+		String query;
+		
+		BigDecimal balance;
+		
+		query = "SELECT balance FROM `reservation` WHERE reservation_id = " + rentID + ";";
+		
+		dbm.connect();
+		
+		if(isValidReservation(rentID)){
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			rs = stmt.executeQuery(query);
+			rs.next();
+			
+			balance = new BigDecimal(rs.getInt("balance"));
+			
+			rs.close();
+			stmt.close();
+			dbm.disconnect();
+			
+			return balance;
+		}else{
+			dbm.disconnect();
+			throw new Error("reservation id is not available");
+		}
+		
 	}
 
 }

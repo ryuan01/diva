@@ -14,6 +14,7 @@ public class RentalFacade {
 	private ReserveManager reservMan;
 	private RentManager rentMan;
 	private ReturnManager returnMan;
+	private DatabaseManager dbm;
 	private java.text.SimpleDateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
 	
 	public RentalFacade()
@@ -132,9 +133,23 @@ for when the customer comes in the store to pick up a reservation.
 		 *  				DatabaseManager.searchFoRental(rentalID)
 		 *  				DatabaseManager.changeRentalStatus(rentalID, boolean isPaid)
 		 */
+		
+		BigDecimal balance;
+		
+		
+		balance = dbm.getBalance(reservationID);
+		
+		if (balance.compareTo(new BigDecimal(0)) == 0){
+			// are equal
+			rentMan.createRental(reservationID, clerkID, true, false);
+		} else{
+			// not equal
+			rentMan.createRental(reservationID, clerkID, false, false);
+		}
+		
 
 		//it is assumed that the start_date and end_date are the same as reservation.
-		rentMan.createRental(reservationID, clerkID, false, false);
+		
 	}
 	/**
 	 * Create an inspection report before Rental
@@ -165,10 +180,9 @@ for when the customer comes in the store to pick up a reservation.
 	 * Let super customer pays for a rental, Assumes price and taxes has been calculated
 	 * @param rental_id
 	 * @param points
-	 * @throws SQLException
-	 * @throws ParseException 
+	 * @throws Exception 
 	 */
-	public Receipt payForRentalByPoints(int reserve_id, int points) throws SQLException, ParseException{
+	public Receipt payForRentalByPoints(int reserve_id, int points) throws Exception{
 		return rentMan.payForRentalByPoints(reserve_id,points);
 	}
 	
@@ -221,13 +235,13 @@ for when the customer comes in the store to pick up a reservation.
 	 * @param rental_id
 	 * @throws SQLException 
 	 */
-	public BigDecimal checkReturningBranch(int rental_id, int current_branch_id) throws SQLException{
-		//done 1:54 PM 2016 April 14
+	public BigDecimal checkReturningBranch(int rental_id) throws SQLException{
 		BigDecimal amountOwning = new BigDecimal("0");
-		if (returnMan.checkReturnBranch(rental_id, current_branch_id)){
-			//this method does not work
+		
+		if (returnMan.checkReturnBranch(rental_id)){
 			amountOwning = returnMan.addWrongReturnBranchExtraCharge(rental_id);
 		}
+		
 		return amountOwning;
 		
 	}

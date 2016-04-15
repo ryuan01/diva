@@ -126,6 +126,15 @@ public class DatabaseManager {
 	{
 		return branDB.getAllBranch();
 	}
+	
+	public boolean checkReturnBranch(int rental_id) throws SQLException{
+		
+		return branDB.checkReturnBranch(rental_id);
+	}
+	
+	public BigDecimal addWrongReturnBranchExtraCharge(int rental_id) throws SQLException {
+		return branDB.addWrongReturnBranchExtraCharge(rental_id);
+	}
 
 	// 
 /*----------------------------------------EquipmentDB--------------------------------------------*/
@@ -161,6 +170,7 @@ public class DatabaseManager {
 	 */
 	public String getTypeOfEquipment(int equipment_id) throws SQLException
 	{
+		//sammy please implement this one, I am not sure who started this method.
 		Equipment e = eqDB.search(equipment_id);
 		return e.getType();
 	}
@@ -204,7 +214,9 @@ public class DatabaseManager {
 	 * 
 	 */
 	public boolean checkReservationBalance(int reservation_id){
-		return reDB.checkReservationBalance(reservation_id);
+		// Used getBalance method instead; can do the same job (sammy)
+		// return reDB.checkReservationBalance(reservation_id);
+		return false;
 	}
 	
 	
@@ -330,6 +342,17 @@ public class DatabaseManager {
 		return null;
 	}
 	
+	public void addToBalance(int rental_id, BigDecimal balance) throws SQLException{
+		reDB.addToBalance(rental_id, balance);
+	}
+	
+	public void setIs_paid_extra_charge(int rental_id, boolean setValue) throws SQLException{
+		reDB.setIs_paid_extra_charge(rental_id, setValue);
+	}
+	
+	public BigDecimal getBalance(int rentID) throws SQLException{
+		return reDB.getBalance(rentID);
+	}
 /*-----------------------------------------VehicleDB----------------------------------------------*/
 	/**
 	 * Generic search of vehicle available at certain date, certain branch 
@@ -476,12 +499,12 @@ public class DatabaseManager {
 	
 	public void deductSRPoints(int customerAccountID, int points) throws SQLException
 	{
-		poop
+		
 	}
 	
 	public int checkSRPoints(int customerAccountID)
 	{
-		
+		return 0;
 	}
 		
 	public void modifyPassword(String userName, String newPassword) throws SQLException{
@@ -585,9 +608,49 @@ public class DatabaseManager {
 	public BigDecimal[][] getAllEquipmentPrice() throws SQLException{
 		return prDB.getEquipmentPriceList();
 	}
-
+	
+	//sammy: we also need setters for these prices for car, truck, equipment
+	public void setAllCarPrice(){
+		
+	}
+	public void setAllTruckPrice(){
+		
+	}
+	public void setAllEquipmentPrice(){
+		
+	}
+	//sammy: we need to search receipt based on customer_id
+	public Receipt searchReceipt(int customer_id){
+		return null;
+	}
+	//sammy: please create a database table for `receipt` that contains the private variables of `receipt` object
 	public void addReceipt(Receipt receipt) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	//sammy: please create a database table for `extra_charge` that contains the following
+	//type	amount
+	//wrong_branch	100.00
+	//gas_tank		0.60 (used to calculate per liter)
+	//overdue		30.00 (used to calculate overdue per day)
+	public BigDecimal[][] getAllExtraChargePrice() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	//sammy: we need to get and set `car_insurance_price` and `truck_insurance_price` as well
+	//there isn't database entries for these two tables atm, please populate them with logical values
+	public BigDecimal[][] getAllCarInsurancePrice(){
+		return null;
+	}
+	public BigDecimal[][] getAllTruckInsurancePrice(){
+		return null;
+	}
+	public void setAllCarInsurnacePrice(){
+		
+	}
+	public void setAllTruckInsurnacePrice(){
 		
 	}
 }
