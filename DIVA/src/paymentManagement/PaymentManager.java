@@ -57,8 +57,8 @@ public class PaymentManager {
 	 * @throws Error 
 	 * @throws SQLException 
 	 */
-	public Receipt create_new_Receipt(int customerID, String basicInfo, String paymentInfo) throws SQLException, Error{
-		Receipt receipt = new Receipt(-1,customerID,basicInfo,paymentInfo);
+	public Receipt create_new_Receipt(int clerkID, int customerID, String basicInfo, String paymentInfo) throws SQLException, Error{
+		Receipt receipt = new Receipt(-1,customerID,clerkID, basicInfo,paymentInfo);
 		db.addReceipt(receipt);
 		return receipt;
 	}
@@ -360,7 +360,7 @@ public class PaymentManager {
 	 * @throws SQLException
 	 * @throws IllegalArgumentException
 	 */
-	public Receipt makePaymentByCard(int reserve_id, int customer_id, BigDecimal balance, String amount) throws SQLException, IllegalArgumentException {
+	public Receipt makePaymentByCard(int clerk_id, int reserve_id, int customer_id, BigDecimal balance, String amount) throws SQLException, IllegalArgumentException {
 		//amount_paid cannot be more than amount_owning when paying by card
 		BigDecimal amount_paid = new BigDecimal(amount);
 		
@@ -371,7 +371,7 @@ public class PaymentManager {
 		else if (amount_paid.compareTo(new BigDecimal("0")) == -1){
 			throw new IllegalArgumentException("amount paid cannot be negative");
 		}
-		return generalPayment(reserve_id, customer_id,balance,amount,"credit");
+		return generalPayment(clerk_id, reserve_id, customer_id,balance,amount,"credit");
 	}
 	
 	/**
@@ -385,7 +385,7 @@ public class PaymentManager {
 	 * @throws IllegalArgumentException
 	 * @throws SQLException 
 	 */
-	public Receipt makePaymentBySRP(int reserve_id, int customer_id, String vehicle_type, BigDecimal balance,  int points) throws IllegalArgumentException, SQLException
+	public Receipt makePaymentBySRP(int clerk_id, int reserve_id, int customer_id, String vehicle_type, BigDecimal balance,  int points) throws IllegalArgumentException, SQLException
 	{
 		//calculate the equivalent price of this amount of points
 		//check if the amount_paid is more than balance
@@ -419,7 +419,7 @@ public class PaymentManager {
 		payment_info += "Amount owning after payment: "+change+"\n";
 		String basic_info = db.getReservationInReceiptForm(reserve_id);
 		
-		Receipt receipt = new Receipt(-1, customer_id, basic_info, payment_info);
+		Receipt receipt = new Receipt(-1, customer_id, clerk_id, basic_info, payment_info);
 		db.addReceipt(receipt);
 		return receipt;
 	}
@@ -428,19 +428,20 @@ public class PaymentManager {
 	 * Customer pays for reservation by cash, it is possible to give change
 	 * @param reserve_id
 	 * @param customer_id
+	 * @param customer_id2 
 	 * @param balance
 	 * @param amount
 	 * @return
 	 * @throws SQLException 
 	 */
-	public Receipt makePaymentCash(int reserve_id, int customer_id, BigDecimal balance,
+	public Receipt makePaymentCash(int clerk_id, int reserve_id, int customer_id, BigDecimal balance,
 			String amount) throws SQLException {	
 		BigDecimal amount_paid = new BigDecimal(amount);
 		//check if the amount_paid is negative, it can exceeds balance
 		if (amount_paid.compareTo(new BigDecimal("0")) == -1){
 			throw new IllegalArgumentException("amount paid cannot be negative");
 		}
-		return generalPayment(reserve_id, customer_id,balance,amount,"cash");
+		return generalPayment(clerk_id, reserve_id, customer_id,balance,amount,"cash");
 	}
 
 	/**
@@ -454,7 +455,7 @@ public class PaymentManager {
 	 * @return
 	 * @throws SQLException
 	 */
-	private Receipt generalPayment(int reserve_id, int customer_id, BigDecimal balance,
+	private Receipt generalPayment(int clerk_id, int reserve_id, int customer_id, BigDecimal balance,
 			String amount, String type) throws SQLException{
 		String payment_info = "";
 		String basic_info = "";
@@ -480,7 +481,7 @@ public class PaymentManager {
 		basic_info += db.getReservationInReceiptForm(reserve_id);
 		
 		//now set up a new receipt object and returns it
-		Receipt receipt = new Receipt(-1, customer_id, basic_info, payment_info);
+		Receipt receipt = new Receipt(-1, customer_id, clerk_id, basic_info, payment_info);
 		//store that into database
 		db.addReceipt(receipt);
 		return receipt;

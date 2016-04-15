@@ -207,16 +207,6 @@ public class DatabaseManager {
 		// TODO Auto-generated method stub
 		reDB.removeReservation(reservID);
 	}
-
-	/**
-	 * 
-	 */
-	public boolean checkReservationBalance(int reservation_id){
-		// Used getBalance method instead; can do the same job (sammy)
-		// return reDB.checkReservationBalance(reservation_id);
-		return false;
-	}
-	
 	
 	/**
 	 * Search database for a reservation
@@ -235,9 +225,9 @@ public class DatabaseManager {
 	 * @param state: ENUM('before_rental','after_rental')
 	 * @throws SQLException
 	 */
-	public void addReport(Report r, String state) throws SQLException
+	public void addReport(Report r) throws SQLException
 	{
-		reDB.createInspectionReport(r, state);
+		reDB.createInspectionReport(r);
 	}
 	
 	/**
@@ -293,8 +283,8 @@ public class DatabaseManager {
 	 * @param is_paid_extra_charge
 	 * @throws SQLException
 	 */
-	public void createRental(int reserveID, int clerkID, boolean is_paid_rental, boolean is_paid_extra_charge) throws SQLException {
-		reDB.createRental(reserveID, clerkID, is_paid_rental, is_paid_extra_charge);
+	public void createRental(int reserveID, int clerkID, boolean is_paid_rental) throws SQLException {
+		reDB.createRental(reserveID, clerkID, is_paid_rental);
 	}
 	
 	/**
@@ -345,6 +335,7 @@ public class DatabaseManager {
 	}
 	
 	public BigDecimal getBalance(int rentID) throws SQLException{
+		//System.out.println("im in dbmanager");
 		return reDB.getBalance(rentID);
 	}
 	
@@ -703,5 +694,25 @@ public class DatabaseManager {
 	}
 	public void setAllTruckInsurnacePrice(){
 		
+	}
+
+	/**
+	 * Checks if a rental has an inspection report before rental done
+	 * @param rentID
+	 * @return
+	 * @throws SQLException 
+	 */
+	public boolean hasInspectionReport(int rentID, String status) throws SQLException {
+		// TODO Auto-generated method stub
+		Report report = reDB.searchInspectionReport(rentID, status);
+		if (report == null){
+			return false;
+		}
+		else if (report.getReportState().equals("before_rental")){
+			return true;
+		}
+		else { //there is an after rental report, but no before rental report
+			return false;
+		}
 	}
 }

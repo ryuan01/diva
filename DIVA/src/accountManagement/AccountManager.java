@@ -43,7 +43,7 @@ public class AccountManager {
 	//this need to be updated to contain address info
 	public void addCustomerAccount(String firstName, String lastName, String phoneNumber, 
 			String emailAddress, String userName, String password, 
-			String ccNum, String name_on_cc, String address,
+			String ccNum, String name_on_cc, String expire_date, String address,
 			String city, String province, String zip) throws SQLException 
 	{
 		
@@ -53,7 +53,7 @@ public class AccountManager {
 		// Need to add validation an dchange signature to boolean (or throw exception) -Sammy
 		Account acc = new Customer(firstName, lastName, phoneNumber, 
 				emailAddress, userName, id,
-				password, ccNum, name_on_cc,
+				password, ccNum, expire_date, name_on_cc,
 				address, city, province, zip);
 		dbConnection.createAccountEntry(acc);
 	}

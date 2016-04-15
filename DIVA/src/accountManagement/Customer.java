@@ -7,11 +7,12 @@ public class Customer extends Account implements ArrayOfStringsable{
 	private String standing;
 	private String cc_num;
 	private String name_on_card;
+	private String expire_date;
 	private Location location;
 	
 	public Customer(String firstname, String lastname, String phoneNumber, 
 			String email, String loginId, int id,
-			String cc, String name_on_card, String address, 
+			String cc, String expire_date, String name_on_card, String address, 
 			String city, String province, String zip, String standing) {
 		
 		super(firstname, lastname, phoneNumber, email, loginId, id);
@@ -19,6 +20,7 @@ public class Customer extends Account implements ArrayOfStringsable{
 		
 		this.location = new Location (address, city, province, zip);
 		this.cc_num = cc;
+		this.expire_date = expire_date;
 		this.name_on_card = name_on_card;
 		super.objectClass = getClass().getName();
 		this.standing = standing;
@@ -27,20 +29,35 @@ public class Customer extends Account implements ArrayOfStringsable{
 	// with password
 	public Customer(String firstname, String lastname, String phoneNumber, 
 			String email, String loginId, int id, 
-			String password, String cc, String name_on_card, 
+			String password, String cc, String expire_date, String name_on_card, 
 			String address, String city, String province, String zip, String standing) {
 		
 		// the super with password
 		super(firstname, lastname, phoneNumber, email, loginId, password);
 		this.location = new Location (address, city, province, zip);
 		this.cc_num = cc;
+		this.expire_date = expire_date;
 		this.name_on_card = name_on_card;
 		super.objectClass = getClass().getName();
 		this.standing = standing;
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * Get expire date
+	 * @return
+	 */
+	public String getExpireDate(){
+		return this.expire_date;
+	}
 	
+	/**
+	 * Set expire date
+	 * @param date
+	 */
+	public void setExpireDate(String date){
+		this.expire_date = date;
+	}
 	/**
 	 * @return the standing
 	 */

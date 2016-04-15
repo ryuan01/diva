@@ -22,6 +22,7 @@ public class RentalFacade {
 		reservMan = new ReserveManager();
 		rentMan = new RentManager();
 		returnMan = new ReturnManager();
+		dbm = DatabaseManager.getInstance();
 	}
 	
 	//---------------------------reservation related-------------------------------------
@@ -137,15 +138,15 @@ for when the customer comes in the store to pick up a reservation.
 		
 		BigDecimal balance;
 		
-		
+		System.out.println("I am in RentalFacade");
 		balance = dbm.getBalance(reservationID);
 		
 		if (balance.compareTo(new BigDecimal(0)) == 0){
 			// are equal
-			rentMan.createRental(reservationID, clerkID, true, false);
+			rentMan.createRental(reservationID, clerkID, true);
 		} else{
 			// not equal
-			rentMan.createRental(reservationID, clerkID, false, false);
+			rentMan.createRental(reservationID, clerkID, false);
 		}
 		
 
@@ -173,9 +174,9 @@ for when the customer comes in the store to pick up a reservation.
 	 * @return 
 	 * @throws SQLException
 	 */
-	public Receipt payForRentalByCard(int reserve_id, String amount_paid) throws SQLException{
+	public Receipt payForRentalByCard(int clerk_id, int reserve_id, String amount_paid) throws SQLException{
 		//done
-		return rentMan.payForRentalByCard(reserve_id, amount_paid);
+		return rentMan.payForRentalByCard(clerk_id, reserve_id, amount_paid);
 	}
 		
 	/**
@@ -184,9 +185,9 @@ for when the customer comes in the store to pick up a reservation.
 	 * @param points
 	 * @throws Exception 
 	 */
-	public Receipt payForRentalByPoints(int reserve_id, int points) throws Exception{
+	public Receipt payForRentalByPoints(int clerk_id, int reserve_id, int points) throws Exception{
 		//done
-		return rentMan.payForRentalByPoints(reserve_id,points);
+		return rentMan.payForRentalByPoints(clerk_id, reserve_id,points);
 	}
 	
 	/**
@@ -196,9 +197,9 @@ for when the customer comes in the store to pick up a reservation.
 	 * @return 
 	 * @throws SQLException
 	 */
-	public Receipt payForRentalByCash(int reserve_id, String amount) throws SQLException{
+	public Receipt payForRentalByCash(int clerk_id, int reserve_id, String amount) throws SQLException{
 		//need to check
-		return rentMan.payForRentalByCash(reserve_id,amount);
+		return rentMan.payForRentalByCash(clerk_id, reserve_id,amount);
 	}
 	
 	public void changeRentalStatus(int rentalID, boolean status) throws SQLException{
@@ -213,21 +214,23 @@ for when the customer comes in the store to pick up a reservation.
 	/**
 	 * Checks if the balance is 0
 	 * @param rentID
-	 * @throws SQLException
+	 * @throws Exception when customer tries to leave without car
 	 */
-	public boolean readyToLeave(int rentID) throws SQLException{
+	public void readyToLeave(int rentID) throws Exception{
 		//todo
 		//if the balance is 0, then set is_paid_rental to true and let someone leave, return true
 		//else return false		
 		BigDecimal balance = dbm.getBalance(rentID);
-		if (balance.compareTo(new BigDecimal(0)) == 0){
-			// are equal
-			rentMan.changeRentalStatus(rentID, true);
-			return true;
-		} 
-		else{
-			return false;
+		boolean is_paid = balance.compareTo(new BigDecimal(0)) == 0;
+		boolean has_before_rental_inspection_report = dbm.hasInspectionReport(rentID, "before_rental");
+		if (!is_paid){
+			throw new Exception("Please pay first before leaving with a vehicle");
 		}
+		if (!has_before_rental_inspection_report){
+			throw new Exception("Please file an inspection report before leaving with a vehicle");
+		}
+		//now we have both set
+		rentMan.changeRentalStatus(rentID, true);
 	}
 	
 //---------------------------return related-------------------------------------
@@ -297,6 +300,8 @@ for when the customer comes in the store to pick up a reservation.
 	 * @return
 	 */
 	public boolean readyToReturn(int rental_id){
+		
+		//CHECK for all kinds of extra charges situations
 		return returnMan.readyToReturn(rental_id);
 	}
 }
