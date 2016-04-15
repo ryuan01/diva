@@ -741,6 +741,21 @@ class AccountDB{
 		dbm.disconnect();
 		return username;
 	}
+
+	int getIdFromUsername(String username) throws SQLException {
+		// TODO Auto-generated method stub
+		dbm.connect();
+		int id;
+		Statement stmt = dbm.getConnection().createStatement();
+		String query = "SELECT `id_number` FROM users WHERE users.account_uName = "+username;
+		ResultSet rs = stmt.executeQuery(query);
+		
+		if (rs.next()){
+			id = rs.getInt("id_number");
+		}
+		dbm.disconnect();
+		return id;
+	}
 }
 
 	

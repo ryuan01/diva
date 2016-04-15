@@ -564,30 +564,6 @@ class RentalDB {
 		dbm.disconnect();
 	}
 	
-	void setIs_paid_extra_charge(int rental_id, boolean setValue) throws SQLException{
-		Connection conn;
-		Statement stmt;
-		String query;
-		
-		query = "UPDATE `rental` SET `is_paid_extra_charge` = " + setValue + " "
-				+ "WHERE reservation_id = " + rental_id + ";";
-		
-		dbm.connect();
-		
-		if(isValidRent(rental_id)){
-			conn = dbm.getConnection();
-			stmt = conn.createStatement();
-			
-			stmt.executeUpdate(query);
-			
-			stmt.close();
-			dbm.disconnect();
-		}else{
-			dbm.disconnect();
-			throw new Error("Rent id is not available");
-		}
-	}
-	
 	BigDecimal getBalance(int rentID) throws SQLException{
 		Connection conn;
 		Statement stmt;
@@ -658,6 +634,32 @@ class RentalDB {
         stmt.close();
         dbm.disconnect();
     	return r;
+	}
+
+	void modifyRentalStatus(int rental_id, boolean is_paid_extra_charge, boolean is_check_overdue, String columnName) throws SQLException, Error {
+		// TODO Auto-generated method stub
+		Connection conn;
+		Statement stmt;
+		String query;
+		
+		query = "UPDATE `rental` SET `is_paid_extra_charge` = " + is_paid_extra_charge + ", "
+				+"`"+columnName+"` = "+is_check_overdue
+				+ " WHERE reservation_id = " + rental_id + ";";
+		System.out.println(query);
+		dbm.connect();
+		
+		if(isValidRent(rental_id)){
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			stmt.executeUpdate(query);
+			
+			stmt.close();
+			dbm.disconnect();
+		}else{
+			dbm.disconnect();
+			throw new Error("Rent id is not available");
+		}
 	}
 
 }

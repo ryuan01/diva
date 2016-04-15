@@ -330,8 +330,8 @@ public class DatabaseManager {
 		reDB.addToBalance(rental_id, balance);
 	}
 	
-	public void setIs_paid_extra_charge(int rental_id, boolean setValue) throws SQLException{
-		reDB.setIs_paid_extra_charge(rental_id, setValue);
+	public void modifyRentalStatus(int rental_id, boolean is_paid_extra_charge, boolean is_check_overdue,String columnName) throws SQLException{
+		reDB.modifyRentalStatus(rental_id, is_paid_extra_charge, is_check_overdue, columnName);
 	}
 	
 	public BigDecimal getBalance(int rentID) throws SQLException{
@@ -475,6 +475,10 @@ public class DatabaseManager {
 		
 	public void modifyPassword(String userName, String newPassword) throws SQLException{
 		accDB.modifyPassword(userName, newPassword);
+	}
+	
+	public String getUsernameFromId(int id) throws SQLException{
+		return accDB.getUserNameFromId(id);
 	}
 
 /*---------------------------------------Used By vehicleDB------------------------------*/
@@ -714,5 +718,16 @@ public class DatabaseManager {
 		else { //there is an after rental report, but no before rental report
 			return false;
 		}
+	}
+
+	/**
+	 * Get ID from username for any user
+	 * @param clerk_username
+	 * @return ID
+	 * @throws SQLException 
+	 */
+	public int getIdFromUsername(String username) throws SQLException {
+		// TODO Auto-generated method stub
+		return accDB.getIdFromUsername(username);
 	}
 }

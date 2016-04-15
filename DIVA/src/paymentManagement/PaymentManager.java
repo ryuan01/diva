@@ -584,8 +584,8 @@ public class PaymentManager {
 		 * return that
 		 */
 		int difference_in_days; //need to calculate
-		BigDecimal extra_charge_price = getExtraChargePrice("overdue");
-		return null;
+		//--need to fix ---BigDecimal extra_charge_price = getExtraChargePrice("overdue");
+		return new BigDecimal("50");
 	}
 
 	/**

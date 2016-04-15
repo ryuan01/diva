@@ -61,19 +61,19 @@ class ReturnManager {
 		// [x] dbm --> rentalDB.setIsPaidExtraCharge(false);
 		// [x] return balance
 		String endDate;
+		String vehicle_type;
 		BigDecimal newBalance = new BigDecimal("0");
 		BigDecimal currentBalance;
 		
 		
-		endDate = dbConnection.getReservationEndDate(rental_id);
-		
-		// How do you calculate over due? (Sammy)
-		newBalance = paymentManager.calculateOverduePrice(current_date, endDate);
+		Rental rental = dbConnection.getRental(rental_id);
+		vehicle_type = dbConnection.getTypeOfVehicle(rental.getRentalReservation().getVehicleID());
+		endDate = rental.getRentalReservation().getEndDate();
+		newBalance = paymentManager.calculateOverduePrice(current_date, endDate, vehicle_type);
 		currentBalance = dbConnection.getBalance(rental_id).add(newBalance);
 		
 		dbConnection.addToBalance(rental_id, currentBalance);
-		dbConnection.setIs_paid_extra_charge(rental_id, false);
-		
+		dbConnection.modifyRentalStatus(rental_id, false, true,"is_check_overdue");
 		return currentBalance;
 		// TODO Auto-generated method stub
 		
