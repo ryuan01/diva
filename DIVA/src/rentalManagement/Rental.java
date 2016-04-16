@@ -9,6 +9,8 @@ public class Rental {
 	
 	private boolean is_paid_rental;
 	private boolean is_paid_extra_charge;
+	private boolean is_check_overdue;
+	private boolean is_check_return_branch;
 	private Reservation res;
 
 	/**
@@ -18,6 +20,8 @@ public class Rental {
 		res = null;
 		is_paid_rental = false;
 		is_paid_extra_charge = false;
+		is_check_overdue = false;
+		is_check_return_branch = false;		
 	}
 	
 	/**
@@ -28,12 +32,16 @@ public class Rental {
 		res = r;
 		is_paid_rental = false;
 		is_paid_extra_charge = false;
+		is_check_overdue = false;
+		is_check_return_branch = false;
 	}
 	
-	public Rental(Reservation r, boolean is_paid_rental, boolean is_paid_extra_charge){
+	public Rental(Reservation r, boolean is_paid_rental, boolean is_paid_extra_charge, boolean is_check_overdue, boolean is_check_return_branch){
 		res = r;
 		this.is_paid_rental = is_paid_rental;
 		this.is_paid_extra_charge = is_paid_extra_charge;
+		this.is_check_overdue = is_check_overdue;
+		this.is_check_return_branch = is_check_return_branch;
 	}
 	
 	/**
@@ -82,6 +90,19 @@ public class Rental {
 	 */
 	public Reservation getRentalReservation(){
 		return res;
+	}
+	
+	public boolean getIsCheckOverdue(){
+		return this.is_check_overdue;
+	}
+	public boolean getIsCheckReturnBranch(){
+		return this.is_check_return_branch;
+	}
+	public void setIsCheckOverdue(boolean is_check_overdue){
+		this.is_check_overdue = is_check_overdue;
+	}
+	public void setIsCheckReturnBranch(boolean is_check_return_branch){
+		this.is_check_return_branch = is_check_return_branch;
 	}
 	
 	@Override

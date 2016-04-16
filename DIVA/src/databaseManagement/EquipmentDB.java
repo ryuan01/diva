@@ -16,6 +16,9 @@ class EquipmentDB {
 	
 	private ConnectDB dbm;
 	
+	/**
+	 * default constructor
+	 */
 	EquipmentDB() {
 		dbm = new ConnectDB();
 	}
@@ -76,6 +79,30 @@ class EquipmentDB {
 	    stmt.executeUpdate(query);
 	    stmt.close();
 	    dbm.disconnect();
+	}
+
+	/**
+	 * Get a type of equipment by its ID
+	 * @param equipment_id
+	 * @return type
+	 * @throws SQLException 
+	 */
+	String getEquipmentType(int equipment_id) throws SQLException {
+		dbm.connect();
+		
+		Statement stmt = dbm.getConnection().createStatement();
+		String query = "SELECT `eq_type` FROM `equipment` WHERE "
+				+"`serial_num` ="+equipment_id;
+		//System.out.println(query);
+		ResultSet rs = stmt.executeQuery(query);
+
+		if(rs.next()){
+			
+			return rs.getString("eq_type");
+		} else{
+			dbm.disconnect();
+			return null; //did not find a match
+		}
 	}
 
 }

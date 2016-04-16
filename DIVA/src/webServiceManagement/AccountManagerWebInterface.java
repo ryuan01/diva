@@ -34,7 +34,6 @@ public class AccountManagerWebInterface {
 	
 	//------------Methods that can be called by an unauthenticated HTTPS user
 
-//****IT IS VERY LIKELY THAT THIS WILL BE REMOVED AND PLACED INTO THE SECURITY SYSTEM TO RESTRICT PEOPLE FROM CALLING IT 1000 TIMES
 	/**
 	 * Web interface for the 'Add a New Customer" Service
 	 * @param firstName The first name of the customer
@@ -61,7 +60,56 @@ public class AccountManagerWebInterface {
 		//Create an AccountManager and try to create a new account with the given parameters
 		try {
 			AccountManager am = new AccountManager();
-			am.addCustomerAccount(firstName, lastName, phoneNumber, emailAddress, userName, password, -1, null, address, city, province, zip);
+			am.addCustomerAccount(firstName, lastName, phoneNumber, 
+					emailAddress, userName, password, 
+					null, null, null, address,
+					city, province, zip);
+			
+			//Set responseString to success
+			responseString = "success";
+		} 
+		
+		//If the AccountManager throws an error, set responseString to the appropriate return value
+		catch (SQLException e) {
+			responseString = "Exception - " + e.getMessage();
+		}
+		
+		//return responseString
+		return responseString;
+	}
+	
+	/**
+	 * Web interface for the 'Add a New Customer" Service
+	 * @param firstName The first name of the customer
+	 * @param lastName The last name of the customer
+	 * @param phoneNumber	The customers phone number
+	 * @param emailAddress	The customers email address
+	 * @param userName		The customers userName
+	 * @param password		An encrypted version of The customers password
+	 * @param address		The home address of the new customer
+	 * @param city			The city the customer lives in
+	 * @param province		The province the customer lives in
+	 * @param zip			The customers zip code
+	 * @creditCardNumber	The number on the customers credit card
+	 * @nameOnCreditCard	The name on the customers credit card
+	 * @return A string describing the success of the transaction or the 
+	 * error that caused the transaction to not succeed
+	 */
+	@WebMethod
+	public String addCustomerAccountWithCreditCard(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, 
+			String password, String address, String city, String province, String zip, String creditCardNumber,String nameOnCreditCard,String expiryDate) {
+		
+		//Set responseString to hold the value returned to the caller
+		
+		String responseString;
+		
+		//Create an AccountManager and try to create a new account with the given parameters
+		try {
+			AccountManager am = new AccountManager();
+			am.addCustomerAccount(firstName, lastName, phoneNumber, 
+					emailAddress, userName, password, 
+					creditCardNumber, nameOnCreditCard, expiryDate, address,
+					city, province, zip);
 			
 			//Set responseString to success
 			responseString = "success";
@@ -77,38 +125,6 @@ public class AccountManagerWebInterface {
 	}
 	
 	//--------Methods that can be called by an Registered Customer
-	/*
-	/**
-	 * Web Interface for the "Changing a Username" Service
-	 * @param newUserName The desired new username
-	 * @pre usernameIsUnique(newUserName)
-	 * @pos logout(user)
-	 * @return A string describing the success of the transaction or the 
-	 * error that caused the transaction to not succeed
-	 */
-	/*
-	public String changeUserName(String newUserName, String Password) {
-		
-		//Declare variables to hold the response String
-		String responseString = "Not Implemented";
-		
-		//Try
-			//Create account manager
-				
-			//Get the calling users userName
-			
-			//Create an AccountManager and try to change the calling users username
-		
-			//set responsestring to success
-		
-		//Catch
-			//If the account manager throws and error, assign the appropriate
-			//error message to the responseString
-		
-		//return response string
-		return responseString; 
-	}
-	*/
 	
 	/**
 	 * Web Interface for the "Changing your own Password" Service
@@ -118,9 +134,10 @@ public class AccountManagerWebInterface {
 	 * @pos logout(user)
 	 * @return A string describing the success of the transaction or the 
 	 * error that caused the transaction to not succeed
+	 * @throws AccessControlException 
 	 */
 	@WebMethod
-	public String changePassword(String oldPassword, String newPassword) {
+	public String changePassword(String oldPassword, String newPassword) throws Exception {
 		
 		//Declare variables to hold the response text
 		String responseString;
@@ -153,43 +170,6 @@ public class AccountManagerWebInterface {
 		//return response string
 		return responseString;
 	}
-	
-	/*
-	/**
-	 * Web Interface for "Changing a Customers Account Information" Service
-	 * @param firstName The first name of the customer
-	 * @param lastName The last name of the customer
-	 * @param phoneNumber	The customers phone number
-	 * @param emailAddress	The customers email address
-	 * @pre user.type == customer
-	 * @return A string describing the success of the transaction or the 
-	 * error that caused the transaction to not succeed
-	 */
-	/*
-	public String changeaccontinfo(String firstName, String lastName, String phoneNumber, String emailAddress) {
-		
-		//CAN'T IMPLEMENT UNTIL ITS WORKED OUT WHY THE ACCOUNT MANAGER METHOd TAKES TOO MANY PARAMS
-		
-		
-		//Declare variables to hold the response text and the AccountManager
-		String responseString = "Not Implemented";
-				
-		//Try
-			//Get the calling users userName
-		
-			//Create an AccountManager and change the 
-			//calling users account information
-		
-			//set responseString to success
-				
-		//Catch
-			//If the account manager throws and error, assign 
-			//the appropriate error message to the responseString
-				
-		//return response string
-		return responseString; //METHOD NOT IMPLEMENTED
-	}
-	*/
 	
 	/**
 	 * Web Interface for the "Customer Joins Superclub" Service
@@ -267,7 +247,7 @@ public class AccountManagerWebInterface {
 	public String customerQuitSuperclub() {
 		
 		
-		//Declare variables to hold the response text and the AccountManager
+		//Declare variables to hold the response text
 		String responseString;
 		
 		try {
@@ -302,7 +282,7 @@ public class AccountManagerWebInterface {
 	@WebMethod
 	public String clerkDowngradesSuperCustomerToRegularCustomer(String userName) {	
 		
-		//Declare variables to hold the response text and the AccountManager
+		//Declare variables to hold the response text
 		String responseString;
 				
 		try {
@@ -343,7 +323,8 @@ public class AccountManagerWebInterface {
 			
 			//Turn the list of Accounts into a list of stringified 
 			//accounts and store them in responseList
-			responseList = WebToolkit.toArrayOfStrings(customerList);
+			WebToolkit wtk = new WebToolkit();
+			responseList = wtk.toArrayOfStrings(customerList);
 		} 
 		
 		//If the account manager throws and error, assign 
@@ -375,7 +356,8 @@ public class AccountManagerWebInterface {
 			
 			//Turn the list of Accounts into a list of stringified 
 			//accounts and store them in responseList
-			responseList = WebToolkit.toArrayOfStrings(customerList);
+			WebToolkit wtk = new WebToolkit();
+			responseList = wtk.toArrayOfStrings(customerList);
 		} 
 		
 		//If the account manager throws and error, assign 
@@ -407,7 +389,8 @@ public class AccountManagerWebInterface {
 			
 			//Turn the list of Accounts into a list of stringified 
 			//accounts and store them in responseList
-			responseList = WebToolkit.toArrayOfStrings(customerList);
+			WebToolkit wtk = new WebToolkit();
+			responseList = wtk.toArrayOfStrings(customerList);
 		} 
 		
 		//If the account manager throws and error, assign 
@@ -437,7 +420,7 @@ public class AccountManagerWebInterface {
 	@WebMethod
 	public String addClerkAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String password, int works_at) {
 		
-		//Declare variables to hold the response text and the AccountManager
+		//Declare variables to hold the response text
 		String responseString;
 		
 		//Set type to clerk
@@ -479,7 +462,7 @@ public class AccountManagerWebInterface {
 	@WebMethod
 	public String addManagerAccount(String firstName, String lastName, String phoneNumber, String emailAddress, String userName, String password, int works_at) {
 		
-		//Declare variables to hold the response text and the AccountManager
+		//Declare variables to hold the response text
 		String responseString;
 		
 		//Set type to Manager
@@ -514,7 +497,7 @@ public class AccountManagerWebInterface {
 	@WebMethod
 	public String changeAUsersPassword(String userName, String newPassword) {
 		
-		//Declare variables to hold the response text and the AccountManager
+		//Declare variables to hold the response text
 		String responseString;
 
 			try {
@@ -537,6 +520,40 @@ public class AccountManagerWebInterface {
 		//return response string
 		return responseString;
 	}
+	
+	/**
+	 * Removes the database record for the account assosiated with the given username
+	 * @param userName the username of the account to be deleted
+	 * @return A string describing the success or failure of the invocation
+	 */
+	@WebMethod
+	public String deleteAccount(String userName) {
+		
+		//Declare variables to hold the response textr
+		String responseString;
+
+		try {
+			//Create an AccountManager and remove the account assosiated with the given username
+			AccountManager am = new AccountManager();
+			am.deleteAccount(userName);
+						
+			//Set responseString to success
+			responseString = "success";
+						
+		} 
+					
+		//If the account manager throws and error, assign the appropriate
+		//error message to the responseString
+		catch (SQLException e) {
+			responseString = "Exception - " + e.getMessage();
+		}
+														
+		//return response string
+		return responseString;
+		
+	}
+	
+	//----------API for the front end - Never called directly by a user
 	
 	/**
 	 * Returns the userName from the session context rather than the database

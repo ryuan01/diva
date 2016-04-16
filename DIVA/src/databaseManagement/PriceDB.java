@@ -4,9 +4,10 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.sql.Connection;
 
-import vehicleManagement.Truck;
-import vehicleManagement.Vehicle;
+import paymentManagement.Receipt;
 
 /**
  * Connect to Database to provide services related to PriceList
@@ -26,6 +27,9 @@ class PriceDB {
 	private static final int NUMBER_INSURANCE_PRICE_TYPE = 3;
 	private static final int NUMBER_EQ_TYPE = 4;
 	
+	private static final String CUSTOMER = "customer";
+	private static String CAR = "car";
+	
 	
 	private ConnectDB dbm;
 	
@@ -35,7 +39,6 @@ class PriceDB {
 
 	
 	BigDecimal[][] getCarPriceList() throws SQLException {
-		// TODO Auto-generated method stub
   		BigDecimal[][] prices = new BigDecimal[NUMBER_CAR_TYPE][NUMBER_RENTAL_PRICE_TYPE];
   		
   		dbm.connect();
@@ -63,7 +66,7 @@ class PriceDB {
 	}
 
 	BigDecimal[][] getTruckPriceList() throws SQLException {
-		// TODO Auto-generated method stub
+		// 
   		BigDecimal[][] prices = new BigDecimal[NUMBER_TRUCK_TYPE][NUMBER_RENTAL_PRICE_TYPE];
   		
   		dbm.connect();
@@ -91,7 +94,7 @@ class PriceDB {
 	}
 
 	BigDecimal[][] getEquipmentPriceList() throws SQLException {
-		// TODO Auto-generated method stub
+		// 
   		BigDecimal[][] prices = new BigDecimal[NUMBER_EQ_TYPE][NUMBER_INSURANCE_PRICE_TYPE];
   		
   		dbm.connect();
@@ -119,7 +122,7 @@ class PriceDB {
 	}
 
 	BigDecimal[][] getCarInsurancePriceList() throws SQLException {
-		// TODO Auto-generated method stub
+		// 
   		BigDecimal[][] prices = new BigDecimal[NUMBER_CAR_TYPE][NUMBER_INSURANCE_PRICE_TYPE];
   		
   		dbm.connect();
@@ -132,9 +135,9 @@ class PriceDB {
     		if (rs.next()){
     			for (int j=0;j<prices[i].length;j++){
         			prices[i][j] = rs.getBigDecimal(j+1);
-        			//System.out.println(prices[i][j]);
+        			System.out.println(prices[i][j]);
         		}
-    			//System.out.println();
+    			System.out.println();
         	}
         }
         
@@ -147,7 +150,7 @@ class PriceDB {
 	}
 
 	BigDecimal[][] getTruckInsurancePriceList() throws SQLException {
-		// TODO Auto-generated method stub
+		// 
  		BigDecimal[][] prices = new BigDecimal[NUMBER_TRUCK_TYPE][NUMBER_INSURANCE_PRICE_TYPE];
   		
   		dbm.connect();
@@ -181,7 +184,7 @@ class PriceDB {
 	 * @throws SQLException 
 	 */
 	 BigDecimal[] getPriceRow(String type, String table_name) throws SQLException {
-			// TODO Auto-generated method stub
+			// 
 	 		BigDecimal[] prices = new BigDecimal[PRICE_ROW_SIZE];
 	  		
 	  		dbm.connect();
@@ -213,5 +216,215 @@ class PriceDB {
 	        return prices;
 		
 	}
+	 
+	 /**
+	  * @author saud (sammy) almahri
+	  * @throws SQLException 
+	  */
+	 BigDecimal[] getAllExtraChargePrice() throws SQLException{
+		 Connection conn;
+		 Statement stmt;
+		 String query;
+		 ResultSet rs;
+		 
+		 BigDecimal[] extraCharge = new BigDecimal[PRICE_ROW_SIZE];
+		 
+		 query = "SELECT price FROM `extra_charge`;";
+		 
+		 dbm.connect();
+		 conn = dbm.getConnection();
+		 stmt = conn.createStatement();
+		 
+		 rs = stmt.executeQuery(query);
+		 
+		 for(int i = 0; rs.next(); i++){
+			 extraCharge[i] = rs.getBigDecimal("price");
+		 }
+		 
+		 rs.close();
+		 stmt.close();
+		 dbm.disconnect();
+		 
+		 return extraCharge;
+	 }
+	 
+	 /**
+	  * @author saud (sammy) almahri
+	  * @return
+	 * @throws SQLException 
+	  */
+	 BigDecimal[][] getAllInsurancePrice(String vehicleType) throws SQLException{
+		Connection conn;
+		Statement stmt;
+		ResultSet rs;
+		String query;
+		
+		String table;
+		int numberOfVehicleTypes;
+		
+		if (vehicleType == CAR){
+			table = "insurance_car_price";
+			numberOfVehicleTypes = NUMBER_CAR_TYPE;
+		} else{
+			table = "insurance_truck_price";
+			numberOfVehicleTypes = NUMBER_TRUCK_TYPE;
+		}
+		
+		 
+		
+		BigDecimal[][] insurancePrices = new BigDecimal[numberOfVehicleTypes][NUMBER_INSURANCE_PRICE_TYPE];
+		BigDecimal[] insuranceRow = new BigDecimal[NUMBER_INSURANCE_PRICE_TYPE];
+		
+		query = "SELECT * FROM " + table + ";";
+		
+		dbm.connect();
+		
+		conn = dbm.getConnection();
+		stmt = conn.createStatement();
+		
+		rs = stmt.executeQuery(query);
+		
+		for (int i = 0; rs.next() && i < numberOfVehicleTypes ; i++){
+			
+			insuranceRow[0] = rs.getBigDecimal("perHour");
+			insuranceRow[1] = rs.getBigDecimal("perDay");
+			insuranceRow[2] = rs.getBigDecimal("perWeek");
+			
+			insurancePrices[i] = insuranceRow;
+		}
+		
+		return insurancePrices;
+	 }
+	 
+	 
+	 /**
+	  * @author saud (sammy) almahri
+	  * @param receipt
+	  * @throws Error 
+	  * @throws SQLException 
+	  */
+	 void addReceipt(Receipt receipt) throws SQLException, Error{
+		 
+		 Connection conn;
+		 Statement stmt;
+		 String query;
+		 
+		 //local variabls 
+		 int customerID;
+		 String basic_info;
+		 String payment_info;
+		
+		 customerID = receipt.getReceiptCustomer();
+		 
+		 dbm.connect();
+		 
+		 if(isElementAvailable(customerID, CUSTOMER)){
+			 basic_info = receipt.getBasicInfo();
+			 payment_info = receipt.getPaymentInfo();
+			 
+			 query = "INSERT INTO `receipt`(`customer_id`,  `payment_info`, `basic_info`) "
+			 		+ "VALUES(" + customerID +",\"" + payment_info + "\",\"" + basic_info +"\");";
+			 
+			 
+			 conn = dbm.getConnection();
+			 stmt = conn.createStatement();
+			 
+			 stmt.executeUpdate(query);
+			 
+			 stmt.close();
+			 dbm.disconnect();
+		 } else{
+			 dbm.disconnect();
+			 throw new Error("customer is not registered in the system");
+			 }
+		 }
+		 
+	 	/**
+	 	 * @author saud (sammy) almahri
+	 	 * @param customer_id
+	 	 * @return
+	 	 * @throws Error 
+	 	 * @throws SQLException 
+	 	 */
+	 
+	 Receipt[] getReceipt(int customer_id) throws SQLException, Error{
+		 //TODO change method to return a list of arrays
+		 Connection conn;
+		 Statement stmt;
+		 String query;
+		 ResultSet rs;
+		 
+		 //receipt variables
+		 int receipt_id;
+		 int clerk_id;
+		 String basic_info;
+		 String payment_info;
+		 
+		 ArrayList<Receipt> r = new ArrayList<Receipt>();
+		 
+		 dbm.connect();
+		 
+		 if (isElementAvailable(customer_id, CUSTOMER)){
+			 query = "SELECT * FROM receipt "
+			 		+ "WHERE customer_id = " + customer_id +";";
+			 conn = dbm.getConnection();
+			 stmt = conn.createStatement();
+			 
+			 rs = stmt.executeQuery(query);
+			 
+			 while(rs.next()){
+				 if(rs.getInt("customer_id") == customer_id){
+					 receipt_id = rs.getInt("receipt_id");
+					 clerk_id = rs.getInt("clerk_id");
+					 basic_info = rs.getString("basic_info");
+					 payment_info = rs.getString("payment_info");
+					 
+					 r.add(new Receipt(receipt_id, customer_id, clerk_id, basic_info, payment_info));
+				 }
+			 }
+			
+		 }else{
+			 dbm.disconnect();
+			 throw new Error("customer is not registered in the system");
+		 }
+		 
+		 rs.close();
+		 stmt.close();
+		 dbm.disconnect(); 
+		 return r.toArray(new Receipt[r.size()]);
+	 }
+	 
+	 
+	 /**
+	  * @author saud (sammy) almahri
+	  * @param receiptID
+	  * @return
+	  * @throws SQLException
+	  */
+	 private boolean isElementAvailable(int elementID, String elementName) throws SQLException{
+		 Connection conn;
+		 Statement stmt;
+		 ResultSet rs;
+		 String query;
+		 
+		 conn = dbm.getConnection();
+		 stmt = conn.createStatement();
+		 
+		 query = "SELECT id_number FROM " + elementName + " WHERE id_number = " + elementID +";";
+		 
+		 rs = stmt.executeQuery(query);
+		 
+		 while(rs.next()){
+			 if (rs.getInt("id_number") == elementID){ 
+				 rs.close();
+				 stmt.close();
+				 return true;
+			 } 
+		 }
+		 
+		 rs.close();
+		 stmt.close();
+		 return false;
+	 }
 
 }

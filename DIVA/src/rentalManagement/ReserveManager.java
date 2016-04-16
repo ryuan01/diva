@@ -1,13 +1,11 @@
 package rentalManagement;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Date;
+import java.text.ParseException;
 
 import databaseManagement.DatabaseManager;
 import paymentManagement.PaymentManager;
-import vehicleManagement.Car;
 
 
 class ReserveManager {
@@ -36,17 +34,16 @@ class ReserveManager {
 	 * @param employeeID 
 	 * @param employeeID Employee login ID of the Reservation.
 	 * @throws SQLException 
+	 * @throws ParseException 
 	 */
 	void addReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
-			int customerID, boolean insurance) throws SQLException 
+			int customerID, boolean insurance) throws SQLException, ParseException 
 	{
 		//create reservation object and pass that on
 		//(String startD, String endD, int vehID, int[] e, int startBranch, int endBranch, int cusID, 
 		// int id, BigDecimal amount)
-		BigDecimal balance;
-		Vehicle v = dbConnection.;
-		= pm.calculateCarPrice(((Car) vlist[i]).getCarClass(), start_date, end_date);
-		Reservation r = new Reservation(startD,endD,vehicleID,equipIDs,startBranchID,endBranchID,customerID,-1, balance,insurance);
+		Reservation r = new Reservation(startD,endD,vehicleID,equipIDs,startBranchID,endBranchID,customerID,-1, new BigDecimal("0"),insurance);
+		r.setBalance(pm.totalPreTax(r));
 		dbConnection.createReservationEntry(r);
 	}
 	

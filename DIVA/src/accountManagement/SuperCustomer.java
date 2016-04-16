@@ -4,9 +4,10 @@ import webServiceManagement.ArrayOfStringsable;
 
 public class SuperCustomer extends Customer implements ArrayOfStringsable{
 
+	/**
+	 * Amount of superRent points in SuperCustomer account
+	 */
 	private int points;
-	//need to implement
-	
 
 	/**
 	 * 
@@ -28,23 +29,34 @@ public class SuperCustomer extends Customer implements ArrayOfStringsable{
 			
 		super(customer.getFirstname(), customer.getLastname(), customer.getPhoneNumber(),
 				customer.getEmail(), customer.getLoginId(),customer.getID(), 
-				customer.getCc_num(), customer.getName_on_card(), customer.getLocation().getAddress(),
+				customer.getCc_num(), customer.getExpireDate(),customer.getName_on_card(), customer.getLocation().getAddress(),
 				customer.getLocation().getCity(), customer.getLocation().getProvince(),
 				customer.getLocation().getZipcode(), customer.getStanding());
 		this.points = points;
 		super.objectClass = getClass().getName();
 	}
 
+	/**
+	 * 
+	 * @return Amount of superRent points in SuperCustomer account
+	 */
 	public int getPoints() {
 		return points;
 	}
 
+	/**
+	 * 
+	 * @param points Amount of superRent points in SuperCustomer account
+	 */
 	public void setPoints(int points) {
 		this.points = points;
 	}
+	
+	
 	/**
-	 * Overrides toString() method
+	 * @override super.toString()
 	 */
+	@Override
 	public String toString(){
 		return "{'id':'"+ this.getID() +"', 'fisrtName':'"+this.getFirstname()
 				+"','lastname':'"+this.getLastname()+"',"+"'phoneNumber;':'"+this.getPhoneNumber()

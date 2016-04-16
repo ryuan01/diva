@@ -45,7 +45,7 @@ public class VehicleManager {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
 		if (sdf.parse(start_date).after(sdf.parse(end_date))){
-			throw new IllegalArgumentException("Start Date must be after today");
+			throw new IllegalArgumentException("Start Date cannot be before end date");
 		}
 		if (type.equals("car") || type.equals("truck")){
 			vlist = db.search(branch_id, type, start_date, end_date);

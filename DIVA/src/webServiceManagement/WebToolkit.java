@@ -8,7 +8,7 @@ package webServiceManagement;
  */
  class WebToolkit {
 	
-	static String[] toArrayOfStrings(ArrayOfStringsable[] objectArray) {
+	String[] toArrayOfStrings(ArrayOfStringsable[] objectArray) {
 		
 		String[] stringArray = new String[objectArray.length];
 		
@@ -18,5 +18,7 @@ package webServiceManagement;
 		}
 		
 		return stringArray;
-	};
+	}
+	
+	
 }

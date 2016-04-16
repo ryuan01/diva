@@ -1,6 +1,7 @@
 package rentalManagement;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.ParseException;
 
@@ -30,40 +31,6 @@ class ReturnManager {
 	{
 		dbConnection = db;
 	}
-	
-	// assumes gas is already refilled.
-	/**
-	 * Returns a Vehicle from Rental.
-	 * @param reservID Reservation ID of Rental the Vehilce belongs to.
-	 * @throws ParseException 
-	 */
-	void startReturn(int reservID, String description, String dmgDescription,BigDecimal extraPay, String typeOfPayment, String accidentDetail) throws ParseException
-	{
-		//use-case: return damaged 
-		if(accidentDetail != "")
-		{
-			String current_date = sdf.format(new java.util.Date());
-			int milage = 0;
-			int gasLevel = 100;
-			//fill out report 
-			Report r = new Report(current_date, description, reservID,milage, gasLevel, gasLevel, -1);
-			
-			dbConnection.addReport(r, "after_rental");
-			
-			PaymentManager.makePayment(dbConnection.getReservationAccount(reservID), extraPay);
-		}
-		
-		//use-case: return over due 
-		if(checkIfOverdue(reservID))
-		{
-			PaymentManager.makePayment(dbConnection.getReservationAccount(reservID),PaymentManager.calculateLateprice(reservID));
-		}
-		
-	
-		//use-case: return normally, or after paid extra. 
-		//dbConnection.changeReservationStatus(reservID, "complete");
-		
-	}
 
 	
 	/**
@@ -88,40 +55,101 @@ class ReturnManager {
 		}
 	}
 
-	BigDecimal addOverdueExtraCharge(int rental_id, String current_date) {
-		// dbm --> rentalDB.getReturnDate
-		// balance = paymentManager.getOverduePrice(start_date, current_date)
-		// dbm --> rentalDB.addToBalance(rental_id, balance)
-		// dbm --> rentalDB.setIsPaidExtraCharge(false);
-		// return balance
-		return null;
+	BigDecimal addOverdueExtraCharge(int rental_id, String current_date) throws SQLException, ParseException {
+		// [x] dbm --> rentalDB.getReturnDate 
+		// [] balance = paymentManager.getOverduePrice(start_date, current_date)
+		// [x] dbm --> rentalDB.addToBalance(rental_id, balance)
+		// [x] dbm --> rentalDB.setIsPaidExtraCharge(false);
+		// [x] return balance
+		String endDate;
+		String vehicle_type;
+		BigDecimal newBalance = new BigDecimal("0");
+		BigDecimal currentBalance;
+		
+		
+		Rental rental = dbConnection.getRental(rental_id);
+		vehicle_type = dbConnection.getTypeOfVehicle(rental.getRentalReservation().getVehicleID());
+		endDate = rental.getRentalReservation().getEndDate();
+		newBalance = paymentManager.calculateOverduePrice(current_date, endDate, vehicle_type);
+		currentBalance = dbConnection.getBalance(rental_id).add(newBalance);
+		
+		dbConnection.addToBalance(rental_id, currentBalance);
+		dbConnection.modifyRentalStatus(rental_id, false, true,"is_check_overdue");
+		return newBalance;
 		// TODO Auto-generated method stub
 		
 	}
 
-	boolean checkReturnBranch(int rental_id) {
-		// TODO Auto-generated method stub
+	/**
+	 * Check if the branch returned to is not the branch that the customer wishes to return to at time of booking
+	 * @param rental_id
+	 * @param current_branch_id 
+	 * @param current_branch_id
+	 * @return true if it is wrong, false if they are different
+	 * @throws SQLException
+	 */
+	boolean checkReturnBranch(int rental_id, int current_branch_id) throws SQLException {
+		Rental rental = dbConnection.getRental(rental_id);
+		if (rental.getRentalReservation().getEndBranchID() != current_branch_id){
+			return true;
+		}
 		return false;
 	}
 
-	BigDecimal addWrongReturnBranchExtraCharge(int rental_id) {
+	/**
+	 * Add extra charges for a customer who returned to the wrong branch
+	 * @param rental_id
+	 * @param current_branch_id 
+	 * @return
+	 */
+	BigDecimal addWrongReturnBranchExtraCharge(int rental_id, int current_branch_id) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	void createAccidentReport(int clerkID, String accident_date, String description, int rentalID,
-			String address, String city, String province, String zipcode, String driver, BigDecimal amount) {
-		// TODO Auto-generated method stub
+		BigDecimal newBalance = new BigDecimal("0");
+		BigDecimal currentBalance;
 		
-	}
-
-	void payForExtraCharge(int rental_id, BigDecimal amount) {
-		// TODO Auto-generated method stub
+		newBalance = paymentManager.calculateWrongReturnBranchPrice();
+		currentBalance = dbConnection.getBalance(rental_id).add(newBalance);
 		
+		dbConnection.addToBalance(rental_id, currentBalance);
+		dbConnection.modifyRentalStatus(rental_id, false, true,"is_check_return_branch");
+		return newBalance;
 	}
 
-	public boolean readyToReturn(int rental_id) {
+	void changeRentalStatusExtraCharge(int rental_id, boolean status) throws SQLException {
 		// TODO Auto-generated method stub
-		return false;
+		dbConnection.changeRentalStatus(rental_id,"is_paid_extra_charge", status);
+	}
+
+	/**
+	 * Compare the two inspection reports for a rental
+	 * @param rentalID
+	 * @return
+	 * @throws Exception 
+	 */
+	BigDecimal compareReports(int rentalID) throws Exception {
+		BigDecimal balance = new BigDecimal("0.00");
+		//get the two reports
+		Report[] reports = dbConnection.searchInspectionReport(rentalID);
+		if (reports.length < 2){
+			throw new Exception("Must have two reports, one before rental and one after rental to compare them");
+		}
+		//compare gas tank
+		int gaslevel_before = reports[0].getGasLevel();
+		int gaslevel_after = reports[1].getGasLevel();
+		if (gaslevel_before > gaslevel_after){
+			balance = paymentManager.calculateGasLevelPrice(gaslevel_before, gaslevel_after);
+			System.out.println("balance gaslevel is "+balance);
+		}
+		//compare milage in KM
+		int milage_km_before = reports[0].getMilage();
+		int milage_km_after = reports[1].getMilage();
+		int extra_milage = milage_km_after - milage_km_before - Report.MAX_MILEGE;
+		if ( extra_milage > 0) {//extra milage to be charged
+			int v_id = dbConnection.getReservationVehicleID(rentalID);
+			String v_type = dbConnection.getTypeOfVehicle(v_id);
+			balance = balance.add(paymentManager.calculateExtraKMPrice(extra_milage,v_type)).setScale(2, RoundingMode.CEILING);
+			System.out.println("balance km is "+balance);
+		}
+		return balance;
 	}
 }

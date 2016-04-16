@@ -9,7 +9,7 @@ import webServiceManagement.ArrayOfStringsable;
  */
 public class Report implements ArrayOfStringsable{
 	
-	private static final int MAX_MILEGE = 0; 
+	public static final int MAX_MILEGE = 500; //meant it is by KM 
 	private String objectClass;
 	private int report_num;
 	private int report_clerk_id;
@@ -18,6 +18,7 @@ public class Report implements ArrayOfStringsable{
 	private int reportRentalID;
 	private int milage; //0 - MAX_MILEGE
 	private int gasLevel; //unsigned int between 0-100
+	private String reportState; 
 	
 	
 	//methods need to be changed.
@@ -30,17 +31,18 @@ public class Report implements ArrayOfStringsable{
 	 * @param milage
 	 * @param gasLevel
 	 */
-	public Report(int clerk_id, String d, String description, int rentalID, int milage, int gasLevel, int report_num)
+	public Report(int clerk_id, String date, String description, int rentalID, int milage, int gasLevel, int report_num, String state)
 	{
 		this.report_num = report_num;
 		objectClass = getClass().getName();
 		report_num = -1; //this need to be updated from database 
 		report_clerk_id = clerk_id;
-		reportDate = d;
+		reportDate = date;
 		reportDescription = description;
 		reportRentalID = rentalID;
 		this.milage = milage;
 		this.gasLevel = gasLevel;
+		this.reportState = state; 
 	}
 	
 	/**
@@ -146,6 +148,13 @@ public class Report implements ArrayOfStringsable{
 		return milage;
 	}
 	
+	public void setReportState(String state){
+		this.reportState = state;
+	}
+	public String getReportState(){
+		return this.reportState;
+	}
+	
 	@Override
 	public String toString() {
 				
@@ -153,7 +162,7 @@ public class Report implements ArrayOfStringsable{
 		return "{'objectClass':'"+this.objectClass+"',"
 			+	"'report_num':'"+this.report_num+"',"+"'report_clerk_id':'"+report_clerk_id+"',"
 			+ "'reportDate':'"+this.reportDate+"',"+"'reportDescription:'"+this.reportDescription+"',"
-			+ "'reportRentalID':'"+this.reportRentalID+"',"+"'milage':'"+this.milage+"',"
+			+ "'reportRentalID':'"+this.reportRentalID+"',"+"',"+"'state':'"+this.reportState+"'milage':'"+this.milage+"',"
 			+ "'gasLevel':'"+this.gasLevel+"'}";
 	}
 }

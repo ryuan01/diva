@@ -1,7 +1,6 @@
 package databaseManagement;
 
 import java.util.ArrayList;
-import java.util.Currency;
 import java.sql.*;
 
 import accountManagement.*;
@@ -12,6 +11,9 @@ import accountManagement.*;
  */
 class AccountDB{
 	
+	/**
+	 * final methods to avoid any errors
+	 */
 	private static final String USER = "`users`";
 	private static final String CUSTOMER = "`customer`";
 	private static final String SUPER_CUSTOMER = "`super_customer`";
@@ -19,8 +21,14 @@ class AccountDB{
 	private static final String ID_NUM = "users.id_number";
 	private static final String USERNAME = "Account_uName";
 	
+	/**
+	 * a ConnectDB connect and disconnect from the database
+	 */
 	private ConnectDB dbm;
-	//checking 
+	
+	/**
+	 * default constructor
+	 */
 	AccountDB() {
 		dbm = new ConnectDB();
 	}
@@ -29,11 +37,12 @@ class AccountDB{
 	
 	/**
 	 * createCustomer adds a new customer account to the database
-	 * @param customer object
-	 * @throws SQLException 
-	 * @pre !isValidUsername(loginID);
-	 * @post isValidAccount(loginId);
+	 * @author saud (sammy) almahri
+	 * @param customer 		customer account object
+	 * @pre !doesItExist(userName, USER, USERNAME))
+	 * @post doesItExist(userName, USER, USERNAME))
 	 * @throws SQLException
+	 * @throws IllegalArgumentException 	account username is already taken
 	 */
 	void createCustomer(Customer customer) throws SQLException{
 		// Account variables
@@ -45,7 +54,8 @@ class AccountDB{
 		String email;
 		
 		//customer variables
-		long ccNum;
+		String ccNum;
+		String expire_date;
 		String ccName;
 		String street;
 		String city;
@@ -68,6 +78,7 @@ class AccountDB{
 			email = customer.getEmail();
 			
 			ccNum = customer.getCc_num();
+			expire_date = customer.getExpireDate();
 			ccName = customer.getName_on_card();
 			street = customer.getLocation().getAddress();
 			city = customer.getLocation().getCity();
@@ -87,28 +98,39 @@ class AccountDB{
 					+ fname + "\", \"" + lname + "\", \"" + phone + "\", \"" + email 
 					+ "\", \"" + userName + "\", \"" + password + "\");\n";
 			stmt.executeUpdate(query);
+			System.out.println(query);
 			// insert into customer table
-			query= "INSERT INTO `customer` (`id_number`, `cc_Num`, "
+			query= "INSERT INTO `customer` (`id_number`, `cc_Num`, `expire_date`,"
 					+ "`name_on_cCard`, `street_name`, `city`, "
 					+ "`province`, `zipcode`) VALUES (LAST_INSERT_ID(),\"" + ccNum
-					+ "\", \"" + ccName + "\", \"" + street + "\", \"" + city + "\", \"" + province
+					+ "\", \"" +expire_date+"\", \""+ ccName + "\", \"" + street + "\", \"" + city + "\", \"" + province
 					+ "\", \"" + zipCode + "\") ;";
-			
+			System.out.println(query);
 			// execute the statements
 			stmt.executeUpdate(query);
 			
 			conn.commit(); 
 			conn.setAutoCommit(true);
 			
+			stmt.close();
+			dbm.disconnect();
+			
 		} else{
 			dbm.disconnect();
-			throw new Error("Account already exist");
+			throw new IllegalArgumentException("Account username already exist");
 		}
-		
-		dbm.disconnect();
 	}
 
 	
+	/**
+	 * createEmployee adds a new employee account to the database
+	 * @author saud (sammy) almahri
+	 * @param employee 	employee account object
+	 * @pre !doesItExist(userName, USER, USERNAME))
+	 * @post doesItExist(userName, USER, USERNAME))
+	 * @throws SQLException
+	 * @throws IllegalArgumentException 	account username is already taken
+	 */
 	void createEmployee(Employee employee) throws SQLException{
 		// Account variables
 		String userName = employee.getLoginId();
@@ -160,14 +182,22 @@ class AccountDB{
 			conn.commit();
 			conn.setAutoCommit(false);
 			
+			stmt.close();
+			dbm.disconnect();
+			
 		} else{
 			dbm.disconnect();
-			throw new Error("Account already exist");
+			throw new IllegalArgumentException("Account username already exist");
 		}
-		
-		dbm.disconnect();
 	}
-	
+
+	/**
+	 * upgrade a regular customer to a SuperRent customer
+	 * @param username 	customer username
+	 * @pre doesItExist(username, CUSTOMER, USERNAME)
+	 * @throws SQLException
+	 * @throws IllegalArgumentException 
+	 */
 	void upgradeCustomer(String username) throws SQLException{
 		//database variables
 		Statement stmt;
@@ -180,8 +210,8 @@ class AccountDB{
 		
 		dbm.connect();
 		
-		if(isValidAccount(username, CUSTOMER)){
-			
+		// username must belong to a customer to upgrade to superRent
+		if(doesItExist(username, CUSTOMER, USERNAME)){
 			conn = dbm.getConnection();
 			stmt = conn.createStatement();
 			
@@ -197,15 +227,24 @@ class AccountDB{
 			query = "INSERT INTO `super_customer`(`id_number`) VALUES (" + SRC_id + ");";
 			stmt.executeUpdate(query);
 			
+			rs.close();
+			stmt.close();
+			dbm.disconnect();
+			
 		}else{
 			dbm.disconnect();
-			throw new Error("Username is not a customer; create customer account first");
+			throw new IllegalArgumentException("Username does not belong to a customer; create customer account first");
 		}
-		
-		dbm.disconnect();
 	}
 	
-	
+	/**
+	 * add points to a SuperRent customer
+	 * @param username		customer username
+	 * @param points		ammount of points to be added
+	 * @pre doesItExist(username, SUPER_CUSTOMER, USERNAME)
+	 * @throws SQLException
+	 * @throws IllegalArgumentException
+	 */
 	void addSRPoints(String username, int points) throws SQLException{
 		//database variables
 		Statement stmt;
@@ -247,16 +286,25 @@ class AccountDB{
 					+ "WHERE id_number = " + userID +";";
 			stmt.executeUpdate(query);
 			
+			rs.close();
+			stmt.close();
+			dbm.disconnect();
+			
 		} else{
 			dbm.disconnect();
-			throw new Error("user is not a superRent customer");
+			throw new IllegalArgumentException("user is not a superRent customer");
 		}
-		
-		dbm.disconnect();
 	}
 	
 	
-	
+	/**
+	 * remove customer from Super_customer table
+	 * @author saud (sammy) almahri
+	 * @param username	SuperRent customer account username
+	 * @pre doesItExist(username, SUPER_CUSTOMER, USERNAME)
+	 * @throws SQLException
+	 * @throws IllegalArgumentException
+	 */
 	void downgradeSCustomer(String username) throws SQLException{
 		//database variables
 		Statement stmt;
@@ -270,7 +318,6 @@ class AccountDB{
 		
 		if(doesItExist(username, SUPER_CUSTOMER, USERNAME))
 		{
-			
 			conn = dbm.getConnection();
 			stmt = conn.createStatement();
 			
@@ -287,16 +334,26 @@ class AccountDB{
 			query = "DELETE FROM super_customer WHERE id_number = " + src_id;
 			stmt.executeUpdate(query);
 			
+			rs.close();
+			stmt.close();
+			
+			// disconnect from DB;
+			dbm.disconnect();
+			
 		}else{
 			dbm.disconnect();
-			throw new Error("User is not a superRent customer");
+			throw new IllegalArgumentException("User is not a superRent customer");
 		}
-		
-		// disconnect from DB;
-		dbm.disconnect();
 	}
-	
-	void removeAccountEntry(String username) throws SQLException{
+
+	/**
+	 * 
+	 * @param username
+	 * @throws SQLException
+	 * @throws IllegalArgumentException
+	 */
+	void removeAccountEntry(String username) throws SQLException, IllegalArgumentException{
+		// TODO alter database to disable an account
 		//database variables
 		Statement stmt;
 		Connection conn;
@@ -305,34 +362,33 @@ class AccountDB{
 		
 		dbm.connect();
 		
-		if(doesItExist(username, USER, EMPLOYEE))
+		if(doesItExist(username, EMPLOYEE, USERNAME ))
 		{
 			query="DELETE users, employee FROM users INNER JOIN employee WHERE "
 					+ "users.id_number = employee.id_number AND "
 					+ "users.account_uName = \"" + username +"\";";
-		}else if (doesItExist(username, SUPER_CUSTOMER, USERNAME)){
+			
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			stmt.executeUpdate(query);
+			
+			dbm.disconnect();
+		}else {
 			dbm.disconnect();
 			throw new Error("can't delete customer account");
 			
 		}
-		
-		conn = dbm.getConnection();
-		stmt = conn.createStatement();
-		
-		stmt.executeUpdate(query);
-		
-		dbm.disconnect();
 	}
 	
 	/**
-	 * getAccount gets an account from database
+	 * getAccount gets an account from database based on different parameters
+	 * @author saud (sammy) almahri
 	 * @param parameter can be either username, lastname, or phonenumber
-	 * @pre (username)
-	 * @return Account[] array
+	 * @return an array of accounts
 	 * @throws SQLException 
 	 */
 	Account[] getAccounts(String parameter) throws SQLException {
-		// assume its last name
 		//database variables
 		Statement stmt;
 		Connection conn;
@@ -351,7 +407,8 @@ class AccountDB{
 		String userName;
 		
 		// Custoemer variables:
-		long ccNumber;
+		String ccNumber;
+		String expire_date;
 		String nameOnCC;
 		String address;
 		String city;
@@ -423,7 +480,8 @@ class AccountDB{
 					email = rs.getString("email");
 					userName = rs.getString("Account_uName");
 					
-					ccNumber = rs.getLong("cc_Num");
+					ccNumber = rs.getString("cc_Num");
+					expire_date = rs.getString("expire_date");
 					nameOnCC = rs.getString("name_on_cCard");
 					address = rs.getString("street_name");
 					city = rs.getString("city");
@@ -433,7 +491,7 @@ class AccountDB{
 					
 					Customer customer = new Customer(firstN, lastN, phoneNum,
 							email, userName, Integer.parseInt(users),
-							ccNumber, nameOnCC, address, city, province,
+							ccNumber, expire_date, nameOnCC, address, city, province,
 							zipcode, standing);
 					
 					points = rs.getString("points");
@@ -450,108 +508,66 @@ class AccountDB{
 		
 		}
 		
+		rs.close();
+		stmt.close();
 		dbm.disconnect();
 		
 		return accountList.toArray(new Account[accountList.size()]);
 	
 	}
-		
-	//modifier 
+				
 	
-	
-	/**
-	 * loginPasswordUpdate updates an username with a new password
-	 * @param usernmae a username
-	 * @param oldPw the old encrypted password
-	 * @param enNewPw the new encrypted password
-	 * @pre isValidLogin(username, oldPw)
-	 * @post isValidLogin(username, enNewPw)
-	 * @return boolean value if the update is succesfull, return true; otherwise, resturn false
-	 * @throws SQLException 
-	 */
-	/* obsolete
-	public boolean loginPasswordUpdate(String username, String enOldPw, String enNewPw) throws SQLException {
-		if (isValidLogin(username, enOldPw)){
-			dbm.connect();
-			
-			
-			Statement stmt = dbm.getConnection().createStatement();
-			String query = "UPDATE users SET account_password= '" + enNewPw +
-					"' WHERE account_uName='" + username + "' AND account_password='" + enOldPw + "';";
-					
-			stmt.executeUpdate(query);
-			dbm.disconnect();
-			return true;
-	
-			
-		} else{
-			
-			return false;
-		}
-	}*/
-		
-	/**
-	 * createAccount create an new account
-	 * @param info the list of information for a new account, 
-	 * following the order of {loginId, password, firstname, lastname, phoneNumber, email}
-	 * @throws SQLException 
-	 * @pre !isValidAccount(info[2],info[3],info[4]);
-	 * @pre !isValidUsername(info[0]);
-	 * @post isValidAccount(loginId);
-	 */
-//	public boolean createAccount(String[] info) throws SQLException {
-//		// Does it need to specify the account type?
-//		
-//		if (!isValidAccount(info[2], info[3], info[4]) && !isValidUsername(info[0])){
-//			dbm.connect();
-//			
-//			Statement stmt = dbm.getConnection().createStatement();
-//			
-//			String query = "INSERT INTO `users` (`first_name`,`last_name`,`phone`,`email`,`account_uName`,`account_password`) "+
-//					"VALUES ('" + info[2] + "','" + info[3] + "','"+ info[4] + "','"+ info[5] + "','"+ info[0] + "','"
-//					+ info[1] + "');";
-//			System.out.println();
-//			stmt.executeUpdate(query);
-//			dbm.disconnect();
-//			return true;
-//			
-//		} else{
-//			return false;
-//		}
-//		
-//	}
-		
-
-	//not sure if we really want this, but OK.
-	//I think for security purpose, we might want to move the validation inside to this class
 	/**
 	 * getEncryptedpassword get the password from database that matches the username
+	 * @author saud (sammy) almahri
 	 * @param username a username
-	 * @pre isValidUsername(username)
-	 * @post encrypted password for that username
+	 * @pre doesItExist(username, USER, USERNAME)
 	 * @return encrypted password for that username
 	 * @throws SQLException 
 	 */
 	String retrievePassword(String username) throws SQLException {
+		//database variables
+		Statement stmt;
+		Connection conn;
+		ResultSet rs;
+		String query;
+		
+		String password;
+		
 		dbm.connect();
 		
+		
+		
 		if (doesItExist(username, USER, USERNAME)){
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
 			
-			String query = "SELECT account_password FROM users WHERE account_uName = '" + username +"';";
-						
-				Statement stmt = dbm.getConnection().createStatement();
-				
-				ResultSet rs = stmt.executeQuery(query);
-				rs.next();
-				String password = rs.getString("account_password");
-				dbm.disconnect();
-				return password;		
+			query = "SELECT account_password FROM users WHERE account_uName = '" + username +"';";
+
+			rs = stmt.executeQuery(query);
+			rs.next();
+			
+			password = rs.getString("account_password");
+			
+			rs.close();
+			stmt.close();
+			dbm.disconnect();
+			
+			return password;		
 		}else{
 			dbm.disconnect();
-			return null;
+			throw new IllegalArgumentException("Account username " + username+ " does not exist");
 		}
 	}
-	
+
+	/**
+	 * change the existing password to a new password
+	 * @author saud (sammy) almahri
+	 * @param userName		Account username
+	 * @param newPassword	new password
+	 * @pre doesItExist(userName, USER, USERNAME)
+	 * @throws SQLException
+	 */
 	void modifyPassword(String userName, String newPassword) throws SQLException{
 		// Database variables
 		Connection conn;
@@ -572,60 +588,78 @@ class AccountDB{
 			
 			stmt.executeUpdate(query);
 			
-			
+			stmt.close();
+			dbm.disconnect();
 		} else{
 			dbm.disconnect();
-			throw new Error("Username does not exist!");
+			throw new IllegalArgumentException("Username " + userName +" does not exist!");
 		}
-		dbm.disconnect();	
+	
 	}
-/* ----------------------------------PRIVATE METHODS-------------------------------------------*/
+
+
 	/**
-	 * isValidAccount checks if the provided account exists
-	 * @param fname first name
-	 * @param lname last name
-	 * @param phonenum phone number
-	 * @pre database account is not empty
-	 * @post true if it exists, false if it does not
-	 * @return true if it exists, false if it does not
+	 * Get username from account ID
+	 * @author Robin
+	 * @param customerAccountID
+	 * @return username
 	 * @throws SQLException 
 	 */
-	private boolean isValidAccount(String fname, String lname,String phonenum) throws SQLException{
+	String getUserNameFromId(int customerAccountID) throws SQLException {
 		dbm.connect();
-		
-		String query = "SELECT first_name, last_name, phone FROM users "
-				+ "WHERE first_name ='" + fname + "' AND last_name ='" + lname
-				+ "' AND phone ='" + phonenum +"';";
+		String username = "";
 		Statement stmt = dbm.getConnection().createStatement();
-		
+		String query = "SELECT `account_uName` FROM users WHERE users.id_number = "+customerAccountID;
 		ResultSet rs = stmt.executeQuery(query);
 		
-		while (rs.next()){
-			
-			if (fname.equals(rs.getString("first_name")) &&
-					lname.equals(rs.getString("last_name")) &&
-					phonenum.equals(rs.getString("phone"))){
-				dbm.disconnect();
-				return true;
-			}
+		if (rs.next()){
+			username = rs.getString("account_uName");
 		}
 		dbm.disconnect();
-		return false;
+		return username;
 	}
+
+	/**
+	 * get account ID from username
+	 * @author Robin
+	 * @param username
+	 * @return	
+	 * @throws Exception
+	 */
+	int getIdFromUsername(String username) throws Exception {
+		dbm.connect();
+		int id = -1;
+		Statement stmt = dbm.getConnection().createStatement();
+		String query = "SELECT `id_number` FROM users WHERE users.account_uName = \'"+username+"\'";
+		System.out.println(query);
+		ResultSet rs = stmt.executeQuery(query);
+		
+		if (rs.next()){
+			id = rs.getInt("id_number");
+		}
+		else{
+			throw new Exception("account username does not exist");
+		}
+		dbm.disconnect();
+		return id;
+	}
+/* ----------------------------------PRIVATE METHODS-------------------------------------------*/
+	
 	
 	/**
 	 * doesUsernameExist checks if the provided username is in the database
+	 * @author saud (sammy) almahri
 	 * @param username the proposed username
 	 * @pre database is not empty
 	 * @post true if username exists, false if it does not
 	 * @return true if the username exists
 	 */
-	private boolean doesItExist(String id, String table, String param) throws SQLException {
+	private boolean doesItExist(String id, String table, String param) throws SQLException, IllegalArgumentException {
 		// database ojbects:
 		Connection conn;
 		Statement stmt;
 		ResultSet rs;
-		
+		//System.out.println(id+" "+table+" "+param);		
 		//
 		String query = "";
 
@@ -645,8 +679,6 @@ class AccountDB{
 			
 		}	else if (table.equals(USER)){
 			query = "SELECT " + param + " FROM users;";
-		} else{
-			// throw an error
 		}
 		
 		// execute the query:
@@ -660,8 +692,6 @@ class AccountDB{
 		}
 		return false;
 	}
-	
-
 	
 	/**
 	 * isValidLogin checks if the username and pw matches
@@ -713,27 +743,6 @@ class AccountDB{
 		}
 		dbm.disconnect();
 		return false;
-	}
-
-	/**
-	 * Get username from account ID
-	 * @param customerAccountID
-	 * @return username
-	 * @throws SQLException 
-	 */
-	String getUserNameFromId(int customerAccountID) throws SQLException {
-		// TODO Auto-generated method stub
-		dbm.connect();
-		String username = "";
-		Statement stmt = dbm.getConnection().createStatement();
-		String query = "SELECT `account_uName` FROM users WHERE users.id_number = "+customerAccountID;
-		ResultSet rs = stmt.executeQuery(query);
-		
-		if (rs.next()){
-			username = rs.getString("account_uName");
-		}
-		dbm.disconnect();
-		return username;
 	}
 }
 
