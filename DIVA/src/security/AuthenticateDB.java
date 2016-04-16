@@ -8,8 +8,7 @@ import java.sql.Statement;
 
 /**
  * For connecting from server to database bypassing logic, and for authentication purpose
- * @author Robin, Sammy
- *
+ * @author Robin
  */
 public class AuthenticateDB {
 	
@@ -29,6 +28,10 @@ public class AuthenticateDB {
     
     // A session with the database
     private Connection connection;
+    
+    public AuthenticateDB(){
+		
+	}
     
     /**
   	 * Connect to database
@@ -76,9 +79,7 @@ public class AuthenticateDB {
 			return false;
 		}
 	}
-	public AuthenticateDB(){
-		
-	}
+	
 	/**
 	 * getEncryptedpassword get the password from database that matches the username
 	 * @param username a username
@@ -90,6 +91,7 @@ public class AuthenticateDB {
 	public String retrievePassword(String username) throws SQLException {
 		if (doesItExist(username, USER, USERNAME)){
 			connect();
+			
 			String query = "SELECT account_password FROM users WHERE account_uName = '" + username +"';";
 						
 				Statement stmt = connection.createStatement();

@@ -46,7 +46,6 @@ public class AccountManagerWebInterface {
 	 * @param city			The city the customer lives in
 	 * @param province		The province the customer lives in
 	 * @param zip			The customers zip code
-	 * @param
 	 * @return A string describing the success of the transaction or the 
 	 * error that caused the transaction to not succeed
 	 */
@@ -171,43 +170,6 @@ public class AccountManagerWebInterface {
 		//return response string
 		return responseString;
 	}
-	
-	/*
-	/**
-	 * Web Interface for "Changing a Customers Account Information" Service
-	 * @param firstName The first name of the customer
-	 * @param lastName The last name of the customer
-	 * @param phoneNumber	The customers phone number
-	 * @param emailAddress	The customers email address
-	 * @pre user.type == customer
-	 * @return A string describing the success of the transaction or the 
-	 * error that caused the transaction to not succeed
-	 */
-	/*
-	public String changeaccontinfo(String firstName, String lastName, String phoneNumber, String emailAddress) {
-		
-		//CAN'T IMPLEMENT UNTIL ITS WORKED OUT WHY THE ACCOUNT MANAGER METHOd TAKES TOO MANY PARAMS
-		
-		
-		//Declare variables to hold the response text and the AccountManager
-		String responseString = "Not Implemented";
-				
-		//Try
-			//Get the calling users userName
-		
-			//Create an AccountManager and change the 
-			//calling users account information
-		
-			//set responseString to success
-				
-		//Catch
-			//If the account manager throws and error, assign 
-			//the appropriate error message to the responseString
-				
-		//return response string
-		return responseString; //METHOD NOT IMPLEMENTED
-	}
-	*/
 	
 	/**
 	 * Web Interface for the "Customer Joins Superclub" Service
