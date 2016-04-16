@@ -35,6 +35,9 @@ public class DatabaseManager {
 	private RentalDB reDB;
 	private VehicleDB veDB;
 	private PriceDB prDB;
+	
+	private static String CAR = "car";
+	private static String TRUCK = "truck";
     
     //singieton design pattern
     private static DatabaseManager instance = null;
@@ -698,13 +701,21 @@ public class DatabaseManager {
 	
 	//sammy: we need to get and set `car_insurance_price` and `truck_insurance_price` as well
 	//there isn't database entries for these two tables atm, please populate them with logical values
+	/**
+	 * @author saud (sammy) almahri
+	 * @return
+	 * @throws SQLException
+	 */
 	public BigDecimal[][] getAllCarInsurancePrice() throws SQLException{
-		// get from car insurance price
-		return prDB.getAllCarInsurancePrice();
+		return prDB.getAllInsurancePrice(CAR);
 	}
-	
-	public BigDecimal[][] getAllTruckInsurancePrice(){
-		return null;
+	/**
+	 * @author saud (sammy) almahri
+	 * @return
+	 * @throws SQLException
+	 */
+	public BigDecimal[][] getAllTruckInsurancePrice() throws SQLException{
+		return prDB.getAllInsurancePrice(TRUCK);
 	}
 	
 	public void setAllCarInsurnacePrice(BigDecimal[][] bg){

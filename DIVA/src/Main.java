@@ -17,7 +17,7 @@ public class Main {
 			BigDecimal[][] price = dbm.getAllCarInsurancePrice();
 			
 			System.out.println(price[0][1]);
-			System.out.println(price[1]);
+			System.out.println(price[1][2]);
 			System.out.println(price[2]);
 			
 		} catch (SQLException e) {
