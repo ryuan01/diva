@@ -98,13 +98,14 @@ class AccountDB{
 					+ fname + "\", \"" + lname + "\", \"" + phone + "\", \"" + email 
 					+ "\", \"" + userName + "\", \"" + password + "\");\n";
 			stmt.executeUpdate(query);
+			System.out.println(query);
 			// insert into customer table
-			query= "INSERT INTO `customer` (`id_number`, `cc_Num`, `expire_date`"
+			query= "INSERT INTO `customer` (`id_number`, `cc_Num`, `expire_date`,"
 					+ "`name_on_cCard`, `street_name`, `city`, "
 					+ "`province`, `zipcode`) VALUES (LAST_INSERT_ID(),\"" + ccNum
 					+ "\", \"" +expire_date+"\", \""+ ccName + "\", \"" + street + "\", \"" + city + "\", \"" + province
 					+ "\", \"" + zipCode + "\") ;";
-			
+			System.out.println(query);
 			// execute the statements
 			stmt.executeUpdate(query);
 			
@@ -691,9 +692,6 @@ class AccountDB{
 		}
 		return false;
 	}
-<<<<<<< HEAD
-	
-
 	
 	/**
 	 * isValidLogin checks if the username and pw matches

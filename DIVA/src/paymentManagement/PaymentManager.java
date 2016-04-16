@@ -1,17 +1,27 @@
 package paymentManagement;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import java.text.ParseException;
 
 import accountManagement.Account;
 import accountManagement.AccountManager;
+import accountManagement.Customer;
 import accountManagement.SuperCustomer;
 import databaseManagement.DatabaseManager;
 import rentalManagement.Reservation;
@@ -27,7 +37,8 @@ public class PaymentManager {
 	private BigDecimal tax;
 	private PriceList priceList;
 	private DatabaseManager db;
-	private AccountManager am;
+	//private AccountManager am;
+	private CreditCardEncryptor encryptor;
 	private DateFormat dateFormat;
 	private static final int PRICE_ROW_SIZE = 3;
 	private static final int MONTH_DAYS = 28;
@@ -44,8 +55,9 @@ public class PaymentManager {
 		tax = new BigDecimal("0.07");
 		db = DatabaseManager.getInstance();
 		priceList = new PriceList();
-		am = new AccountManager();
+		//am = new AccountManager();
 		dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		encryptor = new CreditCardEncryptor();
 	}
 
 	/**
@@ -320,19 +332,35 @@ public class PaymentManager {
 	 * @return
 	 * @throws SQLException 
 	 * @throws ParseException 
+	 * @throws BadPaddingException 
+	 * @throws IllegalBlockSizeException 
+	 * @throws InvalidAlgorithmParameterException 
+	 * @throws NoSuchPaddingException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws UnsupportedEncodingException 
+	 * @throws InvalidKeyException 
 	 */
-	public Receipt makePaymentByCardOnFile(int reservation_id, int customer_id) throws ParseException, SQLException{
-		//need work
-		//need to re-calculate total balance
+	public Receipt makePaymentByCardOnFile(int reservation_id, String username) throws ParseException, SQLException, InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException{
+		//get the balance, the customer has to pay for that many
 		Reservation r = db.searchReservationEntry(reservation_id);
-		BigDecimal balance = totalPreTax(r);
-		balance = applyTax(balance);
+		BigDecimal balance = r.getBalance();
 		Receipt receipt = null;
 		//get customer name and credit card info, load the object
-		int ccNum = 0;
-		String expireDate = "";
-		if (isValidCreditCard(ccNum,expireDate)){
+		//first check if the customer is the person who holds the reservation
+		String customer_username = db.getUsernameFromId(r.getCustomerAccountID());
+		if (! customer_username.equals(username)){ //not the holder, cannot pay
+			throw new IllegalArgumentException("Customer does not have the right to access someone else's credit information.");
+		}
+		Customer a = (Customer) db.getAccountFromID(r.getCustomerAccountID());
+		String encrypted_ccnum = a.getCc_num();
+		if (encrypted_ccnum == null){
+			throw new IllegalArgumentException("Customer does not have a credit on file");
+		}
+		String cc = encryptor.decrypt(encrypted_ccnum);
+		String expireDate = a.getExpireDate();
+		if (isValidCreditCard(expireDate)){
 			//pay with it
+			System.out.println("true");
 			//produce receipt
 		}
 		else {
@@ -342,19 +370,25 @@ public class PaymentManager {
 	}
 
 	/**
-	 * Check if the credit card is valid
-	 * @param ccNum
+	 * Check if the credit card is valid, right now only checks for expire date
 	 * @param expireDate
 	 * @return
+	 * @throws ParseException 
 	 */
-	private boolean isValidCreditCard(int ccNum, String expireDate) {
-		// TODO Auto-generated method stub
-		return false;
+	private boolean isValidCreditCard(String expireDate) throws ParseException {
+		Date currentDate = new Date();		
+		Date endDate = dateFormat.parse(expireDate);
+		if (endDate.after(currentDate)){
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	//if we have time we will go ahead and implement check for credit card validity
 	/**
-	 * A customer pays for an order through his card on file
+	 * A customer pays for an order through his card externally
 	 * @pre card on file is valid
 	 * @param reserve_id
 	 * @param customer_id
@@ -483,12 +517,15 @@ public class PaymentManager {
 				payment_info += "Earning points: "+points+"\n";
 			}
 			//we have got a normal customer
-			BigDecimal change = balance.subtract(amount_paid).setScale(2, RoundingMode.CEILING);
-			//set this balance to database
-			db.addToBalance(reserve_id, change);
-			//add this to the receipt
-			payment_info += "Payment by "+type+": "+amount_paid+"\n";
-			payment_info += "Amount owning after payment: "+change+"\n";
+			//this method connects to outside
+			if (pay_with_machine(amount)){
+				BigDecimal change = balance.subtract(amount_paid).setScale(2, RoundingMode.CEILING);
+				//set this balance to database
+				db.addToBalance(reserve_id, change);
+				//add this to the receipt
+				payment_info += "Payment by "+type+": "+amount_paid+"\n";
+				payment_info += "Amount owning after payment: "+change+"\n";
+			}
 		}
 		//System.exit(0);
 		
@@ -501,6 +538,18 @@ public class PaymentManager {
 		db.addReceipt(receipt);
 		return receipt;
 	}
+	
+	/**
+	 * This method connects to outside machine, could be a cash, or could be some kind of credit/debit machine
+	 * @param amount
+	 * @return
+	 */
+	private boolean pay_with_machine(String amount) {
+		
+		//this is a stub right now, need to figure out how to connect to outside machine
+		return true;
+	}
+
 	/**
 	 * Checks for type of rental and get the equivalent amount 
 	 * @param points
@@ -678,5 +727,21 @@ public class PaymentManager {
 		BigDecimal balance = perKM_price.multiply(new BigDecimal(extra_milage)).setScale(2, RoundingMode.CEILING);
 		System.out.println(balance+" "+v_type + " "+perKM_price + " "+extra_milage);
 		return balance;
+	}
+	
+	/**
+	 * Encrypt a credit card and returns the encrypted version
+	 * @param cardnum clear credit card number
+	 * @return encrypted credit card number
+	 * @throws InvalidKeyException
+	 * @throws UnsupportedEncodingException
+	 * @throws NoSuchAlgorithmException
+	 * @throws NoSuchPaddingException
+	 * @throws InvalidAlgorithmParameterException
+	 * @throws IllegalBlockSizeException
+	 * @throws BadPaddingException
+	 */
+	public String encrypt (String cardnum) throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException{
+		return encryptor.encrypt(cardnum);
 	}
 }

@@ -22,7 +22,7 @@ class CreditCardEncryptor {
 	private String key;
 	private String initVector;
 	
-	public CreditCardEncryptor() {
+	CreditCardEncryptor() {
 		key = "77A5329714E8E4C5";
 		initVector = "5DD78779B2217F45";
 	}
@@ -39,7 +39,7 @@ class CreditCardEncryptor {
 	 * @throws IllegalBlockSizeException
 	 * @throws BadPaddingException
 	 */
-    public String encrypt(String cardNumber) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    String encrypt(String cardNumber) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
     	
     	//Get the last 4 significant digits of the credit card
     	String lastFourDigits = cardNumber.substring(12);
@@ -71,7 +71,7 @@ class CreditCardEncryptor {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    public String decrypt(String cypherText) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    String decrypt(String cypherText) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
      
     	//remove the last four digits of the cypher text
     	

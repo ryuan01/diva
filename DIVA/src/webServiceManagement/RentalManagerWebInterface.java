@@ -390,7 +390,7 @@ public class RentalManagerWebInterface {
 	 * @return
 	 */
 	public String createAccidentReport(String accident_date, String description, int rentalID, String address, 
-			String city, String province, String zipcode, String driver, BigDecimal amount) {
+			String city, String province, String zipcode, String driver, String amount) {
 		
 		//Set responseString to hold the value returned to the caller
 		String responseString;
