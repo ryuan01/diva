@@ -10,21 +10,32 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 class ConnectDB{
-  	//Database URL
-    //THIS IS SET TO A TEST DATABASE: CHANGE TO 'diva_main' WHEN DEPLOYED!!
+	/**
+	 * Database IP address
+	 */
     private static final String CONN_STRING = "jdbc:mysql://159.203.34.123:3306/test3";
     
-    // Database User Name and Password
+    /**
+     * database username & password
+     */
     private static final String USERNAME = "diva";
     private static final String PASSWORD = "DiVA$E2016&";
     
-    // A session with the database
+
     private Connection connection;
     
+    /**
+     * default constructor
+     */
     public ConnectDB(){
       connection = null;
     }
-    
+ 
+ /* ------------------------------------------ public interface ------------------------------- */
+    /**
+     * 
+     * @return a connection ojbect
+     */
     public Connection getConnection(){
     	return connection;
     }
@@ -45,7 +56,7 @@ class ConnectDB{
     }
     
     /**
-	 * Disconnect to database
+	 * Disconnect from database
 	 * @pre isConnected()
 	 * @post !isConnect()
 	 */
@@ -61,7 +72,8 @@ class ConnectDB{
 			}
 		}
 	}
-	
+
+/* ------------------------------------------ private methods ------------------------------- */
 	/**
 	 * Checks if there is a connection
 	 * @pre none

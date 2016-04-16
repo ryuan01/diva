@@ -654,7 +654,7 @@ public class DatabaseManager {
 		return prDB.getEquipmentPriceList();
 	}
 	
-	//sammy: we also need setters for these prices for car, truck, equipment
+	
 	public void setAllCarPrice(){
 		
 	}
@@ -717,6 +717,8 @@ public class DatabaseManager {
 	public BigDecimal[][] getAllTruckInsurancePrice() throws SQLException{
 		return prDB.getAllInsurancePrice(TRUCK);
 	}
+	
+	
 	
 	public void setAllCarInsurnacePrice(BigDecimal[][] bg){
 		

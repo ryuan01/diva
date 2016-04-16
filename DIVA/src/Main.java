@@ -14,7 +14,7 @@ public class Main {
 		DatabaseManager dbm = DatabaseManager.getInstance();
 		
 		try {
-			BigDecimal[][] price = dbm.getAllCarInsurancePrice();
+			BigDecimal[][] price = dbm.getAllTruckInsurancePrice();
 			
 			System.out.println(price[0][1]);
 			System.out.println(price[1][2]);

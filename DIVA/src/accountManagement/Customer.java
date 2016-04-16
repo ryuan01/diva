@@ -10,13 +10,29 @@ public class Customer extends Account implements ArrayOfStringsable{
 	private String expire_date;
 	private Location location;
 	
+	/**
+	 * constructor without password;
+	 * @param firstname
+	 * @param lastname
+	 * @param phoneNumber
+	 * @param email
+	 * @param loginId
+	 * @param id
+	 * @param cc
+	 * @param expire_date
+	 * @param name_on_card
+	 * @param address
+	 * @param city
+	 * @param province
+	 * @param zip
+	 * @param standing
+	 */
 	public Customer(String firstname, String lastname, String phoneNumber, 
 			String email, String loginId, int id,
 			String cc, String expire_date, String name_on_card, String address, 
 			String city, String province, String zip, String standing) {
 		
 		super(firstname, lastname, phoneNumber, email, loginId, id);
-		// TODO Auto-generated constructor stub
 		
 		this.location = new Location (address, city, province, zip);
 		this.cc_num = cc;
@@ -24,28 +40,44 @@ public class Customer extends Account implements ArrayOfStringsable{
 		this.name_on_card = name_on_card;
 		super.objectClass = getClass().getName();
 		this.standing = standing;
-	}
-	
-	// with password
-	public Customer(String firstname, String lastname, String phoneNumber, 
-			String email, String loginId, int id, 
-			String password, String cc, String expire_date, String name_on_card, 
-			String address, String city, String province, String zip, String standing) {
-		
-		// the super with password
-		super(firstname, lastname, phoneNumber, email, loginId, password);
-		this.location = new Location (address, city, province, zip);
-		this.cc_num = cc;
-		this.expire_date = expire_date;
-		this.name_on_card = name_on_card;
-		super.objectClass = getClass().getName();
-		this.standing = standing;
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**
-	 * Get expire date
-	 * @return
+	 * constructor with password
+	 * @param firstname
+	 * @param lastname
+	 * @param phoneNumber
+	 * @param email
+	 * @param loginId
+	 * @param id
+	 * @param password
+	 * @param cc
+	 * @param expire_date
+	 * @param name_on_card
+	 * @param address
+	 * @param city
+	 * @param province
+	 * @param zip
+	 * @param standing
+	 */
+	public Customer(String firstname, String lastname, String phoneNumber, 
+			String email, String loginId, int id, 
+			String password, String cc, String expire_date, String name_on_card, 
+			String address, String city, String province, String zip, String standing) 
+	{	
+		super(firstname, lastname, phoneNumber, email, loginId, password);
+		
+		this.location = new Location (address, city, province, zip);
+		this.cc_num = cc;
+		this.expire_date = expire_date;
+		this.name_on_card = name_on_card;
+		super.objectClass = getClass().getName();
+		this.standing = standing;
+	}
+	
+	/**
+	 * 
+	 * @return expire date
 	 */
 	public String getExpireDate(){
 		return this.expire_date;
@@ -53,62 +85,63 @@ public class Customer extends Account implements ArrayOfStringsable{
 	
 	/**
 	 * Set expire date
-	 * @param date
+	 * @param date	expre date
 	 */
 	public void setExpireDate(String date){
 		this.expire_date = date;
 	}
+	
 	/**
-	 * @return the standing
+	 * @return customer standing
 	 */
 	public String getStanding() {
 		return standing;
 	}
 
 	/**
-	 * @param standing the standing to set
+	 * @param standing customer standing
 	 */
 	public void setStanding(String standing) {
 		this.standing = standing;
 	}
 
 	/**
-	 * @return the cc_num
+	 * @return customer encrypted credit-card number
 	 */
 	public String getCc_num() {
 		return cc_num;
 	}
 
 	/**
-	 * @param cc_num the cc_num to set
+	 * @param cc_num customer encrypted credit-card number
 	 */
 	public void setCc_num(String cc_num) {
 		this.cc_num = cc_num;
 	}
 
 	/**
-	 * @return the name_on_card
+	 * @return name on customer credit card
 	 */
 	public String getName_on_card() {
 		return name_on_card;
 	}
 
 	/**
-	 * @param name_on_card the name_on_card to set
+	 * @param name_on_card name on customer credit card
 	 */
 	public void setName_on_card(String name_on_card) {
 		this.name_on_card = name_on_card;
 	}
 
 	/**
-	 * @return the location of customer's home
+	 * @return the location of customer's address object
 	 */
 	public Location getLocation() {
 		return this.location;
 	}
 	
 	/**
-	 * Turns the data assosiated with this object into a JSON String
+	 * Turns the data associated with this object into a JSON String
 	 */
 	@Override
 	public String toString(){

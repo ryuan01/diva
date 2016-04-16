@@ -16,6 +16,9 @@ class EquipmentDB {
 	
 	private ConnectDB dbm;
 	
+	/**
+	 * default constructor
+	 */
 	EquipmentDB() {
 		dbm = new ConnectDB();
 	}
@@ -96,11 +99,10 @@ class EquipmentDB {
 		if(rs.next()){
 			
 			return rs.getString("eq_type");
+		} else{
+			dbm.disconnect();
+			return null; //did not find a match
 		}
-		dbm.disconnect();
-		
-		//did not find a match
-		return null;
 	}
 
 }
