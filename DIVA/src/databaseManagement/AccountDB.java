@@ -351,36 +351,29 @@ class AccountDB{
 	 * @throws SQLException
 	 * @throws IllegalArgumentException
 	 */
-	void removeAccountEntry(String username) throws SQLException, IllegalArgumentException{
-		// TODO alter database to disable an account
+	void acountActivation(String username, boolean activationStatus) throws SQLException, IllegalArgumentException{
 		//database variables
 		Statement stmt;
 		Connection conn;
+		String query;
 
-		String query = "";
 		
 		dbm.connect();
 		
-		try {
-			if(doesItExist(username, EMPLOYEE, USERNAME ))
-			{
-				query="DELETE users, employee FROM users INNER JOIN employee WHERE "
-						+ "users.id_number = employee.id_number AND "
-						+ "users.account_uName = \"" + username +"\";";
-				
-				conn = dbm.getConnection();
-				stmt = conn.createStatement();
-				
-				stmt.executeUpdate(query);
-				
-				dbm.disconnect();
-			}else {
-				dbm.disconnect();
-				throw new Error("can't delete customer account");
-				
-			}
-		} catch (IllegalArgumentException e){
-			throw e;
+		if (doesItExist(username,USER, USERNAME)){
+			query = "UPDATE `users` SET COLUMN isActive = " + activationStatus + " "
+					+ "WHERE account_uName = \"" + username + "\";";
+			
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			stmt.executeUpdate(query);
+			
+			stmt.close();
+			dbm.disconnect();
+		}else{
+			dbm.disconnect();
+			throw new IllegalArgumentException("username " + username + " does not exist!");
 		}
 	}
 	
@@ -661,9 +654,8 @@ class AccountDB{
 		// database ojbects:
 		Connection conn;
 		Statement stmt;
-		ResultSet rs;
-		System.out.println(id+" "+table+" "+param);		
-		//
+		ResultSet rs;	
+		
 		String query = "";
 
 		conn = dbm.getConnection();
