@@ -23,13 +23,13 @@ public class RentalFacadeTest {
 		eq[1] = 2;
 		
 		try {
-			rf.createReservation("2016-5-1 14:00:00", "2016-5-5 14:00:00", 2 , eq , 2, 3, "asdf", false);
+//			rf.createReservation("2016-5-1 14:00:00", "2016-5-5 14:00:00", 2 , eq , 2, 3, "asdf", false);
 //			
-//			Reservation r = rf.findReservations(26);
-//			
-//			PaymentManager pm = new PaymentManager();
-//			BigDecimal total = pm.totalPreTax(r);
-//			System.out.println(total);
+			Reservation r = rf.findReservations(26);
+			
+			PaymentManager pm = new PaymentManager();
+			BigDecimal total = pm.totalPreTax(r);
+			System.out.println(total);
 //			
 //			System.out.println(r.toString());
 //			

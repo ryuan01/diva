@@ -136,10 +136,10 @@ public class PaymentManager {
 		if(isLegalCarClass(type))
 		{
 			priceRow = getPriceCarInsurance(type);
-			System.out.println(type);
-			for (int i =0; i<priceRow.length; i++){
-				System.out.print(priceRow[i]+" ");
-			}
+//			System.out.println(type);
+//			for (int i =0; i<priceRow.length; i++){
+//				System.out.print(priceRow[i]+" ");
+//			}
 		}
 		else if(isLegalTruckClass(type))
 		{
@@ -155,7 +155,58 @@ public class PaymentManager {
 	// Calculate total of reservation pre tax, with and without insurances.
 	public BigDecimal totalPreTax(Reservation reserv) throws ParseException, SQLException
 	{
-		return new BigDecimal("100.00");
+		String start_date = reserv.getStartingDate();
+		String end_date = reserv.getEndDate();
+		
+		// For Vehicle
+		// calculate rate_type
+		int vehicle_rate_type;
+		vehicle_rate_type = compareDates(start_date,end_date,"vehicle");
+		
+		
+		// calculate vehicle_price
+		BigDecimal vehicle_price;
+		String vehicle_type = db.getTypeOfVehicle(reserv.getVehicleID());
+//System.out.println(vehicle_rate_type+" "+vehicle_type);
+		vehicle_price = calculatePrice(vehicle_type,vehicle_rate_type);
+//System.out.println(vehicle_price);		
+		// calculate vehicle_insurance_price
+		BigDecimal vehicle_insurance_price;
+		
+		int insurance_rate_type;
+		insurance_rate_type = compareDates(start_date,end_date,"insurance");
+//System.out.println(insurance_rate_type);
+
+		vehicle_insurance_price = calculateInsurancePrice(vehicle_type,insurance_rate_type);
+		
+		// For Equipment
+		// calculate rate_type
+		int equipment_rate_type;
+		equipment_rate_type = compareDates(start_date,end_date,"equipment");
+		
+		// calculate total equip_price
+		BigDecimal equip_price = BigDecimal.ZERO;
+		int[] equip_ids = reserv.getEquipments();
+		for(int i = 0; i < equip_ids.length; i++)
+		{
+			String equip_type = db.getTypeOfEquipment(equip_ids[i]);
+			equip_price = new BigDecimal ("10.00");
+			//todo
+			//equip_price = equip_price.add(calculatePrice(equip_type, equipment_rate_type),mc);
+		}
+		
+		// Adds Vehicle price, Vehicle insurance price, Total equipments price
+		BigDecimal total;
+		if(reserv.getInsuranceStatus() == true){
+			total = vehicle_price.add(vehicle_insurance_price.add(equip_price, mc), mc).setScale(2, RoundingMode.CEILING);
+		}
+		else
+		{
+			total = vehicle_price.add(equip_price,mc).setScale(2, RoundingMode.CEILING);
+		}
+		System.out.println(total);
+		return total;
+		//return new BigDecimal("100.00");
 	}
 	
 	public BigDecimal applyTax(BigDecimal price)
@@ -568,7 +619,7 @@ public class PaymentManager {
 	}
 	
 	public BigDecimal[] getPriceCarInsurance(String type) throws SQLException{
-		System.out.println(type);
+//		System.out.println(type);
 //		if(!priceList.getIsSet("car_insurance")){
 			priceList.setInsuranceCarPrice(db.getAllCarInsurancePrice());		
 //			priceList.setIsSet("car_insurance");
@@ -681,7 +732,7 @@ public class PaymentManager {
 			throw new Exception("vehicle type does not exist");
 		}
 		BigDecimal balance = perKM_price.multiply(new BigDecimal(extra_milage)).setScale(2, RoundingMode.CEILING);
-		System.out.println(balance+" "+v_type + " "+perKM_price + " "+extra_milage);
+//		System.out.println(balance+" "+v_type + " "+perKM_price + " "+extra_milage);
 		return balance;
 	}
 	

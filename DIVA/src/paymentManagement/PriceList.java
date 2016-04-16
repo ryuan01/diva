@@ -82,12 +82,12 @@ public class PriceList {
 	}
 	
 	public BigDecimal[] getCarInsurancePrice(String type){
-		System.out.println(type);
+//		System.out.println(type);
 		int i = Arrays.asList(CAR_TYPE).indexOf(type);
-		System.out.println(i);
-		for (int j = 0; j < price_car_insurance.length; j++){
-			System.out.println(price_car_insurance[i][j]);
-		}
+//		System.out.println(i);
+//		for (int j = 0; j < price_car_insurance.length; j++){
+//			System.out.println(price_car_insurance[i][j]);
+//		}
 		return price_car_insurance[i];
 	}
 	
