@@ -54,7 +54,7 @@ class ReturnManager {
 		}
 	}
 
-	BigDecimal addOverdueExtraCharge(int rental_id, String current_date) throws SQLException {
+	BigDecimal addOverdueExtraCharge(int rental_id, String current_date) throws SQLException, ParseException {
 		// [x] dbm --> rentalDB.getReturnDate 
 		// [] balance = paymentManager.getOverduePrice(start_date, current_date)
 		// [x] dbm --> rentalDB.addToBalance(rental_id, balance)
@@ -74,7 +74,7 @@ class ReturnManager {
 		
 		dbConnection.addToBalance(rental_id, currentBalance);
 		dbConnection.modifyRentalStatus(rental_id, false, true,"is_check_overdue");
-		return currentBalance;
+		return newBalance;
 		// TODO Auto-generated method stub
 		
 	}
@@ -111,7 +111,7 @@ class ReturnManager {
 		
 		dbConnection.addToBalance(rental_id, currentBalance);
 		dbConnection.modifyRentalStatus(rental_id, false, true,"is_check_return_branch");
-		return currentBalance;
+		return newBalance;
 	}
 
 	void createAccidentReport(int clerkID, String accident_date, String description, int rentalID,

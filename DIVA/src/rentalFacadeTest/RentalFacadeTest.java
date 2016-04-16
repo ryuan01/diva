@@ -22,7 +22,7 @@ public class RentalFacadeTest {
 		eq[1] = 2;
 		
 		try {
-			rf.createReservation("2016-4-9 14:00:00", "2016-4-10 14:00:00", 1 , eq , 2, 3, "asdf", false);
+			rf.createReservation("2016-4-9 14:00:00", "2016-4-11 14:00:00", 1 , eq , 2, 3, "asdf", false);
 //			
 //			Reservation r = rf.findReservations(18);
 //			System.out.println(r.toString());
@@ -34,7 +34,7 @@ public class RentalFacadeTest {
 			
 			//rf.cancelSelfReservation(1, 17);
 			
-//			rf.cancelAnyReservation(31);
+			rf.cancelAnyReservation(32);
 		} catch (NullPointerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

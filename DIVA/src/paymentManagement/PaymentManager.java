@@ -360,10 +360,13 @@ public class PaymentManager {
 	 * @param balance amount owning
 	 * @param amount amount to be paid
 	 * @return receipt about this transaction
-	 * @throws SQLException
-	 * @throws IllegalArgumentException
+	 * @throws Exception 
 	 */
-	public Receipt makePaymentByCard(int clerk_id, int reserve_id, int customer_id, BigDecimal balance, String amount) throws SQLException, IllegalArgumentException {
+	public Receipt makePaymentByCard(String clerk_username, int reserve_id,String amount) throws Exception {
+		int clerk_id = db.getIdFromUsername(clerk_username);
+		Reservation r = db.searchReservationEntry(reserve_id);
+		BigDecimal balance = r.getBalance();
+		int customer_id = r.getCustomerAccountID();
 		//amount_paid cannot be more than amount_owning when paying by card
 		BigDecimal amount_paid = new BigDecimal(amount);
 		
@@ -385,11 +388,16 @@ public class PaymentManager {
 	 * @param balance
 	 * @param points
 	 * @return
-	 * @throws IllegalArgumentException
-	 * @throws SQLException 
+	 * @throws Exception 
 	 */
-	public Receipt makePaymentBySRP(int clerk_id, int reserve_id, int customer_id, String vehicle_type, BigDecimal balance,  int points) throws IllegalArgumentException, SQLException
+	public Receipt makePaymentBySRP(String clerk_username, int reserve_id, int points) throws Exception
 	{
+		int clerk_id = db.getIdFromUsername(clerk_username);
+		Reservation r = db.searchReservationEntry(reserve_id);
+		BigDecimal balance = r.getBalance();
+		int customer_id = r.getCustomerAccountID();
+		int vehicle_id = r.getVehicleID();
+		String vehicle_type = db.getTypeOfVehicle(vehicle_id);
 		//calculate the equivalent price of this amount of points
 		//check if the amount_paid is more than balance
 		BigDecimal amount_paid;
@@ -435,10 +443,13 @@ public class PaymentManager {
 	 * @param balance
 	 * @param amount
 	 * @return
-	 * @throws SQLException 
+	 * @throws Exception 
 	 */
-	public Receipt makePaymentCash(int clerk_id, int reserve_id, int customer_id, BigDecimal balance,
-			String amount) throws SQLException {	
+	public Receipt makePaymentCash(String clerk_username, int reserve_id,String amount) throws Exception {
+		int clerk_id = db.getIdFromUsername(clerk_username);
+		Reservation r = db.searchReservationEntry(reserve_id);
+		BigDecimal balance = r.getBalance();
+		int customer_id = r.getCustomerAccountID();		
 		BigDecimal amount_paid = new BigDecimal(amount);
 		//check if the amount_paid is negative, it can exceeds balance
 		if (amount_paid.compareTo(new BigDecimal("0")) == -1){
@@ -578,17 +589,25 @@ public class PaymentManager {
 	 * @param current_date
 	 * @param endDate
 	 * @return
+	 * @throws SQLException 
+	 * @throws ParseException 
 	 */
-	public BigDecimal calculateOverduePrice(String current_date, String endDate, String type) {
+	public BigDecimal calculateOverduePrice(String current_date, String endDate, String type) throws SQLException, ParseException {
 		// TODO Auto-generated method stub
 		/*
 		 * calculate the differences from current_date and end_date
 		 * multiply by price loaded from database
 		 * return that
 		 */
-		int difference_in_days; //need to calculate
-		//--need to fix ---BigDecimal extra_charge_price = getExtraChargePrice("overdue");
-		return new BigDecimal("50");
+		Date startDate = dateFormat.parse(current_date);		
+		Date end_date = dateFormat.parse(endDate);
+		
+		long daysDuration = Math.abs(getDateDiff(startDate,end_date,TimeUnit.DAYS));
+		//System.out.println("days" + daysDuration);
+		BigDecimal extra_charge_price = getExtraChargePrice("overdue_daily");
+		//System.out.println(extra_charge_price);
+		//System.exit(0);
+		return extra_charge_price.multiply(new BigDecimal(daysDuration)).setScale(2, RoundingMode.CEILING);
 	}
 
 	/**
@@ -596,11 +615,12 @@ public class PaymentManager {
 	 * Load extra charge price into PriceList if it isn't present, and get the row associated with that
 	 * @param type
 	 * @return
+	 * @throws SQLException 
 	 */
-	private BigDecimal getExtraChargePrice(String type) {
+	private BigDecimal getExtraChargePrice(String type) throws SQLException {
 		// TODO Auto-generated method stub
 		if(!priceList.getIsSet("extra_charge_price")){
-			priceList.setTruckPrice(db.getAllExtraChargePrice());
+			priceList.setExtraCharge(db.getAllExtraChargePrice());
 			priceList.setIsSet("extra_charge_price");
 		}
 		return priceList.getExtraChargePrice(type);
@@ -624,9 +644,10 @@ public class PaymentManager {
 	/**
 	 * place holder right now
 	 * @return
+	 * @throws SQLException 
 	 */
-	public BigDecimal calculateWrongReturnBranchPrice() {
+	public BigDecimal calculateWrongReturnBranchPrice() throws SQLException {
 		// TODO Auto-generated method stub
-		return new BigDecimal("100.00");
+		return getExtraChargePrice("wrong_branch");
 	}
 }

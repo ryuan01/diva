@@ -2,6 +2,7 @@ package rentalManagement;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import databaseManagement.DatabaseManager;
 import paymentManagement.Receipt;
@@ -50,6 +51,11 @@ public class RentalFacade {
 	public void createReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
 			String customer_username, boolean insurance) throws Exception 
 	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+		
+		if (sdf.parse(startD).after(sdf.parse(endD))){
+			throw new IllegalArgumentException("Start Date cannot be before end date");
+		}
 		//balance need to be re-calculated for security purpose 
 		int customerID = dbm.getIdFromUsername(customer_username);
 		reservMan.addReservation(startD,endD,vehicleID,equipIDs,startBranchID, endBranchID, 
@@ -166,44 +172,6 @@ for when the customer comes in the store to pick up a reservation.
 	public void createInsectionReportBeforeRental(String clerk_username, String date, String description, int reserveID, int milage, int gasLevel) throws Exception{
 		int clerk_id = dbm.getIdFromUsername(clerk_username);	
 		rentMan.createReport(clerk_id, date, description, reserveID, milage, gasLevel, "before_rental");
-	}
-		
-	/**
-	 * Let customer or super customer pays for a rental by card on file
-	 * @param rental_id refers to a rental
-	 * @param amount_paid amount that the customer wishes to pay
-	 * @return 
-	 * @throws Exception 
-	 */
-	public Receipt payForRentalByCard(String clerk_username, int reserve_id, String amount_paid) throws Exception{
-		//done
-		int clerk_id = dbm.getIdFromUsername(clerk_username);	
-		return rentMan.payForRentalByCard(clerk_id, reserve_id, amount_paid);
-	}
-		
-	/**
-	 * Let super customer pays for a rental, Assumes price and taxes has been calculated
-	 * @param rental_id
-	 * @param points
-	 * @throws Exception 
-	 */
-	public Receipt payForRentalByPoints(String clerk_username, int reserve_id, int points) throws Exception{
-		//done
-		int clerk_id = dbm.getIdFromUsername(clerk_username);
-		return rentMan.payForRentalByPoints(clerk_id, reserve_id,points);
-	}
-	
-	/**
-	 * Let custmomer or super customer pay by rental by cash
-	 * @param rental_id
-	 * @param amount
-	 * @return 
-	 * @throws Exception 
-	 */
-	public Receipt payForRentalByCash(String clerk_username, int reserve_id, String amount) throws Exception{
-		//done
-		int clerk_id = dbm.getIdFromUsername(clerk_username);
-		return rentMan.payForRentalByCash(clerk_id, reserve_id,amount);
 	}
 	
 	public void changeRentalStatusIsPaid(int rentalID, boolean status) throws SQLException{
