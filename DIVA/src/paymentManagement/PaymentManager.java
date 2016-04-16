@@ -40,6 +40,7 @@ public class PaymentManager {
 	//private AccountManager am;
 	private CreditCardEncryptor encryptor;
 	private DateFormat dateFormat;
+	private DateFormat dateonlyFormat;
 	private static final int PRICE_ROW_SIZE = 3;
 	private static final int MONTH_DAYS = 28;
 	private static final int WEEK_DAYS = 7;
@@ -57,6 +58,7 @@ public class PaymentManager {
 		priceList = new PriceList();
 		//am = new AccountManager();
 		dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		dateonlyFormat = new SimpleDateFormat("yyyy-MM-dd");
 		encryptor = new CreditCardEncryptor();
 	}
 
@@ -330,21 +332,13 @@ public class PaymentManager {
 	 * @param customer_id
 	 * @param balance
 	 * @return
-	 * @throws SQLException 
-	 * @throws ParseException 
-	 * @throws BadPaddingException 
-	 * @throws IllegalBlockSizeException 
-	 * @throws InvalidAlgorithmParameterException 
-	 * @throws NoSuchPaddingException 
-	 * @throws NoSuchAlgorithmException 
-	 * @throws UnsupportedEncodingException 
-	 * @throws InvalidKeyException 
+	 * @throws Exception 
 	 */
-	public Receipt makePaymentByCardOnFile(int reservation_id, String username) throws ParseException, SQLException, InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException{
+	public Receipt makePaymentByCardOnFile(String clerk_username, int reservation_id, String username) throws Exception{
 		//get the balance, the customer has to pay for that many
 		Reservation r = db.searchReservationEntry(reservation_id);
-		BigDecimal balance = r.getBalance();
 		Receipt receipt = null;
+		int clerk_id = -1; //no clerk 
 		//get customer name and credit card info, load the object
 		//first check if the customer is the person who holds the reservation
 		String customer_username = db.getUsernameFromId(r.getCustomerAccountID());
@@ -360,11 +354,21 @@ public class PaymentManager {
 		String expireDate = a.getExpireDate();
 		if (isValidCreditCard(expireDate)){
 			//pay with it
-			System.out.println("true");
 			//produce receipt
+			if (!(clerk_username == null)){
+				clerk_id = db.getIdFromUsername(clerk_username);
+			}
+			BigDecimal balance = r.getBalance();
+			int customer_id = r.getCustomerAccountID();		
+			//check if the balance is negative 
+			if (balance.compareTo(new BigDecimal("0")) == -1){
+				throw new IllegalArgumentException("amount paid cannot be negative");
+			}
+			//customer has to pay exactly how much they own. cannot pay partly.
+			receipt = generalPayment(clerk_id, reservation_id, customer_id,balance,""+balance,"credit");
 		}
 		else {
-			//throw exception
+			throw new IllegalArgumentException("Credit card is expired");
 		}
 		return receipt;
 	}
@@ -377,7 +381,7 @@ public class PaymentManager {
 	 */
 	private boolean isValidCreditCard(String expireDate) throws ParseException {
 		Date currentDate = new Date();		
-		Date endDate = dateFormat.parse(expireDate);
+		Date endDate = dateonlyFormat.parse(expireDate);
 		if (endDate.after(currentDate)){
 			return true;
 		}

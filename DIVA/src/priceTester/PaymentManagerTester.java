@@ -18,6 +18,7 @@ import javax.crypto.NoSuchPaddingException;
 import databaseManagement.DatabaseManager;
 import paymentManagement.PaymentManager;
 import paymentManagement.PriceList;
+import paymentManagement.Receipt;
 
 import java.text.ParseException;
 
@@ -34,7 +35,8 @@ public class PaymentManagerTester {
  private static void test_pay_card_onfile() {
 		// TODO Auto-generated method stub
 		try {
-			pm.makePaymentByCardOnFile(19, "jdoe01");
+			Receipt r = pm.makePaymentByCardOnFile(null,19, "jdoe01");
+			System.out.println(r.toString());
 		} catch (InvalidKeyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,6 +62,9 @@ public class PaymentManagerTester {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
