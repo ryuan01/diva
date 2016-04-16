@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.sql.Connection;
 
 import paymentManagement.Receipt;
@@ -346,7 +347,7 @@ class PriceDB {
 	 	 * @throws SQLException 
 	 	 */
 	 
-	 Receipt getReceipt(int customer_id) throws SQLException, Error{
+	 Receipt[] getReceipt(int customer_id) throws SQLException, Error{
 		 //TODO change method to return a list of arrays
 		 Connection conn;
 		 Statement stmt;
@@ -359,7 +360,7 @@ class PriceDB {
 		 String basic_info;
 		 String payment_info;
 		 
-		 Receipt r = null;
+		 ArrayList<Receipt> r = new ArrayList<Receipt>();
 		 
 		 dbm.connect();
 		 
@@ -378,11 +379,7 @@ class PriceDB {
 					 basic_info = rs.getString("basic_info");
 					 payment_info = rs.getString("payment_info");
 					 
-					 r = new Receipt(receipt_id, customer_id, clerk_id, basic_info, payment_info);
-					 
-					 
-					 
-
+					 r.add(new Receipt(receipt_id, customer_id, clerk_id, basic_info, payment_info));
 				 }
 			 }
 			
@@ -394,7 +391,7 @@ class PriceDB {
 		 rs.close();
 		 stmt.close();
 		 dbm.disconnect(); 
-		 return r;
+		 return r.toArray(new Receipt[r.size()]);
 	 }
 	 
 	 

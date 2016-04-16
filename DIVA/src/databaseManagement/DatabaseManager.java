@@ -207,7 +207,6 @@ public class DatabaseManager {
 	 * @throws SQLException
 	 */
 	public void removeReservationEntry(int reservID) throws SQLException, NullPointerException {
-		// TODO Auto-generated method stub
 		reDB.removeReservation(reservID);
 	}
 	
@@ -218,7 +217,6 @@ public class DatabaseManager {
 	 * @throws SQLException query has problems
 	 */
 	public Reservation searchReservationEntry(int reservID) throws SQLException {
-		// TODO Auto-generated method stub
 		return reDB.reservationQuery(reservID);
 	}
 
@@ -305,7 +303,7 @@ public class DatabaseManager {
 	 * @return
 	 */
 	public int getAccountForRental(int rental_id) {
-		// TODO Auto-generated method stub
+		// 
 		return reDB.getAccountForRental(rental_id);
 	}
 	
@@ -316,7 +314,7 @@ public class DatabaseManager {
 	 * @throws SQLException 
 	 */
 	public Vehicle getReservationVehicle(int reservID) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		Reservation r = reDB.reservationQuery(reservID);
 		int vehicle_id = r.getVehicleID();
 		Vehicle v = veDB.search(vehicle_id);
@@ -329,6 +327,14 @@ public class DatabaseManager {
 	 * @param balance
 	 * @throws SQLException
 	 */
+<<<<<<< HEAD
+	public String getReservationInReceiptForm(int id) {
+		// 
+		return null;
+	}
+	
+=======
+>>>>>>> refs/remotes/origin/master
 	public void addToBalance(int rental_id, BigDecimal balance) throws SQLException{
 		reDB.addToBalance(rental_id, balance);
 	}
@@ -349,6 +355,26 @@ public class DatabaseManager {
 	 * @return
 	 * @throws SQLException 
 	 */
+<<<<<<< HEAD
+	public Vehicle[] search(int branch_id, String type, String start_date, String end_date) throws SQLException{
+		//System.out.println("Connected, trying to insert next");
+		Vehicle[] vlist = veDB.search(branch_id,type,start_date, end_date);
+		return vlist;
+	}
+	
+	/**
+	 * Searching for overdue trucks or cars (today)
+	 * @param branch_id
+	 * @param type
+	 * @return
+	 * @throws SQLException
+	 */
+	public Vehicle[] search(int branch_id, String type) throws SQLException {
+		// 
+		Vehicle[] vlist = null;
+		if (type.equals("car")){
+			vlist = veDB.searchOverdueCars(branch_id);
+=======
 	public String getReservationInReceiptForm(int reserve_id) throws SQLException {
 		// TODO Auto-generated method stub
 		//get reservation
@@ -372,8 +398,53 @@ public class DatabaseManager {
 		int[] equipment_id = r.getEquipments();
 		for (int i=0; i<equipment_id.length;i++){
 			basic_info += "Equipment: "+eqDB.getEquipmentType(equipment_id[i])+"\n";
+>>>>>>> refs/remotes/origin/master
 		}
+<<<<<<< HEAD
+		else if (type.equals("truck")){
+			vlist = veDB.searchOverdueTrucks(branch_id);
+		}
+		else{
+			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
+		}
+		return vlist;
+	}
+	
+	/**
+	 * 
+	 * @param branch_id
+	 * @param type
+	 * @return
+	 * @throws SQLException
+	 */
+	public Vehicle[] searchForSale(int branch_id, String type) throws SQLException {
+		// 
+		Vehicle[] vlist = null;
+		if (type.equals("car")){
+			vlist = veDB.searchForsaleCars(branch_id);
+		}
+		else if (type.equals("truck")){
+			vlist = veDB.searchForsaleTrucks(branch_id);
+		}
+		else{
+			throw new IllegalArgumentException("Type must be 'car' or 'truck'");
+		}
+		return vlist;
+	}
+	
+	/**
+	 * Get the type of vehicle according to its vehicle ID
+	 * @param vehicle_id
+	 * @return
+	 * @throws SQLException
+	 */
+	public String getTypeOfVehicle(int vehicle_id) throws SQLException
+	{
+		Vehicle v = veDB.search(vehicle_id);
+		return v.getVehicleClass();
+=======
 		return basic_info;
+>>>>>>> refs/remotes/origin/master
 	}
 	
 /*---------------------------------------Account related----------------------------------------------*/
@@ -414,7 +485,7 @@ public class DatabaseManager {
 	 * @throws SQLException 
 	 */
 	public Account getAccountFromID(int customerAccountID) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		String username = accDB.getUserNameFromId(customerAccountID);
 //		System.out.println(username);
 //		System.exit(0);
@@ -493,7 +564,7 @@ public class DatabaseManager {
 	 * @throws SQLException when the update fails
 	 */
 	public void updateVehicleLocation(int v, int b) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		veDB.updateVehicleLocation(v, b);
 	}
 	
@@ -514,7 +585,7 @@ public class DatabaseManager {
 	 * @throws SQLException when the update fails
 	 */
 	public void updateVehicleStatus(int v, String status) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		veDB.updateVehicleStatus(v, status);
 	}
 
@@ -525,7 +596,7 @@ public class DatabaseManager {
 	 * @throws SQLException
 	 */
 	public void addVehicle(Vehicle v) throws IllegalArgumentException, SQLException{
-		// TODO Auto-generated method stub
+		// 
 		if (v instanceof Car){
 			veDB.addCar((Car) v);
 		}
@@ -544,7 +615,7 @@ public class DatabaseManager {
 	 * @throws SQLException 
 	 */
 	public void removeVehicle(int vehicle_id, String type) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		if (type.equals("car")){
 			veDB.removeCar(vehicle_id);
 		}
@@ -628,7 +699,7 @@ public class DatabaseManager {
 		return v.getVehicleClass();
 	}
 	
-/* --------------------------------------PriceDB--------------------------------------*/
+/* -------------------------------------------PriceDB--------------------------------------------*/
 	
 	/**
 	 * Returns a row of price according to row name and table name 
@@ -638,7 +709,7 @@ public class DatabaseManager {
 	 * @throws SQLException 
 	 */
 	public BigDecimal[] getPriceRow(String type, String table_name) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		return prDB.getPriceRow(type,table_name);
 	}
 	
@@ -656,17 +727,21 @@ public class DatabaseManager {
 	
 	
 	public void setAllCarPrice(){
+		// TODO Auto-generated method stub
 		
 	}
 	
 	public void setAllTruckPrice(){
-		
+		// TODO Auto-generated method stub
 	}
 	
 	public void setAllEquipmentPrice(){
-		
+		// TODO Auto-generated method stub
 	}
+<<<<<<< HEAD
 	
+=======
+>>>>>>> refs/heads/samahri
 	/**
 	 * @author saud (sammy) almahri
 	 * @param customer_id
@@ -678,7 +753,6 @@ public class DatabaseManager {
 		return prDB.getReceipt(customer_id);
 	}
 	
-	//sammy: please create a database table for `receipt` that contains the private variables of `receipt` object
 	/**
 	 * @author saud (sammy) almahri
 	 * @param receipt
@@ -701,6 +775,7 @@ public class DatabaseManager {
 	
 	//sammy: we need to get and set `car_insurance_price` and `truck_insurance_price` as well
 	//there isn't database entries for these two tables atm, please populate them with logical values
+<<<<<<< HEAD
 	/**
 	 * @author saud (sammy) almahri
 	 * @return
@@ -708,7 +783,13 @@ public class DatabaseManager {
 	 */
 	public BigDecimal[][] getAllCarInsurancePrice() throws SQLException{
 		return prDB.getAllInsurancePrice(CAR);
+=======
+	public BigDecimal[][] getAllCarInsurancePrice(){
+		// TODO Auto-generated method stub
+		return null;
+>>>>>>> refs/heads/samahri
 	}
+<<<<<<< HEAD
 	/**
 	 * @author saud (sammy) almahri
 	 * @return
@@ -716,15 +797,26 @@ public class DatabaseManager {
 	 */
 	public BigDecimal[][] getAllTruckInsurancePrice() throws SQLException{
 		return prDB.getAllInsurancePrice(TRUCK);
+=======
+	public BigDecimal[][] getAllTruckInsurancePrice(){
+		// TODO Auto-generated method stub
+		return null;
+>>>>>>> refs/heads/samahri
 	}
 	
+<<<<<<< HEAD
 	
 	
 	public void setAllCarInsurnacePrice(BigDecimal[][] bg){
+=======
+	public void setAllCarInsurnacePrice(){
+		// TODO Auto-generated method stub
+>>>>>>> refs/heads/samahri
 		
 	}
 	
 	public void setAllTruckInsurnacePrice(){
+		// TODO Auto-generated method stub
 		
 	}
 
