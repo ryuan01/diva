@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 
@@ -10,12 +11,15 @@ import rentalManagement.RentalFacade;
 public class Main {
 	public static void main(String[] args){
 
-		
 		DatabaseManager dbm = DatabaseManager.getInstance();
 		
 		try {
-			Receipt r = dbm.searchReceipt(1);
-			System.out.println(r.getPaymentInfo());
+			BigDecimal[] price = dbm.getAllExtraChargePrice();
+			
+			System.out.println(price[0]);
+			System.out.println(price[1]);
+			System.out.println(price[2]);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
