@@ -29,6 +29,8 @@ class PriceDB {
 	private static final int NUMBER_EQ_TYPE = 4;
 	
 	private static final String CUSTOMER = "customer";
+	private static String CAR = "car";
+	private static String TRUCK = "truck";
 	
 	
 	private ConnectDB dbm;
@@ -228,7 +230,7 @@ class PriceDB {
 		 String query;
 		 ResultSet rs;
 		 
-		 BigDecimal[] extraCharge = new BigDecimal[3];
+		 BigDecimal[] extraCharge = new BigDecimal[PRICE_ROW_SIZE];
 		 
 		 query = "SELECT price FROM `extra_charge`;";
 		 
@@ -248,6 +250,55 @@ class PriceDB {
 		 
 		 return extraCharge;
 	 }
+	 
+	 /**
+	  * @author saud (sammy) almahri
+	  * @return
+	 * @throws SQLException 
+	  */
+	 BigDecimal[][] getAllInsurancePrice(String vehicleType) throws SQLException{
+		Connection conn;
+		Statement stmt;
+		ResultSet rs;
+		String query;
+		
+		String table;
+		int numberOfVehicleTypes;
+		
+		if (vehicleType == CAR){
+			table = "insurance_car_price";
+			numberOfVehicleTypes = NUMBER_CAR_TYPE;
+		} else{
+			table = "insurance_truck_price";
+			numberOfVehicleTypes = NUMBER_TRUCK_TYPE;
+		}
+		
+		 
+		
+		BigDecimal[][] insurancePrices = new BigDecimal[numberOfVehicleTypes][NUMBER_INSURANCE_PRICE_TYPE];
+		BigDecimal[] insuranceRow = new BigDecimal[NUMBER_INSURANCE_PRICE_TYPE];
+		
+		query = "SELECT * FROM " + table + ";";
+		
+		dbm.connect();
+		
+		conn = dbm.getConnection();
+		stmt = conn.createStatement();
+		
+		rs = stmt.executeQuery(query);
+		
+		for (int i = 0; rs.next() && i < numberOfVehicleTypes ; i++){
+			
+			insuranceRow[0] = rs.getBigDecimal("perHour");
+			insuranceRow[1] = rs.getBigDecimal("perDay");
+			insuranceRow[2] = rs.getBigDecimal("perWeek");
+			
+			insurancePrices[i] = insuranceRow;
+		}
+		
+		return insurancePrices;
+	 }
+	 
 	 
 	 /**
 	  * @author saud (sammy) almahri
