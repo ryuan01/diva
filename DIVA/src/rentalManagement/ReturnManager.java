@@ -1,6 +1,7 @@
 package rentalManagement;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.ParseException;
 
@@ -114,14 +115,41 @@ class ReturnManager {
 		return newBalance;
 	}
 
-	void createAccidentReport(int clerkID, String accident_date, String description, int rentalID,
-			String address, String city, String province, String zipcode, String driver, BigDecimal amount) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	void changeRentalStatusExtraCharge(int rental_id, boolean status) throws SQLException {
 		// TODO Auto-generated method stub
 		dbConnection.changeRentalStatus(rental_id,"is_paid_extra_charge", status);
+	}
+
+	/**
+	 * Compare the two inspection reports for a rental
+	 * @param rentalID
+	 * @return
+	 * @throws Exception 
+	 */
+	BigDecimal compareReports(int rentalID) throws Exception {
+		BigDecimal balance = new BigDecimal("0.00");
+		//get the two reports
+		Report[] reports = dbConnection.searchInspectionReport(rentalID);
+		if (reports.length < 2){
+			throw new Exception("Must have two reports, one before rental and one after rental to compare them");
+		}
+		//compare gas tank
+		int gaslevel_before = reports[0].getGasLevel();
+		int gaslevel_after = reports[1].getGasLevel();
+		if (gaslevel_before > gaslevel_after){
+			balance = paymentManager.calculateGasLevelPrice(gaslevel_before, gaslevel_after);
+			System.out.println("balance gaslevel is "+balance);
+		}
+		//compare milage in KM
+		int milage_km_before = reports[0].getMilage();
+		int milage_km_after = reports[1].getMilage();
+		int extra_milage = milage_km_after - milage_km_before - Report.MAX_MILEGE;
+		if ( extra_milage > 0) {//extra milage to be charged
+			int v_id = dbConnection.getReservationVehicleID(rentalID);
+			String v_type = dbConnection.getTypeOfVehicle(v_id);
+			balance = balance.add(paymentManager.calculateExtraKMPrice(extra_milage,v_type)).setScale(2, RoundingMode.CEILING);
+			System.out.println("balance km is "+balance);
+		}
+		return balance;
 	}
 }

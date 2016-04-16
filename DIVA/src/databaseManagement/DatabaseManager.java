@@ -7,6 +7,8 @@ package databaseManagement;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import accountManagement.Account;
 import accountManagement.Customer;
 import accountManagement.Employee;
@@ -240,6 +242,32 @@ public class DatabaseManager {
 	 */
 	public void addAccidentReport(AccidentReport r) throws SQLException{
 		reDB.createAccidentReport(r);
+	}
+	
+	/**
+	 * 
+	 * @param rental_id
+	 * @return
+	 * @throws SQLException
+	 */
+	public Report[] searchInspectionReport(int rental_id) throws SQLException {
+		// TODO Auto-generated method stub
+		ArrayList<Report> reports = new ArrayList<Report>();
+		Report one = reDB.searchInspectionReport(rental_id, "before_rental");
+		Report two = reDB.searchInspectionReport(rental_id, "after_rental");
+		if (one != null)
+			reports.add(one);
+		if (two != null)
+			reports.add(two);
+        //change back to array
+        Report[] rArray = new Report[reports.size()];
+        rArray = reports.toArray(rArray);
+        return rArray;
+	}
+
+	public AccidentReport searchAccidentReport(int rental_id) throws SQLException {
+		// TODO Auto-generated method stub
+		return reDB.searchAccidentReport(rental_id);
 	}
 	
 	/**
@@ -654,18 +682,18 @@ public class DatabaseManager {
 		return prDB.getEquipmentPriceList();
 	}
 	
-	//sammy: we also need setters for these prices for car, truck, equipment
-	public void setAllCarPrice(){
-		
-	}
-	
-	public void setAllTruckPrice(){
-		
-	}
-	
-	public void setAllEquipmentPrice(){
-		
-	}
+//2.0 features
+//	public void setAllCarPrice(){
+//		
+//	}
+//	
+//	public void setAllTruckPrice(){
+//		
+//	}
+//	
+//	public void setAllEquipmentPrice(){
+//		
+//	}
 	
 	/**
 	 * @author saud (sammy) almahri
@@ -711,20 +739,21 @@ public class DatabaseManager {
 	}
 	/**
 	 * @author saud (sammy) almahri
-	 * @return
+	 * @return 
 	 * @throws SQLException
 	 */
 	public BigDecimal[][] getAllTruckInsurancePrice() throws SQLException{
 		return prDB.getAllInsurancePrice(TRUCK);
 	}
-	
-	public void setAllCarInsurnacePrice(BigDecimal[][] bg){
-		
-	}
-	
-	public void setAllTruckInsurnacePrice(){
-		
-	}
+
+// 2.0 features
+//	public void setAllCarInsurnacePrice(BigDecimal[][] bg){
+//		
+//	}
+//	
+//	public void setAllTruckInsurnacePrice(){
+//		
+//	}
 
 	/**
 	 * Checks if a rental has an inspection report before rental done

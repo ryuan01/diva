@@ -257,16 +257,21 @@ for when the customer comes in the store to pick up a reservation.
 	 * @param gasLevel
 	 * @throws Exception 
 	 */
-	public void createInsectionReportAfterRental (String clerk_username, String date, String description, int rentalID, int milage, int gasLevel) throws Exception{
+	public BigDecimal createInsectionReportAfterRental (String clerk_username, String date, String description, int rentalID, int milage, int gasLevel) throws Exception{
 		int clerk_id = dbm.getIdFromUsername(clerk_username);	
 		rentMan.createReport(clerk_id, date, description, rentalID, milage, gasLevel, "after_rental");
+		//also do a check to see if we need to charge for extra milage and gas tank
+		return returnMan.compareReports(rentalID);
 	}
 	
 	public void createAccidentReport(String clerk_username, String accident_date, String description, int rentalID, String address, 
-			String city, String province, String zipcode, String driver, BigDecimal amount) throws Exception{
-		//todo
-		int clerk_id = dbm.getIdFromUsername(clerk_username);	
-		returnMan.createAccidentReport(clerk_id,accident_date,description,rentalID,address,city,province,zipcode,driver,amount);
+			String city, String province, String zipcode, String driver, String amount_to_charge) throws Exception{
+		BigDecimal amount = new BigDecimal(amount_to_charge);
+		int clerk_id = dbm.getIdFromUsername(clerk_username);
+		// AccidentReport(int clerkID, String accident_date, String description, int rentalID, String address, 
+		//String city, String province, String zipcode, String driver, BigDecimal amount, int r_num) {
+		AccidentReport r = new AccidentReport (clerk_id,accident_date,description,rentalID,address,city,province,zipcode,driver,amount, -1);
+		dbm.addAccidentReport(r);
 	}
 	
 	/**
@@ -298,5 +303,13 @@ for when the customer comes in the store to pick up a reservation.
 		//now we have extra charge set and paid
 		//accident report is optional
 		returnMan.changeRentalStatusExtraCharge(rental_id, true);
+	}
+	
+	public Report[] getInspectionReportForRental(int rental_id) throws SQLException{
+		return dbm.searchInspectionReport(rental_id);
+	}
+	
+	public AccidentReport getAccidentReportForRental(int rental_id) throws SQLException{
+		return dbm.searchAccidentReport(rental_id);
 	}
 }

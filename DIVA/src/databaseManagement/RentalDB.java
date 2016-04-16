@@ -672,6 +672,49 @@ class RentalDB {
 		}
 	}
 
+	/**
+	 * Search for accident report and returns it 
+	 * @param rental_id
+	 * @return
+	 * @throws SQLException 
+	 */
+	AccidentReport searchAccidentReport(int rental_id) throws SQLException {
+		// TODO Auto-generated method stub
+ 		dbm.connect();
+  		Statement stmt = dbm.getConnection().createStatement();
+  		
+		String query = "SELECT `report_num`, `rental_id`, `clerk_id`, `accident_date`, `comments`, `driver`, "
+					+"`balance`, `street_name`, `city`, `province`, `zipcode` FROM `report_accident` WHERE "
+					+"`rental_id` = "+rental_id;
+		//System.out.println(query);
+        ResultSet rs = stmt.executeQuery(query);
+        AccidentReport r = null;
+        //parse result, assume only 1 result comes back since rNum is unique
+        if (rs.next()){
+        	int report_num = rs.getInt("report_num");
+        	int clerk_id = rs.getInt("clerk_id");
+        	String accident_date = rs.getString("accident_date");
+        	String comments = rs.getString("comments");
+        	String driver = rs.getString("driver");
+        	BigDecimal balance = rs.getBigDecimal("balance");
+        	String street_name = rs.getString("street_name");
+        	String city = rs.getString("city");
+        	String province = rs.getString("province");
+        	String zipcode = rs.getString("zipcode");
+        	
+        	// AccidentReport(int clerkID, String accident_date, String description, int rentalID, String address, 
+			// String city, String province, String zipcode, String driver, BigDecimal amount, int r_num) {
+        	r = new AccidentReport(clerk_id, accident_date, comments, rental_id, street_name,
+        			city,province,zipcode,driver,balance,report_num);
+        }
+        
+        //clean up
+        rs.close();
+        stmt.close();
+        dbm.disconnect();
+    	return r;
+	}
+
 }
 
 

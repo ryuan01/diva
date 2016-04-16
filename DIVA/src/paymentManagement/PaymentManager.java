@@ -33,6 +33,7 @@ public class PaymentManager {
 	private static final int MONTH_DAYS = 28;
 	private static final int WEEK_DAYS = 7;
 	private static final BigDecimal CONVERSION_RATE= new BigDecimal("5"); //5 DOLLARS FOR 1 POINTS
+	private static final int PER_KM_INDEX=4; //for extra charge perKM
 	
 	/**
 	 * A payment Manager that creates and holds a list of receipts. 
@@ -649,5 +650,33 @@ public class PaymentManager {
 	public BigDecimal calculateWrongReturnBranchPrice() throws SQLException {
 		// TODO Auto-generated method stub
 		return getExtraChargePrice("wrong_branch");
+	}
+	
+	public Receipt[] getReceiptForCustomer(String customer_username){
+		int customer_id = db.getIdFromUsername(customer_username);
+		return db.searchReceipt(customer_id);
+	}
+
+	public BigDecimal calculateGasLevelPrice(int gaslevel_before, int gaslevel_after) throws SQLException {
+		// TODO Auto-generated method stub
+		int difference = Math.abs(gaslevel_before - gaslevel_after);
+		return getExtraChargePrice("gas_tank").multiply(new BigDecimal(difference)).setScale(2, RoundingMode.CEILING);
+	}
+
+	public BigDecimal calculateExtraKMPrice(int extra_milage, String v_type) throws Exception {
+		//get the price perKM for v_type
+		BigDecimal perKM_price;
+		if (isLegalCarClass(v_type)){
+			perKM_price = getPriceCar(v_type)[PER_KM_INDEX];
+		}
+		else if (isLegalTruckClass(v_type)){
+			perKM_price = getPriceTruck(v_type)[PER_KM_INDEX];
+		}
+		else {
+			throw new Exception("vehicle type does not exist");
+		}
+		BigDecimal balance = perKM_price.multiply(new BigDecimal(extra_milage)).setScale(2, RoundingMode.CEILING);
+		System.out.println(balance+" "+v_type + " "+perKM_price + " "+extra_milage);
+		return balance;
 	}
 }
