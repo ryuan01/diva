@@ -220,9 +220,40 @@ class PriceDB {
 	 
 	 /**
 	  * @author saud (sammy) almahri
+	  * @throws SQLException 
+	  */
+	 BigDecimal[] getAllExtraChargePrice() throws SQLException{
+		 Connection conn;
+		 Statement stmt;
+		 String query;
+		 ResultSet rs;
+		 
+		 BigDecimal[] extraCharge = new BigDecimal[3];
+		 
+		 query = "SELECT price FROM `extra_charge`;";
+		 
+		 dbm.connect();
+		 conn = dbm.getConnection();
+		 stmt = conn.createStatement();
+		 
+		 rs = stmt.executeQuery(query);
+		 
+		 for(int i = 0; rs.next(); i++){
+			 extraCharge[i] = rs.getBigDecimal("price");
+		 }
+		 
+		 rs.close();
+		 stmt.close();
+		 dbm.disconnect();
+		 
+		 return extraCharge;
+	 }
+	 
+	 /**
+	  * @author saud (sammy) almahri
 	  * @param receipt
-	 * @throws Error 
-	 * @throws SQLException 
+	  * @throws Error 
+	  * @throws SQLException 
 	  */
 	 void addReceipt(Receipt receipt) throws SQLException, Error{
 		 

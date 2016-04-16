@@ -663,7 +663,14 @@ public class DatabaseManager {
 	public void setAllEquipmentPrice(){
 		
 	}
-	//sammy: we need to search receipt based on customer_id
+	
+	/**
+	 * @author saud (sammy) almahri
+	 * @param customer_id
+	 * @return
+	 * @throws SQLException
+	 * @throws Error
+	 */
 	public Receipt searchReceipt(int customer_id) throws SQLException, Error{
 		return prDB.getReceipt(customer_id);
 	}
@@ -680,22 +687,30 @@ public class DatabaseManager {
 		
 	}
 	
-	public BigDecimal[][] getAllExtraChargePrice() {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * @author saud (sammy) almahri
+	 * @return
+	 * @throws SQLException
+	 */
+	public BigDecimal[] getAllExtraChargePrice() throws SQLException {
+		return prDB.getAllExtraChargePrice();
 	}
 	
 	//sammy: we need to get and set `car_insurance_price` and `truck_insurance_price` as well
 	//there isn't database entries for these two tables atm, please populate them with logical values
 	public BigDecimal[][] getAllCarInsurancePrice(){
+		// get from car insurance prcie
 		return null;
 	}
+	
 	public BigDecimal[][] getAllTruckInsurancePrice(){
 		return null;
 	}
-	public void setAllCarInsurnacePrice(){
+	
+	public void setAllCarInsurnacePrice(BigDecimal[][] bg){
 		
 	}
+	
 	public void setAllTruckInsurnacePrice(){
 		
 	}
