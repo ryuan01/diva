@@ -273,7 +273,6 @@ class PriceDB {
 		 
 		
 		BigDecimal[][] insurancePrices = new BigDecimal[numberOfVehicleTypes][NUMBER_INSURANCE_PRICE_TYPE];
-		BigDecimal[] insuranceRow = new BigDecimal[NUMBER_INSURANCE_PRICE_TYPE];
 		
 		query = "SELECT * FROM " + table + ";";
 		
@@ -284,13 +283,11 @@ class PriceDB {
 		
 		rs = stmt.executeQuery(query);
 		
-		for (int i = 0; rs.next() && i < numberOfVehicleTypes ; i++){
-			
-			insuranceRow[0] = rs.getBigDecimal("perHour");
-			insuranceRow[1] = rs.getBigDecimal("perDay");
-			insuranceRow[2] = rs.getBigDecimal("perWeek");
-			
-			insurancePrices[i] = insuranceRow;
+		for (int i = 0; i < numberOfVehicleTypes && rs.next() ; i++){
+						
+			insurancePrices[i][0] = rs.getBigDecimal("perHour");
+			insurancePrices[i][1] = rs.getBigDecimal("perDay");
+			insurancePrices[i][2] = rs.getBigDecimal("perWeek");
 		}
 		
 		return insurancePrices;

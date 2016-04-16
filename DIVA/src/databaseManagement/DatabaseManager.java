@@ -327,14 +327,9 @@ public class DatabaseManager {
 	 * @param balance
 	 * @throws SQLException
 	 */
-<<<<<<< HEAD
-	public String getReservationInReceiptForm(int id) {
-		// 
-		return null;
-	}
-	
-=======
->>>>>>> refs/remotes/origin/master
+
+
+
 	public void addToBalance(int rental_id, BigDecimal balance) throws SQLException{
 		reDB.addToBalance(rental_id, balance);
 	}
@@ -355,7 +350,7 @@ public class DatabaseManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-<<<<<<< HEAD
+
 	public Vehicle[] search(int branch_id, String type, String start_date, String end_date) throws SQLException{
 		//System.out.println("Connected, trying to insert next");
 		Vehicle[] vlist = veDB.search(branch_id,type,start_date, end_date);
@@ -374,7 +369,9 @@ public class DatabaseManager {
 		Vehicle[] vlist = null;
 		if (type.equals("car")){
 			vlist = veDB.searchOverdueCars(branch_id);
-=======
+		}
+	}
+
 	public String getReservationInReceiptForm(int reserve_id) throws SQLException {
 		// TODO Auto-generated method stub
 		//get reservation
@@ -398,9 +395,9 @@ public class DatabaseManager {
 		int[] equipment_id = r.getEquipments();
 		for (int i=0; i<equipment_id.length;i++){
 			basic_info += "Equipment: "+eqDB.getEquipmentType(equipment_id[i])+"\n";
->>>>>>> refs/remotes/origin/master
+
 		}
-<<<<<<< HEAD
+
 		else if (type.equals("truck")){
 			vlist = veDB.searchOverdueTrucks(branch_id);
 		}
@@ -442,9 +439,8 @@ public class DatabaseManager {
 	{
 		Vehicle v = veDB.search(vehicle_id);
 		return v.getVehicleClass();
-=======
 		return basic_info;
->>>>>>> refs/remotes/origin/master
+
 	}
 	
 /*---------------------------------------Account related----------------------------------------------*/
@@ -735,13 +731,7 @@ public class DatabaseManager {
 		// TODO Auto-generated method stub
 	}
 	
-	public void setAllEquipmentPrice(){
-		// TODO Auto-generated method stub
-	}
-<<<<<<< HEAD
-	
-=======
->>>>>>> refs/heads/samahri
+
 	/**
 	 * @author saud (sammy) almahri
 	 * @param customer_id
@@ -775,7 +765,6 @@ public class DatabaseManager {
 	
 	//sammy: we need to get and set `car_insurance_price` and `truck_insurance_price` as well
 	//there isn't database entries for these two tables atm, please populate them with logical values
-<<<<<<< HEAD
 	/**
 	 * @author saud (sammy) almahri
 	 * @return
@@ -783,13 +772,7 @@ public class DatabaseManager {
 	 */
 	public BigDecimal[][] getAllCarInsurancePrice() throws SQLException{
 		return prDB.getAllInsurancePrice(CAR);
-=======
-	public BigDecimal[][] getAllCarInsurancePrice(){
-		// TODO Auto-generated method stub
-		return null;
->>>>>>> refs/heads/samahri
 	}
-<<<<<<< HEAD
 	/**
 	 * @author saud (sammy) almahri
 	 * @return
@@ -797,22 +780,6 @@ public class DatabaseManager {
 	 */
 	public BigDecimal[][] getAllTruckInsurancePrice() throws SQLException{
 		return prDB.getAllInsurancePrice(TRUCK);
-=======
-	public BigDecimal[][] getAllTruckInsurancePrice(){
-		// TODO Auto-generated method stub
-		return null;
->>>>>>> refs/heads/samahri
-	}
-	
-<<<<<<< HEAD
-	
-	
-	public void setAllCarInsurnacePrice(BigDecimal[][] bg){
-=======
-	public void setAllCarInsurnacePrice(){
-		// TODO Auto-generated method stub
->>>>>>> refs/heads/samahri
-		
 	}
 	
 	public void setAllTruckInsurnacePrice(){

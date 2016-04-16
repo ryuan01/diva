@@ -16,9 +16,14 @@ public class Main {
 		try {
 			BigDecimal[][] price = dbm.getAllTruckInsurancePrice();
 			
-			System.out.println(price[0][1]);
-			System.out.println(price[1][2]);
-			System.out.println(price[2]);
+			for(int i = 0; i < 4; i++){
+				
+				for(int j = 0; j < 3; j++){
+					System.out.print(price[i][j] + " ");
+				}
+				
+				System.out.println();
+			}
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

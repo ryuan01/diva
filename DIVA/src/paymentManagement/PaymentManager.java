@@ -193,7 +193,6 @@ public class PaymentManager {
 	 * @return
 	 */
 	private boolean isLegalEquipmentClass(String type) {
-		// TODO Auto-generated method stub
 		if (type.equals("ski rack") || 
 			type.equals("child safety seat") ||
 			type.equals("lift gate") ||
