@@ -228,7 +228,7 @@ class PriceDB {
 		 String query;
 		 ResultSet rs;
 		 
-		 BigDecimal[] extraCharge = new BigDecimal[3];
+		 BigDecimal[] extraCharge = new BigDecimal[PRICE_ROW_SIZE];
 		 
 		 query = "SELECT price FROM `extra_charge`;";
 		 
@@ -248,6 +248,43 @@ class PriceDB {
 		 
 		 return extraCharge;
 	 }
+	 
+	 /**
+	  * @author saud (sammy) almahri
+	  * @return
+	 * @throws SQLException 
+	  */
+	 BigDecimal[][] getAllCarInsurancePrice() throws SQLException{
+		Connection conn;
+		Statement stmt;
+		ResultSet rs;
+		String query;
+		 
+		
+		BigDecimal[][] insurancePrices = new BigDecimal[NUMBER_CAR_TYPE][NUMBER_INSURANCE_PRICE_TYPE];
+		BigDecimal[] insuranceRow = new BigDecimal[NUMBER_INSURANCE_PRICE_TYPE];
+		
+		query = "SELECT * FROM `insurance_car_price`";
+		
+		dbm.connect();
+		
+		conn = dbm.getConnection();
+		stmt = conn.createStatement();
+		
+		rs = stmt.executeQuery(query);
+		
+		for (int i = 0; rs.next() && i < NUMBER_CAR_TYPE ; i++){
+			
+			insuranceRow[0] = rs.getBigDecimal("perHour");
+			insuranceRow[1] = rs.getBigDecimal("perDay");
+			insuranceRow[2] = rs.getBigDecimal("perWeek");
+			
+			insurancePrices[i] = insuranceRow;
+		}
+		
+		return insurancePrices;
+	 }
+	 
 	 
 	 /**
 	  * @author saud (sammy) almahri

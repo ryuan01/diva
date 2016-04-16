@@ -698,9 +698,9 @@ public class DatabaseManager {
 	
 	//sammy: we need to get and set `car_insurance_price` and `truck_insurance_price` as well
 	//there isn't database entries for these two tables atm, please populate them with logical values
-	public BigDecimal[][] getAllCarInsurancePrice(){
-		// get from car insurance prcie
-		return null;
+	public BigDecimal[][] getAllCarInsurancePrice() throws SQLException{
+		// get from car insurance price
+		return prDB.getAllCarInsurancePrice();
 	}
 	
 	public BigDecimal[][] getAllTruckInsurancePrice(){
