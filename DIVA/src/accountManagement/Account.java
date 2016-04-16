@@ -4,7 +4,6 @@
  */
 
 package accountManagement;
-//Kevin , continue to extend
 
 import webServiceManagement.ArrayOfStringsable;
 
@@ -17,7 +16,7 @@ public abstract class Account implements ArrayOfStringsable{
 	private String email;
 	private String loginId;
 	private String password;
-	protected String objectClass; //this need to be changed in sub-classes 
+	protected String objectClass;
 
 	/** 
 	 * Creates a new Account object initialized with the given arguments
@@ -39,10 +38,18 @@ public abstract class Account implements ArrayOfStringsable{
 		this.id = id;
 	}
 	
-	// with password
-	public Account (String firstname, String lastname, String phoneNumber, String email, String loginId, String pw){
+	/**
+	 * 
+	 * @param firstname 		The first name of the User of the Account
+	 * @param lastname			The last name of the User of the Account
+	 * @param phoneNumber		The phone number of the User of the Account
+	 * @param email				The email of the User of the Account
+	 * @param loginId			The log in id of the User of the Account
+	 * @param password			The password of the User of the Account
+	 */
+	public Account (String firstname, String lastname, String phoneNumber, String email, String loginId, String password){
 		this(firstname, lastname, phoneNumber, email,loginId, -1);
-		this.password = pw;
+		this.password = password;
 	}
 	
 	/**
@@ -136,13 +143,20 @@ public abstract class Account implements ArrayOfStringsable{
 	{
 		return objectClass;
 	}
+	
+	/**
+	 * 
+	 * @return The account username
+	 */
 	public String getLoginId() {
-		// TODO Auto-generated method stub
 		return loginId;
 	}
-
-	public int getID() {
-		// TODO Auto-generated method stub
+	
+	/**
+	 * 
+	 * @return the account id number
+	 */
+	public int getID(){ 
 		return id;
 	}
 	

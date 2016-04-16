@@ -682,6 +682,7 @@ public class DatabaseManager {
 		return prDB.getEquipmentPriceList();
 	}
 	
+
 //2.0 features
 //	public void setAllCarPrice(){
 //		
@@ -745,6 +746,7 @@ public class DatabaseManager {
 	public BigDecimal[][] getAllTruckInsurancePrice() throws SQLException{
 		return prDB.getAllInsurancePrice(TRUCK);
 	}
+
 
 // 2.0 features
 //	public void setAllCarInsurnacePrice(BigDecimal[][] bg){

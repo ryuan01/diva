@@ -7,8 +7,6 @@ import java.sql.Statement;
 import java.sql.Connection;
 
 import paymentManagement.Receipt;
-import vehicleManagement.Truck;
-import vehicleManagement.Vehicle;
 
 /**
  * Connect to Database to provide services related to PriceList
@@ -30,7 +28,6 @@ class PriceDB {
 	
 	private static final String CUSTOMER = "customer";
 	private static String CAR = "car";
-	private static String TRUCK = "truck";
 	
 	
 	private ConnectDB dbm;
@@ -41,7 +38,6 @@ class PriceDB {
 
 	
 	BigDecimal[][] getCarPriceList() throws SQLException {
-		// TODO Auto-generated method stub
   		BigDecimal[][] prices = new BigDecimal[NUMBER_CAR_TYPE][NUMBER_RENTAL_PRICE_TYPE];
   		
   		dbm.connect();
@@ -69,7 +65,7 @@ class PriceDB {
 	}
 
 	BigDecimal[][] getTruckPriceList() throws SQLException {
-		// TODO Auto-generated method stub
+		// 
   		BigDecimal[][] prices = new BigDecimal[NUMBER_TRUCK_TYPE][NUMBER_RENTAL_PRICE_TYPE];
   		
   		dbm.connect();
@@ -97,7 +93,7 @@ class PriceDB {
 	}
 
 	BigDecimal[][] getEquipmentPriceList() throws SQLException {
-		// TODO Auto-generated method stub
+		// 
   		BigDecimal[][] prices = new BigDecimal[NUMBER_EQ_TYPE][NUMBER_INSURANCE_PRICE_TYPE];
   		
   		dbm.connect();
@@ -125,7 +121,7 @@ class PriceDB {
 	}
 
 	BigDecimal[][] getCarInsurancePriceList() throws SQLException {
-		// TODO Auto-generated method stub
+		// 
   		BigDecimal[][] prices = new BigDecimal[NUMBER_CAR_TYPE][NUMBER_INSURANCE_PRICE_TYPE];
   		
   		dbm.connect();
@@ -153,7 +149,7 @@ class PriceDB {
 	}
 
 	BigDecimal[][] getTruckInsurancePriceList() throws SQLException {
-		// TODO Auto-generated method stub
+		// 
  		BigDecimal[][] prices = new BigDecimal[NUMBER_TRUCK_TYPE][NUMBER_INSURANCE_PRICE_TYPE];
   		
   		dbm.connect();
@@ -187,7 +183,7 @@ class PriceDB {
 	 * @throws SQLException 
 	 */
 	 BigDecimal[] getPriceRow(String type, String table_name) throws SQLException {
-			// TODO Auto-generated method stub
+			// 
 	 		BigDecimal[] prices = new BigDecimal[PRICE_ROW_SIZE];
 	  		
 	  		dbm.connect();
@@ -351,6 +347,7 @@ class PriceDB {
 	 	 */
 	 
 	 Receipt getReceipt(int customer_id) throws SQLException, Error{
+		 //TODO change method to return a list of arrays
 		 Connection conn;
 		 Statement stmt;
 		 String query;

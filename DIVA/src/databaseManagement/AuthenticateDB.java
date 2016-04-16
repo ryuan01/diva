@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 /**
  * For connecting from server to database bypassing logic, and for authentication purpose
- * @author Robin, Sammy
+ * @author Robin,
  *
  */
 public class AuthenticateDB {
