@@ -135,9 +135,9 @@ class PriceDB {
     		if (rs.next()){
     			for (int j=0;j<prices[i].length;j++){
         			prices[i][j] = rs.getBigDecimal(j+1);
-        			//System.out.println(prices[i][j]);
+        			System.out.println(prices[i][j]);
         		}
-    			//System.out.println();
+    			System.out.println();
         	}
         }
         

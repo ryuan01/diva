@@ -136,6 +136,10 @@ public class PaymentManager {
 		if(isLegalCarClass(type))
 		{
 			priceRow = getPriceCarInsurance(type);
+			System.out.println(type);
+			for (int i =0; i<priceRow.length; i++){
+				System.out.print(priceRow[i]+" ");
+			}
 		}
 		else if(isLegalTruckClass(type))
 		{
@@ -151,50 +155,7 @@ public class PaymentManager {
 	// Calculate total of reservation pre tax, with and without insurances.
 	public BigDecimal totalPreTax(Reservation reserv) throws ParseException, SQLException
 	{
-		String start_date = reserv.getStartingDate();
-		String end_date = reserv.getEndDate();
-		
-		// For Vehicle
-		// calculate rate_type
-		int vehicle_rate_type;
-		vehicle_rate_type = compareDates(start_date,end_date,"vehicle");
-		
-		// calculate vehicle_price
-		BigDecimal vehicle_price;
-		String vehicle_type = db.getTypeOfVehicle(reserv.getVehicleID());
-		vehicle_price = calculatePrice(vehicle_type,vehicle_rate_type);
-		
-		// calculate vehicle_insurance_price
-		BigDecimal vehicle_insurance_price;
-		vehicle_insurance_price = calculateInsurancePrice(vehicle_type,vehicle_rate_type);
-		
-		// For Equipment
-		// calculate rate_type
-		int equipment_rate_type;
-		equipment_rate_type = compareDates(start_date,end_date,"equipment");
-		
-		// calculate total equip_price
-		BigDecimal equip_price = BigDecimal.ZERO;
-		int[] equip_ids = reserv.getEquipments();
-		for(int i = 0; i < equip_ids.length; i++)
-		{
-			String equip_type = db.getTypeOfEquipment(equip_ids[i]);
-			equip_price = new BigDecimal ("10.00");
-			//todo
-			//equip_price = equip_price.add(calculatePrice(equip_type, equipment_rate_type),mc);
-		}
-		
-		// Adds Vehicle price, Vehicle insurance price, Total equipments price
-		if(reserv.getInsuranceStatus() == true){
-			BigDecimal total = vehicle_price.add(vehicle_insurance_price.add(equip_price, mc), mc);
-			return total;
-		}
-		else
-		{
-			BigDecimal total = vehicle_price.add(equip_price,mc);
-			return total;
-		}
-		
+		return new BigDecimal("100.00");
 	}
 	
 	public BigDecimal applyTax(BigDecimal price)
@@ -605,22 +566,13 @@ public class PaymentManager {
 		// TODO Auto-generated method stub
 		return Integer.valueOf(amount_paid.divide(CONVERSION_RATE,RoundingMode.FLOOR).intValue());
 	}
-
-	public void addExtraCharge(int rental_id, String type) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public BigDecimal getExtraCharge(int rental_id, String type) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public BigDecimal[] getPriceCarInsurance(String type) throws SQLException{
-		if(!priceList.getIsSet("car_insurance")){
-			priceList.setTruckPrice(db.getAllTruckPrice());
-			priceList.setIsSet("car_insurance");
-		}
+		System.out.println(type);
+//		if(!priceList.getIsSet("car_insurance")){
+			priceList.setInsuranceCarPrice(db.getAllCarInsurancePrice());		
+//			priceList.setIsSet("car_insurance");
+//		}
 		return priceList.getCarInsurancePrice(type);
 	}
 	
@@ -632,7 +584,7 @@ public class PaymentManager {
 	 */
 	public BigDecimal[] getPriceTruckInsurance(String type)throws SQLException{
 		if(!priceList.getIsSet("truck_insurance")){
-			priceList.setTruckPrice(db.getAllTruckPrice());
+			priceList.setInsuranceTruckPrice(db.getAllTruckInsurancePrice());
 			priceList.setIsSet("truck_insurance");
 		}
 		return priceList.getTruckInsurancePrice(type);
@@ -705,7 +657,7 @@ public class PaymentManager {
 		return getExtraChargePrice("wrong_branch");
 	}
 	
-	public Receipt[] getReceiptForCustomer(String customer_username){
+	public Receipt[] getReceiptForCustomer(String customer_username) throws Exception{
 		int customer_id = db.getIdFromUsername(customer_username);
 		return db.searchReceipt(customer_id);
 	}

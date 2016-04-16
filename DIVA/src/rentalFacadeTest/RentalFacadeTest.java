@@ -3,6 +3,7 @@ package rentalFacadeTest;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
+import paymentManagement.PaymentManager;
 import rentalManagement.RentalFacade;
 import rentalManagement.Reservation;
 
@@ -22,9 +23,14 @@ public class RentalFacadeTest {
 		eq[1] = 2;
 		
 		try {
-			rf.createReservation("2016-4-9 14:00:00", "2016-4-11 14:00:00", 1 , eq , 2, 3, "asdf", false);
+			rf.createReservation("2016-5-1 14:00:00", "2016-5-5 14:00:00", 2 , eq , 2, 3, "asdf", false);
 //			
-//			Reservation r = rf.findReservations(18);
+//			Reservation r = rf.findReservations(26);
+//			
+//			PaymentManager pm = new PaymentManager();
+//			BigDecimal total = pm.totalPreTax(r);
+//			System.out.println(total);
+//			
 //			System.out.println(r.toString());
 //			
 //			Reservation[] rs = rf.searchReservationForAccount("something");
@@ -34,7 +40,7 @@ public class RentalFacadeTest {
 			
 			//rf.cancelSelfReservation(1, 17);
 			
-			rf.cancelAnyReservation(32);
+//			rf.cancelAnyReservation(32);
 		} catch (NullPointerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
