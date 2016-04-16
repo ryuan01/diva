@@ -206,8 +206,8 @@ for when the customer comes in the store to pick up a reservation.
 		return rentMan.payForRentalByCash(clerk_id, reserve_id,amount);
 	}
 	
-	public void changeRentalStatus(int rentalID, boolean status) throws SQLException{
-		rentMan.changeRentalStatus(rentalID, status);
+	public void changeRentalStatusIsPaid(int rentalID, boolean status) throws SQLException{
+		rentMan.changeRentalStatusIsPaid(rentalID, status);
 	}
 	
 	public Rental searchForRental(int rentID) throws SQLException{
@@ -234,7 +234,7 @@ for when the customer comes in the store to pick up a reservation.
 			throw new Exception("Please file an inspection report before leaving with a vehicle");
 		}
 		//now we have both set
-		rentMan.changeRentalStatus(rentID, true);
+		rentMan.changeRentalStatusIsPaid(rentID, true);
 	}
 	
 //---------------------------return related-------------------------------------
@@ -271,6 +271,7 @@ for when the customer comes in the store to pick up a reservation.
 		BigDecimal amountOwning = new BigDecimal("0");
 		
 		if (returnMan.checkReturnBranch(rental_id, current_branch_id)){
+			System.out.println("wrong branch in facade" );
 			amountOwning = returnMan.addWrongReturnBranchExtraCharge(rental_id,current_branch_id);
 		}
 		
@@ -304,10 +305,30 @@ for when the customer comes in the store to pick up a reservation.
 	 * Checks if the rental is ready to be archived, customer paid for any possible extra charge
 	 * @param rental_id
 	 * @return
+	 * @throws Exception 
 	 */
-	public boolean readyToReturn(int rental_id){
-		
+	public void readyToReturn(int rental_id) throws Exception{
 		//CHECK for all kinds of extra charges situations
-		return returnMan.readyToReturn(rental_id);
+		//if the balance is 0, then set is_paid_rental to true and let someone leave, return true
+		//else return false		
+		BigDecimal balance = dbm.getBalance(rental_id);
+		boolean is_paid = (balance.compareTo(new BigDecimal(0)) == 0);
+		boolean has_after_rental_inspection_report = dbm.hasInspectionReport(rental_id, "after_rental");
+		Rental rental = dbm.getRental(rental_id);
+		if (!has_after_rental_inspection_report){
+			throw new Exception("Please file an after inspection report before returning a vehicle");
+		}
+		if (!rental.getIsCheckOverdue()){
+			throw new Exception("Please check if the vehicle is overdue before returning a vehicle");
+		}
+		if (!rental.getIsCheckReturnBranch()){
+			throw new Exception("Please check if the customer returned to the correct branch before returning a vehicle");
+		}
+		if (!is_paid){
+			throw new Exception("Please pay the extra charges first before returning a vehicle");
+		}
+		//now we have extra charge set and paid
+		//accident report is optional
+		returnMan.changeRentalStatusExtraCharge(rental_id, true);
 	}
 }

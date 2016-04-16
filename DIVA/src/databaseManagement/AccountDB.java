@@ -307,26 +307,22 @@ class AccountDB{
 		
 		dbm.connect();
 		
-		try {
-			if(doesItExist(username, EMPLOYEE, USERNAME ))
-			{
-				query="DELETE users, employee FROM users INNER JOIN employee WHERE "
-						+ "users.id_number = employee.id_number AND "
-						+ "users.account_uName = \"" + username +"\";";
-				
-				conn = dbm.getConnection();
-				stmt = conn.createStatement();
-				
-				stmt.executeUpdate(query);
-				
-				dbm.disconnect();
-			}else {
-				dbm.disconnect();
-				throw new Error("can't delete customer account");
-				
-			}
-		} catch (IllegalArgumentException e){
-			throw e;
+		if(doesItExist(username, EMPLOYEE, USERNAME ))
+		{
+			query="DELETE users, employee FROM users INNER JOIN employee WHERE "
+					+ "users.id_number = employee.id_number AND "
+					+ "users.account_uName = \"" + username +"\";";
+			
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			stmt.executeUpdate(query);
+			
+			dbm.disconnect();
+		}else {
+			dbm.disconnect();
+			throw new Error("can't delete customer account");
+			
 		}
 	}
 	
@@ -633,7 +629,7 @@ class AccountDB{
 		Connection conn;
 		Statement stmt;
 		ResultSet rs;
-		System.out.println(id+" "+table+" "+param);		
+		//System.out.println(id+" "+table+" "+param);		
 		//
 		String query = "";
 
@@ -664,7 +660,7 @@ class AccountDB{
 				return true;
 			}
 		}
-		throw new IllegalArgumentException("account does not exist");
+		return false;
 	}
 	
 
@@ -748,7 +744,7 @@ class AccountDB{
 		int id = -1;
 		Statement stmt = dbm.getConnection().createStatement();
 		String query = "SELECT `id_number` FROM users WHERE users.account_uName = \'"+username+"\'";
-		System.out.println(query);
+		//System.out.println(query);
 		ResultSet rs = stmt.executeQuery(query);
 		
 		if (rs.next()){

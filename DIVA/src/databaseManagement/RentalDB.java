@@ -3,6 +3,7 @@ package databaseManagement;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import paymentManagement.Receipt;
 import rentalManagement.AccidentReport;
@@ -20,9 +21,11 @@ import vehicleManagement.Vehicle;
 class RentalDB {
 	
 	private ConnectDB dbm;
+	private VehicleDB veDB;
 	
 	RentalDB() {
 		dbm = new ConnectDB();
+		veDB = new VehicleDB();
 	}
 
 	//modify 
@@ -256,14 +259,21 @@ class RentalDB {
 		//set save point 
 		Savepoint savepoint1 = dbm.getConnection().setSavepoint("Savepoint1");
 		try {
-			//insert into Reservation table
-	    	insertReservation(r, stmt);
-	        
-	        //insert into equipment_reservation table
-	    	insertEqRes(r, stmt);
-	    	
-	    	//try to execute
-	    	dbm.getConnection().commit();
+			//do another search before trying to add Reservation
+			//throw error if it is not available
+			boolean is_reserved = veDB.search(r.getVehicleID(), r.getStartingDate(), r.getEndDate());
+			if (!is_reserved){	
+				//insert into Reservation table
+		    	insertReservation(r, stmt);
+		        
+		        //insert into equipment_reservation table
+		    	insertEqRes(r, stmt);
+		    	
+		    	//try to execute
+		    	dbm.getConnection().commit();
+			}
+			else 
+				throw new SQLException("Cannot reserve the current vehicle");
 		} catch (SQLException e) {
 			//this is for unsuccessfully adding any of these entries into database
 			dbm.getConnection().rollback(savepoint1);
@@ -412,7 +422,7 @@ class RentalDB {
 		// TODO Auto-generated method stub
 	}
 		
-	void changeRentalStatus(int rentalID, boolean status) throws SQLException{
+	void changeRentalStatus(int rentalID, String columnName, boolean status) throws SQLException{
 		Connection conn;
 		Statement stmt;
 		String query;
@@ -421,7 +431,7 @@ class RentalDB {
 		
 		if (isValidReservation(rentalID)){
 			query = "UPDATE `rental` "
-					+ "SET `is_paid_rental` = " + status + " "
+					+ "SET `"+columnName+"` = " + status + " "
 					+ "WHERE `reservation_id` = " + rentalID + ";";
 			
 			

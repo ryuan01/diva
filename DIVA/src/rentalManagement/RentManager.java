@@ -98,8 +98,8 @@ class RentManager {
 			return pm.makePaymentCash(clerk_id, reserve_id, customer_id, balance, amount);
 		}
 		
-		void changeRentalStatus(int rentalID, boolean status) throws SQLException{
-			dbConnection.changeRentalStatus(rentalID, status);
+		void changeRentalStatusIsPaid(int rentalID, boolean status) throws SQLException{
+			dbConnection.changeRentalStatus(rentalID,"is_paid_rental", status);
 		}
 		
 		Rental getRental(int rentID) throws SQLException{

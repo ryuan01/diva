@@ -320,9 +320,10 @@ public class PaymentManager {
 	 * @throws SQLException 
 	 * @throws ParseException 
 	 */
-	public Receipt makePaymentByCardOnFile(Reservation r, int customer_id) throws ParseException, SQLException{
+	public Receipt makePaymentByCardOnFile(int reservation_id, int customer_id) throws ParseException, SQLException{
 		//need work
 		//need to re-calculate total balance
+		Reservation r = db.searchReservationEntry(reservation_id);
 		BigDecimal balance = totalPreTax(r);
 		balance = applyTax(balance);
 		Receipt receipt = null;
@@ -413,7 +414,7 @@ public class PaymentManager {
 			db.deductSRPoints(customer_id, points);
 			change = balance.subtract(amount_paid).setScale(2, RoundingMode.CEILING);
 			db.addToBalance(reserve_id, change);
-			System.out.println(balance+" "+amount_paid+" "+change);
+//			System.out.println(balance+" "+amount_paid+" "+change);
 //			System.exit(0);
 		}
 		
@@ -612,6 +613,7 @@ public class PaymentManager {
 	 * @throws SQLException 
 	 */
 	private boolean is_super_rent(int account_id) throws SQLException{
+		//System.out.println("customer account is: " +account_id);
 		Account a = db.getAccountFromID(account_id);
 		if (a instanceof SuperCustomer){
 			return true;

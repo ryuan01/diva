@@ -84,12 +84,15 @@ class ReturnManager {
 	 * @param rental_id
 	 * @param current_branch_id 
 	 * @param current_branch_id
-	 * @return true if it is, false if they are different
+	 * @return true if it is wrong, false if they are different
 	 * @throws SQLException
 	 */
 	boolean checkReturnBranch(int rental_id, int current_branch_id) throws SQLException {
-		// TODO Auto-generated method stub
-		return dbConnection.checkReturnBranch(rental_id, current_branch_id);
+		Rental rental = dbConnection.getRental(rental_id);
+		if (rental.getRentalReservation().getEndBranchID() != current_branch_id){
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -117,8 +120,8 @@ class ReturnManager {
 		
 	}
 
-	public boolean readyToReturn(int rental_id) {
+	void changeRentalStatusExtraCharge(int rental_id, boolean status) throws SQLException {
 		// TODO Auto-generated method stub
-		return false;
+		dbConnection.changeRentalStatus(rental_id,"is_paid_extra_charge", status);
 	}
 }

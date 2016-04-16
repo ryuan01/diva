@@ -434,8 +434,8 @@ public class DatabaseManager {
 		}
 	}
 	
-	public void changeRentalStatus(int rentalID, boolean status) throws SQLException{
-		reDB.changeRentalStatus(rentalID, status);
+	public void changeRentalStatus(int rentalID,String columnName, boolean status) throws SQLException{
+		reDB.changeRentalStatus(rentalID, columnName, status);
 	}
 	
 	/**
@@ -712,11 +712,8 @@ public class DatabaseManager {
 		if (report == null){
 			return false;
 		}
-		else if (report.getReportState().equals("before_rental")){
+		else  { //there is an after rental report, or a before rental report
 			return true;
-		}
-		else { //there is an after rental report, but no before rental report
-			return false;
 		}
 	}
 

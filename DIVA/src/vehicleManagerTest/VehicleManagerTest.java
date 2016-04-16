@@ -20,10 +20,10 @@ public class VehicleManagerTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//test_search_overdue();
-		//test_search();
+		test_search();
 		//test_add_vehicle();
 		//test_search_equipments();
-		test_add_equipment();
+		//test_add_equipment();
 		
 	}
 
@@ -70,10 +70,10 @@ public class VehicleManagerTest {
 		// TODO Auto-generated method stub
 		Vehicle[] a;
 		try {
-			a = vm.searchForVehicle(1, "2016-4-9 14:00:00", "2016-4-10 14:00:00", "car");
-			for (int i=0; i< a.length; i++){
-				System.out.println(a[i].toString());
-			}
+//			a = vm.searchForVehicle(1, "2016-4-9 14:00:00", "2016-4-10 14:00:00", "car");
+//			for (int i=0; i< a.length; i++){
+//				System.out.println(a[i].toString());
+//			}
 			a = vm.searchForVehicle(1, "2016-4-9 14:00:00", "2016-4-10 14:00:00", "car");
 			for (int i=0; i< a.length; i++){
 				System.out.println(a[i].toString());
