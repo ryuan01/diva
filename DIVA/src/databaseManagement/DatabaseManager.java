@@ -7,6 +7,8 @@ package databaseManagement;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import accountManagement.Account;
 import accountManagement.Customer;
 import accountManagement.Employee;
@@ -241,6 +243,32 @@ public class DatabaseManager {
 	}
 	
 	/**
+	 * 
+	 * @param rental_id
+	 * @return
+	 * @throws SQLException
+	 */
+	public Report[] searchInspectionReport(int rental_id) throws SQLException {
+		// TODO Auto-generated method stub
+		ArrayList<Report> reports = new ArrayList<Report>();
+		Report one = reDB.searchInspectionReport(rental_id, "before_rental");
+		Report two = reDB.searchInspectionReport(rental_id, "after_rental");
+		if (one != null)
+			reports.add(one);
+		if (two != null)
+			reports.add(two);
+        //change back to array
+        Report[] rArray = new Report[reports.size()];
+        rArray = reports.toArray(rArray);
+        return rArray;
+	}
+
+	public AccidentReport searchAccidentReport(int rental_id) throws SQLException {
+		// TODO Auto-generated method stub
+		return reDB.searchAccidentReport(rental_id);
+	}
+	
+	/**
 	 * Get the reservation end date
 	 * @param reservID ID that identifies a reservation
 	 * @return end date as a string
@@ -297,6 +325,10 @@ public class DatabaseManager {
 		return reDB.getRental(rentID);
 	}
 	
+	public Rental getRentalFromReservation(int reservID) throws SQLException{
+		return reDB.getRental(reservID);
+	}
+	
 	/**
 	 * Get the account for the rental, for calculating price purpose
 	 * @param rental_id
@@ -327,9 +359,12 @@ public class DatabaseManager {
 	 * @param balance
 	 * @throws SQLException
 	 */
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> refs/remotes/origin/master
 	public void addToBalance(int rental_id, BigDecimal balance) throws SQLException{
 		reDB.addToBalance(rental_id, balance);
 	}
@@ -350,6 +385,7 @@ public class DatabaseManager {
 	 * @return
 	 * @throws SQLException 
 	 */
+<<<<<<< HEAD
 
 	public Vehicle[] search(int branch_id, String type, String start_date, String end_date) throws SQLException{
 		//System.out.println("Connected, trying to insert next");
@@ -372,6 +408,8 @@ public class DatabaseManager {
 		}
 	}
 
+=======
+>>>>>>> refs/remotes/origin/master
 	public String getReservationInReceiptForm(int reserve_id) throws SQLException {
 		// TODO Auto-generated method stub
 		//get reservation
@@ -395,8 +433,12 @@ public class DatabaseManager {
 		int[] equipment_id = r.getEquipments();
 		for (int i=0; i<equipment_id.length;i++){
 			basic_info += "Equipment: "+eqDB.getEquipmentType(equipment_id[i])+"\n";
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/remotes/origin/master
 		}
+<<<<<<< HEAD
 
 		else if (type.equals("truck")){
 			vlist = veDB.searchOverdueTrucks(branch_id);
@@ -440,6 +482,9 @@ public class DatabaseManager {
 		Vehicle v = veDB.search(vehicle_id);
 		return v.getVehicleClass();
 
+=======
+		return basic_info;
+>>>>>>> refs/remotes/origin/master
 	}
 	
 /*---------------------------------------Account related----------------------------------------------*/
@@ -503,8 +548,8 @@ public class DatabaseManager {
 		}
 	}
 	
-	public void changeRentalStatus(int rentalID, boolean status) throws SQLException{
-		reDB.changeRentalStatus(rentalID, status);
+	public void changeRentalStatus(int rentalID,String columnName, boolean status) throws SQLException{
+		reDB.changeRentalStatus(rentalID, columnName, status);
 	}
 	
 	/**
@@ -719,6 +764,7 @@ public class DatabaseManager {
 	public BigDecimal[][] getAllEquipmentPrice() throws SQLException{
 		return prDB.getEquipmentPriceList();
 	}
+<<<<<<< HEAD
 	
 	
 	public void setAllCarPrice(){
@@ -731,6 +777,21 @@ public class DatabaseManager {
 	}
 	
 
+=======
+
+//2.0 features
+//	public void setAllCarPrice(){
+//		
+//	}
+//	
+//	public void setAllTruckPrice(){
+//		
+//	}
+//	
+//	public void setAllEquipmentPrice(){
+//		
+//	}
+>>>>>>> refs/remotes/origin/master
 	/**
 	 * @author saud (sammy) almahri
 	 * @param customer_id
@@ -738,7 +799,7 @@ public class DatabaseManager {
 	 * @throws SQLException
 	 * @throws Error
 	 */
-	public Receipt searchReceipt(int customer_id) throws SQLException, Error{
+	public Receipt[] searchReceipt(int customer_id) throws SQLException, Error{
 		return prDB.getReceipt(customer_id);
 	}
 	
@@ -772,19 +833,37 @@ public class DatabaseManager {
 	public BigDecimal[][] getAllCarInsurancePrice() throws SQLException{
 		return prDB.getAllInsurancePrice(CAR);
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/master
 	/**
 	 * @author saud (sammy) almahri
-	 * @return
+	 * @return 
 	 * @throws SQLException
 	 */
 	public BigDecimal[][] getAllTruckInsurancePrice() throws SQLException{
 		return prDB.getAllInsurancePrice(TRUCK);
 	}
+<<<<<<< HEAD
 	
 	public void setAllTruckInsurnacePrice(){
 		// TODO Auto-generated method stub
 		
 	}
+=======
+
+
+
+// 2.0 features
+//	public void setAllCarInsurnacePrice(BigDecimal[][] bg){
+//		
+//	}
+//	
+//	public void setAllTruckInsurnacePrice(){
+//		
+//	}
+>>>>>>> refs/remotes/origin/master
 
 	/**
 	 * Checks if a rental has an inspection report before rental done
@@ -798,11 +877,8 @@ public class DatabaseManager {
 		if (report == null){
 			return false;
 		}
-		else if (report.getReportState().equals("before_rental")){
+		else  { //there is an after rental report, or a before rental report
 			return true;
-		}
-		else { //there is an after rental report, but no before rental report
-			return false;
 		}
 	}
 

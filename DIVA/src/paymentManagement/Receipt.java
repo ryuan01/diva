@@ -97,8 +97,12 @@ public class Receipt implements ArrayOfStringsable{
 	}
 	
 	public String toString() {
-		return "{'receiptId':'"+ this.receiptId +"', 'customer_id':'"+this.customer_id+"'," +"', 'clerk_id':'"+this.clerk_id
-			+	"'basic_info':'"+this.basic_info+"',"+"'payment_info':'"+this.payment_info+"'}";
+		String clerk_description = ""+this.clerk_id;
+		if (clerk_id == -1){
+			clerk_description = "no clerk";
+		}
+		return "{'receiptId':'"+ this.receiptId +"', 'customer_id':'"+this.customer_id+"'," +"', 'clerk_id':'"+clerk_description
+			+	", 'basic_info':'"+this.basic_info+"',"+"'payment_info':'"+this.payment_info+"'}";
 	}	
 	
 }

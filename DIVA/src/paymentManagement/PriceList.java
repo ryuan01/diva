@@ -30,14 +30,16 @@ public class PriceList {
 	private BigDecimal[][] price_equipment;
 	private BigDecimal[][] price_car_insurance;
 	private BigDecimal[][] price_truck_insurance;
+	private BigDecimal[] price_extra_charge;
 	private boolean[] is_set;
-	private final static int IS_SET_SIZE = 5; //car, truck equipment, car_insurance, truck_insurance
+	private final static int IS_SET_SIZE = 6; //car, truck equipment, car_insurance, truck_insurance, "extra_charge_price"
 	private final static String[] CAR_TYPE = new String[]{"economy","compact","midsized","standard","fullsized","premium","SUV","van","luxury"};
 	private final static String[] TRUCK_TYPE = new String[]{"24-foot","15-foot","12-foot","box-truck"};	
 	private final static String[] EQUIPMENT_TYPE = new String[]{"ski rack","child safety seat","lift gate","car-towing eq"};
-	private final static String[] SET_TYPE = new String[]{"car","truck","equipment","car_insurance","truck_insurance"};
+	private final static String[] SET_TYPE = new String[]{"car","truck","equipment","car_insurance","truck_insurance","extra_charge_price"};
 	private final static String[] RATE_TYPE_1 = new String[]{"perHour","perDay","perWeek","perMonth","perKM"}; //for vehicle rental
 	private final static String[] RATE_TYPE_2 = new String[]{"perHour","perDay","perWeek"}; //for insurance and equipment rental
+	private final static String[] EXTRA_CHARGE_TYPE = new String[]{"gas_tank","overdue_daily","wrong_branch"};
 	/**
 	 * Loads value from db to create PriceList
 	 * @throws SQLException 
@@ -49,6 +51,7 @@ public class PriceList {
 		price_car_insurance = new BigDecimal[CAR_TYPE.length][RATE_TYPE_2.length]; 
 		price_truck_insurance = new BigDecimal[TRUCK_TYPE.length][RATE_TYPE_2.length];
 		is_set = new boolean[IS_SET_SIZE];
+		price_extra_charge = new BigDecimal[EXTRA_CHARGE_TYPE.length];
 	}
 	
 	public void setCarPrice(BigDecimal[][] prices){
@@ -82,7 +85,12 @@ public class PriceList {
 	}
 	
 	public BigDecimal[] getCarInsurancePrice(String type){
+//		System.out.println(type);
 		int i = Arrays.asList(CAR_TYPE).indexOf(type);
+//		System.out.println(i);
+//		for (int j = 0; j < price_car_insurance.length; j++){
+//			System.out.println(price_car_insurance[i][j]);
+//		}
 		return price_car_insurance[i];
 	}
 	
@@ -109,11 +117,14 @@ public class PriceList {
 			}
 			System.out.println();
 		}
+<<<<<<< HEAD
 	}
 
 	public BigDecimal getExtraChargePrice(String type) {
 		// 
 		return null;
+=======
+>>>>>>> refs/remotes/origin/master
 	}
 
 	/**
@@ -155,5 +166,34 @@ public class PriceList {
 		else {
 			return price_truck[j][1];
 		}
+	}
+
+	/**
+	 * Set the extra charge price list
+	 * @param allExtraChargePrice
+	 */
+	public void setExtraCharge(BigDecimal[] allExtraChargePrice) {
+		price_extra_charge = allExtraChargePrice;
+	}
+	
+
+	/**
+	 * Get one type of extra charge
+	 * @param type
+	 * @return
+	 */
+	public BigDecimal getExtraChargePrice(String type) {
+		int i = Arrays.asList(EXTRA_CHARGE_TYPE).indexOf(type);
+		return price_extra_charge[i];
+	}
+
+	public void setInsuranceCarPrice(BigDecimal[][] allCarInsurancePrice) {
+		price_car_insurance = allCarInsurancePrice;
+		
+	}
+
+	public void setInsuranceTruckPrice(BigDecimal[][] allTruckInsurancePrice) {
+		price_truck_insurance = allTruckInsurancePrice;
+		
 	}
 }

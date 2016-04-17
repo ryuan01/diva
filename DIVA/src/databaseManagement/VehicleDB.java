@@ -279,6 +279,7 @@ class VehicleDB {
         		+" ON car.vehicle_id = reservation.vehicle_id" 
         		+" WHERE reservation.end_date >= \'"+start_date+"\'"
         		+" AND reservation.start_date < \'"+end_date+"\');";
+        System.out.println(query);
         return executeQueryCar(query);
 	}
 
@@ -533,6 +534,51 @@ class VehicleDB {
         stmt.close();	
         dbm.disconnect();
 		return false;
+	}
+
+	/**
+	 * Check if this vehicle with certain ID is available between these dates
+	 * @param vehicleID
+	 * @param startingDate
+	 * @param endDate
+	 * @return
+	 * @throws SQLException 
+	 */
+	boolean search(int vehicle_id, String startingDate, String endDate) throws SQLException {
+		// TODO Auto-generated method stub
+		if (isTruck(vehicle_id)){
+			//search inside truck
+			dbm.connect();
+	  		Statement stmt = dbm.getConnection().createStatement();
+	  		String query  = "SELECT truck.vehicle_id FROM truck INNER JOIN reservation  ON truck.vehicle_id = reservation.vehicle_id "
+	  				+"WHERE reservation.end_date >= \'"+startingDate+"\' AND reservation.start_date < \'"+endDate+"\'"
+	  				+"AND truck.vehicle_id = "+vehicle_id;
+	        ResultSet rs = stmt.executeQuery(query);
+	        if (rs.next()){
+	        	//it is reserved
+	            rs.close();
+	            stmt.close();	
+	            dbm.disconnect();
+	        	return true;
+	        }
+		}
+		else {
+			//search inside cars
+			dbm.connect();
+	  		Statement stmt = dbm.getConnection().createStatement();
+	  		String query  = "SELECT car.vehicle_id FROM car INNER JOIN reservation  ON car.vehicle_id = reservation.vehicle_id "
+	  				+"WHERE reservation.end_date >= \'"+startingDate+"\' AND reservation.start_date < \'"+endDate+"\'"
+	  				+"AND car.vehicle_id = "+vehicle_id;
+	        ResultSet rs = stmt.executeQuery(query);
+	        if (rs.next()){
+	        	//it is reserved
+	            rs.close();
+	            stmt.close();	
+	            dbm.disconnect();
+	        	return true;
+	        }
+		}
+        return false;
 	}	
 
 	

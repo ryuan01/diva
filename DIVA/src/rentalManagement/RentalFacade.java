@@ -1,7 +1,9 @@
+
 package rentalManagement;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import databaseManagement.DatabaseManager;
 import paymentManagement.Receipt;
@@ -50,6 +52,11 @@ public class RentalFacade {
 	public void createReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
 			String customer_username, boolean insurance) throws Exception 
 	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+		
+		if (sdf.parse(startD).after(sdf.parse(endD))){
+			throw new IllegalArgumentException("Start Date cannot be before end date");
+		}
 		//balance need to be re-calculated for security purpose 
 		int customerID = dbm.getIdFromUsername(customer_username);
 		reservMan.addReservation(startD,endD,vehicleID,equipIDs,startBranchID, endBranchID, 
@@ -167,47 +174,9 @@ for when the customer comes in the store to pick up a reservation.
 		int clerk_id = dbm.getIdFromUsername(clerk_username);	
 		rentMan.createReport(clerk_id, date, description, reserveID, milage, gasLevel, "before_rental");
 	}
-		
-	/**
-	 * Let customer or super customer pays for a rental by card on file
-	 * @param rental_id refers to a rental
-	 * @param amount_paid amount that the customer wishes to pay
-	 * @return 
-	 * @throws Exception 
-	 */
-	public Receipt payForRentalByCard(String clerk_username, int reserve_id, String amount_paid) throws Exception{
-		//done
-		int clerk_id = dbm.getIdFromUsername(clerk_username);	
-		return rentMan.payForRentalByCard(clerk_id, reserve_id, amount_paid);
-	}
-		
-	/**
-	 * Let super customer pays for a rental, Assumes price and taxes has been calculated
-	 * @param rental_id
-	 * @param points
-	 * @throws Exception 
-	 */
-	public Receipt payForRentalByPoints(String clerk_username, int reserve_id, int points) throws Exception{
-		//done
-		int clerk_id = dbm.getIdFromUsername(clerk_username);
-		return rentMan.payForRentalByPoints(clerk_id, reserve_id,points);
-	}
 	
-	/**
-	 * Let custmomer or super customer pay by rental by cash
-	 * @param rental_id
-	 * @param amount
-	 * @return 
-	 * @throws Exception 
-	 */
-	public Receipt payForRentalByCash(String clerk_username, int reserve_id, String amount) throws Exception{
-		//done
-		int clerk_id = dbm.getIdFromUsername(clerk_username);
-		return rentMan.payForRentalByCash(clerk_id, reserve_id,amount);
-	}
-	
-	public void changeRentalStatus(int rentalID, boolean status) throws SQLException{
-		rentMan.changeRentalStatus(rentalID, status);
+	public void changeRentalStatusIsPaid(int rentalID, boolean status) throws SQLException{
+		rentMan.changeRentalStatusIsPaid(rentalID, status);
 	}
 	
 	public Rental searchForRental(int rentID) throws SQLException{
@@ -234,7 +203,7 @@ for when the customer comes in the store to pick up a reservation.
 			throw new Exception("Please file an inspection report before leaving with a vehicle");
 		}
 		//now we have both set
-		rentMan.changeRentalStatus(rentID, true);
+		rentMan.changeRentalStatusIsPaid(rentID, true);
 	}
 	
 //---------------------------return related-------------------------------------
@@ -271,6 +240,7 @@ for when the customer comes in the store to pick up a reservation.
 		BigDecimal amountOwning = new BigDecimal("0");
 		
 		if (returnMan.checkReturnBranch(rental_id, current_branch_id)){
+			System.out.println("wrong branch in facade" );
 			amountOwning = returnMan.addWrongReturnBranchExtraCharge(rental_id,current_branch_id);
 		}
 		
@@ -288,26 +258,59 @@ for when the customer comes in the store to pick up a reservation.
 	 * @param gasLevel
 	 * @throws Exception 
 	 */
-	public void createInsectionReportAfterRental (String clerk_username, String date, String description, int rentalID, int milage, int gasLevel) throws Exception{
+	public BigDecimal createInsectionReportAfterRental (String clerk_username, String date, String description, int rentalID, int milage, int gasLevel) throws Exception{
 		int clerk_id = dbm.getIdFromUsername(clerk_username);	
 		rentMan.createReport(clerk_id, date, description, rentalID, milage, gasLevel, "after_rental");
+		//also do a check to see if we need to charge for extra milage and gas tank
+		return returnMan.compareReports(rentalID);
 	}
 	
 	public void createAccidentReport(String clerk_username, String accident_date, String description, int rentalID, String address, 
-			String city, String province, String zipcode, String driver, BigDecimal amount) throws Exception{
-		//todo
-		int clerk_id = dbm.getIdFromUsername(clerk_username);	
-		returnMan.createAccidentReport(clerk_id,accident_date,description,rentalID,address,city,province,zipcode,driver,amount);
+			String city, String province, String zipcode, String driver, String amount_to_charge) throws Exception{
+		BigDecimal amount = new BigDecimal(amount_to_charge);
+		int clerk_id = dbm.getIdFromUsername(clerk_username);
+		// AccidentReport(int clerkID, String accident_date, String description, int rentalID, String address, 
+		//String city, String province, String zipcode, String driver, BigDecimal amount, int r_num) {
+		AccidentReport r = new AccidentReport (clerk_id,accident_date,description,rentalID,address,city,province,zipcode,driver,amount, -1);
+		dbm.addAccidentReport(r);
 	}
 	
 	/**
 	 * Checks if the rental is ready to be archived, customer paid for any possible extra charge
 	 * @param rental_id
 	 * @return
+	 * @throws Exception 
 	 */
-	public boolean readyToReturn(int rental_id){
-		
+	public void readyToReturn(int rental_id) throws Exception{
 		//CHECK for all kinds of extra charges situations
-		return returnMan.readyToReturn(rental_id);
+		//if the balance is 0, then set is_paid_rental to true and let someone leave, return true
+		//else return false		
+		BigDecimal balance = dbm.getBalance(rental_id);
+		boolean is_paid = (balance.compareTo(new BigDecimal(0)) == 0);
+		boolean has_after_rental_inspection_report = dbm.hasInspectionReport(rental_id, "after_rental");
+		Rental rental = dbm.getRental(rental_id);
+		if (!has_after_rental_inspection_report){
+			throw new Exception("Please file an after inspection report before returning a vehicle");
+		}
+		if (!rental.getIsCheckOverdue()){
+			throw new Exception("Please check if the vehicle is overdue before returning a vehicle");
+		}
+		if (!rental.getIsCheckReturnBranch()){
+			throw new Exception("Please check if the customer returned to the correct branch before returning a vehicle");
+		}
+		if (!is_paid){
+			throw new Exception("Please pay the extra charges first before returning a vehicle");
+		}
+		//now we have extra charge set and paid
+		//accident report is optional
+		returnMan.changeRentalStatusExtraCharge(rental_id, true);
+	}
+	
+	public Report[] getInspectionReportForRental(int rental_id) throws SQLException{
+		return dbm.searchInspectionReport(rental_id);
+	}
+	
+	public AccidentReport getAccidentReportForRental(int rental_id) throws SQLException{
+		return dbm.searchAccidentReport(rental_id);
 	}
 }

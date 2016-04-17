@@ -98,13 +98,14 @@ class AccountDB{
 					+ fname + "\", \"" + lname + "\", \"" + phone + "\", \"" + email 
 					+ "\", \"" + userName + "\", \"" + password + "\");\n";
 			stmt.executeUpdate(query);
+			System.out.println(query);
 			// insert into customer table
-			query= "INSERT INTO `customer` (`id_number`, `cc_Num`, `expire_date`"
+			query= "INSERT INTO `customer` (`id_number`, `cc_Num`, `expire_date`,"
 					+ "`name_on_cCard`, `street_name`, `city`, "
 					+ "`province`, `zipcode`) VALUES (LAST_INSERT_ID(),\"" + ccNum
 					+ "\", \"" +expire_date+"\", \""+ ccName + "\", \"" + street + "\", \"" + city + "\", \"" + province
 					+ "\", \"" + zipCode + "\") ;";
-			
+			System.out.println(query);
 			// execute the statements
 			stmt.executeUpdate(query);
 			
@@ -360,6 +361,7 @@ class AccountDB{
 		
 		dbm.connect();
 		
+<<<<<<< HEAD
 		if (doesItExist(username,USER, USERNAME)){
 			query = "UPDATE `users` SET COLUMN isActive = " + activationStatus + " "
 					+ "WHERE account_uName = \"" + username + "\";";
@@ -374,6 +376,24 @@ class AccountDB{
 		}else{
 			dbm.disconnect();
 			throw new IllegalArgumentException("username " + username + " does not exist!");
+=======
+		if(doesItExist(username, EMPLOYEE, USERNAME ))
+		{
+			query="DELETE users, employee FROM users INNER JOIN employee WHERE "
+					+ "users.id_number = employee.id_number AND "
+					+ "users.account_uName = \"" + username +"\";";
+			
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			stmt.executeUpdate(query);
+			
+			dbm.disconnect();
+		}else {
+			dbm.disconnect();
+			throw new Error("can't delete customer account");
+			
+>>>>>>> refs/remotes/origin/master
 		}
 	}
 	
@@ -654,8 +674,14 @@ class AccountDB{
 		// database ojbects:
 		Connection conn;
 		Statement stmt;
+<<<<<<< HEAD
 		ResultSet rs;	
 		
+=======
+		ResultSet rs;
+		//System.out.println(id+" "+table+" "+param);		
+		//
+>>>>>>> refs/remotes/origin/master
 		String query = "";
 
 		conn = dbm.getConnection();
@@ -685,7 +711,59 @@ class AccountDB{
 				return true;
 			}
 		}
-		throw new IllegalArgumentException("account does not exist");
+		return false;
+	}
+	
+	/**
+	 * isValidLogin checks if the username and pw matches
+	 * @param username a username
+	 * @param pw the encrypted password
+	 * @throws SQLException 
+	 * @pre isValidUsername(username)
+	 * @post true if the there is a match, otherwise false
+	 */
+	private boolean isValidLogin(String username, String pw) throws SQLException {
+		if (doesItExist(username, USER, USERNAME) == true){
+			dbm.connect();
+		
+			Statement stmt = dbm.getConnection().createStatement();
+		
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
+		
+			while(rs.next()){
+				if ((username.equals(rs.getString("account_uName")) == true) && (pw.equals(rs.getString("account_password")) == true)){
+					dbm.disconnect();
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	/**
+	 * isValidAccount checks if the provided account exists
+	 * @param acc an account object 
+	 * @pre database account is not empty
+	 * @post true if it exists, false if it does not
+	 * @return true if it exists, false if it does not
+	 * @throws SQLException 
+	 */
+	private boolean isValidAccount(String username, String type) throws SQLException {
+		dbm.connect();
+		
+		Statement stmt = dbm.getConnection().createStatement();
+		String query = "SELECT * FROM users, " + type + " WHERE users.id_number = " + type + ".id_number";
+		ResultSet rs = stmt.executeQuery(query);
+		
+		while(rs.next()){
+			if (username.equals(rs.getString("account_uName"))){
+				return true;
+			}
+				
+		}
+		dbm.disconnect();
+		return false;
 	}
 }
 

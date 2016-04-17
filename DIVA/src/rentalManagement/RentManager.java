@@ -1,19 +1,12 @@
 package rentalManagement;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.text.ParseException;
-
-import accountManagement.Account;
 import databaseManagement.DatabaseManager;
-import paymentManagement.PaymentManager;
-import paymentManagement.Receipt;
 
 class RentManager {
 	
 	
 		private DatabaseManager dbConnection;
-		private PaymentManager pm; 
 	
 		/**
 		 * A Rental Manager that creates, and modifies Rentals.
@@ -21,7 +14,6 @@ class RentManager {
 		RentManager()
 		{
 			dbConnection = DatabaseManager.getInstance();
-			pm = new PaymentManager();
 		}
 
 		/**
@@ -55,51 +47,8 @@ class RentManager {
 			dbConnection.addReport(r);
 		}
 		
-		/**
-		 * Pay for rental, add record, produce receipt, decrease amount owning in rental
-		 * @param reserve_id2 
-		 * @param rental_id
-		 * @param amount_paid
-		 * @throws SQLException 
-		 */
-		Receipt payForRentalByCard(int clerk_id, int reserve_id, String amount_paid) throws SQLException {
-			// TODO Auto-generated method stub
-			Reservation r = dbConnection.searchReservationEntry(reserve_id);
-			BigDecimal balance = r.getBalance();
-			int customer_id = r.getCustomerAccountID();
-			Receipt receipt = pm.makePaymentByCard(clerk_id, reserve_id, customer_id, balance, amount_paid);
-			return receipt;
-		}
-
-		/**
-		 * Pay for rental by points
-		 * @param id
-		 * @param points
-		 * @throws Exception 
-		 */
-		Receipt payForRentalByPoints(int clerk_id, int reserve_id, int points) throws Exception{
-			Reservation r = dbConnection.searchReservationEntry(reserve_id);
-			BigDecimal balance = r.getBalance();
-			int customer_id = r.getCustomerAccountID();
-			int vehicle_id = r.getVehicleID();
-			String vehicle_type = dbConnection.getTypeOfVehicle(vehicle_id);
-			return pm.makePaymentBySRP(clerk_id, reserve_id, customer_id, vehicle_type, balance, points);
-		}
-		/**
-		 * Pay for rental by cash
-		 * @param id
-		 * @param amount
-		 * @throws SQLException 
-		 */
-		Receipt payForRentalByCash(int clerk_id, int reserve_id, String amount) throws SQLException {
-			Reservation r = dbConnection.searchReservationEntry(reserve_id);
-			BigDecimal balance = r.getBalance();
-			int customer_id = r.getCustomerAccountID();
-			return pm.makePaymentCash(clerk_id, reserve_id, customer_id, balance, amount);
-		}
-		
-		void changeRentalStatus(int rentalID, boolean status) throws SQLException{
-			dbConnection.changeRentalStatus(rentalID, status);
+		void changeRentalStatusIsPaid(int rentalID, boolean status) throws SQLException{
+			dbConnection.changeRentalStatus(rentalID,"is_paid_rental", status);
 		}
 		
 		Rental getRental(int rentID) throws SQLException{

@@ -1,14 +1,11 @@
 package rentalManagement;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Date;
 
 import databaseManagement.DatabaseManager;
 import paymentManagement.PaymentManager;
-import vehicleManagement.Car;
 
 
 class ReserveManager {

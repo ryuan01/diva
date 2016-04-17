@@ -21,7 +21,7 @@ public class ToStringTester {
 		
 		//Customer
 		
-		Customer customer = new Customer("temp", "temp", "temp", "temp", "temp", 0, 0, "temp", "temp", "temp", "temp", "temp", "temp");
+		Customer customer = new Customer("temp", "temp", "temp", "temp", "temp", 0, "temp", "temp", "temp", "temp", "temp", "temp", "temp","temp");
 		
 		//SuperCustomer
 
@@ -45,7 +45,7 @@ public class ToStringTester {
 		
 		//Receipt
 		
-		Receipt receipt = new Receipt(0, new BigDecimal(55.55), "temp", "temp", "temp", "temp", "temp");
+		Receipt receipt = new Receipt(0, 0, 0, "temp", "temp");
 		
 		//Equiptment
 		
@@ -53,8 +53,8 @@ public class ToStringTester {
 		
 		//Reservation
 		
-		Reservation reservation = new Reservation("temp", "temp", 0, new int[]{0,0,0}, 0, 0, 0, 
-				 0, new BigDecimal(22.22));
+		Reservation reservation = new Reservation("startD", "endD", 1, new int[]{1}, 1, 1, 1, 
+				 1, new BigDecimal(22.22), false);
 		
 		//Rental
 		
@@ -71,6 +71,7 @@ public class ToStringTester {
 		System.out.println(branch.toString());
 		System.out.println(receipt.toString());
 		System.out.println(equiptment.toString());
+		System.out.println(reservation.toString());
 		System.out.println(rental.toString());
 	}
 }

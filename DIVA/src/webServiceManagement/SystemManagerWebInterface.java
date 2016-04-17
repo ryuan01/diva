@@ -165,4 +165,35 @@ public class SystemManagerWebInterface {
 		return responseString;
 	}
 	
+	/**
+	 * Web interface for the "Search for a Branch" Service
+	 * @return A list of stringified branch object associated with the given ID
+	 */
+	@WebMethod
+	public String[] getAllBranches() {
+		
+		//Set responseListto hold the value/values returned to the caller
+		String[] responseList;
+		
+		try {
+			//Create a new SystemManager and try to search for 
+			//a branch object with the given branchID.
+			SystemManager sm = new SystemManager();
+			Branch[] branchList = sm.getAllBranch();
+					
+			
+			 //Stringify and store the branch in responseString
+			WebToolkit wtk = new WebToolkit();
+			responseList = wtk.toArrayOfStrings(branchList);
+		} 
+		
+		//If the SystemManager throws and exception, set 
+		//the responseString to the appropriate error message
+		catch (SQLException e) {
+			responseList = new String[]{"Exception - " + e.getMessage()};
+		}
+		
+		//Return responseString		
+		return responseList;
+	}
 }

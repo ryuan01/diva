@@ -1,49 +1,76 @@
 package priceTester;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import databaseManagement.DatabaseManager;
 import paymentManagement.PaymentManager;
 import paymentManagement.PriceList;
+import paymentManagement.Receipt;
 
 import java.text.ParseException;
 
 public class PaymentManagerTester {
 
 	private static PaymentManager pm = new PaymentManager(); 
-	/**
-	 * Get a diff between two dates
-	 * @param date1 the oldest date
-	 * @param date2 the newest date
-	 * @param timeUnit the unit in which you want the diff
-	 * @return the diff value, in the provided unit
-	 */
 	
 	public static void main(String[] args){
 		
-		DatabaseManager db = DatabaseManager.getInstance();
-		PriceList list = new PriceList();
-		list.print();
-		//System.out.println(list.getPriceCar(1, 2));
-		
-		String start_date = ("2016-04-28 12:20:40");
-		String end_date = ("2016-04-29 10:20:40");
-		
-/*		try{
-			System.out.println(calculateCarPrice("poop",start_date,end_date));
-		}
-		catch(ParseException e){
-			System.out.println(e.getMessage());
-		}*/
+		test_pay_card_onfile();
 
 	}
 
- private static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+ private static void test_pay_card_onfile() {
+		// TODO Auto-generated method stub
+		try {
+			Receipt r = pm.makePaymentByCardOnFile(null,19, "jdoe01");
+			System.out.println(r.toString());
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+private static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
     long diffInMillies = date2.getTime() - date1.getTime();
     return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
  }

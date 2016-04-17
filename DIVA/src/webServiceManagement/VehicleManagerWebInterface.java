@@ -41,7 +41,8 @@ public class VehicleManagerWebInterface {
 			Vehicle[] vehicleList = vm.searchForVehicle(branch_id, start_date, end_date, type);
 			
 			//Turn the array of vehicles into an array of strings it
-			stringList =  WebToolkit.toArrayOfStrings(vehicleList);
+			WebToolkit wtk = new WebToolkit();
+			stringList = wtk.toArrayOfStrings(vehicleList);
 		} 
 		
 		//If an exception is thrown while trying to search for vehicles
@@ -83,7 +84,8 @@ public class VehicleManagerWebInterface {
 			Vehicle[] vehicleList = vm.searchForOverdue(branch_id, type);
 			
 			//turn the vehicle list into a list of stringified vehicles
-			stringList = WebToolkit.toArrayOfStrings(vehicleList);
+			WebToolkit wtk = new WebToolkit();
+			stringList = wtk.toArrayOfStrings(vehicleList);
 		} 
 		
 		//If an error is thrown, Determine the exact cause of the error 
@@ -118,7 +120,8 @@ public class VehicleManagerWebInterface {
 			Vehicle[] vehicleList = vm.searchForSale(branch_id, type);
 			
 			//Turn the list of vehicles into a list of stringified vehicles and store it in responseString
-			stringList = WebToolkit.toArrayOfStrings(vehicleList);
+			WebToolkit wtk = new WebToolkit();
+			stringList = wtk.toArrayOfStrings(vehicleList);
 		} 
 		
 		//If an exception is thrown, Determine the cause of the error 
@@ -295,7 +298,7 @@ public class VehicleManagerWebInterface {
 			vm.changeVehicleBranch(vehicleID, branchID);
 			
 			//Set the response String to success
-			responseString = "Success";
+			responseString = "success";
 		} 
 		
 		//If the VehicleManager throws an exception, set the 
@@ -339,4 +342,66 @@ public class VehicleManagerWebInterface {
 		//return the responseString
 		return responseString;
 	}
+	
+	/**
+	 * Web Interface for the "Search for Available Equiptment" Service
+	 * @param type Either car or truck
+	 * @param branch_num The number of the branch that owns the equiptment 
+	 * @param start_date The day the customers rental begins
+	 * @param end_date The date the customers rental ends
+	 * @return A list of JSON stringified Equptment Objects that are relevant to the given parameters
+	 */
+	@WebMethod
+	public String[] searchForEquipments(String type, int branch_num, String start_date, String end_date) {
+		
+		//Declare variables to hold the value returned to the caller
+		String[] responseList;
+				
+		try {
+			//Create a vehicle manager
+			VehicleManager vm = new VehicleManager();
+					
+			//Search for equiptment that matches the given arguments
+			Equipment[] equiptmentList = vm.searchForEquipments(type, branch_num, start_date, end_date);
+					
+			//Set response list to a list of stringified equiptment objects
+			WebToolkit wtk = new WebToolkit();
+			responseList = wtk.toArrayOfStrings(equiptmentList);
+		} 
+						
+		//If the VehicleManager throws an exception, set the first index of
+		//responseList to the appropriate error message
+		catch (SQLException e) {
+			responseList = new String[]{ "Exception - " + e.getMessage()};		
+		}		
+				
+		//return the responseList
+		return responseList;
+	}
+	
+	public String addEquipment(int branch_id, String equipment_type) {
+		
+		//Declare variables to hold the response text
+		String responseString;
+				
+		try {
+			//Create a vehicle manager and add a new equptment record based on the given arguments
+			VehicleManager vm = new VehicleManager();
+			vm.addEquipment(branch_id, equipment_type);
+			
+			//Set the response string to success
+			responseString = "success";
+		} 
+						
+		//If the VehicleManager throws an exception, set the
+		//responseString to the appropriate error message
+		catch (SQLException e) {
+			responseString = "Exception - " + e.getMessage();		
+		}		
+				
+		//return the responseString
+		return responseString;
+	}
+	
+	
 }

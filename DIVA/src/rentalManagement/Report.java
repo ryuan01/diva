@@ -9,7 +9,7 @@ import webServiceManagement.ArrayOfStringsable;
  */
 public class Report implements ArrayOfStringsable{
 	
-	private static final int MAX_MILEGE = 0; 
+	public static final int MAX_MILEGE = 500; //meant it is by KM 
 	private String objectClass;
 	private int report_num;
 	private int report_clerk_id;

@@ -1,8 +1,17 @@
 package accountManagement;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import databaseManagement.DatabaseManager;
+import paymentManagement.PaymentManager;
 
 /**
  * An account manager provides account related services
@@ -16,7 +25,8 @@ public class AccountManager {
 	 * dbConnection a DatabaseManager instance object for methods that require
 	 * 	direct database connection
 	 */
-	static DatabaseManager dbConnection;
+	private static DatabaseManager dbConnection;
+	private PaymentManager pm;
 	
 	
 	/**
@@ -24,6 +34,7 @@ public class AccountManager {
 	 */
 	public AccountManager() {
 		dbConnection = DatabaseManager.getInstance();
+		pm = new PaymentManager();
 	}
 	
 	//------------Methods that can be called by an unauthenticated HTTPS user--------//
@@ -45,6 +56,13 @@ public class AccountManager {
 	 * @param province		Customer province of residence; it has to be Canadian
 	 * @param zip			Customer residence Zip Code
 	 * @throws SQLException 
+	 * @throws BadPaddingException 
+	 * @throws IllegalBlockSizeException 
+	 * @throws InvalidAlgorithmParameterException 
+	 * @throws NoSuchPaddingException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws UnsupportedEncodingException 
+	 * @throws InvalidKeyException 
 	 * @pre userNameIsUnique(userName)
 	 * @pre phoneNumberIsUnique(phoneNumber)
 	 * @pre emailAddressIsUnique(emailAddress)
@@ -52,15 +70,20 @@ public class AccountManager {
 	public void addCustomerAccount(String firstName, String lastName, String phoneNumber, 
 			String emailAddress, String userName, String password, 
 			String ccNum, String name_on_cc, String expire_date, String address,
-			String city, String province, String zip) throws SQLException 
+			String city, String province, String zip) throws SQLException, InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException 
 	{
 		int id = -1; //let database auto increment id
-		
+		String encrypted_credit_card = pm.encrypt(ccNum);
+		System.out.println(encrypted_credit_card.length());
+		/*Customer(String firstname, String lastname, String phoneNumber, 
+			String email, String loginId, int id, 
+			String password, String cc, String expire_date, String name_on_card, 
+			String address, String city, String province, String zip, String standing) */
 		Account acc = new Customer(firstName, lastName, phoneNumber, 
 				emailAddress, userName, id,
-				password, ccNum, expire_date, name_on_cc,
-				address, city, province, zip);
-		
+				password, encrypted_credit_card, expire_date, name_on_cc,
+				address, city, province, zip,"Good");
+		System.out.println(acc.toString());
 		dbConnection.createAccountEntry(acc);
 	}
 	
