@@ -627,7 +627,7 @@ class AccountDB{
 		int id = -1;
 		Statement stmt = dbm.getConnection().createStatement();
 		String query = "SELECT `id_number` FROM users WHERE users.account_uName = \'"+username+"\'";
-		System.out.println(query);
+		//System.out.println(query);
 		ResultSet rs = stmt.executeQuery(query);
 		
 		if (rs.next()){

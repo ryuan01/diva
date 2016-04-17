@@ -157,7 +157,8 @@ class RentalDB {
         Reservation r = null;
         //parse result, for list of reservations/reservations related to this customer
     	ArrayList<Reservation> reservations  = new ArrayList<Reservation>();
-        while (rs.next()){
+        
+    	while (rs.next()){
         	int id = rs.getInt("reservation_id");
         	reservations.add(reservationQuery(id));
         }

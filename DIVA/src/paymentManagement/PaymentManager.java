@@ -119,7 +119,7 @@ public class PaymentManager {
 		//will need to use start_date and end_date
 		BigDecimal[] priceRow;
 		if(isLegalCarClass(type))
-		{
+		{// TODO fix getPriceCarInsurance()
 			priceRow = getPriceCarInsurance(type);
 		}
 		else if(isLegalTruckClass(type))
@@ -135,24 +135,41 @@ public class PaymentManager {
 	
 	// Calculate total of reservation pre tax, with and without insurances.
 	public BigDecimal totalPreTax(Reservation reserv) throws ParseException, SQLException
-	{
+	{	
 		String start_date = reserv.getStartingDate();
 		String end_date = reserv.getEndDate();
+		//Done
 		
 		// For Vehicle
 		// calculate rate_type
-		int vehicle_rate_type;
+		int vehicle_rate_type; // monthly, weekly, etc..
 		vehicle_rate_type = compareDates(start_date,end_date,"vehicle");
+		
+		//System.out.println(vehicle_rate_type);
+		// 0 == perHour
 		
 		// calculate vehicle_price
 		BigDecimal vehicle_price;
+		
 		String vehicle_type = db.getTypeOfVehicle(reserv.getVehicleID());
+		
+		//System.out.println(vehicle_type); // should be compact
+
 		vehicle_price = calculatePrice(vehicle_type,vehicle_rate_type);
+		
+		//System.out.println(vehicle_price); // should be 3.10
 		
 		// calculate vehicle_insurance_price
 		BigDecimal vehicle_insurance_price;
+		int insurance_rate_type;
+		insurance_rate_type = compareDates(start_date, end_date, "insruance");
+		// TODO fix calculateInsurancePrice()
+		
 		vehicle_insurance_price = calculateInsurancePrice(vehicle_type,vehicle_rate_type);
 		
+		//System.out.println(insurance_rate_type); // should be 0
+		System.out.println(vehicle_insurance_price); // should be 0.36
+
 		// For Equipment
 		// calculate rate_type
 		int equipment_rate_type;
@@ -207,7 +224,7 @@ public class PaymentManager {
 	 * @return
 	 */
 	private boolean isLegalTruckClass(String type) {
-		// TODO Auto-generated method stub
+		// 
 		if (type.equals("24-foot") || 
 			type.equals("15-foot") ||
 			type.equals("12-foot") ||
@@ -222,7 +239,7 @@ public class PaymentManager {
 	 * @return
 	 */
 	private boolean isLegalCarClass(String type) {
-		// TODO Auto-generated method stub
+		// 
 		if (type.equals("economy") || 
 			type.equals("compact") ||
 			type.equals("midsized") ||
@@ -247,6 +264,7 @@ public class PaymentManager {
 			priceList.setCarPrice(db.getAllCarPrice());
 			priceList.setIsSet("car");
 		}
+		// TODO fix this as well
 		return priceList.getCarPrice(type);
 	}
 	
@@ -288,12 +306,14 @@ public class PaymentManager {
 	 * @throws ParseException 
 	 */
 	public int compareDates(String start_date, String end_date, String type) throws ParseException {
-		// TODO Auto-generated method stub
-		int rate_type;
+		// 
+		int rate_type; //yyyy-MM-dd HH:mm:ss
 		Date startDate = dateFormat.parse(start_date);		
 		Date endDate = dateFormat.parse(end_date);
 		
 		long daysDuration = getDateDiff(startDate,endDate,TimeUnit.DAYS);
+		
+		//System.out.println(daysDuration);
 		
 		if (daysDuration > MONTH_DAYS && type.equals("vehicle")){
 			rate_type = 3; //perMonth
@@ -345,7 +365,7 @@ public class PaymentManager {
 	 * @return
 	 */
 	private boolean isValidCreditCard(int ccNum, String expireDate) {
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 
@@ -496,7 +516,7 @@ public class PaymentManager {
 	 * @throws SQLException 
 	 */
 	private BigDecimal pointsToAmount(int points, String vehicle_type) throws IllegalArgumentException, SQLException{
-		// TODO Auto-generated method stub
+		// 
 		//remember to set the price if not already set
 		if (!priceList.getIsSet("car")){
 			priceList.setCarPrice(db.getAllCarPrice());
@@ -535,17 +555,17 @@ public class PaymentManager {
 	 * @return
 	 */
 	private int amountToPoints(BigDecimal amount_paid) {
-		// TODO Auto-generated method stub
+		// 
 		return Integer.valueOf(amount_paid.divide(CONVERSION_RATE,RoundingMode.FLOOR).intValue());
 	}
 
 	public void addExtraCharge(int rental_id, String type) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 
 	public BigDecimal getExtraCharge(int rental_id, String type) {
-		// TODO Auto-generated method stub
+		// 
 		return null;
 	}
 	
@@ -578,7 +598,7 @@ public class PaymentManager {
 	 * @return
 	 */
 	public BigDecimal calculateOverduePrice(String current_date, String endDate, String type) {
-		// TODO Auto-generated method stub
+		// 
 		/*
 		 * calculate the differences from current_date and end_date
 		 * multiply by price loaded from database
@@ -596,8 +616,10 @@ public class PaymentManager {
 	 * @return
 	 */
 	private BigDecimal getExtraChargePrice(String type) {
-		// TODO Auto-generated method stub
-		if(!priceList.getIsSet("extra_charge_price")){
+		// 
+		if(!priceList.getIsSet("extra_charge_price"))
+		{
+			// TODO fix this method
 			priceList.setTruckPrice(db.getAllExtraChargePrice());
 			priceList.setIsSet("extra_charge_price");
 		}
@@ -623,7 +645,7 @@ public class PaymentManager {
 	 * @return
 	 */
 	public BigDecimal calculateWrongReturnBranchPrice() {
-		// TODO Auto-generated method stub
+		// 
 		return new BigDecimal("100.00");
 	}
 }

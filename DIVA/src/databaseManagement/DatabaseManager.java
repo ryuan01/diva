@@ -439,7 +439,6 @@ public class DatabaseManager {
 	{
 		Vehicle v = veDB.search(vehicle_id);
 		return v.getVehicleClass();
-		return basic_info;
 
 	}
 	
@@ -682,18 +681,18 @@ public class DatabaseManager {
 		}
 		return vlist;
 	}
-	
-	/**
-	 * Get the type of vehicle according to its vehicle ID
-	 * @param vehicle_id
-	 * @return
-	 * @throws SQLException
-	 */
-	public String getTypeOfVehicle(int vehicle_id) throws SQLException
-	{
-		Vehicle v = veDB.search(vehicle_id);
-		return v.getVehicleClass();
-	}
+//	
+//	/**
+//	 * Get the type of vehicle according to its vehicle ID
+//	 * @param vehicle_id
+//	 * @return
+//	 * @throws SQLException
+//	 */
+//	public String getTypeOfVehicle(int vehicle_id) throws SQLException
+//	{
+//		Vehicle v = veDB.search(vehicle_id);
+//		return v.getVehicleClass();
+//	}
 	
 /* -------------------------------------------PriceDB--------------------------------------------*/
 	

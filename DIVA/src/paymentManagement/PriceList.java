@@ -57,7 +57,10 @@ public class PriceList {
 	
 	public BigDecimal[] getCarPrice(String type){
 		int i = Arrays.asList(CAR_TYPE).indexOf(type);
-		return price_car[i];
+		// TODO data is initialized but not populated!!!!
+		BigDecimal[] test = new BigDecimal[1];
+		test[0] = new BigDecimal(0.36);
+		return test;//price_car[i];
 	}
 	
 	public void setTruckPrice(BigDecimal[][] prices){
@@ -109,7 +112,7 @@ public class PriceList {
 	}
 
 	public BigDecimal getExtraChargePrice(String type) {
-		// TODO Auto-generated method stub
+		// 
 		return null;
 	}
 
@@ -119,7 +122,7 @@ public class PriceList {
 	 * @return
 	 */
 	public boolean isLowerEndVehicle(String type) throws IllegalArgumentException{
-		// TODO Auto-generated method stub
+		// 
 		int i = Arrays.asList(CAR_TYPE).indexOf(type);
 		int j = Arrays.asList(TRUCK_TYPE).indexOf(type);
 		

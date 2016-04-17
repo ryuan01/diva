@@ -99,7 +99,6 @@ class ReserveManager {
 	 * @throws SQLException 
 	 */
 	Reservation[] searchReservationForAccount(int customerID) throws SQLException {
-		// TODO Auto-generated method stub
 		return dbConnection.reservationHistory(customerID);
 	}
 	

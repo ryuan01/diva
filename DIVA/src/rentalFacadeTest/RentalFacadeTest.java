@@ -10,12 +10,12 @@ public class RentalFacadeTest {
 	
 	private static 	RentalFacade rf = new RentalFacade();
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		// 
 		test_reservation();
 	}
 
 	private static void test_reservation() {
-		// TODO Auto-generated method stub
+		// 
 		//Reservation r = new Reservation("2016-4-9", "2016-4-10", 1 , eq , 2, 3, 1, -1, new BigDecimal("100.00"));
 		int [] eq = new int[2];
 		eq[0] = 1;
@@ -36,14 +36,11 @@ public class RentalFacadeTest {
 			
 			//rf.cancelAnyReservation(18);
 		} catch (NullPointerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("null pointer");
 		}  catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

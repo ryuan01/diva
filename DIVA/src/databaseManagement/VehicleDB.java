@@ -501,14 +501,17 @@ class VehicleDB {
 		//is this a truck or car
 		if (isTruck(vehicle_id)){
 			query = " SELECT *"
-					+"FROM  `truck` INNER JOIN `vehicle` WHERE  vehicle.vehicle_id = " +vehicle_id;
+					+"FROM  `truck` INNER JOIN `vehicle` ON truck.vehicle_id = vehicle.vehicle_id "
+					+ "WHERE  vehicle.vehicle_id = " +vehicle_id;
 			Truck[] trucks = (Truck[]) executeQueryTruck(query);
 			return trucks[0];
 		}
 		else { // this is a truck
 			query = " SELECT *"
-					+"FROM `car` INNER JOIN `vehicle` WHERE vehicle.vehicle_id = "+ vehicle_id;
+					+"FROM `car` INNER JOIN `vehicle` ON car.vehicle_id = vehicle.vehicle_id "
+					+ "WHERE vehicle.vehicle_id = "+ vehicle_id;
 			Car[] cars = (Car[]) executeQueryCar(query);
+			// ERROR HERE
 			return cars[0];
 		}
 	}
