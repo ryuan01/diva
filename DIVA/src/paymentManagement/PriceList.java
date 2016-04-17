@@ -73,21 +73,25 @@ public class PriceList {
 	}
 	
 	public void setEquipmentPrice(BigDecimal[][] prices){
+		//System.out.println(prices[0][0]);
 		price_equipment= prices;
 	}
 	
 	public BigDecimal[] getEquipmentPrice(String type){
 		int i = Arrays.asList(EQUIPMENT_TYPE).indexOf(type);
+		System.out.println("PriceList :: getEquipmentPrice :: price_equipment[i] = " +  price_equipment[i][0]);
 		return price_equipment[i];
 	}
 	
 	public BigDecimal[] getCarInsurancePrice(String type){
-//		System.out.println(type);
+		//System.out.println(type);
 		int i = Arrays.asList(CAR_TYPE).indexOf(type);
 //		System.out.println(i);
-//		for (int j = 0; j < price_car_insurance.length; j++){
+//		for (int j = 0; j < 3; j++){
 //			System.out.println(price_car_insurance[i][j]);
 //		}
+		
+		//System.out.println(price_car_insurance);
 		return price_car_insurance[i];
 	}
 	
@@ -122,7 +126,7 @@ public class PriceList {
 	 * @return
 	 */
 	public boolean isLowerEndVehicle(String type) throws IllegalArgumentException{
-		// TODO Auto-generated method stub
+		// 
 		int i = Arrays.asList(CAR_TYPE).indexOf(type);
 		int j = Arrays.asList(TRUCK_TYPE).indexOf(type);
 		

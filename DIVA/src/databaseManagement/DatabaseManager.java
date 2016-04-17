@@ -249,7 +249,7 @@ public class DatabaseManager {
 	 * @throws SQLException
 	 */
 	public Report[] searchInspectionReport(int rental_id) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		ArrayList<Report> reports = new ArrayList<Report>();
 		Report one = reDB.searchInspectionReport(rental_id, "before_rental");
 		Report two = reDB.searchInspectionReport(rental_id, "after_rental");
@@ -264,7 +264,7 @@ public class DatabaseManager {
 	}
 
 	public AccidentReport searchAccidentReport(int rental_id) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		return reDB.searchAccidentReport(rental_id);
 	}
 	
@@ -380,7 +380,7 @@ public class DatabaseManager {
 	 * @throws SQLException 
 	 */
 	public String getReservationInReceiptForm(int reserve_id) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		//get reservation
 		Reservation r = reDB.reservationQuery(reserve_id);
 		//get customer 
@@ -489,7 +489,7 @@ public class DatabaseManager {
 	 * @throws SQLException 
 	 */
 	public void addSRPoints(int customer_id, int points) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		String username = accDB.getUserNameFromId(customer_id);
 		accDB.addSRPoints(username, points);
 	}
@@ -610,7 +610,7 @@ public class DatabaseManager {
 	 * @throws SQLException
 	 */
 	public Vehicle[] search(int branch_id, String type) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		Vehicle[] vlist = null;
 		if (type.equals("car")){
 			vlist = veDB.searchOverdueCars(branch_id);
@@ -632,7 +632,7 @@ public class DatabaseManager {
 	 * @throws SQLException
 	 */
 	public Vehicle[] searchForSale(int branch_id, String type) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		Vehicle[] vlist = null;
 		if (type.equals("car")){
 			vlist = veDB.searchForsaleCars(branch_id);
@@ -765,7 +765,7 @@ public class DatabaseManager {
 	 * @throws SQLException 
 	 */
 	public boolean hasInspectionReport(int rentID, String status) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		Report report = reDB.searchInspectionReport(rentID, status);
 		if (report == null){
 			return false;
@@ -782,7 +782,7 @@ public class DatabaseManager {
 	 * @throws Exception 
 	 */
 	public int getIdFromUsername(String username) throws Exception {
-		// TODO Auto-generated method stub
+		// 
 		return accDB.getIdFromUsername(username);
 	}
 }

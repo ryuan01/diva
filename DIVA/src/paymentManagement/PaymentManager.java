@@ -102,20 +102,24 @@ public class PaymentManager {
 	public BigDecimal calculatePrice(String type, int rate_type) throws ParseException, SQLException, IllegalArgumentException{
 		
 		BigDecimal[] priceRow;
+		//System.out.println("PaymentManager :: calculatePrice :: rate_type = " + rate_type);
 		//check if the argument is of type car
 		if (isLegalCarClass(type)){
-			priceRow = getPriceCar(type);			
+			priceRow = getPriceCar(type);
 		}
 		//or of type truck
 		else if (isLegalTruckClass(type)){
 			priceRow = getPriceTruck(type);					
 		}
 		else if (isLegalEquipmentClass(type)){
+			// 
 			priceRow = getPriceEquipment(type);
 		}
 		else {
 			throw new IllegalArgumentException("The type "+type+" is not valid.");
 		}
+		
+		System.out.println("PaymentManager :: calculatePrice :: priceRow[rate_type] " + priceRow[rate_type]);
 		return priceRow[rate_type];
 		
 	}
@@ -135,6 +139,7 @@ public class PaymentManager {
 		BigDecimal[] priceRow;
 		if(isLegalCarClass(type))
 		{
+			
 			priceRow = getPriceCarInsurance(type);
 //			System.out.println(type);
 //			for (int i =0; i<priceRow.length; i++){
@@ -149,6 +154,7 @@ public class PaymentManager {
 		{
 			throw new IllegalArgumentException("The type "+type+"is not valid.");
 		}
+		//System.out.println("PaymentManager :: calculateInsurancePrice :: priceRow[rate_type] = " + priceRow[rate_type]);
 		return priceRow[rate_type];
 	}
 	
@@ -167,33 +173,43 @@ public class PaymentManager {
 		// calculate vehicle_price
 		BigDecimal vehicle_price;
 		String vehicle_type = db.getTypeOfVehicle(reserv.getVehicleID());
-//System.out.println(vehicle_rate_type+" "+vehicle_type);
+		
+		System.out.println("PaymentManager :: totalPreTax :: vehicle_type = " + vehicle_type);
 		vehicle_price = calculatePrice(vehicle_type,vehicle_rate_type);
-//System.out.println(vehicle_price);		
+		System.out.println("PaymentManager :: totalPreTax :: vehicle_price =" + vehicle_price);	
 		// calculate vehicle_insurance_price
-		BigDecimal vehicle_insurance_price;
 		
 		int insurance_rate_type;
 		insurance_rate_type = compareDates(start_date,end_date,"insurance");
-//System.out.println(insurance_rate_type);
+		System.out.println("PaymentManager :: totalPreTax :: insurance_rate_type = " + insurance_rate_type);
 
+		BigDecimal vehicle_insurance_price;
 		vehicle_insurance_price = calculateInsurancePrice(vehicle_type,insurance_rate_type);
+		System.out.println("PaymentManager :: totalPreTax ::vehicle_insurance_price = " + vehicle_insurance_price);
 		
 		// For Equipment
 		// calculate rate_type
 		int equipment_rate_type;
 		equipment_rate_type = compareDates(start_date,end_date,"equipment");
+		System.out.println("PaymentManager :: totalPreTax :: equipment_rate_type =" + equipment_rate_type);
 		
 		// calculate total equip_price
 		BigDecimal equip_price = BigDecimal.ZERO;
+		
 		int[] equip_ids = reserv.getEquipments();
+		
+		System.out.println("PaymentManager :: totalPreTax :: equip_ids.length =" + equip_ids.length);
+		
+		
 		for(int i = 0; i < equip_ids.length; i++)
 		{
 			String equip_type = db.getTypeOfEquipment(equip_ids[i]);
-			equip_price = new BigDecimal ("10.00");
-			//todo
-			//equip_price = equip_price.add(calculatePrice(equip_type, equipment_rate_type),mc);
+			
+			System.out.println("PaymentManager :: totalPreTax:: equip_type #" + i + " " + equip_type);
+			// 
+			equip_price = equip_price.add(calculatePrice(equip_type, equipment_rate_type),mc);
 		}
+		
 		
 		// Adds Vehicle price, Vehicle insurance price, Total equipments price
 		BigDecimal total;
@@ -204,7 +220,8 @@ public class PaymentManager {
 		{
 			total = vehicle_price.add(equip_price,mc).setScale(2, RoundingMode.CEILING);
 		}
-		System.out.println(total);
+		
+		System.out.println("PaymentManager :: totalPreTax:: total = " + total);
 		return total;
 		//return new BigDecimal("100.00");
 	}
@@ -220,7 +237,7 @@ public class PaymentManager {
 	 * @return
 	 */
 	private boolean isLegalEquipmentClass(String type) {
-		// TODO Auto-generated method stub
+		// 
 		if (type.equals("ski rack") || 
 			type.equals("child safety seat") ||
 			type.equals("lift gate") ||
@@ -235,7 +252,7 @@ public class PaymentManager {
 	 * @return
 	 */
 	private boolean isLegalTruckClass(String type) {
-		// TODO Auto-generated method stub
+		// 
 		if (type.equals("24-foot") || 
 			type.equals("15-foot") ||
 			type.equals("12-foot") ||
@@ -250,7 +267,7 @@ public class PaymentManager {
 	 * @return
 	 */
 	private boolean isLegalCarClass(String type) {
-		// TODO Auto-generated method stub
+		// 
 		if (type.equals("economy") || 
 			type.equals("compact") ||
 			type.equals("midsized") ||
@@ -272,6 +289,7 @@ public class PaymentManager {
 	 */
 	public BigDecimal[] getPriceCar(String type) throws SQLException{
 		if (!priceList.getIsSet("car")){
+			
 			priceList.setCarPrice(db.getAllCarPrice());
 			priceList.setIsSet("car");
 		}
@@ -300,9 +318,10 @@ public class PaymentManager {
 	 */
 	public BigDecimal[] getPriceEquipment(String type) throws SQLException{
 		if (!priceList.getIsSet("equipment")){
-			priceList.setTruckPrice(db.getAllEquipmentPrice());
+			priceList.setEquipmentPrice(db.getAllEquipmentPrice());
 			priceList.setIsSet("equipment");
 		}
+		// 
 		return priceList.getEquipmentPrice(type);
 	}
 
@@ -316,7 +335,7 @@ public class PaymentManager {
 	 * @throws ParseException 
 	 */
 	public int compareDates(String start_date, String end_date, String type) throws ParseException {
-		// TODO Auto-generated method stub
+		// 
 		int rate_type;
 		Date startDate = dateFormat.parse(start_date);		
 		Date endDate = dateFormat.parse(end_date);
@@ -575,7 +594,7 @@ public class PaymentManager {
 	 * @throws SQLException 
 	 */
 	private BigDecimal pointsToAmount(int points, String vehicle_type) throws IllegalArgumentException, SQLException{
-		// TODO Auto-generated method stub
+		// 
 		//remember to set the price if not already set
 		if (!priceList.getIsSet("car")){
 			priceList.setCarPrice(db.getAllCarPrice());
@@ -614,16 +633,18 @@ public class PaymentManager {
 	 * @return
 	 */
 	private int amountToPoints(BigDecimal amount_paid) {
-		// TODO Auto-generated method stub
+		// 
 		return Integer.valueOf(amount_paid.divide(CONVERSION_RATE,RoundingMode.FLOOR).intValue());
 	}
 	
 	public BigDecimal[] getPriceCarInsurance(String type) throws SQLException{
 //		System.out.println(type);
 //		if(!priceList.getIsSet("car_insurance")){
+
 			priceList.setInsuranceCarPrice(db.getAllCarInsurancePrice());		
 //			priceList.setIsSet("car_insurance");
 //		}
+		
 		return priceList.getCarInsurancePrice(type);
 	}
 	
@@ -650,7 +671,7 @@ public class PaymentManager {
 	 * @throws ParseException 
 	 */
 	public BigDecimal calculateOverduePrice(String current_date, String endDate, String type) throws SQLException, ParseException {
-		// TODO Auto-generated method stub
+		// 
 		/*
 		 * calculate the differences from current_date and end_date
 		 * multiply by price loaded from database
@@ -675,7 +696,7 @@ public class PaymentManager {
 	 * @throws SQLException 
 	 */
 	private BigDecimal getExtraChargePrice(String type) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		if(!priceList.getIsSet("extra_charge_price")){
 			priceList.setExtraCharge(db.getAllExtraChargePrice());
 			priceList.setIsSet("extra_charge_price");
@@ -704,7 +725,7 @@ public class PaymentManager {
 	 * @throws SQLException 
 	 */
 	public BigDecimal calculateWrongReturnBranchPrice() throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		return getExtraChargePrice("wrong_branch");
 	}
 	
@@ -714,7 +735,7 @@ public class PaymentManager {
 	}
 
 	public BigDecimal calculateGasLevelPrice(int gaslevel_before, int gaslevel_after) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		int difference = Math.abs(gaslevel_before - gaslevel_after);
 		return getExtraChargePrice("gas_tank").multiply(new BigDecimal(difference)).setScale(2, RoundingMode.CEILING);
 	}

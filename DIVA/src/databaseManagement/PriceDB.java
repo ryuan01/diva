@@ -42,16 +42,17 @@ class PriceDB {
   		BigDecimal[][] prices = new BigDecimal[NUMBER_CAR_TYPE][NUMBER_RENTAL_PRICE_TYPE];
   		
   		dbm.connect();
-        String query = "SELECT `perHour`, `perDay`, `perWeek`, `perMonth`, `perKM` FROM `car_price`";
+        String query = "SELECT `perHour`, `perDay`, `perWeek`, `perMonth`, `perKM` "
+        		+ "FROM `car_price`";
   		Statement stmt = dbm.getConnection().createStatement();
         ResultSet rs = stmt.executeQuery(query);
         
         //parse result and add to the BigDecimal array
-        for (int i=0;i<prices.length;i++){
-    		if (rs.next()){
-    			for (int j=0;j<prices[i].length;j++){
+        for (int i=0;i < NUMBER_CAR_TYPE + 1;i++){
+        	if (rs.next()){
+    			for (int j=0;j<NUMBER_RENTAL_PRICE_TYPE;j++){
         			prices[i][j] = rs.getBigDecimal(j+1);
-        			//System.out.println(prices[i][j]);
+        			//System.out.print(prices[i][j] + " ");
         		}
     			//System.out.println();
         	}
@@ -106,8 +107,9 @@ class PriceDB {
         for (int i=0;i<prices.length;i++){
     		if (rs.next()){
     			for (int j=0;j<prices[i].length;j++){
+    				// 
         			prices[i][j] = rs.getBigDecimal(j+1);
-        			//System.out.println(prices[i][j]);
+        			//System.out.print(prices[i][j] + " ");
         		}
     			//System.out.println();
         	}
@@ -135,9 +137,9 @@ class PriceDB {
     		if (rs.next()){
     			for (int j=0;j<prices[i].length;j++){
         			prices[i][j] = rs.getBigDecimal(j+1);
-        			System.out.println(prices[i][j]);
+        			//System.out.println(prices[i][j]);
         		}
-    			System.out.println();
+    			//System.out.println();
         	}
         }
         
@@ -273,8 +275,6 @@ class PriceDB {
 		 
 		
 		BigDecimal[][] insurancePrices = new BigDecimal[numberOfVehicleTypes][NUMBER_INSURANCE_PRICE_TYPE];
-		BigDecimal[] insuranceRow = new BigDecimal[NUMBER_INSURANCE_PRICE_TYPE];
-		
 		query = "SELECT * FROM " + table + ";";
 		
 		dbm.connect();
@@ -286,11 +286,11 @@ class PriceDB {
 		
 		for (int i = 0; rs.next() && i < numberOfVehicleTypes ; i++){
 			
-			insuranceRow[0] = rs.getBigDecimal("perHour");
-			insuranceRow[1] = rs.getBigDecimal("perDay");
-			insuranceRow[2] = rs.getBigDecimal("perWeek");
+			insurancePrices[i][0] = rs.getBigDecimal("perHour");
+			insurancePrices[i][1] = rs.getBigDecimal("perDay");
+			insurancePrices[i][2] = rs.getBigDecimal("perWeek");
 			
-			insurancePrices[i] = insuranceRow;
+			
 		}
 		
 		return insurancePrices;
@@ -348,7 +348,7 @@ class PriceDB {
 	 	 */
 	 
 	 Receipt[] getReceipt(int customer_id) throws SQLException, Error{
-		 //TODO change method to return a list of arrays
+		 //
 		 Connection conn;
 		 Statement stmt;
 		 String query;
