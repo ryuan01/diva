@@ -1,4 +1,4 @@
-
+USE test;
 -- If the database already exists, execute the following code:
 -- create the User table 
 CREATE TABLE users (
@@ -13,18 +13,18 @@ CREATE TABLE users (
 
 -- create a account balance table 
 CREATE TABLE account_balance(
-	id_number SMALLINT UNSIGNED PRIMARY KEY,
+	account_id SMALLINT UNSIGNED PRIMARY KEY,
     balance DECIMAL(6,2) DEFAULT 0,
-    FOREIGN KEY (id_number) REFERENCES users(id_number)
+    FOREIGN KEY (account_id) REFERENCES users(id_number)
 );
 
 -- create a payment log table
 CREATE TABLE payment_log(
-	id_number SMALLINT UNSIGNED PRIMARY KEY,
+	customer_id SMALLINT UNSIGNED PRIMARY KEY,
 	amount DECIMAL(10,2) NOT NULL,
     p_date DATE NOT NULL,
 	reason VARCHAR(200),
-    FOREIGN KEY (id_number) REFERENCES users(id_number)
+    FOREIGN KEY (customer_id) REFERENCES users(id_number)
 );
 
 -- create a branch table
@@ -39,27 +39,27 @@ CREATE TABLE branch(
 
 -- create the employee table
 CREATE TABLE employee (
-	id_number SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
+	emp_id SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
     works_at TINYINT(2) UNSIGNED NOT NULL,
     e_type ENUM('Clerk','Manager','SystemAdmin'),
     FOREIGN KEY (works_at) REFERENCES branch(br_num),
-	FOREIGN KEY (id_number) REFERENCES users(id_number)
+	FOREIGN KEY (emp_id) REFERENCES users(id_number)
 );
 
 -- create the customer table
 CREATE TABLE customer(
-	id_number SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
+	cus_id SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
 	standing SET('Good','Probation', 'Suspended') NOT NULL DEFAULT 'Good',
 	cc_Num BIGINT(16),
 	name_on_cCard VARCHAR(20),
-	FOREIGN KEY (id_number) REFERENCES users(id_number)
+	FOREIGN KEY (cus_id) REFERENCES users(id_number)
 );
 
 -- table for super customers
 CREATE TABLE super_customer(
-	id_number SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
+	cus_id SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
 	points SMALLINT DEFAULT 500,
-	FOREIGN KEY (id_number) REFERENCES customer(id_number)
+	FOREIGN KEY (cus_id) REFERENCES customer(cus_id)
 );
 
 -- Create Equipment Price table
@@ -118,8 +118,8 @@ CREATE TABLE equipment(
 	FOREIGN KEY (eq_type) REFERENCES equipment_price(eq_type)
 );
 
--- Create reservation table
-CREATE TABLE reservation(
+-- Create rental table
+CREATE TABLE rental(
 	reservation_id MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	customer SMALLINT UNSIGNED NOT NULL,
 	start_date DATE NOT NULL,
@@ -127,17 +127,17 @@ CREATE TABLE reservation(
     start_branch TINYINT(2) UNSIGNED NOT NULL,
     end_branch TINYINT(2) UNSIGNED NOT NULL,
     state ENUM('reserved','in-rent','complete'),
-	FOREIGN KEY (customer) REFERENCES customer(id_number),
+	FOREIGN KEY (customer) REFERENCES customer(cus_id),
 	FOREIGN KEY (start_branch) REFERENCES branch(br_num), 
     FOREIGN KEY (end_branch) REFERENCES branch(br_num),
 	CONSTRAINT chk_dates CHECK (end_date > start_date)
 );
 
--- Create reservation equipment table
+-- Create rental equipment table
 CREATE TABLE rented_equipment(
 	reservation_id MEDIUMINT UNSIGNED,
     equipment_id SMALLINT UNSIGNED PRIMARY KEY,
-    FOREIGN KEY (reservation_id) REFERENCES reservation(reservation_id),
+    FOREIGN KEY (reservation_id) REFERENCES rental(reservation_id),
     FOREIGN KEY (equipment_id) REFERENCES equipment(serial_num)
 );
 
@@ -200,10 +200,10 @@ CREATE TABLE report(
 	report_num MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	report_type ENUM('damage','inspection') NOT NULL,
 	reporting_clerk  SMALLINT UNSIGNED NOT NULL,
-	reservation MEDIUMINT UNSIGNED NOT NULL,
+	rental MEDIUMINT UNSIGNED NOT NULL,
 	comments TEXT(500), 
-	FOREIGN KEY (reporting_clerk) REFERENCES employee(id_number),
-	FOREIGN KEY (reservation) REFERENCES reservation(reservation_id)
+	FOREIGN KEY (reporting_clerk) REFERENCES employee(emp_id),
+	FOREIGN KEY (rental) REFERENCES rental(reservation_id)
 );
 
 ALTER TABLE vehicle
@@ -247,143 +247,3 @@ DROP COLUMN description;
 
 ALTER TABLE users
 MODIFY COLUMN phone VARCHAR(13) NOT NULL;
-
-ALTER TABLE branch
-MODIFY COLUMN street_name VARCHAR (40) NOT NULL;
-
-ALTER TABLE branch
-DROP COLUMN street_num;
-
-ALTER TABLE branch
-MODIFY COLUMN city VARCHAR(25) NOT NULL;
-
-ALTER TABLE users
-MODIFY COLUMN account_uName VARCHAR(20) NOT NULL;
-
-ALTER TABLE users
-MODIFY COLUMN account_password VARCHAR(20) NOT NULL;
-
-ALTER TABLE report
-ADD COLUMN r_date DATE NOT NULL;
-
-ALTER TABLE customer
-ADD COLUMN street_name VARCHAR(40) NOT NULL,
-ADD COLUMN city VARCHAR(25) NOT NULL,
-ADD COLUMN province SET('AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT') NOT NULL,
-ADD COLUMN zipcode VARCHAR(6);
-
-ALTER TABLE users
-MODIFY COLUMN email VARCHAR(40) NOT NULL UNIQUE;
-
-ALTER TABLE branch
-MODIFY COLUMN zip_code VARCHAR(6) NOT NULL UNIQUE;
-
-ALTER TABLE reservation
-ADD COLUMN vehicle_id MEDIUMINT UNSIGNED NOT NULL;
-
-ALTER TABLE reservation
-ADD FOREIGN KEY (vehicle_id) REFERENCES vehicle(vehicle_id);
-
--- needed to change pk so drop and add again
--- Create reservation equipment table
-DROP TABLE rented_equipment;
-
-CREATE TABLE rented_equipment(
-	reservation_id MEDIUMINT UNSIGNED,
-    equipment_id SMALLINT UNSIGNED,
-    FOREIGN KEY (reservation_id) REFERENCES reservation(reservation_id),
-    FOREIGN KEY (equipment_id) REFERENCES equipment(serial_num),
-    CONSTRAINT pk_re PRIMARY KEY (reservation_id,equipment_id)
-);
-
--- vehicle status
-ALTER TABLE vehicle
-MODIFY COLUMN sale_status ENUM('sold', 'for sale', 'for rent', 'damaged') DEFAULT 'for rent';
-
--- need to alter all DATE to DATETIME
-
-ALTER TABLE reservation
-  RENAME TO reservation;
-  
-ALTER TABLE reservation
-  DROP COLUMN state;
-  
-ALTER TABLE reservation
-  ADD balance DECIMAL(6,2) NOT NULL;
-  
- 
-CREATE TABLE rental(
-	reservation_id MEDIUMINT UNSIGNED PRIMARY KEY,
-	is_paid_rental BOOLEAN,
-	is_paid_extra_charge BOOLEAN,
-	clerk_id  SMALLINT UNSIGNED NOT NULL,
-	FOREIGN KEY (reservation_id) REFERENCES reservation(reservation_id),
-	FOREIGN KEY (clerk_id) REFERENCES employee(id_number)
-);
-
-ALTER TABLE reservation
-ADD CONSTRAINT uc_date_vehicle UNIQUE (start_date,end_date,vehicle_id);
-
-DROP TABLE report;
-
--- re-create report
-CREATE TABLE report(
-	report_num MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	reporting_clerk  SMALLINT UNSIGNED NOT NULL,
-	rental_id MEDIUMINT UNSIGNED NOT NULL,
-	milage MEDIUMINT UNSIGNED NOT NULL,
-	gasLevel SMALLINT(3) UNSIGNED NOT NULL,
-	comments TEXT(500), 
-	state ENUM('before_rental','after_rental') NOT NULL,
-	FOREIGN KEY (reporting_clerk) REFERENCES employee(id_number),
-	FOREIGN KEY (rental_id) REFERENCES rental(reservation_id),
-	CHECK (gasLevel >= 0 AND gasLevel <=100)
-);
- 
-ALTER TABLE report
- ADD CONSTRAINT uc_res_state UNIQUE (rental_id,state);
-
- ALTER TABLE report
-  ADD report_date DATETIME NOT NULL;
-
- 
-CREATE TABLE report_accident(
-	report_num MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	rental_id MEDIUMINT UNSIGNED UNIQUE,
-	clerk_id SMALLINT UNSIGNED NOT NULL,
-	accident_date DATETIME NOT NULL,
-	comments TEXT(500),
-	driver VARCHAR(40) NOT NULL,
-	balance DECIMAL(6,2) NOT NULL,	
-	street_name VARCHAR(40) NOT NULL,
-	city VARCHAR(25) NOT NULL,
-	province SET('AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT') NOT NULL,
-	zipcode VARCHAR(6)
-);
-
-ALTER TABLE report_accident
-ADD FOREIGN KEY (rental_id)
-REFERENCES rental(reservation_id);
-
-ALTER TABLE report_accident
-ADD FOREIGN KEY (clerk_id)
-REFERENCES employee(id_number);F
-
-
--- Create Equipment Price table
-CREATE TABLE equipment_price(
-	class ENUM('ski rack', 'child safety seat', 'lift gate', 'car-towing eq') NOT NULL PRIMARY KEY,
-    perWeek DECIMAL(5,2) NOT NULL,
-    perDay DECIMAL(5,2) NOT NULL,
-    perHour DECIMAL(5,2) NOT NULL
-);
-
-
-ALTER TABLE equipment
-DROP FOREIGN KEY equipment_ibfk_2;
-
-ALTER TABLE reservation
-  ADD withInsurance TINYINT(1) NOT NULL DEFAULT 0;
-  
-ALTER TABLE super_customer
-ADD CHECK (points>=0)
