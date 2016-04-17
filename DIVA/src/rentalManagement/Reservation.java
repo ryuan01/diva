@@ -68,6 +68,22 @@ public class Reservation implements ArrayOfStringsable{
 		withInsurance = insurance;
 	}
 	
+	//no equipments
+	public Reservation(String startD, String endD, int vehicleID, int startBranchID, int endBranchID, int customerID,
+			int id, BigDecimal amount, boolean insurance) {
+		// TODO Auto-generated constructor stub
+		this.startDate = startD;
+		this.endDate = endD;
+		vehicleID = vehicleID;
+		equipmentIDs = null; 
+		startBranchID = startBranchID;
+		endBranchID = endBranchID;
+		customerAccountID = customerID;
+		reservID = id;
+		balance = amount;
+		withInsurance = insurance;
+	}
+
 	/**
 	 * Modifies the starting date of Reservation.
 	 * @param newDate The start date to be changed.
@@ -233,15 +249,25 @@ public class Reservation implements ArrayOfStringsable{
 	public String toString() {
 		
 		//Format equiptmentID's
+		String equipIDArray ;
+		if (equipmentIDs != null){
+			equipIDArray = this.formatEquiptmentIds(this.equipmentIDs);
 		
-		String equipIDArray = this.formatEquiptmentIds(this.equipmentIDs);
-		
-		//passing back dates in the format dd-mm-yyyy as Strings.
-		return "{'startDate':'"+ this.startDate +"', 'endDate':'"+this.endDate+"',"
-			+	"'vehicleID':'"+this.vehicleID+"',"+"'equipmentIds':'"+equipIDArray+"',"
-			+ "'startBranchID':'"+this.startBranchID+"',"+"'endBranchID':'"+this.endBranchID+"',"
-			+ "'customerAccountID':'"+this.customerAccountID+"',"
-			+ "'reservID':'"+this.reservID+"'}";
+			//passing back dates in the format dd-mm-yyyy as Strings.
+			return "{'startDate':'"+ this.startDate +"', 'endDate':'"+this.endDate+"',"
+				+	"'vehicleID':'"+this.vehicleID+"',"+"'equipmentIds':'"+equipIDArray+"',"
+				+ "'startBranchID':'"+this.startBranchID+"',"+"'endBranchID':'"+this.endBranchID+"',"
+				+ "'customerAccountID':'"+this.customerAccountID+"',"
+				+ "'reservID':'"+this.reservID+"'}";
+		}
+		else{ //no equipments
+			//passing back dates in the format dd-mm-yyyy as Strings.
+			return "{'startDate':'"+ this.startDate +"', 'endDate':'"+this.endDate+"',"
+				+	"'vehicleID':'"+this.vehicleID+"',"
+				+ "'startBranchID':'"+this.startBranchID+"',"+"'endBranchID':'"+this.endBranchID+"',"
+				+ "'customerAccountID':'"+this.customerAccountID+"',"
+				+ "'reservID':'"+this.reservID+"'}";
+		}
 	}
 	
 	private String formatEquiptmentIds(int[] array) {

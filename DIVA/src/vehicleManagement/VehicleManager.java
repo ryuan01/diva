@@ -42,8 +42,7 @@ public class VehicleManager {
 	public Vehicle[] searchForVehicle (int branch_id, String start_date, String end_date, String type) throws SQLException, IllegalArgumentException, ParseException{
 		//get list of vehicles
 		Vehicle[] vlist = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
 		if (sdf.parse(start_date).after(sdf.parse(end_date))){
 			throw new IllegalArgumentException("Start Date cannot be before end date");
 		}

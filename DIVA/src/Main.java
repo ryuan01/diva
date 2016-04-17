@@ -1,6 +1,8 @@
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import accountManagement.Account;
 import accountManagement.AccountManager;
@@ -13,30 +15,16 @@ import rentalManagement.Reservation;
 
 public class Main {
 	public static void main(String[] args){
-
-		DatabaseManager dbm = DatabaseManager.getInstance();
-		PaymentManager pm = new PaymentManager();
-		PriceList pl = new PriceList();
-		
-		
-		
-		try {
-			Reservation rez = dbm.searchReservationEntry(19);
-			pm.totalPreTax(rez);
-			
-			//pm.getPriceCarInsurance("economy");
-			
-			//System.out.println(bd3);
-		} catch (Error e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");	
+		String startD = "2016-05-01 14:00:00";
+		Date current_time = new Date();
+	System.out.println(sdf.format(current_time));
+	System.out.println(startD);
+	try {
+		System.out.println(sdf.parse(startD));
+	} catch (ParseException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 }

@@ -26,6 +26,7 @@ class RentManager {
 		 */
 		void createRental(int reserveID, int clerkID, boolean is_paid_rental) throws SQLException {
 			// TODO Auto-generated method stub
+			//check the date has to be after startdate
 			dbConnection.createRental(reserveID,clerkID, is_paid_rental);
 		}
 

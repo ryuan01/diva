@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import databaseManagement.DatabaseManager;
 import paymentManagement.Receipt;
@@ -52,10 +53,20 @@ public class RentalFacade {
 	public void createReservation(String startD,String endD, int vehicleID, int[] equipIDs, int startBranchID, int endBranchID, 
 			String customer_username, boolean insurance) throws Exception 
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
-		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
+		Date current_time = new Date();
+	System.out.println(sdf.format(current_time));
+	System.out.println(startD);
+	System.out.println(sdf.parse(startD));
+		if (sdf.parse(startD).before(current_time)){
+			throw new IllegalArgumentException("Start date cannot be of the past");
+		}
 		if (sdf.parse(startD).after(sdf.parse(endD))){
-			throw new IllegalArgumentException("Start Date cannot be before end date");
+			throw new IllegalArgumentException("Start Date cannot be after end date");
+		}
+		//for 2.0 we will have multiple equipments
+		if (equipIDs != null && equipIDs[0] == 0){
+			equipIDs = null;
 		}
 		//balance need to be re-calculated for security purpose 
 		int customerID = dbm.getIdFromUsername(customer_username);
@@ -145,9 +156,16 @@ for when the customer comes in the store to pick up a reservation.
 		int clerkID = dbm.getIdFromUsername(clerk_username);
 		BigDecimal balance;
 		
-		System.out.println("I am in RentalFacade");
+		//System.out.println("I am in RentalFacade");
 		balance = dbm.getBalance(reservationID);
 		
+		//check that rental is picked up on the date that the person said he would
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date current_time = new Date();
+		String start_date = dbm.searchReservationEntry(reservationID).getStartingDate();
+		if (sdf.parse(start_date).after(current_time)){
+			throw new IllegalArgumentException("Please come back on reservation start day");
+		}
 		if (balance.compareTo(new BigDecimal(0)) == 0){
 			// are equal
 			rentMan.createRental(reservationID, clerkID, true);

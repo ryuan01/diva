@@ -46,6 +46,7 @@ public class PaymentManager {
 	private static final int WEEK_DAYS = 7;
 	private static final BigDecimal CONVERSION_RATE= new BigDecimal("5"); //5 DOLLARS FOR 1 POINTS
 	private static final int PER_KM_INDEX=4; //for extra charge perKM
+	private static final int TIME_TYPE = 4; //month, week, day, hour
 	
 	/**
 	 * A payment Manager that creates and holds a list of receipts. 
@@ -57,7 +58,7 @@ public class PaymentManager {
 		db = DatabaseManager.getInstance();
 		priceList = new PriceList();
 		//am = new AccountManager();
-		dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");	
 		dateonlyFormat = new SimpleDateFormat("yyyy-MM-dd");
 		encryptor = new CreditCardEncryptor();
 	}
@@ -163,7 +164,9 @@ public class PaymentManager {
 	{
 		String start_date = reserv.getStartingDate();
 		String end_date = reserv.getEndDate();
-		
+	
+		//get the differences in time as int array: x months x weeks x days and x hours
+		int [] times = calculateDates(start_date, end_date);
 		// For Vehicle
 		// calculate rate_type
 		int vehicle_rate_type;
@@ -226,6 +229,23 @@ public class PaymentManager {
 		//return new BigDecimal("100.00");
 	}
 	
+	/**
+	 * This methods calculates date differences as  x months x weeks x days and x hours
+	 * @param start_date
+	 * @param end_date
+	 * @return int array that contains [0] months [1] weeks [2] days [3] hours
+	 * @throws ParseException 
+	 */
+	private int[] calculateDates(String start_date, String end_date) throws ParseException {
+		// TODO Auto-generated method stub
+		int [] times = new int [TIME_TYPE];
+		int difference_in_hour = (int)getDateDiff(dateFormat.parse(start_date), dateFormat.parse(end_date), TimeUnit.HOURS);
+		
+		times[0] = difference_in_hour;
+		
+		return times;
+	}
+
 	public BigDecimal applyTax(BigDecimal price)
 	{
 		return price.add(price.multiply(tax, mc),mc);

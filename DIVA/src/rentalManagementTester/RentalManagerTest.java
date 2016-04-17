@@ -16,7 +16,7 @@ public class RentalManagerTest {
 	private static PaymentManager pm = new PaymentManager();
 	
 	public static void main(String[] args){
-		//test_rental();
+		test_rental();
 		//test_pay_for_rental_card();
 		//test_pay_for_rental_points();
 		//test_pay_for_rental_cash();
@@ -28,7 +28,18 @@ public class RentalManagerTest {
 		//test_search_inspection();
 		//test_search_accident_report();
 		//test_add_accident_report();
-		test_add_inspection();
+		//test_add_inspection();
+		//test_cancel_self_reservation();
+	}
+
+	private static void test_cancel_self_reservation() {
+		// TODO Auto-generated method stub
+		try {
+			rf.cancelSelfReservation("bc", 63);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static void test_add_inspection() {
@@ -177,7 +188,8 @@ public class RentalManagerTest {
 		// TODO Auto-generated method stub
 		//rf.createInsectionReportBeforeRental(clerk_id, date, description, rentalID, milage, gasLevel);
 		try {
-			rf.createInsectionReportBeforeRental("jolene", "2016-4-13", "Test?", 19, 100, 100);
+			rf.createRental("jolene", 36);
+			//rf.createInsectionReportBeforeRental("jolene", "2016-4-13", "Test?", 19, 100, 100);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

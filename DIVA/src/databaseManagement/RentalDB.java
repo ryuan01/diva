@@ -201,7 +201,9 @@ class RentalDB {
 		try {
 		      
 			Reservation r = reservationQuery(r_key_value);
+//			System.out.println("in rentalDB: " +r.getEquipments()[0]);
 			removeEquipments(r.getEquipments(), r_key_value, stmt);
+			
 			String query = "DELETE FROM reservation WHERE reservation_id=" + r_key_value +";";
 			
 			stmt.executeUpdate(query);
@@ -267,7 +269,9 @@ class RentalDB {
 		    	insertReservation(r, stmt);
 		        
 		        //insert into equipment_reservation table
-		    	insertEqRes(r, stmt);
+		    	if (r.getEquipments() != null){
+		    		insertEqRes(r, stmt);
+		    	}
 		    	
 		    	//try to execute
 		    	dbm.getConnection().commit();
@@ -367,6 +371,8 @@ class RentalDB {
 	void createAccidentReport(AccidentReport r) throws SQLException{
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
+		dbm.getConnection().setAutoCommit(false);
+		//add to `report_accident`
     	String sql= "INSERT INTO `report_accident`(`report_num`, `rental_id`, `clerk_id`, `accident_date`, "
     				+ "`comments`, `driver`, `balance`, `street_name`, `city`, `province`, `zipcode`) "
     				+" VALUES ( NULL, "
@@ -380,8 +386,13 @@ class RentalDB {
     				+r.getLocation().getCity()+"\', \'"
     				+r.getLocation().getProvince()+"\', \'"
     				+r.getLocation().getZipcode()+"\');";
-    	System.out.println(sql);
+    	//System.out.println(sql);
         stmt.executeUpdate(sql);
+        
+        //add to `reservation`, change balance
+        addToBalanceInternal(r.getRentalID(), r.getAmount(), stmt);
+        
+    	dbm.getConnection().commit();
         stmt.close();
         dbm.disconnect();		
 	}
@@ -550,28 +561,32 @@ class RentalDB {
 	 * @throws SQLException
 	 */
 	void addToBalance(int rental_id, BigDecimal balance) throws SQLException{
-		//never add balance to be negative
-		//it only becomes negative when customer pays by cash, which is returned to clerk on the spot
-		if (balance.compareTo(new BigDecimal("0")) == -1){
-			balance = new BigDecimal("0");
-		}
 		Connection conn;
 		Statement stmt;
-		String query;
 		
-		query = "UPDATE `reservation` SET balance = " + balance + " "
-				+ "WHERE reservation_id = " + rental_id + ";";
-//		System.out.println(query);
-//		System.exit(0);
 		dbm.connect();
 
 		conn = dbm.getConnection();
 		stmt = conn.createStatement();
 		
-		stmt.executeUpdate(query);
+		addToBalanceInternal(rental_id, balance, stmt);
 			
 		stmt.close();
 		dbm.disconnect();
+	}
+	
+	private void addToBalanceInternal (int rental_id, BigDecimal balance, Statement stmt) throws SQLException{
+		//never add balance to be negative
+		//it only becomes negative when customer pays by cash, which is returned to clerk on the spot
+		if (balance.compareTo(new BigDecimal("0")) == -1){
+			balance = new BigDecimal("0");
+		}
+		String query;
+		query = "UPDATE `reservation` SET balance = " + balance + " "
+				+ "WHERE reservation_id = " + rental_id + ";";
+//		System.out.println(query);
+//		System.exit(0);
+		stmt.executeUpdate(query);
 	}
 	
 	BigDecimal getBalance(int rentID) throws SQLException{
