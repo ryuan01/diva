@@ -325,6 +325,7 @@ public class PaymentManager {
 		return priceList.getEquipmentPrice(type);
 	}
 
+	
 	/**
 	 * Compares the dates and returns rate type
 	 * >1 month => month; >1 week => week; >1 day => day; >1 hour => hour;
