@@ -154,21 +154,6 @@ public class AccountManager {
 		dbConnection.changeAccountStatus(userName, "RegisteredCustomer");
 	} 
 	
-	
-	/**
-	 * Moves the customers account from the activated state into the deactivated state
-	 * @param customer The customer account to be deactivated
-	 * @param password The customers password
-	 * @return true if the account was successfully activated
-	 * @throws SQLException 
-	 * @pre customer.getState() == activated
-	 * @pos customer.getState() == deactivated
-	 */
-	public void deleteAccount(String userName) throws SQLException {
-		// TODO re-implement a new method
-		dbConnection.removeAccountEntry(userName);
-	}
-	
 	/**
 	 * Returns a list of customers that have the same last name
 	 * @author saud (sammy) almahri
@@ -222,5 +207,30 @@ public class AccountManager {
 		dbConnection.modifyPassword(userName,newPassword);
 	}
 	
+	/**
+	 * Get all customer accounts that are active
+	 * @return
+	 * @throws SQLException
+	 */
+	public Customer[] getAllCustomer() throws SQLException{
+		return dbConnection.getCustomerAccounts();
+	}
 	
+	/**
+	 * Re-activate an account
+	 * @param username
+	 * @throws SQLException
+	 */
+	public void activateAccount(String username) throws SQLException{
+		dbConnection.activateAccount(username);
+	}
+	
+	/**
+	 * Deactivate an account
+	 * @param username
+	 * @throws SQLException
+	 */
+	public void deactivateAccount(String username) throws SQLException{
+		dbConnection.deactivateAccount(username);
+	}
 }

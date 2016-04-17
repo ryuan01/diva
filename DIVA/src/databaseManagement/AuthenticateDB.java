@@ -90,15 +90,16 @@ public class AuthenticateDB {
 	public String retrievePassword(String username) throws SQLException {
 		if (doesItExist(username, USER, USERNAME)){
 			connect();
-			String query = "SELECT account_password FROM users WHERE account_uName = '" + username +"';";
+			String query = "SELECT account_password FROM users WHERE account_uName = '" + username 
+							+"' AND isActive = true;";
 						
-				Statement stmt = connection.createStatement();
-				
-				ResultSet rs = stmt.executeQuery(query);
-				rs.next();
-				String password = rs.getString("account_password");
-				disconnect();
-				return password;		
+			Statement stmt = connection.createStatement();
+			
+			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
+			String password = rs.getString("account_password");
+			disconnect();
+			return password;
 		}else{
 			return null;
 		}

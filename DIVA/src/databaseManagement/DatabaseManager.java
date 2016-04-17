@@ -416,11 +416,6 @@ public class DatabaseManager {
 		} // create one for superCustomer account
 	}
 	
-	public void removeAccountEntry(String userName) throws SQLException
-	{
-		accDB.removeAccountEntry(userName);
-	}
-	
 	/**
 	 * 
 	 * @param parameter can be either username, lastname, or phonenumber
@@ -444,7 +439,7 @@ public class DatabaseManager {
 	 * @throws SQLException 
 	 */
 	public Account getAccountFromID(int customerAccountID) throws SQLException {
-		// 
+		// C
 		String username = accDB.getUserNameFromId(customerAccountID);
 //		System.out.println(username);
 //		System.exit(0);
@@ -512,6 +507,19 @@ public class DatabaseManager {
 	
 	public String getUsernameFromId(int id) throws SQLException{
 		return accDB.getUserNameFromId(id);
+	}
+	
+	public Customer[] getCustomerAccounts() throws SQLException{
+		return accDB.getCustomerAccounts();
+	}
+	public void activateAccount(String username) throws SQLException{
+		accDB.accountActivation(username, true);
+	}
+	
+	public void deactivateAccount(String username) throws SQLException{
+		//need to check if the account holds any rental at the moment
+		accDB.accountActivation(username, false);
+	
 	}
 
 /*---------------------------------------Used By vehicleDB------------------------------*/

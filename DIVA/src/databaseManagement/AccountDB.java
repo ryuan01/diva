@@ -347,41 +347,6 @@ class AccountDB{
 	}
 
 	/**
-	 * 
-	 * @param username
-	 * @throws SQLException
-	 * @throws IllegalArgumentException
-	 */
-	void removeAccountEntry(String username) throws SQLException, IllegalArgumentException{
-		// TODO alter database to disable an account
-		//database variables
-		Statement stmt;
-		Connection conn;
-
-		String query = "";
-		
-		dbm.connect();
-		
-		if(doesItExist(username, EMPLOYEE, USERNAME ))
-		{
-			query="DELETE users, employee FROM users INNER JOIN employee WHERE "
-					+ "users.id_number = employee.id_number AND "
-					+ "users.account_uName = \"" + username +"\";";
-			
-			conn = dbm.getConnection();
-			stmt = conn.createStatement();
-			
-			stmt.executeUpdate(query);
-			
-			dbm.disconnect();
-		}else {
-			dbm.disconnect();
-			throw new Error("can't delete customer account");
-			
-		}
-	}
-	
-	/**
 	 * getAccount gets an account from database based on different parameters
 	 * @author saud (sammy) almahri
 	 * @param parameter can be either username, lastname, or phonenumber
@@ -426,7 +391,8 @@ class AccountDB{
 		query = "SELECT id_number FROM `users` "
 				+ "WHERE last_name = \"" + parameter + "\" OR "
 				+ "Account_uName = \"" + parameter +"\" OR "
-				+ "phone = \"" + parameter + "\";";
+				+ "phone = \"" + parameter + "\" "
+				+"AND isActive = true;";
 		
 		dbm.connect();
 		
@@ -643,6 +609,133 @@ class AccountDB{
 		dbm.disconnect();
 		return id;
 	}
+	
+	/**
+	 * activates or deactivates a user account
+	 * @author saud (sammy) almahri
+	 * @param username 			the account username
+	 * @param activationStatus 	true -> actiavte account, false -> deactivate account
+	 * @throws SQLException
+	* @throws IllegalArgumentException
+	*/
+	void accountActivation(String username, boolean activationStatus) throws SQLException, IllegalArgumentException{
+			//database variables
+			Statement stmt;
+			Connection conn;
+			String query;
+
+			
+			dbm.connect();
+			
+			if (doesItExist(username,USER, USERNAME)){
+				query = "UPDATE `users` SET COLUMN isActive = " + activationStatus + " "
+						+ "WHERE account_uName = \"" + username + "\";";
+				
+				conn = dbm.getConnection();
+				stmt = conn.createStatement();
+				
+				stmt.executeUpdate(query);
+				
+				stmt.close();
+				dbm.disconnect();
+			}else{
+				dbm.disconnect();
+				throw new IllegalArgumentException("username " + username + " does not exist!");
+			}
+		}
+	
+	/**
+	 * @author saud (sammy) almahri
+	 * @return  a list of all customers in the database
+	 * @throws SQLException
+	 */
+		Customer[] getCustomerAccounts() throws SQLException{
+			Connection conn;
+			Statement stmt;
+			ResultSet rs;
+			String query;
+			
+			// Account variables
+			// account = {first name, last name, phone number,
+			int cusID;
+			String firstN;
+			String lastN;
+			String phoneNum;
+			String email;
+			String userName;
+			
+			// Customer variables:
+			String ccNumber;
+			String expire_date;
+			String nameOnCC;
+			String address;
+			String city;
+			String province;
+			String zipcode;
+			String standing;
+			
+			// superCustomer variables
+			String points;
+			
+			ArrayList<Customer> customerList = new ArrayList<Customer>();
+			
+			query = "SELECT account_uName FROM users "
+					+ "INNER JOIN customer ON users.id_number = customer.id_number";
+			
+			dbm.connect();
+			conn = dbm.getConnection();
+			stmt = conn.createStatement();
+			
+			rs = stmt.executeQuery(query);
+			
+			query = "SELECT * FROM users "
+					+ "INNER JOIN customer ON users.id_number = customer.id_number "
+					+ "LEFT JOIN super_customer ON customer.id_number = super_customer.id_number"
+					+" WHERE users.isActive = true;";
+			
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				cusID = rs.getInt("Id_number");
+				firstN = rs.getString("first_name");
+				lastN = rs.getString("last_name");
+				phoneNum = rs.getString("phone");
+				email = rs.getString("email");
+				userName = rs.getString("Account_uName");
+				
+				ccNumber = rs.getString("cc_Num");
+				expire_date = rs.getString("expire_date");
+				nameOnCC = rs.getString("name_on_cCard");
+				address = rs.getString("street_name");
+				city = rs.getString("city");
+				province = rs.getString("province");
+				zipcode = rs.getString("zipcode");
+				standing = rs.getString("standing");
+				
+				Customer customer = new Customer(firstN, lastN, phoneNum,
+						email, userName, cusID,
+						ccNumber, expire_date, nameOnCC, address, city, province,
+						zipcode, standing);
+				
+				points = rs.getString("points");
+				
+				if(points != null){
+					//superRent customer
+					customerList.add(new SuperCustomer(customer, Integer.parseInt(points)));
+				} else{
+					// just a regular customer
+					customerList.add(customer);
+				}
+			}
+			
+			rs.close();
+			stmt.close();
+			dbm.disconnect();
+			
+			return customerList.toArray(new Customer[customerList.size()]);
+		}
+		
+		
 /* ----------------------------------PRIVATE METHODS-------------------------------------------*/
 	
 	
