@@ -50,7 +50,7 @@ class ReserveManager {
 		else {
 			r = new Reservation(startD,endD,vehicleID,equipIDs,startBranchID,endBranchID,customerID,-1, new BigDecimal("0"),insurance);
 		}
-		r.setBalance(pm.totalPreTax(r));
+		r.setBalance(pm.applyTax(pm.totalPreTax(r)));		
 //	System.exit(0);	
 		dbConnection.createReservationEntry(r);
 	}
