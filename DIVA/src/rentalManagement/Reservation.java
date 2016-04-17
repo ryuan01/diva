@@ -74,10 +74,10 @@ public class Reservation implements ArrayOfStringsable{
 		// TODO Auto-generated constructor stub
 		this.startDate = startD;
 		this.endDate = endD;
-		vehicleID = vehicleID;
-		equipmentIDs = null; 
-		startBranchID = startBranchID;
-		endBranchID = endBranchID;
+		this.vehicleID = vehicleID;
+		this.equipmentIDs = null; 
+		this.startBranchID = startBranchID;
+		this.endBranchID = endBranchID;
 		customerAccountID = customerID;
 		reservID = id;
 		balance = amount;

@@ -79,7 +79,7 @@ public class PriceList {
 	
 	public BigDecimal[] getEquipmentPrice(String type){
 		int i = Arrays.asList(EQUIPMENT_TYPE).indexOf(type);
-		System.out.println("PriceList :: getEquipmentPrice :: price_equipment[i] = " +  price_equipment[i][0]);
+//		System.out.println("PriceList :: getEquipmentPrice :: price_equipment[i] = " +  price_equipment[i][0]);
 		return price_equipment[i];
 	}
 	

@@ -41,6 +41,7 @@ public class PaymentManager {
 	private CreditCardEncryptor encryptor;
 	private DateFormat dateFormat;
 	private DateFormat dateonlyFormat;
+	private static final int HOURS_PER_DAY = 24;
 	private static final int PRICE_ROW_SIZE = 3;
 	private static final int MONTH_DAYS = 28;
 	private static final int WEEK_DAYS = 7;
@@ -165,84 +166,143 @@ public class PaymentManager {
 		String start_date = reserv.getStartingDate();
 		String end_date = reserv.getEndDate();
 	
-		//get the differences in time as int array: x months x weeks x days and x hours
+		//get the differences in time as int array: [3] months [2] weeks [1] days [0] hours
 		int [] times = calculateDates(start_date, end_date);
-		// For Vehicle
-		// calculate rate_type
-		int vehicle_rate_type;
-		vehicle_rate_type = compareDates(start_date,end_date,"vehicle");
 		
-		
-		// calculate vehicle_price
-		BigDecimal vehicle_price;
+		//get prices for vehicle rental, equipments rental, and insurance rental based on times
 		String vehicle_type = db.getTypeOfVehicle(reserv.getVehicleID());
-		
-		System.out.println("PaymentManager :: totalPreTax :: vehicle_type = " + vehicle_type);
-		vehicle_price = calculatePrice(vehicle_type,vehicle_rate_type);
-		System.out.println("PaymentManager :: totalPreTax :: vehicle_price =" + vehicle_price);	
-		// calculate vehicle_insurance_price
-		
-		int insurance_rate_type;
-		insurance_rate_type = compareDates(start_date,end_date,"insurance");
-		System.out.println("PaymentManager :: totalPreTax :: insurance_rate_type = " + insurance_rate_type);
-
-		BigDecimal vehicle_insurance_price;
-		vehicle_insurance_price = calculateInsurancePrice(vehicle_type,insurance_rate_type);
-		System.out.println("PaymentManager :: totalPreTax ::vehicle_insurance_price = " + vehicle_insurance_price);
-		
-		// For Equipment
-		// calculate rate_type
-		int equipment_rate_type;
-		equipment_rate_type = compareDates(start_date,end_date,"equipment");
-		System.out.println("PaymentManager :: totalPreTax :: equipment_rate_type =" + equipment_rate_type);
-		
-		// calculate total equip_price
-		BigDecimal equip_price = BigDecimal.ZERO;
-		
-		int[] equip_ids = reserv.getEquipments();
-		
-		System.out.println("PaymentManager :: totalPreTax :: equip_ids.length =" + equip_ids.length);
-		
-		
-		for(int i = 0; i < equip_ids.length; i++)
-		{
-			String equip_type = db.getTypeOfEquipment(equip_ids[i]);
-			
-			System.out.println("PaymentManager :: totalPreTax:: equip_type #" + i + " " + equip_type);
-			// 
-			equip_price = equip_price.add(calculatePrice(equip_type, equipment_rate_type),mc);
+		BigDecimal vehicle_rental_price = calculateVehicleRentalPrice(vehicle_type, times);
+//System.out.println("vehicle_rental_price"+vehicle_rental_price);		
+		//change times to add month value as part of week value
+		times[2] = times[2] + times[3] * (MONTH_DAYS / WEEK_DAYS); 
+		times[3] = 0;
+//System.out.println(times[0]+" hours "+times[1]+" days "+times[2]+" weeks "+times[3]+" months ");				
+		BigDecimal equipment_rental_price = new BigDecimal("0.00");
+		if (reserv.getEquipments() != null){
+			equipment_rental_price = calculateAllEquipmentRentalPrice(reserv.getEquipments(), times);
 		}
-		
-		
-		// Adds Vehicle price, Vehicle insurance price, Total equipments price
-		BigDecimal total;
-		if(reserv.getInsuranceStatus() == true){
-			total = vehicle_price.add(vehicle_insurance_price.add(equip_price, mc), mc).setScale(2, RoundingMode.CEILING);
+//System.out.println("equipment_rental_price"+equipment_rental_price);		
+		BigDecimal insurance_price = new BigDecimal("0.00");
+		if (reserv.getInsuranceStatus()){
+			insurance_price = calculateInsurancePrice(vehicle_type, times);
 		}
-		else
-		{
-			total = vehicle_price.add(equip_price,mc).setScale(2, RoundingMode.CEILING);
-		}
-		
-		System.out.println("PaymentManager :: totalPreTax:: total = " + total);
+//System.out.println("insurance_rental_price"+insurance_price);			
+		BigDecimal total = vehicle_rental_price.add(equipment_rental_price).add(insurance_price).setScale(2, RoundingMode.CEILING);
 		return total;
-		//return new BigDecimal("100.00");
+//		return new BigDecimal("100.00");
 	}
 	
+	private BigDecimal calculateInsurancePrice(String vehicle_type, int[] times) throws SQLException {
+		// TODO Auto-generated method stub
+		BigDecimal total = new BigDecimal("0");
+		BigDecimal[] prices;
+		BigDecimal tmp; //for holding temporal results 
+//System.out.println(vehicle_type);		
+		
+		//load appropriate insurance price list according to vehicle_type
+		if (isLegalCarClass(vehicle_type)){
+			prices = this.getPriceCarInsurance(vehicle_type);
+//for (int i=0; i<prices.length;i++){
+//	System.out.println(prices[i]+" ");
+//}
+		}
+		else if (isLegalTruckClass(vehicle_type)){
+			prices = this.getPriceTruckInsurance(vehicle_type);
+		}
+		else {//invalid vehicle_type
+			throw new IllegalArgumentException(vehicle_type+" is not a valid car class or truck class");
+		}
+		
+		//calculate the total , -1 because we only have 3 types
+		for (int i = 0; i < times.length-1; i++){
+			tmp = prices[i].multiply(new BigDecimal(times[i]));
+//System.out.println(tmp);			
+			total = total.add(tmp);
+		}		
+		return total; 
+	}
+
+	private BigDecimal calculateAllEquipmentRentalPrice(int[] equipments, int[] times) throws SQLException {
+		// TODO Auto-generated method stub
+		BigDecimal total = new BigDecimal("0");		
+		BigDecimal tmp; //for holding temporal results 
+
+		//calculate price for each equipments
+		for (int j=0; j < equipments.length; j++){
+			tmp = calculateEachEquipmentRentalPrice(equipments[j], times);
+			total = total.add(tmp);
+		}
+		return total; 
+	}
+
+	private BigDecimal calculateEachEquipmentRentalPrice(int equipment_id, int[] times) throws SQLException {
+		BigDecimal total = new BigDecimal("0");		
+		BigDecimal tmp; //for holding temporal results 
+		BigDecimal[] prices;
+		String equipment_type;
+		equipment_type = db.getTypeOfEquipment(equipment_id);
+//System.out.println(equipment_type);		
+		if (isLegalEquipmentClass(equipment_type)){
+			prices = this.getPriceEquipment(equipment_type);
+		}
+		else {//invalid equipment_type
+			throw new IllegalArgumentException(equipment_type+" is not a valid equipment class");
+		}
+		
+		//calculate the total , -1 because we only have 3 types
+		for (int i = 0; i < times.length-1; i++){
+			tmp = prices[i].multiply(new BigDecimal(times[i]));
+			total = total.add(tmp);
+		}
+//System.out.println(total);		
+		return total;
+	}
+
+	private BigDecimal calculateVehicleRentalPrice(String vehicle_type, int[] times) throws SQLException {
+		// TODO Auto-generated method stub
+		BigDecimal total = new BigDecimal("0");
+		BigDecimal[] prices;
+		BigDecimal tmp; //for holding temporal results 
+//System.out.println(vehicle_type);		
+		//load appropriate price list according to vehicle_type
+		if (isLegalCarClass(vehicle_type)){
+			prices = getPriceCar(vehicle_type);
+		}
+		else if (isLegalTruckClass(vehicle_type)){
+			prices = this.getPriceTruck(vehicle_type);
+		}
+		else {//invalid vehicle_type
+			throw new IllegalArgumentException(vehicle_type+" is not a valid car class or truck class");
+		}
+		
+		//calculate the total
+		for (int i = 0; i < times.length; i++){
+			tmp = prices[i].multiply(new BigDecimal(times[i]));
+			total = total.add(tmp);
+		}
+		return total; 
+	}
+
 	/**
-	 * This methods calculates date differences as  x months x weeks x days and x hours
+	 * This methods calculates date differences as [3] months [2] weeks [1] days [0] hours
 	 * @param start_date
 	 * @param end_date
-	 * @return int array that contains [0] months [1] weeks [2] days [3] hours
+	 * @return int array that contains [3] months [2] weeks [1] days [0] hours
 	 * @throws ParseException 
 	 */
 	private int[] calculateDates(String start_date, String end_date) throws ParseException {
 		// TODO Auto-generated method stub
 		int [] times = new int [TIME_TYPE];
-		int difference_in_hour = (int)getDateDiff(dateFormat.parse(start_date), dateFormat.parse(end_date), TimeUnit.HOURS);
-		
-		times[0] = difference_in_hour;
-		
+		double difference_in_hour = (double)getDateDiff(dateFormat.parse(start_date), dateFormat.parse(end_date), TimeUnit.HOURS);
+//System.out.println(difference_in_hour);		
+		times[3] = (int)(difference_in_hour / HOURS_PER_DAY  / MONTH_DAYS);
+		difference_in_hour = difference_in_hour % (HOURS_PER_DAY  * MONTH_DAYS); //after x months
+		times[2] = (int)(difference_in_hour / HOURS_PER_DAY / WEEK_DAYS);
+		difference_in_hour = difference_in_hour % (HOURS_PER_DAY  * WEEK_DAYS); //after x weeks
+		times[1] = (int)(difference_in_hour / HOURS_PER_DAY);
+		difference_in_hour = difference_in_hour % HOURS_PER_DAY ; //after x days
+		times[0] = (int)difference_in_hour;
+//System.out.println(times[0]+" hours "+times[1]+" days "+times[2]+" weeks "+times[3]+" months ");
 		return times;
 	}
 
@@ -660,11 +720,11 @@ public class PaymentManager {
 	
 	public BigDecimal[] getPriceCarInsurance(String type) throws SQLException{
 //		System.out.println(type);
-//		if(!priceList.getIsSet("car_insurance")){
+		if(!priceList.getIsSet("car_insurance")){
 
 			priceList.setInsuranceCarPrice(db.getAllCarInsurancePrice());		
 //			priceList.setIsSet("car_insurance");
-//		}
+		}
 		
 		return priceList.getCarInsurancePrice(type);
 	}

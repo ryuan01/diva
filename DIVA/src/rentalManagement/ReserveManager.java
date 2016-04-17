@@ -44,12 +44,14 @@ class ReserveManager {
 		// int id, BigDecimal amount)
 		Reservation r;
 		if (equipIDs == null){
+//	System.out.println("im here no equipments");		
 			r = new Reservation(startD,endD,vehicleID,startBranchID,endBranchID,customerID, -1, new BigDecimal("0"), insurance);
 		}
 		else {
 			r = new Reservation(startD,endD,vehicleID,equipIDs,startBranchID,endBranchID,customerID,-1, new BigDecimal("0"),insurance);
 		}
 		r.setBalance(pm.totalPreTax(r));
+//	System.exit(0);	
 		dbConnection.createReservationEntry(r);
 	}
 	

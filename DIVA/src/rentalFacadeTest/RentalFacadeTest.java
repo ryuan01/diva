@@ -18,13 +18,15 @@ public class RentalFacadeTest {
 	private static void test_reservation() {
 		// TODO Auto-generated method stub
 		//Reservation r = new Reservation("2016-4-9", "2016-4-10", 1 , eq , 2, 3, 1, -1, new BigDecimal("100.00"));
-		int [] eq = new int[2];
-		eq[0] = 1;
-		eq[1] = 2;
+		int [] eq = new int[]{1,2};
+		int [] eq1 = new int[]{0};
 		
 		try {
-			rf.createReservation("2016-05-01 14:00:00", "2016-05-05 14:00:00", 2 , eq , 2, 3, "asdf", false);
-//			
+//			rf.createReservation("2016-08-05 14:00:00", "2016-09-05 15:00:00", 2 , eq1 , 2, 3, "asdf", false);
+//			for (int i = 0 ; i < eq.length; i++){
+//				System.out.println(eq[i]+" ");
+//			}	
+			rf.createReservation("2016-05-06 14:00:00", "2016-07-05 15:00:00", 2 , eq , 2, 3, "asdf", true);			
 //			Reservation r = rf.findReservations(26);
 //			System.out.println(r.toString());
 //			

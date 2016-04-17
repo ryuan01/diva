@@ -221,4 +221,6 @@ public class AccountManager {
 	public void changePassword(String userName, String newPassword) throws SQLException{
 		dbConnection.modifyPassword(userName,newPassword);
 	}
+	
+	
 }

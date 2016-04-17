@@ -55,19 +55,23 @@ public class RentalFacade {
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
 		Date current_time = new Date();
-	System.out.println(sdf.format(current_time));
-	System.out.println(startD);
-	System.out.println(sdf.parse(startD));
+//	System.out.println(sdf.format(current_time));
+//	System.out.println(startD);
+//	System.out.println(sdf.parse(startD));
 		if (sdf.parse(startD).before(current_time)){
 			throw new IllegalArgumentException("Start date cannot be of the past");
 		}
 		if (sdf.parse(startD).after(sdf.parse(endD))){
-			throw new IllegalArgumentException("Start Date cannot be after end date");
+			throw new IllegalArgumentException("Start date cannot be after end date");
+		}
+		if (sdf.parse(startD).equals(sdf.parse(endD))){
+			throw new IllegalArgumentException("Start date cannot be the same as end date");
 		}
 		//for 2.0 we will have multiple equipments
 		if (equipIDs != null && equipIDs[0] == 0){
 			equipIDs = null;
 		}
+//System.out.println(equipIDs[0]);
 		//balance need to be re-calculated for security purpose 
 		int customerID = dbm.getIdFromUsername(customer_username);
 		reservMan.addReservation(startD,endD,vehicleID,equipIDs,startBranchID, endBranchID, 
