@@ -15,7 +15,46 @@ public class RentalFacadeTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//test_reservation();
-		test_rental();
+		//test_rental();
+		test_rental_super_customer();
+	}
+
+	private static void test_rental_super_customer() {
+		// TODO Auto-generated method stub
+		try {
+			rf.createReservation("2016-08-06 14:00:00", "2016-09-05 15:00:00", 48 , new int[]{0} , 2, 3, "jjohn00", true);
+//			 rf.readyToLeave(76); //error: report not filed
+//			rf.readyToLeave(37); //error: did not pay
+//			 rf.readyToLeave(100); //error: does not exist
+			
+			//this is run through
+			
+			//rf.createRental("jolene", 77);
+			//rf.createInsectionReportBeforeRental("jolene", "2016-4-17", "everything looks good", 77, 1000, 200);
+//rf.readyToLeave(77); //error: did not pay
+//pm.makePaymentByCardOnFile(null, 77, "asdf"); //error: does not have credit card on file
+//pm.makePaymentBySRP("jolene", 77, 100); //error: invalid point type
+//pm.makePaymentBySRP("jolene", 77, 1000); //error: not a super club member
+			//System.out.println(pm.makePaymentByCard("jolene", 77, "100.00").toString()); //paid some
+//System.out.println(pm.makePaymentByCard("jolene", 77, "1000.00").toString()); //cannot be paid
+			//System.out.println(pm.makePaymentCash("jolene", 77, "1000.00").toString()); //paid some
+			//rf.readyToLeave(77);
+			
+			
+			//come back
+//			rf.readyToReturn(77); //error: need inspection report
+			//rf.createInsectionReportAfterRental("jolene", "2016-4-17", "need to pay extra for miles", 77, 1700, 200);
+//			rf.readyToReturn(77); //overdue is not checked
+			//System.out.println(rf.checkOverDue(77));
+//			rf.readyToReturn(77); //error: need to check return branch
+			//System.out.println(rf.checkReturningBranch(77, 1));
+//			rf.readyToReturn(77); //error: not paid yet
+			//System.out.println(pm.makePaymentCash("jolene", 77, "100.00").toString());
+			rf.readyToReturn(84);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static void test_rental() {
