@@ -101,8 +101,8 @@ public class Receipt implements ArrayOfStringsable{
 		if (clerk_id == -1){
 			clerk_description = "no clerk";
 		}
-		return "{'receiptId':'"+ this.receiptId +"', 'customer_id':'"+this.customer_id+"'," +"', 'clerk_id':'"+clerk_description
-			+	", 'basic_info':'"+this.basic_info+"',"+"'payment_info':'"+this.payment_info+"'}";
-	}	
+		return "{'receiptId':'"+ this.receiptId +"', 'customer_id':'"+this.customer_id+"'," +"'clerk_id':'"+clerk_description
+			+	"', 'basic_info':'"+this.basic_info+"',"+"'payment_info':'"+this.payment_info+"'}";
+	}
 	
 }

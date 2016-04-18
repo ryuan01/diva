@@ -74,7 +74,6 @@ class ReturnManager {
 		currentBalance = dbConnection.getBalance(rental_id).add(newBalance);
 		
 		dbConnection.addToBalance(rental_id, currentBalance);
-		dbConnection.modifyRentalStatus(rental_id, false, true,"is_check_overdue");
 		return newBalance;
 		// TODO Auto-generated method stub
 		
@@ -111,7 +110,6 @@ class ReturnManager {
 		currentBalance = dbConnection.getBalance(rental_id).add(newBalance);
 		
 		dbConnection.addToBalance(rental_id, currentBalance);
-		dbConnection.modifyRentalStatus(rental_id, false, true,"is_check_return_branch");
 		return newBalance;
 	}
 
@@ -138,7 +136,7 @@ class ReturnManager {
 		int gaslevel_after = reports[1].getGasLevel();
 		if (gaslevel_before > gaslevel_after){
 			balance = paymentManager.calculateGasLevelPrice(gaslevel_before, gaslevel_after);
-			System.out.println("balance gaslevel is "+balance);
+			//System.out.println("balance gaslevel is "+balance);
 		}
 		//compare milage in KM
 		int milage_km_before = reports[0].getMilage();
@@ -148,8 +146,10 @@ class ReturnManager {
 			int v_id = dbConnection.getReservationVehicleID(rentalID);
 			String v_type = dbConnection.getTypeOfVehicle(v_id);
 			balance = balance.add(paymentManager.calculateExtraKMPrice(extra_milage,v_type)).setScale(2, RoundingMode.CEILING);
-			System.out.println("balance km is "+balance);
+			//System.out.println("balance km is "+balance);
 		}
+		//update this balance to database
+		dbConnection.addToBalance(rentalID, balance);
 		return balance;
 	}
 }

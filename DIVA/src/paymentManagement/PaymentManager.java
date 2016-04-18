@@ -640,7 +640,11 @@ public class PaymentManager {
 				db.addToBalance(reserve_id, change);
 				//add this to the receipt
 				payment_info += "Payment by "+type+": "+amount_paid+"\n";
-				payment_info += "Amount owning after payment: "+change+"\n";
+				if (change.compareTo(new BigDecimal("0")) == 1){
+					payment_info += "Amount owning after payment: "+change+"\n";
+				}
+				else //change is either 0 or smaller than 0
+					payment_info += "Change due after payment: "+change.abs();
 			}
 		}
 		//System.exit(0);

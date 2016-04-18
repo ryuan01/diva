@@ -397,7 +397,7 @@ public class DatabaseManager {
 							+"Customer name: "+customer.getFirstname()+" "+customer.getLastname()+"\n"
 							+"Start branch: "+start_branch.getFullAddress()+"\n"
 							+"End branch: "+end_branch.getFullAddress()+"\n"
-							+"Vehicle: "+reserved_vehicle.getVehicleClass()+" "+reserved_vehicle.getManufacturer()+" "+reserved_vehicle.getModel()+" "+reserved_vehicle.getYear()+"\n";
+							+"Vehicle: "+reserved_vehicle.getVehicleClass()+" "+reserved_vehicle.getManufacturer()+" "+reserved_vehicle.getModel()+"\n";
 		//get equipments
 		int[] equipment_id = r.getEquipments();
 		for (int i=0; i<equipment_id.length;i++){
@@ -792,5 +792,22 @@ public class DatabaseManager {
 	public int getIdFromUsername(String username) throws Exception {
 		// 
 		return accDB.getIdFromUsername(username);
+	}
+
+	/**
+	 * Checks if a rental has an accident report
+	 * @param rental_id
+	 * @return
+	 * @throws SQLException 
+	 */
+	public boolean hasAccidentReport(int rental_id) throws SQLException {
+		// TODO Auto-generated method stub
+		AccidentReport report = reDB.searchAccidentReport(rental_id);
+		if (report == null){
+			return false;
+		}
+		else  { //there is an accident report
+			return true;
+		}
 	}
 }

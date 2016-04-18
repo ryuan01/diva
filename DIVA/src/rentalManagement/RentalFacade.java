@@ -245,11 +245,17 @@ for when the customer comes in the store to pick up a reservation.
 	 */
 	public BigDecimal checkOverDue(int rental_id) throws ParseException, SQLException{
 		BigDecimal amountOwning = new BigDecimal("0");
-		if (returnMan.checkIfOverdue(rental_id)){
+		Rental r = dbm.getRental(rental_id);
+		boolean is_checked = r.getIsCheckOverdue();
+		if (is_checked){
+			throw new IllegalArgumentException("Cannot double check overdue");
+		}
+		if (returnMan.checkIfOverdue(rental_id) ){
 			String current_date = df.format(new java.util.Date());
 			// everything works, except this method
 			amountOwning = returnMan.addOverdueExtraCharge(rental_id, current_date);
 		}
+		dbm.modifyRentalStatus(rental_id, false, true,"is_check_overdue"); //checked eitherway
 		return amountOwning;
 	}
 
@@ -260,12 +266,16 @@ for when the customer comes in the store to pick up a reservation.
 	 */
 	public BigDecimal checkReturningBranch(int rental_id, int current_branch_id) throws SQLException{
 		BigDecimal amountOwning = new BigDecimal("0");
-		
-		if (returnMan.checkReturnBranch(rental_id, current_branch_id)){
-			System.out.println("wrong branch in facade" );
+		Rental r = dbm.getRental(rental_id);
+		boolean is_checked = r.getIsCheckReturnBranch();
+		if (is_checked){
+			throw new IllegalArgumentException("Cannot double check returning branch");
+		}
+		if (returnMan.checkReturnBranch(rental_id, current_branch_id) && !is_checked){
+			//System.out.println("wrong branch in facade" );
 			amountOwning = returnMan.addWrongReturnBranchExtraCharge(rental_id,current_branch_id);
 		}
-		
+		dbm.modifyRentalStatus(rental_id, false, true,"is_check_return_branch"); //checked eitherway
 		return amountOwning;
 		
 	}
@@ -310,9 +320,11 @@ for when the customer comes in the store to pick up a reservation.
 		BigDecimal balance = dbm.getBalance(rental_id);
 		boolean is_paid = (balance.compareTo(new BigDecimal(0)) == 0);
 		boolean has_after_rental_inspection_report = dbm.hasInspectionReport(rental_id, "after_rental");
+		boolean has_accident_report = dbm.hasAccidentReport(rental_id);
 		Rental rental = dbm.getRental(rental_id);
-		if (!has_after_rental_inspection_report){
-			throw new Exception("Please file an after inspection report before returning a vehicle");
+		
+		if (! has_after_rental_inspection_report && !has_accident_report){
+			throw new Exception("Please file an after inspection report or an accident report before returning a vehicle");
 		}
 		if (!rental.getIsCheckOverdue()){
 			throw new Exception("Please check if the vehicle is overdue before returning a vehicle");

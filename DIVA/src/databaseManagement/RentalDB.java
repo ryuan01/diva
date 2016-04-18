@@ -359,7 +359,7 @@ class RentalDB {
     				+r.getReportDate()+"\', \'"
     				+r.getReportState()
     				+"\')";
-    	System.out.println(sql);
+    	//System.out.println(sql);
         stmt.executeUpdate(sql);
         stmt.close();
         dbm.disconnect();
@@ -557,7 +557,7 @@ class RentalDB {
 	}
 	
 	/**
-	 * Change the balance of reservation to the new one
+	 * Replace the balance of reservation to the new one
 	 * @param rental_id reservation_id
 	 * @param balance new balance
 	 * @throws SQLException
@@ -672,7 +672,7 @@ class RentalDB {
 		query = "UPDATE `rental` SET `is_paid_extra_charge` = " + is_paid_extra_charge + ", "
 				+"`"+columnName+"` = "+is_check_overdue
 				+ " WHERE reservation_id = " + rental_id + ";";
-		System.out.println(query);
+		//System.out.println(query);
 		dbm.connect();
 		
 		if(isValidRent(rental_id)){
