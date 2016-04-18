@@ -1,6 +1,3 @@
-/**
-* EquipmentDB is dependant on vehicleManagement.Equipment class, which is not implemented
- */
 package databaseManagement;
 
 import vehicleManagement.Equipment;
@@ -25,15 +22,12 @@ class EquipmentDB {
 	
 	/**
 	 * searchAdditionalEquipments searches for a list of available equipments for a type
-	 * @param t type of equipments
-	 * @param branch_num the branch number where the equipment is located
-	 * @param end_date 
-	 * @param start_date 
+	 * @param type 		type of equipments
+	 * @param branch_num 	the branch number where the equipment is located
+	 * @param end_date 	equipment availability end date
+	 * @param start_date 	equipment availability start date
+	 * @return an array of equipment that meet the parameter
 	 * @throws SQLException 
-	 * @pre a rental is underway
-	 * @pre branch is valid
-	 * @pre type is valid 
-	 * @post list of equipments
 	 */
 	Equipment[] searchAdditionalEquipments(String type, int branch_num, String start_date, String end_date) throws SQLException {
 		
@@ -65,9 +59,9 @@ class EquipmentDB {
 	}
 	
 	/**
-	 * Adding a new equipment 
-	 * @param equipment_id
-	 * @param equipment_type ENUM('ski rack','child safety seat', 'lift gate','car-towing eq')
+	 * Add a new equipment to the database
+	 * @param branch_id 		the id number of the branch to where the equipment is added
+	 * @param equipment_type 	one of 'ski rack','child safety seat', 'lift gate', or'car-towing eq'
 	 * @throws SQLException 
 	 */
 	void addEquipment(int branch_id, String equipment_type) throws SQLException{
@@ -75,7 +69,7 @@ class EquipmentDB {
   		Statement stmt = dbm.getConnection().createStatement();
         String query = "INSERT INTO `equipment`(`serial_num`, `location`, `eq_type`) VALUES (NULL,"
         		+branch_id+", \'"+equipment_type+"\')";
-       //System.out.println(query);
+
 	    stmt.executeUpdate(query);
 	    stmt.close();
 	    dbm.disconnect();
@@ -84,7 +78,7 @@ class EquipmentDB {
 	/**
 	 * Get a type of equipment by its ID
 	 * @param equipment_id
-	 * @return type
+	 * @return equipment type, one of 'ski rack','child safety seat', 'lift gate', or'car-towing eq'
 	 * @throws SQLException 
 	 */
 	String getEquipmentType(int equipment_id) throws SQLException {
