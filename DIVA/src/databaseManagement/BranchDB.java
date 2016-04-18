@@ -14,7 +14,7 @@ import systemManagement.Location;
  */
 class BranchDB{
 	
-	ConnectDB dbm;
+	private ConnectDB dbm;
 	
 	
 	/**
@@ -112,7 +112,7 @@ class BranchDB{
 
 	/**
 	 * Get all available branches for interface display purpose
-	 * @return all available branches
+	 * @return an array of all branches in the database
 	 * @throws SQLException 
 	 */
 	Branch[] getAllBranch() throws SQLException {
@@ -196,8 +196,8 @@ class BranchDB{
 	/**
 	 * Note the extra charge from returning the vehicle to the wrong branch in the database
 	 * @author saudalmahri
-	 * @param rental_id		the rental number
-	 * @return	Extra charge from
+	 * @param rental_id		the rental id number
+	 * @return Extra charge
 	 * @throws SQLException
 	 * @throws IllegalArgumentException
 	 */
