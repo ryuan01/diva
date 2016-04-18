@@ -203,7 +203,7 @@ public class AccountManager {
 	/**
 	 * @author saud (sammy) almahri 
 	 * @param userName 		The user name of the account needing password change
-	 * @param newPassword 	The user account new password
+	 * @param newPassword 		The user account new password
 	 * @throws SQLException
 	 */
 	public void changePassword(String userName, String newPassword) throws SQLException{
@@ -211,8 +211,7 @@ public class AccountManager {
 	}
 	
 	/**
-	 * Get all customer accounts that are active
-	 * @return
+	 * @return An array of all customer accounts that are active
 	 * @throws SQLException
 	 */
 	public Customer[] getAllCustomer() throws SQLException{
@@ -221,7 +220,7 @@ public class AccountManager {
 	
 	/**
 	 * Re-activate an account
-	 * @param username
+	 * @param username Account username
 	 * @throws SQLException
 	 */
 	public void activateAccount(String username) throws SQLException{
@@ -230,7 +229,7 @@ public class AccountManager {
 	
 	/**
 	 * Deactivate an account
-	 * @param username
+	 * @param username Account username
 	 * @throws SQLException
 	 */
 	public void deactivateAccount(String username) throws SQLException{
