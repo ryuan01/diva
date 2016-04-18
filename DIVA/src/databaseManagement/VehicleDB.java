@@ -202,7 +202,7 @@ class VehicleDB {
         		+" AND truck.vehicle_id NOT IN "
         		+"(SELECT truck.vehicle_id FROM truck INNER JOIN reservation "
         		+" ON truck.vehicle_id = reservation.vehicle_id" 
-        		+" WHERE reservation.end_date >= \'"+start_date+"\'"
+        		+" WHERE reservation.end_date >= (\'"+start_date+"\' - INTERVAL 1 DAY)"
         		+" AND reservation.start_date < \'"+end_date+"\');";
         return executeQueryTruck(query);
 	}
@@ -277,7 +277,7 @@ class VehicleDB {
         		+" AND car.vehicle_id NOT IN "
         		+"(SELECT car.vehicle_id FROM car INNER JOIN reservation "
         		+" ON car.vehicle_id = reservation.vehicle_id" 
-        		+" WHERE reservation.end_date >= \'"+start_date+"\'"
+        		+" WHERE reservation.end_date >= (\'"+start_date+"\' - INTERVAL 1 DAY)"
         		+" AND reservation.start_date < \'"+end_date+"\');";
         System.out.println(query);
         return executeQueryCar(query);

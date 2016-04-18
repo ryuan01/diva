@@ -41,7 +41,7 @@ class EquipmentDB {
 					+ " AND serial_num NOT IN "
 					+ "(SELECT `serial_num` FROM (SELECT `rented_equipment`.`reservation_id`, `rented_equipment`.`equipment_id` AS `serial_num`, `start_date`,`end_date` "
 					+ "FROM `rented_equipment` INNER JOIN `reservation` ON rented_equipment.`reservation_id` = `reservation`.`reservation_id` "
-					+ "WHERE `end_date` >= \'"+start_date+"\' AND `start_date` <= \'"+end_date+"\' ) AS tmpTable)";
+					+ "WHERE `end_date` >= (\'"+start_date+"\' - INTERVAL 1 DAY) AND `start_date` <= \'"+end_date+"\' ) AS tmpTable)";
 		System.out.println(query);
 		ResultSet rs = stmt.executeQuery(query);
 		
