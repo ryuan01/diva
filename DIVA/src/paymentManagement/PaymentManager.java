@@ -458,7 +458,7 @@ public class PaymentManager {
 			throw new IllegalArgumentException("Customer does not have the right to access someone else's credit information.");
 		}
 		Customer a = (Customer) db.getAccountFromID(r.getCustomerAccountID());
-		String encrypted_ccnum = a.getCc_num();
+		String encrypted_ccnum = a.getCc_num();		
 		if (encrypted_ccnum == null){
 			throw new IllegalArgumentException("Customer does not have a credit on file");
 		}

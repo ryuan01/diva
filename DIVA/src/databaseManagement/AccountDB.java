@@ -100,11 +100,19 @@ class AccountDB{
 			stmt.executeUpdate(query);
 			System.out.println(query);
 			// insert into customer table
-			query= "INSERT INTO `customer` (`id_number`, `cc_Num`, `expire_date`,"
+			// if the customer has a credit card 
+			if (ccNum != null){
+				query= "INSERT INTO `customer` (`id_number`, `cc_Num`, `expire_date`,"
 					+ "`name_on_cCard`, `street_name`, `city`, "
 					+ "`province`, `zipcode`) VALUES (LAST_INSERT_ID(),\"" + ccNum
 					+ "\", \"" +expire_date+"\", \""+ ccName + "\", \"" + street + "\", \"" + city + "\", \"" + province
 					+ "\", \"" + zipCode + "\") ;";
+			}
+			else {// if the customer does not have credit card
+				query= "INSERT INTO `customer` (`id_number`, `street_name`, `city`, "
+						+ "`province`, `zipcode`) VALUES (LAST_INSERT_ID(),\"" + street + "\", \"" + city + "\", \"" + province
+						+ "\", \"" + zipCode + "\") ;";
+			}
 			System.out.println(query);
 			// execute the statements
 			stmt.executeUpdate(query);

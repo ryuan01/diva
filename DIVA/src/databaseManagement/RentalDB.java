@@ -281,8 +281,10 @@ class RentalDB {
 		} catch (SQLException e) {
 			//this is for unsuccessfully adding any of these entries into database
 			dbm.getConnection().rollback(savepoint1);
-			e.printStackTrace();
-			System.out.println("roll back happened");
+			//System.out.println("im here");
+			throw e;
+			//e.printStackTrace();
+			//System.out.println("roll back happened");
 		} finally{
 	        //clean up
 	        stmt.close();
