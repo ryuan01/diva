@@ -1,12 +1,10 @@
+package accountManagement;
+
+import webServiceManagement.ArrayOfStringsable;
 /**
  * 
  *	An Account that holds the data of a User that signs up with the Rental Company
  */
-
-package accountManagement;
-
-import webServiceManagement.ArrayOfStringsable;
-
 public abstract class Account implements ArrayOfStringsable{
 
 	private int id;
@@ -39,7 +37,7 @@ public abstract class Account implements ArrayOfStringsable{
 	}
 	
 	/**
-	 * 
+	 * Create an account object with password
 	 * @param firstname 		The first name of the User of the Account
 	 * @param lastname			The last name of the User of the Account
 	 * @param phoneNumber		The phone number of the User of the Account
@@ -62,7 +60,6 @@ public abstract class Account implements ArrayOfStringsable{
 
 	/**
 	 * Gets the first name of a user account.
-	 * 
 	 * @return firstname
 	 */
 	public String getFirstname() {
@@ -145,7 +142,7 @@ public abstract class Account implements ArrayOfStringsable{
 	}
 	
 	/**
-	 * 
+	 * Gets Login ID (username)
 	 * @return The account username
 	 */
 	public String getLoginId() {
@@ -153,7 +150,7 @@ public abstract class Account implements ArrayOfStringsable{
 	}
 	
 	/**
-	 * 
+	 * Gets ID of account
 	 * @return the account id number
 	 */
 	public int getID(){ 

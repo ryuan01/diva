@@ -11,10 +11,8 @@ import paymentManagement.Receipt;
 
 /**
  * Connect to Database to provide services related to PriceList
- * row order of car:
- * row order of truck:
- * 
- * @author Robin
+ * row order of car: {"economy","compact","midsized","standard","fullsized","premium","SUV","van","luxury"}
+ * row order of truck: "24-foot","15-foot","12-foot","box-truck"
  *
  */
 class PriceDB {
@@ -29,15 +27,20 @@ class PriceDB {
 	
 	private static final String CUSTOMER = "customer";
 	private static String CAR = "car";
-	
-	
 	private ConnectDB dbm;
 	
+	/**
+	 * Constructor connects to database 
+	 */
 	PriceDB(){
 		dbm = new ConnectDB();
 	}
 
-	
+	/**
+	 * Gets all car prices 
+	 * @return all car prices 
+	 * @throws SQLException
+	 */
 	BigDecimal[][] getCarPriceList() throws SQLException {
   		BigDecimal[][] prices = new BigDecimal[NUMBER_CAR_TYPE][NUMBER_RENTAL_PRICE_TYPE];
   		
@@ -66,6 +69,11 @@ class PriceDB {
         return prices;
 	}
 
+	/**
+	 * Gets all truck prices 
+	 * @return all truck prices 
+	 * @throws SQLException
+	 */
 	BigDecimal[][] getTruckPriceList() throws SQLException {
 		// 
   		BigDecimal[][] prices = new BigDecimal[NUMBER_TRUCK_TYPE][NUMBER_RENTAL_PRICE_TYPE];
@@ -94,6 +102,11 @@ class PriceDB {
         return prices;
 	}
 
+	/**
+	 * Gets all equipment prices 
+	 * @return all equipment prices 
+	 * @throws SQLException
+	 */
 	BigDecimal[][] getEquipmentPriceList() throws SQLException {
 		// 
   		BigDecimal[][] prices = new BigDecimal[NUMBER_EQ_TYPE][NUMBER_INSURANCE_PRICE_TYPE];
@@ -123,6 +136,11 @@ class PriceDB {
         return prices;
 	}
 
+	/**
+	 * Gets all car insurance prices
+	 * @return all car insurance prices 
+	 * @throws SQLException
+	 */
 	BigDecimal[][] getCarInsurancePriceList() throws SQLException {
 		// 
   		BigDecimal[][] prices = new BigDecimal[NUMBER_CAR_TYPE][NUMBER_INSURANCE_PRICE_TYPE];
@@ -151,6 +169,11 @@ class PriceDB {
         return prices;
 	}
 
+	/**
+	 * Gets all truck insurance prices
+	 * @return all truck insurance prices 
+	 * @throws SQLException
+	 */
 	BigDecimal[][] getTruckInsurancePriceList() throws SQLException {
 		// 
  		BigDecimal[][] prices = new BigDecimal[NUMBER_TRUCK_TYPE][NUMBER_INSURANCE_PRICE_TYPE];
@@ -220,7 +243,8 @@ class PriceDB {
 	}
 	 
 	 /**
-	  * @author saud (sammy) almahri
+	  * Gets all extra charge prices 
+	  * @return all extra charge prices 
 	  * @throws SQLException 
 	  */
 	 BigDecimal[] getAllExtraChargePrice() throws SQLException{
@@ -251,8 +275,9 @@ class PriceDB {
 	 }
 	 
 	 /**
-	  * @author saud (sammy) almahri
-	  * @return
+	  * Gets all insurance prices for car or truck 
+	  * @param vehicleType car or truck 
+	  * @return all insurance prices of that type 
 	 * @throws SQLException 
 	  */
 	 BigDecimal[][] getAllInsurancePrice(String vehicleType) throws SQLException{
@@ -298,8 +323,8 @@ class PriceDB {
 	 
 	 
 	 /**
-	  * @author saud (sammy) almahri
-	  * @param receipt
+	  * Add receipt to database
+	  * @param receipt receipt object 
 	  * @throws Error 
 	  * @throws SQLException 
 	  */
@@ -339,14 +364,13 @@ class PriceDB {
 			 }
 		 }
 		 
-	 	/**
-	 	 * @author saud (sammy) almahri
-	 	 * @param customer_id
-	 	 * @return
-	 	 * @throws Error 
-	 	 * @throws SQLException 
-	 	 */
-	 
+ 	/**
+ 	 * Gets receipt from customer id
+ 	 * @param customer_id ID of customer
+ 	 * @return receipts 
+ 	 * @throws Error 
+ 	 * @throws SQLException 
+ 	 */	 
 	 Receipt[] getReceipt(int customer_id) throws SQLException, Error{
 		 //
 		 Connection conn;

@@ -653,7 +653,7 @@ class AccountDB{
 		}
 	
 	/**
-	 * @author saud (sammy) almahri
+	 * Gets all active customer accounts on file, including super customer
 	 * @return  a list of all active customers in the database
 	 * @throws SQLException
 	 */

@@ -12,20 +12,20 @@ public class Customer extends Account implements ArrayOfStringsable{
 	
 	/**
 	 * constructor without password;
-	 * @param firstname
-	 * @param lastname
-	 * @param phoneNumber
-	 * @param email
-	 * @param loginId
-	 * @param id
-	 * @param cc
-	 * @param expire_date
-	 * @param name_on_card
-	 * @param address
-	 * @param city
-	 * @param province
-	 * @param zip
-	 * @param standing
+	 * @param firstname first name of customer
+	 * @param lastname last name of customer
+	 * @param phoneNumber phone number of customer of format 10 digits 
+	 * @param email email of customer (format checked by front end)
+	 * @param loginId unique login username
+	 * @param id unique ID 
+	 * @param cc credit card number (should always be encrypted)
+	 * @param expire_date expire date of credit card
+	 * @param name_on_card the name of card holder
+	 * @param address street number and street name
+	 * @param city city of address
+	 * @param province province of address (limited to Canada, shorthanded as two upper-case letters
+	 * @param zip ZIP code following format [A-Z][0-9][A-Z][0-9][A-Z][0-9]
+	 * @param standing can be 'Good', 'Probation', 'Suspended' (this feature is not used in this version)
 	 */
 	public Customer(String firstname, String lastname, String phoneNumber, 
 			String email, String loginId, int id,
@@ -41,24 +41,24 @@ public class Customer extends Account implements ArrayOfStringsable{
 		super.objectClass = getClass().getName();
 		this.standing = standing;
 	}
-	
+
 	/**
-	 * constructor with password
-	 * @param firstname
-	 * @param lastname
-	 * @param phoneNumber
-	 * @param email
-	 * @param loginId
-	 * @param id
-	 * @param password
-	 * @param cc
-	 * @param expire_date
-	 * @param name_on_card
-	 * @param address
-	 * @param city
-	 * @param province
-	 * @param zip
-	 * @param standing
+	 * Constructor with password
+	 * @param firstname first name of customer
+	 * @param lastname last name of customer
+	 * @param phoneNumber phone number of customer of format 10 digits 
+	 * @param email email of customer (format checked by front end)
+	 * @param loginId unique login username
+	 * @param id unique ID 
+	 * @param password encrypted(hashed) password of customer
+	 * @param cc credit card number (should always be encrypted)
+	 * @param expire_date expire date of credit card
+	 * @param name_on_card the name of card holder
+	 * @param address street number and street name
+	 * @param city city of address
+	 * @param province province of address (limited to Canada, shorthanded as two upper-case letters
+	 * @param zip ZIP code following format [A-Z][0-9][A-Z][0-9][A-Z][0-9]
+	 * @param standing can be 'Good', 'Probation', 'Suspended' (this feature is not used in this version)
 	 */
 	public Customer(String firstname, String lastname, String phoneNumber, 
 			String email, String loginId, int id, 
@@ -76,7 +76,7 @@ public class Customer extends Account implements ArrayOfStringsable{
 	}
 	
 	/**
-	 * 
+	 * Get expire date of credit card on file
 	 * @return expire date
 	 */
 	public String getExpireDate(){
@@ -92,6 +92,7 @@ public class Customer extends Account implements ArrayOfStringsable{
 	}
 	
 	/**
+	 * Get standing of customer
 	 * @return customer standing
 	 */
 	public String getStanding() {
@@ -99,6 +100,7 @@ public class Customer extends Account implements ArrayOfStringsable{
 	}
 
 	/**
+	 * Set standing of customer
 	 * @param standing customer standing
 	 */
 	public void setStanding(String standing) {
@@ -106,6 +108,7 @@ public class Customer extends Account implements ArrayOfStringsable{
 	}
 
 	/**
+	 * Get encrypted credit card of customer
 	 * @return customer encrypted credit-card number
 	 */
 	public String getCc_num() {
@@ -113,6 +116,7 @@ public class Customer extends Account implements ArrayOfStringsable{
 	}
 
 	/**
+	 * Set credit card of customer (encrypted)
 	 * @param cc_num customer encrypted credit-card number
 	 */
 	public void setCc_num(String cc_num) {
@@ -120,6 +124,7 @@ public class Customer extends Account implements ArrayOfStringsable{
 	}
 
 	/**
+	 * Get credit card holder's name on file
 	 * @return name on customer credit card
 	 */
 	public String getName_on_card() {
@@ -127,6 +132,7 @@ public class Customer extends Account implements ArrayOfStringsable{
 	}
 
 	/**
+	 * Set credit card holder's name on file
 	 * @param name_on_card name on customer credit card
 	 */
 	public void setName_on_card(String name_on_card) {
@@ -134,6 +140,7 @@ public class Customer extends Account implements ArrayOfStringsable{
 	}
 
 	/**
+	 * Get location of customer
 	 * @return the location of customer's address object
 	 */
 	public Location getLocation() {

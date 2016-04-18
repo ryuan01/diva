@@ -1,13 +1,10 @@
 package databaseManagement;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.sql.PreparedStatement;
-import systemManagement.Branch;
 import vehicleManagement.Car;
 import vehicleManagement.Truck;
 import vehicleManagement.Vehicle;
@@ -442,7 +439,6 @@ class VehicleDB {
 	 * @throws SQLException 
 	 */
 	private void removeVehicle(int vehicle_id) throws SQLException {
-		// TODO Auto-generated method stub
   		dbm.connect();
   		Statement stmt = dbm.getConnection().createStatement();
 		String query = "DELETE FROM `vehicle` WHERE `vehicle_id` = "+vehicle_id;

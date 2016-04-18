@@ -159,7 +159,6 @@ public class AccountManager {
 	
 	/**
 	 * Returns a list of customers that have the same last name
-	 * @author saud (sammy) almahri
 	 * @param lastName The first name of the customer being searched
 	 * @return a list of customers that match the search criteria
 	 * @throws SQLException 
@@ -170,7 +169,6 @@ public class AccountManager {
 	
 	/**
 	 * Returns a customer object using a username parameter
-	 * @author saud (sammy) almahri
 	 * @param username customer account username
 	 * @return a list of customers that match the search criteria
 	 * @throws SQLException 
@@ -180,7 +178,7 @@ public class AccountManager {
 	}
 	
 	/**
-	 * @author saud (sammy) almahri 
+	 * Searches for account by phone number
 	 * @param phoneNum 	customer phone number
 	 * @return a list of customers that match the search criteria
 	 * @throws SQLException
@@ -190,8 +188,7 @@ public class AccountManager {
 	}
 	
 	/**
-	 * Returns the password of a user, given their user name
-	 * @author saud (sammy) almahri 
+	 * Returns the password of a user, given their user name 
 	 * @param userName The user name of the account needing authentication
 	 * @return an encrypted version of the password associated with the UserName
 	 * @throws SQLException 
@@ -201,7 +198,7 @@ public class AccountManager {
 	}
 	
 	/**
-	 * @author saud (sammy) almahri 
+	 * Changes password for an user
 	 * @param userName 		The user name of the account needing password change
 	 * @param newPassword 		The user account new password
 	 * @throws SQLException
@@ -211,6 +208,7 @@ public class AccountManager {
 	}
 	
 	/**
+	 * Gets all customers on file with accounts
 	 * @return An array of all customer accounts that are active
 	 * @throws SQLException
 	 */

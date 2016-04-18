@@ -146,7 +146,7 @@ class BranchDB{
 	}
 	
 	/**
-	 * @author saudalmahri
+	 * Check if the returning branch for a rental is the same as indicated by the reservation agreement
 	 * @param rental_id
 	 * @param current_branch_id
 	 * @return check if return branch matches that with the one specified in the database
@@ -195,7 +195,6 @@ class BranchDB{
 	
 	/**
 	 * Note the extra charge from returning the vehicle to the wrong branch in the database
-	 * @author saudalmahri
 	 * @param rental_id		the rental id number
 	 * @return Extra charge
 	 * @throws SQLException

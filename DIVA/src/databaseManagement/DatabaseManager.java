@@ -1,7 +1,3 @@
-/**
- * Class DatabaseManager is fully implemented and tested
- */
-
 package databaseManagement;
 
 import java.math.BigDecimal;
@@ -30,7 +26,6 @@ import vehicleManagement.Vehicle;
 public class DatabaseManager {
 	
 	// I am modeling as Has-A relationship
-	// Not sure if I need to change this? 
 	private AccountDB accDB;
 	private BranchDB branDB;
 	private EquipmentDB eqDB;
@@ -107,8 +102,8 @@ public class DatabaseManager {
 	}*/
 	
 	/**
-	 * 
-	 * @param id
+	 * Removes a branch 
+	 * @param id branch ID 
 	 * @throws SQLException
 	 */
 	public void removeBranchEntry(int id) throws SQLException
@@ -117,9 +112,9 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * 
-	 * @param id
-	 * @return
+	 * Gets an branch
+	 * @param id branch ID
+	 * @return Branch object of that ID
 	 * @throws SQLException
 	 */
 	public Branch getBranchEntry(int id) throws SQLException
@@ -127,16 +122,34 @@ public class DatabaseManager {
 		return branDB.getBranch(id);
 	}
 	
+	/**
+	 * Gets all possible branch entries on file
+	 * @return list of branches
+	 * @throws SQLException
+	 */
 	public Branch[] getAllBranchEntries() throws SQLException
 	{
 		return branDB.getAllBranch();
 	}
 	
+	/**
+	 * Checks if the returning branch is the same as indicated by rental agreement
+	 * @param rental_id ID of rental 
+	 * @param current_return_branch current branch ID
+	 * @return true if they are same, false otherwise
+	 * @throws SQLException
+	 */
 	public boolean checkReturnBranch(int rental_id, int current_return_branch) throws SQLException{
 		
 		return branDB.checkReturnBranch(rental_id, current_return_branch);
 	}
 	
+	/**
+	 * Add extra charge for returning to wrong branch
+	 * @param rental_id ID of rental
+	 * @return the amount charged, 0 means no charge 
+	 * @throws SQLException
+	 */
 	public BigDecimal addWrongReturnBranchExtraCharge(int rental_id) throws SQLException {
 		return branDB.addWrongReturnBranchExtraCharge(rental_id);
 	}
@@ -246,9 +259,9 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * 
-	 * @param rental_id
-	 * @return
+	 * Searches for inspection reports related to an rental ID, can have 0 - 2 reports
+	 * @param rental_id ID of rental
+	 * @return list of inspection reports from size 0 to 2
 	 * @throws SQLException
 	 */
 	public Report[] searchInspectionReport(int rental_id) throws SQLException {
@@ -266,6 +279,12 @@ public class DatabaseManager {
         return rArray;
 	}
 
+	/**
+	 * Gets an accident report related to an rental
+	 * @param rental_id ID of rental
+	 * @return accident report if found, otherwise null
+	 * @throws SQLException
+	 */
 	public AccidentReport searchAccidentReport(int rental_id) throws SQLException {
 		// 
 		return reDB.searchAccidentReport(rental_id);
@@ -284,9 +303,9 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * 
-	 * @param reservID
-	 * @return
+	 * Get the account related to reservation 
+	 * @param reservID reservation ID
+	 * @return Account object 
 	 * @throws SQLException 
 	 */
 	public Account getReservationAccount(int reservID) throws SQLException
@@ -328,6 +347,12 @@ public class DatabaseManager {
 		return reDB.getRental(rentID);
 	}
 	
+	/**
+	 * Get an rental from reservation
+	 * @param reservID reservation ID
+	 * @return Rental object 
+	 * @throws SQLException
+	 */
 	public Rental getRentalFromReservation(int reservID) throws SQLException{
 		return reDB.getRental(reservID);
 	}
@@ -366,10 +391,24 @@ public class DatabaseManager {
 		reDB.addToBalance(rental_id, balance);
 	}
 	
-	public void modifyRentalStatus(int rental_id, boolean is_paid_extra_charge, boolean is_check_overdue,String columnName) throws SQLException{
-		reDB.modifyRentalStatus(rental_id, is_paid_extra_charge, is_check_overdue, columnName);
+	/**
+	 * Modifies rental status depending on column names 
+	 * @param rental_id rental ID
+	 * @param is_paid_extra_charge is a column in rental, sets to false when the other one is set to true
+	 * @param state true or false, state of columnName
+	 * @param columnName columnName can be is_check_overdue or is_check_return_branch
+	 * @throws SQLException
+	 */
+	public void modifyRentalStatus(int rental_id, boolean is_paid_extra_charge, boolean state,String columnName) throws SQLException{
+		reDB.modifyRentalStatus(rental_id, is_paid_extra_charge, state, columnName);
 	}
 	
+	/**
+	 * Get balance of an rental 
+	 * @param rentID ID of rental 
+	 * @return balance, cannot be negative 
+	 * @throws SQLException
+	 */
 	public BigDecimal getBalance(int rentID) throws SQLException{
 		//System.out.println("im in dbmanager");
 		return reDB.getBalance(rentID);
@@ -411,6 +450,11 @@ public class DatabaseManager {
 	
 /*---------------------------------------Account related----------------------------------------------*/
 	
+	/**
+	 * Creates an account in database with automatically assigned ID
+	 * @param account account object
+	 * @throws SQLException
+	 */
 	public void createAccountEntry(Account account) throws SQLException{
 		if (account instanceof Customer){
 			accDB.createCustomer((Customer)account);
@@ -420,7 +464,7 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * 
+	 * Searches for account entries based on parameter
 	 * @param parameter can be either username, lastname, or phonenumber
 	 * @return
 	 * @throws SQLException 
@@ -454,6 +498,12 @@ public class DatabaseManager {
 //	{
 //	}
 	
+	/**
+	 * Change customer account status from super customer to customr, or vise versa
+	 * @param userName username that identifies account
+	 * @param status can be 'SRCustomer' or 'RegisteredCustomer'
+	 * @throws SQLException
+	 */
 	public void changeAccountStatus(String userName, String status) throws SQLException{
 		
 		// upgrade to SuperCustomer
@@ -465,6 +515,13 @@ public class DatabaseManager {
 		}
 	}
 	
+	/**
+	 * Change rental status changes a column in rental 
+	 * @param rentalID rental ID 
+	 * @param columnName can be any column in rental is_paid_rental, is_paid_extra_charge, is_check_overdue or is_check_return_branch
+	 * @param status true or false
+	 * @throws SQLException
+	 */
 	public void changeRentalStatus(int rentalID,String columnName, boolean status) throws SQLException{
 		reDB.changeRentalStatus(rentalID, columnName, status);
 	}
@@ -503,22 +560,50 @@ public class DatabaseManager {
 		String username = accDB.getUserNameFromId(customer_id);
 		accDB.addSRPoints(username, -points);
 	}
-		
+	
+	/**
+	 * Modifies password for an user
+	 * @param userName username of an user
+	 * @param newPassword new hashed password 
+	 * @throws SQLException
+	 */
 	public void modifyPassword(String userName, String newPassword) throws SQLException{
 		accDB.modifyPassword(userName, newPassword);
 	}
 	
+	/**
+	 * Gets username from ID
+	 * @param id ID of an user
+	 * @return username of an user 
+	 * @throws SQLException
+	 */
 	public String getUsernameFromId(int id) throws SQLException{
 		return accDB.getUserNameFromId(id);
 	}
 	
+	/**
+	 * Gets all active customer accounts including super rent customers 
+	 * @return list of all active customer accounts 
+	 * @throws SQLException
+	 */
 	public Customer[] getCustomerAccounts() throws SQLException{
 		return accDB.getCustomerAccounts();
 	}
+	
+	/**
+	 * Activate account based on username
+	 * @param username username of account
+	 * @throws SQLException
+	 */
 	public void activateAccount(String username) throws SQLException{
 		accDB.accountActivation(username, true);
 	}
 	
+	/**
+	 * Deactive account based on username
+	 * @param username username of account 
+	 * @throws SQLException
+	 */
 	public void deactivateAccount(String username) throws SQLException{
 		//need to check if the account holds any rental at the moment
 		accDB.accountActivation(username, false);
@@ -596,16 +681,15 @@ public class DatabaseManager {
 			throw new IllegalArgumentException("Vehicle can only be of 'car' or 'truck");
 		}
 	}
+
 	/**
-	 * Generic search of vehicle available at certain date, certain branch 
-	 * @param c
-	 * @param branch_id
-	 * @param type
-	 * @param time
-	 * @param end_date 
-	 * @param list
-	 * @return
-	 * @throws SQLException 
+	 * Generic search of vehicles
+	 * @param branch_id branch ID
+	 * @param type type of vehicles (car or truck)
+	 * @param start_date yyyy-MM-dd HH:mm:ss format
+	 * @param end_date yyyy-MM-dd HH:mm:ss format
+	 * @return list of vehicles available at this time at this branch
+	 * @throws SQLException
 	 */
 	public Vehicle[] search(int branch_id, String type, String start_date, String end_date) throws SQLException{
 		//System.out.println("Connected, trying to insert next");
@@ -614,10 +698,10 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * Searching for overdue trucks or cars (today)
-	 * @param branch_id
-	 * @param type
-	 * @return
+	 * Searching for overdue trucks or cars (today) in a specific branch 
+	 * @param branch_id branch ID
+	 * @param type "car" or "truck" 
+	 * @return list of overdue vehicles in this branch 
 	 * @throws SQLException
 	 */
 	public Vehicle[] search(int branch_id, String type) throws SQLException {
@@ -636,10 +720,10 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * 
-	 * @param branch_id
-	 * @param type
-	 * @return
+	 * Searches for list of for-sale vehicles in a specific branch 
+	 * @param branch_id branch Id of a branch
+	 * @param type "car" or "truck"
+	 * @return list of for sale vehicles in this branch 
 	 * @throws SQLException
 	 */
 	public Vehicle[] searchForSale(int branch_id, String type) throws SQLException {
@@ -683,14 +767,29 @@ public class DatabaseManager {
 		return prDB.getPriceRow(type,table_name);
 	}
 	
+	/**
+	 * Returns all car prices in database
+	 * @return all car prices
+	 * @throws SQLException
+	 */
 	public BigDecimal[][] getAllCarPrice() throws SQLException{
 		return prDB.getCarPriceList();
 	}
 	
+	/**
+	 * Returns all truck prices in database
+	 * @return all truck prices
+	 * @throws SQLException
+	 */
 	public BigDecimal[][] getAllTruckPrice() throws SQLException{
 		return prDB.getTruckPriceList();
 	}
 	
+	/**
+	 * Returns all equipment prices in database
+	 * @return all equipment prices 
+	 * @throws SQLException
+	 */
 	public BigDecimal[][] getAllEquipmentPrice() throws SQLException{
 		return prDB.getEquipmentPriceList();
 	}
@@ -708,9 +807,9 @@ public class DatabaseManager {
 //		
 //	}
 	/**
-	 * @author saud (sammy) almahri
-	 * @param customer_id
-	 * @return
+	 * Search for receipts based on customer ID 
+	 * @param customer_id ID of customer
+	 * @return list of receipts based for this customer 
 	 * @throws SQLException
 	 * @throws Error
 	 */
@@ -719,8 +818,8 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * @author saud (sammy) almahri
-	 * @param receipt
+	 * Add receipt to database
+	 * @param receipt an receipt object 
 	 * @throws SQLException
 	 * @throws Error
 	 */
@@ -730,19 +829,18 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * @author saud (sammy) almahri
-	 * @return
+	 * Get all extra charge price from database
+	 * @return all extra charge prices 
 	 * @throws SQLException
 	 */
 	public BigDecimal[] getAllExtraChargePrice() throws SQLException {
 		return prDB.getAllExtraChargePrice();
 	}
+
 	
-	//sammy: we need to get and set `car_insurance_price` and `truck_insurance_price` as well
-	//there isn't database entries for these two tables atm, please populate them with logical values
 	/**
-	 * @author saud (sammy) almahri
-	 * @return
+	 * Get all car insurance prices
+	 * @return all car insurance prices
 	 * @throws SQLException
 	 */
 	public BigDecimal[][] getAllCarInsurancePrice() throws SQLException{
@@ -750,8 +848,8 @@ public class DatabaseManager {
 	}
 
 	/**
-	 * @author saud (sammy) almahri
-	 * @return 
+	 * Get all truck insurance prices 
+	 * @return  all truck insurance prices 
 	 * @throws SQLException
 	 */
 	public BigDecimal[][] getAllTruckInsurancePrice() throws SQLException{
@@ -771,8 +869,9 @@ public class DatabaseManager {
 
 	/**
 	 * Checks if a rental has an inspection report before rental done
-	 * @param rentID
-	 * @return
+	 * @param rentID ID of rental
+	 * @param status "before_rental" or "after_rental"
+	 * @return true of there is an inspection report of that status 
 	 * @throws SQLException 
 	 */
 	public boolean hasInspectionReport(int rentID, String status) throws SQLException {

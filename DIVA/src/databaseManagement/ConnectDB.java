@@ -1,14 +1,13 @@
-/**
- * ConnectDB handles all database connections
- * Author: Saud (Sammy) Almahri
- * @version March 28'th 2016
- */
 package databaseManagement;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
+/**
+ * ConnectDB handles all database connections
+ * Author: Saud (Sammy) Almahri
+ * @version March 28'th 2016
+ */
 class ConnectDB{
 	/**
 	 * Database IP address
@@ -33,7 +32,7 @@ class ConnectDB{
  
  /* ------------------------------------------ public interface ------------------------------- */
     /**
-     * 
+     * Gets a connection
      * @return a connection ojbect
      */
     public Connection getConnection(){

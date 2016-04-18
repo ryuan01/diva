@@ -3,8 +3,7 @@ package accountManagement;
 import webServiceManagement.ArrayOfStringsable;
 
 /**
- * 
- * @author Robin
+ * Employee is an user, but with working branch and employee type 
  *
  */
 public class Employee extends Account implements ArrayOfStringsable{
@@ -20,15 +19,15 @@ public class Employee extends Account implements ArrayOfStringsable{
 	private String emp_type;
 	
 	/**
-	 * 
-	 * @param firstname
-	 * @param lastname
-	 * @param phoneNumber
-	 * @param email
-	 * @param loginId
-	 * @param works_at
-	 * @param emp_type
-	 * @param id
+	 * Creates an employee without password
+	 * @param firstname					The first name of the User of the Account
+	 * @param lastname					The last name of the User of the Account
+	 * @param phoneNumber				The phone number of the User of the Account
+	 * @param email						The email of the User of the Account
+	 * @param loginId					The log in id of the User of the Account
+	 * @param works_at					The branch ID of where the employee works at
+	 * @param emp_type					'Clerk', 'Manager', 'SystemAdmin'
+	 * @param id						The unique ID that identifies an employee
 	 */
 	public Employee(String firstname, String lastname, String phoneNumber, String email, String loginId, int works_at, String emp_type, int id) {
 		super(firstname, lastname, phoneNumber, email, loginId, id);
@@ -39,16 +38,16 @@ public class Employee extends Account implements ArrayOfStringsable{
 	}
 	
 	/**
-	 * 
-	 * @param firstname
-	 * @param lastname
-	 * @param phoneNumber
-	 * @param email
-	 * @param loginId
-	 * @param password
-	 * @param works_at
-	 * @param emp_type
-	 * @param id
+	 * Creates an employee with password 
+	 * @param firstname					The first name of the User of the Account
+	 * @param lastname					The last name of the User of the Account
+	 * @param phoneNumber				The phone number of the User of the Account
+	 * @param email						The email of the User of the Account
+	 * @param loginId					The log in id of the User of the Account
+	 * @param password					The password of the User of the Account
+	 * @param works_at					The branch ID of where the employee works at
+	 * @param emp_type					'Clerk', 'Manager', 'SystemAdmin'
+	 * @param id						The unique ID that identifies an employee
 	 */
 	public Employee(String firstname, String lastname, String phoneNumber, 
 			String email, String loginId, String password, int works_at, String emp_type, int id){
@@ -60,7 +59,7 @@ public class Employee extends Account implements ArrayOfStringsable{
 	}
 	
 	/**
-	 * 
+	 * Gets the branch ID of where the employee works at 
 	 * @return employee work branch number
 	 */
 	public int getWorks_at() {
@@ -68,7 +67,7 @@ public class Employee extends Account implements ArrayOfStringsable{
 	}
 	
 	/**
-	 * 
+	 * Sets the branch ID of where the employee works at
 	 * @param works_at employee work branch number
 	 */
 	public void setWorks_at(int works_at) {
@@ -76,7 +75,7 @@ public class Employee extends Account implements ArrayOfStringsable{
 	}
 
 	/**
-	 * 
+	 * Gets the type of employee 
 	 * @return employee type (clerk, manager, sys admin)
 	 */
 	public String getEmp_type() {
@@ -84,7 +83,7 @@ public class Employee extends Account implements ArrayOfStringsable{
 	}
 
 	/**
-	 * 
+	 * Sets the type of employee 
 	 * @param emp_type employee type (clerk, manager, sys admin)
 	 */
 	public void setEmp_type(String emp_type) {

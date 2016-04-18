@@ -2,6 +2,10 @@ package accountManagement;
 
 import webServiceManagement.ArrayOfStringsable;
 
+/**
+ * SuperCustomer is a Customer who has points
+ *
+ */
 public class SuperCustomer extends Customer implements ArrayOfStringsable{
 
 	/**
@@ -10,20 +14,9 @@ public class SuperCustomer extends Customer implements ArrayOfStringsable{
 	private int points;
 
 	/**
-	 * 
-	 * @param firstname
-	 * @param lastname
-	 * @param phoneNumber
-	 * @param email
-	 * @param loginId
-	 * @param id
-	 * @param cc
-	 * @param name_on_card
-	 * @param street
-	 * @param city
-	 * @param province
-	 * @param zip
-	 * @param points
+	 * Creates an super customer from customer
+	 * @param customer the customer before becoming a super customer
+	 * @param points points that the super customer holds, cannot be negative
 	 */
 	public SuperCustomer(Customer customer ,int points) {
 			
@@ -37,7 +30,7 @@ public class SuperCustomer extends Customer implements ArrayOfStringsable{
 	}
 
 	/**
-	 * 
+	 * Get points
 	 * @return Amount of superRent points in SuperCustomer account
 	 */
 	public int getPoints() {
@@ -45,7 +38,7 @@ public class SuperCustomer extends Customer implements ArrayOfStringsable{
 	}
 
 	/**
-	 * 
+	 * Set points
 	 * @param points Amount of superRent points in SuperCustomer account
 	 */
 	public void setPoints(int points) {
