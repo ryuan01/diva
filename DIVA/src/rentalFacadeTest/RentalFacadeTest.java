@@ -22,7 +22,8 @@ public class RentalFacadeTest {
 	private static void test_rental_super_customer() {
 		// TODO Auto-generated method stub
 		try {
-			rf.createReservation("2016-08-06 14:00:00", "2016-09-05 15:00:00", 48 , new int[]{0} , 2, 3, "jjohn00", true);
+//			rf.createReservation("2016-08-06 14:00:00", "2016-09-05 15:00:00", 48 , new int[]{0} , 2, 3, "jjohn00", true);
+//			rf.createReservation("2016-4-17 22:00:00", "2016-04-18 15:00:00", 33 , new int[]{0} , 2, 3, "jjohn00", true);			
 //			 rf.readyToLeave(76); //error: report not filed
 //			rf.readyToLeave(37); //error: did not pay
 //			 rf.readyToLeave(100); //error: does not exist
@@ -50,6 +51,7 @@ public class RentalFacadeTest {
 			//System.out.println(rf.checkReturningBranch(77, 1));
 //			rf.readyToReturn(77); //error: not paid yet
 			//System.out.println(pm.makePaymentCash("jolene", 77, "100.00").toString());
+//			rf.createAccidentReport("jolene", "2016-4-18", "broken door", 77, "langara", "vancouver", "BC", "V3T5C2", "Kevin", "1200.00");
 			rf.readyToReturn(84);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

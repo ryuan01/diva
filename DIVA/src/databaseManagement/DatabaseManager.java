@@ -240,6 +240,9 @@ public class DatabaseManager {
 	 */
 	public void addAccidentReport(AccidentReport r) throws SQLException{
 		reDB.createAccidentReport(r);
+		//also change vehicle state
+		Rental rental = reDB.getRental(r.getRentalID());
+		veDB.updateVehicleStatus(rental.getRentalReservation().getVehicleID(), "damaged");
 	}
 	
 	/**

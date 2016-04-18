@@ -315,6 +315,7 @@ for when the customer comes in the store to pick up a reservation.
 	 */
 	public void readyToReturn(int rental_id) throws Exception{
 		//CHECK for all kinds of extra charges situations
+		//check if this is a rental
 		//if the balance is 0, then set is_paid_rental to true and let someone leave, return true
 		//else return false		
 		BigDecimal balance = dbm.getBalance(rental_id);
@@ -323,6 +324,9 @@ for when the customer comes in the store to pick up a reservation.
 		boolean has_accident_report = dbm.hasAccidentReport(rental_id);
 		Rental rental = dbm.getRental(rental_id);
 		
+		if (rental == null){
+			throw new Exception("There is no rental of ID: "+rental_id);
+		}
 		if (! has_after_rental_inspection_report && !has_accident_report){
 			throw new Exception("Please file an after inspection report or an accident report before returning a vehicle");
 		}
