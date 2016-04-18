@@ -12,7 +12,7 @@ import accountManagement.*;
 class AccountDB{
 	
 	/**
-	 * final methods to avoid any errors
+	 * final methods to avoid any syntax errors in AccountDB methods
 	 */
 	private static final String USER = "`users`";
 	private static final String CUSTOMER = "`customer`";
@@ -22,7 +22,7 @@ class AccountDB{
 	private static final String USERNAME = "Account_uName";
 	
 	/**
-	 * a ConnectDB connect and disconnect from the database
+	 * a ConnectDB object to connect and disconnect from the database
 	 */
 	private ConnectDB dbm;
 	
@@ -125,7 +125,7 @@ class AccountDB{
 			
 		} else{
 			dbm.disconnect();
-			throw new IllegalArgumentException("Account username already exist");
+			throw new IllegalArgumentException("Account username " + userName + " already exists");
 		}
 	}
 
@@ -492,7 +492,7 @@ class AccountDB{
 				
 	
 	/**
-	 * getEncryptedpassword get the password from database that matches the username
+	 * getEncryptedpassword: get the password from database that matches the username
 	 * @author saud (sammy) almahri
 	 * @param username a username
 	 * @pre doesItExist(username, USER, USERNAME)
@@ -537,7 +537,7 @@ class AccountDB{
 	/**
 	 * change the existing password to a new password
 	 * @author saud (sammy) almahri
-	 * @param userName		Account username
+	 * @param userName	Account username
 	 * @param newPassword	new password
 	 * @pre doesItExist(userName, USER, USERNAME)
 	 * @throws SQLException
@@ -576,7 +576,7 @@ class AccountDB{
 	 * Get username from account ID
 	 * @author Robin
 	 * @param customerAccountID
-	 * @return username
+	 * @return username 	customer username
 	 * @throws SQLException 
 	 */
 	String getUserNameFromId(int customerAccountID) throws SQLException {
@@ -597,7 +597,7 @@ class AccountDB{
 	 * get account ID from username
 	 * @author Robin
 	 * @param username
-	 * @return	
+	 * @return customer ID number
 	 * @throws Exception
 	 */
 	int getIdFromUsername(String username) throws Exception {
@@ -654,7 +654,7 @@ class AccountDB{
 	
 	/**
 	 * @author saud (sammy) almahri
-	 * @return  a list of all customers in the database
+	 * @return  a list of all active customers in the database
 	 * @throws SQLException
 	 */
 		Customer[] getCustomerAccounts() throws SQLException{
