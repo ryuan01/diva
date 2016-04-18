@@ -46,7 +46,7 @@ public class AuthenticateDB {
     }
     
     /**
-	 * Disconnect to database
+	 * Disconnect from the database
 	 * @pre isConnected()
 	 * @post !isConnect()
 	 */
